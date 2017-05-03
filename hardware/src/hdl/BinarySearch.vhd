@@ -15,6 +15,8 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
 
 entity BinarySearch is
       generic
@@ -64,8 +66,8 @@ signal wr_mem_word         : std_logic;
 signal left_greater        : std_logic;
 
 -- Combinatorial
-signal low_addr_comb       : std_logic_vector(kAddressWidth - 1 downto 0);
-signal high_addr_comb      : std_logic_vector(kAddressWidth - 1 downto 0);
+signal low_addr_comb       : std_logic_vector(kMemAddressWidth - 1 downto 0);
+signal high_addr_comb      : std_logic_vector(kMemAddressWidth - 1 downto 0);
 
 begin
 
@@ -165,7 +167,7 @@ begin
     found              <= '0';
     low_addr_comb      <= (others => '0');
     high_addr_comb     <= (others => '0');
-    memory_address_out <= (low_addr_reg + high_addr_reg) / 2;
+    memory_address_out <= std_logic_vector((unsigned(low_addr_reg) + unsigned(high_addr_reg)) / 2);
 
     case(cr_state) is
       when idle_t =>
@@ -178,16 +180,23 @@ begin
         end if;
       when wait_mem_t =>
         memory_read <= '1';
+        wr_mem_word <= memory_valid;
       when decision_t =>
+        wr_low         <= '1';
+        wr_high        <= '1';
         if search_word_reg < mem_word then
           low_addr_comb <= low_addr_reg;
-          high_addr_comb <= (low_addr_reg + high_addr_reg) / 2 - 1;
+          high_addr_comb <= std_logic_vector((unsigned(low_addr_reg) + unsigned(high_addr_reg)) / 2 - 1);
         else
           high_addr_comb <= high_addr_reg;
-          low_addr_comb <=  (low_addr_reg + high_addr_reg) / 2 + 1;
+          low_addr_comb <=  std_logic_vector((unsigned(low_addr_reg) + unsigned(high_addr_reg)) / 2 + 1);
         end if;
       when done_t =>
-        found <= to_std_logic(mem_word = search_word_reg);
+        if mem_word = search_word_reg then
+            found <= '1';
+        else
+            found <= '0';
+        end if;
         done <= '1';
       when others =>
         null;
