@@ -40,7 +40,7 @@ entity BinarySearch is
                memory_in           : in std_logic_vector(kWordWidth - 1 downto 0);
                memory_valid        : in std_logic;
                memory_address_out  : out std_logic_vector(kMemAddressWidth - 1 downto 0);
-               memory_read         : out std_logic;
+               memory_read         : out std_logic
       );
 end BinarySearch;
 
@@ -78,7 +78,7 @@ begin
          low_addr_reg <= low_addr_comb;
       end if;
     end if;
-  end process LOWADDREG;
+  end process LOWADDRREG;
 
   HIGHADDRREG: process(clk)
   begin
@@ -107,7 +107,7 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         mem_word <= (others => '0');
-      else if wr_mem_word = '1' and memory_valid = '1' then
+      elsif wr_mem_word = '1' and memory_valid = '1' then
         mem_word <= memory_in;
       end if;
     end if;
@@ -122,7 +122,7 @@ begin
         cr_state <= nx_state;
       end if;
     end if;
-  end process NXSTATE;
+  end process FSM;
 
   NEXT_STATE_DECODE: process(cr_state, start_search, memory_in, memory_valid)
   begin
