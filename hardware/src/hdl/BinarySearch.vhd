@@ -1,7 +1,6 @@
 -------------------------------------------------------------------------------
 -- FILE NAME      : BinarySearch.vhd
--- MODULE NAME    : General Purpose module that implements the BinarySearch
---                  algorithm
+-- MODULE NAME    : BinarySearch
 -- AUTHOR         : Bogdan Ardelean
 -- AUTHOR'S EMAIL : bogdan.ardelean@yahoo.com
 -------------------------------------------------------------------------------
