@@ -1,4 +1,6 @@
 package FpwamPkg is
+  constant kWamAddressWidth : natural := 16;
+  constant kWamWordWidth    : natural := 18;
   -- Possible address inputs for memory (eg: MA_H_t => Memory Address from register H)
   type mem_addr_input_t is (MA_H_t, MA_Hplus1_t, MA_deref_unit_t, MA_untag_deref_t, MA_bind_unit_t, MA_trail_unit_t,
                             MA_unify_unit_a_t, MA_unify_unit_b_t, MA_stack_addr_t, MA_S_t);
@@ -28,4 +30,24 @@ package FpwamPkg is
 
   -- Maybe shoud create for tag unit the same thing?
   -- Currently isn't necessary.
+
+  function fpwam_tag   (word : std_logic_vector) return tag_t;
+  function fpwam_value (word : std_logic_vector) return std_logic_vector;
+
 end FpwamPkg;
+
+package body FpwamPkg is
+
+  function fpwam_tag   (word : std_logic_vector) return tag_t is
+   variable result : integer;
+   begin
+      result := to_integer(unsigned(word));
+    return tag_t'val(result);
+  end function;
+
+  function fpwam_value (word: std_logic_vector) return std_logic_vector is
+    begin
+      return word(word'length - 2 downto 0);
+  end function;
+
+end package body;
