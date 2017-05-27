@@ -13,14 +13,15 @@
 -------------------------------------------------------------------------------
 
 library ieee;
+library xil_defaultlib;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use FpwamPgk.all;
+use work.FpwamPkg.all;
 
 entity GPR is
   generic
   (
-    kAddressWidth : natural := 4
+    kAddressWidth : natural := 4;
     kWordWidth    : natural := 16
   );
   port
@@ -47,10 +48,10 @@ WRITE_PROCESS: process(clk)
 begin
   if rising_edge(clk) then
     if wr = '1' then
-      RAM(to_unsigned(address)) <= input_word;
+      RAM(to_integer(unsigned(address))) <= input_word;
     end if;
   end if;
 end process;
 
-output_word <= RAM(to_unsigned(address));
+output_word <= RAM(to_integer(unsigned(address)));
 end Behavioral;

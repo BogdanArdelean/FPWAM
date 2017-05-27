@@ -13,9 +13,11 @@
 -------------------------------------------------------------------------------
 
 library ieee;
+library xil_defaultlib;
+
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use FpwamPgk.all;
+use work.FpwamPkg.all;
 
 
 
@@ -60,15 +62,15 @@ entity DataFlowControl is
     bind_port2        : out bind_input_t;
 
     wr_h_reg          : out std_logic;
-    h_input           : out std_logic_vector(1 downto 0);
+    h_input           : out h_input_t;
 
     rd_gpr            : out std_logic;
     wr_gpr            : out std_logic;
     gpr_input         : out GPR_input_t;
 
     start_unify       : out std_logic;
-    unify_input_a     : out unify_input_t
-    unify_input_b     : out unify_value_t
+    unify_input_a     : out unify_input_t;
+    unify_input_b     : out unify_input_t
   );
 end DataFlowControl;
 
@@ -78,7 +80,8 @@ type state_t is (idle_t, next_instr_t,
                 put_structure_t,
                 get_structure_t, get_structure_t2, get_structure_t3,
                 unify_variable_t, unify_variable_t2,
-                unify_value_t, unify_value_t2);
+                unify_value_t, unify_value_t2,
+                fail_t);
 
 signal cr_state, nx_state, decoded_state : state_t;
 
@@ -131,7 +134,7 @@ begin
         nx_state <= get_structure_t2;
       when get_structure_t2 =>
         if deref_done = '1' then
-          if mem_obj_tag = tag_str_t && mem_obj = instruction(31 downto 15) then
+          if mem_obj_tag = tag_str_t and mem_obj = instruction(31 downto 15) then
             nx_state <= next_instr_t;
           elsif mem_obj_tag = tag_ref_t then
             nx_state <= get_structure_t3;
@@ -150,7 +153,7 @@ begin
         end if;
       when unify_variable_t2 =>
         nx_state <= next_instr_t;
-      when unify_value_t then
+      when unify_value_t =>
         if mode_reg = mode_read_t then
           nx_state <= unify_value_t2;
         else
@@ -181,7 +184,7 @@ begin
     wr_s_reg         <= '0';
     s_reg_input      <= SI_untag_deref_p1_t;
     wr_mode_reg      <= '0';
-    mode_value       <= '0';
+    mode_value       <= mode_read_t;
     rd_mem_port1     <= '0';
     rd_mem_port2     <= '0';
     wr_mem_port1     <= '0';
@@ -204,12 +207,12 @@ begin
 
     case cr_state is
       when get_structure_t => -- deref(Ai)
-        start_deref <= '1';
-        deref_input <= "00";  -- mux => input for deref = A(i)
-        mem_input1  <= "01";  -- mux => mem input from deref module
+        start_deref      <= '1';
+        deref_input      <= DI_ai_t;  -- mux => input for deref = A(i)
+        mem_addr_input1  <= MA_deref_unit_t;  -- mux => mem input from deref module
       when get_structure_t2 =>
         if deref_done = '1' then
-          if mem_obj_tag = tag_str_t && mem_obj = instruction(31 downto 15) then
+          if mem_obj_tag = tag_str_t and mem_obj = instruction(31 downto 15) then
 
             -- S = a + 1
             wr_s_reg    <= '1';
@@ -237,7 +240,7 @@ begin
         mem_addr_input1 <= MA_bind_unit_t;
         mem_input1      <= MI_bind_unit_t;
         mem_addr_input2 <= MA_trail_unit_t;
-        mem_input2      <= MA_trail_unit_t;
+        mem_input2      <= MI_trail_unit_t;
      when put_structure_t =>
         wr_mem_port1    <= '1';
         mem_addr_input1 <= MA_H_t;
@@ -275,7 +278,7 @@ begin
         if mode_reg = mode_read_t then
           start_unify   <= '1';
           unify_input_a <= UI_mem_port2_t;
-          if insruction(0) = '1' then -- value on stack
+          if instruction(0) = '1' then -- value on stack
             unify_input_b <= UI_mem_port1_t;
           else
             unify_input_b <= UI_GPR_t;
@@ -300,7 +303,7 @@ begin
           wr_h_reg        <= '1';
           h_input         <= HI_p1_t;
 
-          if instruction(0) == '1' then --value on stack
+          if instruction(0) = '1' then --value on stack
             mem_addr_input2 <= MA_stack_addr_t;
             mem_input2      <= MI_tag_unit_t;
             wr_mem_port2    <= '1';
@@ -311,7 +314,7 @@ begin
         end if;
      when unify_variable_t2 =>
         if mode_reg = mode_read_t then
-          if instruction(0) == '1' then
+          if instruction(0) = '1' then
             mem_addr_input2 <= MA_stack_addr_t;
             mem_input2      <= MI_mem_port1_t;
             wr_mem_port2    <= '1';
