@@ -53,4 +53,4 @@ begin
 end process;
 
 output_word <= RAM(to_unsigned(address));
-end architecture;
+end Behavioral;
