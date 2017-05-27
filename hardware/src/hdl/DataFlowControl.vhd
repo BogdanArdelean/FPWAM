@@ -201,7 +201,7 @@ begin
     start_unify      <= '0';
     unify_input_a    <= UI_S_t;
     unify_input_b    <= UI_S_t;
-    
+
     case cr_state is
       when get_structure_t => -- deref(Ai)
         start_deref <= '1';
@@ -248,7 +248,7 @@ begin
 
         wr_gpr    <= '1';
         gpr_input <= GPRI_tag_unit_t;
-    when unify_value_t =>
+     when unify_value_t =>
         if mode_reg = mode_read_t then
           mem_addr_input2   <= MA_S_t;
           rd_mem_port2      <= '1';
@@ -271,7 +271,7 @@ begin
         end if;
         wr_s_reg    <= '1';
         s_reg_input <= SI_p1_t;
-    when unify_value_t2 =>
+     when unify_value_t2 =>
         if mode_reg = mode_read_t then
           start_unify   <= '1';
           unify_input_a <= UI_mem_port2_t;
@@ -288,7 +288,7 @@ begin
           wr_h_reg        <= '1';
           h_input         <= HI_p1_t;
         end if;
-    when unify_variable_t =>
+     when unify_variable_t =>
         if mode_reg = mode_read_t then
           mem_addr_input1 <= MA_S_t;
           rd_mem_port1    <= '1';
@@ -309,7 +309,7 @@ begin
             gpr_input       <= GPRI_tag_unit_t;
           end if;
         end if;
-    when unify_variable_t2 =>
+     when unify_variable_t2 =>
         if mode_reg = mode_read_t then
           if instruction(0) == '1' then
             mem_addr_input2 <= MA_stack_addr_t;
@@ -320,6 +320,7 @@ begin
             wr_gpr          <= '1';
           end if;
         end if;
-    when others => null;
-  end case;
-end process OUTPUT_DECODE;
+     when others => null;
+   end case;
+ end process OUTPUT_DECODE;
+end Behavioral;
