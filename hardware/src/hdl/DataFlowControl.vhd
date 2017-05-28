@@ -36,6 +36,7 @@ entity DataFlowControl is
     deref_done        : in std_logic;
     mode_reg          : in wam_mode_t;
     unify_done        : in std_logic;
+    bind_done         : in std_logic;
 
     instruction_size  : out unsigned(2 downto 0);
     start_deref       : out std_logic;
@@ -60,6 +61,8 @@ entity DataFlowControl is
     bind              : out std_logic;
     bind_port1        : out bind_input_t;
     bind_port2        : out bind_input_t;
+
+    trail_input       : out trail_input_t;
 
     wr_h_reg          : out std_logic;
     h_input           : out h_input_t;
@@ -143,7 +146,9 @@ begin
           end if;
         end if;
       when get_structure_t3 => -- maybe should wait for trail and bind to finish?
+        if bind_done = '1' then
         nx_state <= next_instr_t;
+        end if;
 ----- END get_structure f, a(i) -----
       when unify_variable_t =>
         if mode_reg = mode_read_t then
@@ -196,6 +201,7 @@ begin
     bind             <= '0';
     bind_port1       <= BI_H_t;
     bind_port2       <= BI_H_t;
+    trail_input      <= TI_bind_output_t;
     wr_h_reg         <= '0';
     h_input          <= HI_p1_t;
     rd_gpr           <= '0';
@@ -211,8 +217,9 @@ begin
         deref_input      <= DI_ai_t;  -- mux => input for deref = A(i)
         mem_addr_input1  <= MA_deref_unit_t;  -- mux => mem input from deref module
       when get_structure_t2 =>
+        mem_addr_input1  <= MA_deref_unit_t;  -- mux => mem input from deref module
         if deref_done = '1' then
-          if mem_obj_tag = tag_str_t and mem_obj = instruction(31 downto 15) then
+          if mem_obj_tag = tag_str_t and mem_obj = instruction(31 downto 15) then -- need to refactor
 
             -- S = a + 1
             wr_s_reg    <= '1';
@@ -234,13 +241,18 @@ begin
         bind       <= '1';             -- bind(
         bind_port1 <= BI_deref_unit_t; --    tag(STORE[addr])
         bind_port2 <= BI_H_t;          --     tag(STORE[H]))
-        wr_h_reg   <= '1';             -- H =
-        h_input    <= HI_p2_t;           --    H+2
 
-        mem_addr_input1 <= MA_bind_unit_t;
-        mem_input1      <= MI_bind_unit_t;
-        mem_addr_input2 <= MA_trail_unit_t;
-        mem_input2      <= MI_trail_unit_t;
+        mem_addr_input1 <= MA_bind_unit_1_t;
+        mem_input1      <= MI_bind_unit_1_t;
+        mem_addr_input2 <= MA_bind_unit_2_t;
+        mem_input2      <= MI_bind_unit_2_t;
+
+        trail_input      <= TI_bind_output_t;
+        if bind_done = '1' then
+          wr_h_reg   <= '1';             -- H =
+          h_input    <= HI_p2_t;           --    H+2
+        end if;
+
      when put_structure_t =>
         wr_mem_port1    <= '1';
         mem_addr_input1 <= MA_H_t;

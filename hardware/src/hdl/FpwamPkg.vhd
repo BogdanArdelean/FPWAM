@@ -8,10 +8,10 @@ package FpwamPkg is
   constant kWamAddressWidth : natural := 16;
   constant kWamWordWidth    : natural := 18;
   -- Possible address inputs for memory (eg: MA_H_t => Memory Address from register H)
-  type mem_addr_input_t is (MA_H_t, MA_Hplus1_t, MA_deref_unit_t, MA_untag_deref_t, MA_bind_unit_t, MA_trail_unit_t,
+  type mem_addr_input_t is (MA_H_t, MA_Hplus1_t, MA_deref_unit_t, MA_untag_deref_t, MA_bind_unit_1_t, MA_bind_unit_2_t,
                             MA_unify_unit_a_t, MA_unify_unit_b_t, MA_stack_addr_t, MA_S_t);
   -- Possible input sources for memory
-  type mem_port_input_t is (MI_H_t, MI_tag_unit_t, MI_constant_t, MI_GPR_t, MI_bind_unit_t, MI_trail_unit_t, MI_unify_unit_a_t,
+  type mem_port_input_t is (MI_H_t, MI_tag_unit_t, MI_constant_t, MI_GPR_t, MI_bind_unit_1_t, MI_bind_unit_2_t, MI_unify_unit_a_t,
                             MI_unify_unit_b_t, MI_mem_port1_t, MI_mem_port2_t);
   -- Possible input sources for H register
   type h_input_t        is (HI_p1_t, HI_p2_t);
