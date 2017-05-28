@@ -100,7 +100,7 @@ begin
    addr_out   <= addr_reg;
    addr_comb  <= (others => '0');
    rd_mem     <= '0';
-   res_out    <= (others => '0');
+   res_out    <= addr_reg;
    done       <= '0';
 
    case cr_state is
@@ -112,10 +112,9 @@ begin
      when read_t =>
       rd_mem <= '1';
      when check_t =>
-      if fpwam_tag(memory_in) /= tag_ref_t and fpwam_value(memory_in) /= addr_reg then
-        addr_comb  <= fpwam_value(memory_in);
-        wr_adr     <= '1';
-      else
+      addr_comb  <= fpwam_value(memory_in);
+      wr_adr     <= '1';
+      if not(fpwam_tag(memory_in) /= tag_ref_t and fpwam_value(memory_in) /= addr_reg) then
         res_out    <= fpwam_value(memory_in);
         done       <= '1';
       end if;

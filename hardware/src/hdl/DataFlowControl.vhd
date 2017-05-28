@@ -184,7 +184,7 @@ begin
     wr_s_reg         <= '0';
     s_reg_input      <= SI_untag_deref_p1_t;
     wr_mode_reg      <= '0';
-    mode_value       <= mode_read_t;
+    mode_value       <= mode_write_t;
     rd_mem_port1     <= '0';
     rd_mem_port2     <= '0';
     wr_mem_port1     <= '0';
