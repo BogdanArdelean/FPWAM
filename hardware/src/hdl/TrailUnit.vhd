@@ -27,12 +27,12 @@ entity TrailUnit is
   port
   (
     trail          : in std_logic;
-    trail_address  : in std_logic_vector(kAddressWidth);
-    H              : in std_logic_vector(kAddressWidth);
-    HB             : in std_logic_vector(kAddressWidth);
-    B              : in std_logic_vector(kAddressWidth);
+    trail_address  : in std_logic_vector(kAddressWidth -1 downto 0);
+    H              : in std_logic_vector(kAddressWidth -1 downto 0);
+    HB             : in std_logic_vector(kAddressWidth -1 downto 0);
+    B              : in std_logic_vector(kAddressWidth -1 downto 0);
 
-    a              : out std_logic_vector(kAddressWidth);
+    a              : out std_logic_vector(kAddressWidth -1 downto 0);
     do_trail       : out std_logic
   );
 end TrailUnit;

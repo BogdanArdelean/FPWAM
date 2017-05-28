@@ -59,8 +59,8 @@ architecture Behavioral of BindUnit is
 type state_t is (idle_t, bind_t);
 signal cr_state, nx_state : state_t;
 
-signal address1_reg       : std_logic_vector(kWordWidth -1 downto 0);
-signal address2_reg       : std_logic_vector(kWordWidth -1 downto 0);
+signal address1_reg       : std_logic_vector(kAddressWidth -1 downto 0);
+signal address2_reg       : std_logic_vector(kAddressWidth -1 downto 0);
 signal register_input     : std_logic;
 
 begin
