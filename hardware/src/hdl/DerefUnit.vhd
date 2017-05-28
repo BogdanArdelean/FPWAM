@@ -29,13 +29,13 @@ entity DerefUnit is
      clk         : in  std_logic;
      rst         : in  std_logic;
      start_deref : in  std_logic;
-     start_addr  : in  std_logic_vector(kAddressWidth -1 downto 0);
+     start_word  : in  std_logic_vector(kWordWidth -1 downto 0);
      memory_in   : in  std_logic_vector(kWordWidth -1 downto 0);
 
      addr_out    : out std_logic_vector(kAddressWidth -1 downto 0);
      rd_mem      : out std_logic;
 
-     res_out     : out std_logic_vector(kAddressWidth -1 downto 0);
+     res_out     : out std_logic_vector(kWordWidth -1 downto 0);
      done        : out std_logic
   );
 end DerefUnit;
@@ -45,19 +45,19 @@ architecture Behavioral of DerefUnit is
 type state_t is (idle_t, read_t, check_t);
 signal cr_state, nx_state : state_t;
 
-signal addr_reg  : std_logic_vector(kAddressWidth -1 downto 0);
-signal addr_comb : std_logic_vector(kAddressWidth -1 downto 0);
-signal wr_adr    : std_logic;
+signal word_reg  : std_logic_vector(kWordWidth -1 downto 0);
+signal word_comb : std_logic_vector(kWordWidth -1 downto 0);
+signal wr_word    : std_logic;
 
 begin
 
-  ADDRREG: process(clk, rst)
+  WORDREG: process(clk, rst)
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        addr_reg <= (others => '0');
-      elsif wr_adr = '1' then
-        addr_reg <= addr_comb;
+        word_reg <= (others => '0');
+      elsif wr_word = '1' then
+        word_reg <= word_comb;
       end if;
     end if;
   end process;
@@ -78,13 +78,13 @@ begin
     nx_state <= cr_state;
     case cr_state is
       when idle_t =>
-        if start_deref = '1' then
+        if start_deref = '1' and fpwam_tag(start_word) = tag_ref_t then
           nx_state <= read_t;
         end if;
       when read_t  =>
         nx_state <= check_t;
       when check_t =>
-        if fpwam_tag(memory_in) /= tag_ref_t and fpwam_value(memory_in) /= addr_reg then
+        if fpwam_tag(memory_in) = tag_ref_t and fpwam_value(memory_in) /= fpwam_value(word_reg) then
           nx_state <= read_t;
         else
           nx_state <= idle_t;
@@ -97,26 +97,31 @@ begin
  OUTPUT_DECODE: process(cr_state, rst)
  begin
    wr_adr     <= '0';
-   addr_out   <= addr_reg;
-   addr_comb  <= (others => '0');
+   addr_out   <= fpwam_value(word_reg);
+   word_comb  <= (others => '0');
    rd_mem     <= '0';
-   res_out    <= addr_reg;
+   res_out    <= word_reg;
    done       <= '0';
 
    case cr_state is
      when idle_t =>
       if start_deref = '1' then
-        wr_adr    <= '1';
-        addr_comb <= start_addr;
+        if fpwam_tag(start_word) /= tag_ref_t then
+          done <= '1';
+          res_out <= start_word;
+        end if;
+        wr_word    <= '1';
+        word_comb  <= start_word;
       end if;
-     when read_t =>
+     when read_t  =>
       rd_mem <= '1';
      when check_t =>
-      addr_comb  <= fpwam_value(memory_in);
-      wr_adr     <= '1';
-      if not(fpwam_tag(memory_in) /= tag_ref_t and fpwam_value(memory_in) /= addr_reg) then
+      word_comb  <= memory_in;
+      if not(fpwam_tag(memory_in) = tag_ref_t and fpwam_value(memory_in) /= fpwam_value(word_reg) then
         res_out    <= fpwam_value(memory_in);
         done       <= '1';
+      else
+        wr_word    <= '1';
       end if;
     when others =>
       null;

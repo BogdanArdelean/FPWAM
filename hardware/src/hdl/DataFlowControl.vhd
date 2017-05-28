@@ -288,8 +288,8 @@ begin
         s_reg_input <= SI_p1_t;
      when unify_value_t2 =>
         if mode_reg = mode_read_t then
-          start_unify   <= '1';
-          unify_input_a <= UI_mem_port2_t;
+          start_unify     <= '1';
+          unify_input_a   <= UI_mem_port2_t;
           if instruction(0) = '1' then -- value on stack
             unify_input_b <= UI_mem_port1_t;
           else
