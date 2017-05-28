@@ -1,3 +1,9 @@
+library ieee;
+library xil_defaultlib;
+
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
 package FpwamPkg is
   constant kWamAddressWidth : natural := 16;
   constant kWamWordWidth    : natural := 18;
@@ -34,7 +40,7 @@ package FpwamPkg is
   -- useful functions
   function fpwam_tag   (word : std_logic_vector) return tag_t;
   function fpwam_value (word : std_logic_vector) return std_logic_vector;
-  function fpwam_word  (word : std_logic_vector, tag : tag_t) return std_logic_vector;
+  function fpwam_word  (word : std_logic_vector; tag : tag_t) return std_logic_vector;
 end FpwamPkg;
 
 package body FpwamPkg is
@@ -48,10 +54,10 @@ package body FpwamPkg is
 
   function fpwam_value (word: std_logic_vector) return std_logic_vector is
     begin
-      return word(word'length - 2 downto 0);
+      return word(word'length - 3 downto 0);
   end function;
 
-  function fpwam_word (word : std_logic_vector, tag : tag_t) return std_logic_vector is
+  function fpwam_word (word : std_logic_vector; tag : tag_t) return std_logic_vector is
     begin
       return std_logic_vector(to_unsigned(tag_t'pos(tag),2)) & word;
   end function;

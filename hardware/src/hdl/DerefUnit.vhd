@@ -45,13 +45,13 @@ architecture Behavioral of DerefUnit is
 type state_t is (idle_t, read_t, check_t);
 signal cr_state, nx_state : state_t;
 
-signal addr_reg  : std_logic_vector(kAddressWidth);
-signal addr_comb : std_logic_vector(kAddressWidth);
+signal addr_reg  : std_logic_vector(kAddressWidth -1 downto 0);
+signal addr_comb : std_logic_vector(kAddressWidth -1 downto 0);
 signal wr_adr    : std_logic;
 
 begin
 
-  ADDR_REG: process(clk, rst)
+  ADDRREG: process(clk, rst)
   begin
     if rising_edge(clk) then
       if rst = '1' then
@@ -84,7 +84,7 @@ begin
       when read_t  =>
         nx_state <= check_t;
       when check_t =>
-        if fpwam_tag(memory_in) <> tag_ref_t and fpwam_value(memory_in) <> addr_reg then
+        if fpwam_tag(memory_in) /= tag_ref_t and fpwam_value(memory_in) /= addr_reg then
           nx_state <= read_t;
         else
           nx_state <= idle_t;
@@ -102,7 +102,6 @@ begin
    rd_mem     <= '0';
    res_out    <= (others => '0');
    done       <= '0';
-   stop_deref <= '0';
 
    case cr_state is
      when idle_t =>
@@ -113,9 +112,9 @@ begin
      when read_t =>
       rd_mem <= '1';
      when check_t =>
-      if fpwam_tag(memory_in) <> tag_ref_t and fpwam_value(memory_in) <> addr_reg then
-        addr_comb <= fpwam_value(memory_in);
-        wr_adr    <= '1';
+      if fpwam_tag(memory_in) /= tag_ref_t and fpwam_value(memory_in) /= addr_reg then
+        addr_comb  <= fpwam_value(memory_in);
+        wr_adr     <= '1';
       else
         res_out    <= fpwam_value(memory_in);
         done       <= '1';
