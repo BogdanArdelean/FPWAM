@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
--- FILE NAME      : MainMemory.vhd
--- MODULE NAME    : MainMemory
+-- FILE NAME      : Memory.vhd
+-- MODULE NAME    : Memory
 -- AUTHOR         : Bogdan Ardelean
 -- AUTHOR'S EMAIL : bogdan.ardelean@yahoo.com
 -------------------------------------------------------------------------------
@@ -8,7 +8,7 @@
 -- VERSION  DATE         AUTHOR            DESCRIPTION
 -- 1.0      2016-05-2    Bogdan Ardelean   Created
 -------------------------------------------------------------------------------
--- DESCRIPTION    : BRAM implementation of main memory unit.
+-- DESCRIPTION    : BRAM implementation of a memory unit with two ports.
 --
 -------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity MainMemory is
+entity Memory is
   generic
   (
     kMemAddressWidth : natural := 16;
@@ -38,9 +38,9 @@ entity MainMemory is
     wr_port_2      : in  std_logic;
     rd_port_2      : in  std_logic
   );
-end MainMemory;
+end Memory;
 
-architecture Behavioral of MainMemory is
+architecture Behavioral of Memory is
 type mem is array (0 to 2**kMemAddressWidth) of std_logic_vector(kWordWidth - 1 downto 0);
 signal BRAM : mem;
 begin
