@@ -33,6 +33,8 @@ package FpwamPkg is
   type tag_t            is (tag_str_t, tag_ref_t, tag_int_t, tag_lis_t);
   -- Unify unit input
   type unify_input_t    is (UI_S_t, UI_GPR_t, UI_mem_port1_t, UI_mem_port2_t);
+  -- Unify mem input
+  type unify_mem_sel_t  is (sel_unify_t, sel_deref_t, sel_bind_t);
 
   -- Maybe shoud create for tag unit the same thing?
   -- Currently isn't necessary.

@@ -31,8 +31,8 @@ entity BindUnit is
 
     start_bind  : in  std_logic;
 
-    address1    : in  std_logic_vector(kAddressWidth -1 downto 0);
-    address2    : in  std_logic_vector(kAddressWidth -1 downto 0);
+    start_word1 : in  std_logic_vector(kWordWidth -1 downto 0);
+    start_word2 : in  std_logic_vector(kWordWidth -1 downto 0);
 
     mem_input1  : in  std_logic_vector(kWordWidth -1 downto 0);
     mem_input2  : in  std_logic_vector(kWordWidth -1 downto 0);
@@ -59,12 +59,25 @@ architecture Behavioral of BindUnit is
 type state_t is (idle_t, bind_t);
 signal cr_state, nx_state : state_t;
 
-signal address1_reg       : std_logic_vector(kAddressWidth -1 downto 0);
-signal address2_reg       : std_logic_vector(kAddressWidth -1 downto 0);
-signal register_input     : std_logic;
+signal word1_reg       : std_logic_vector(kAddressWidth -1 downto 0);
+signal word2_reg       : std_logic_vector(kAddressWidth -1 downto 0);
+signal register_input  : std_logic;
 
 begin
 
+  REGINPUT: process(clk, rst)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        word1_reg <= (others => '0');
+        word2_reg <= (others => '0');
+      elsif register_input = '1' then
+        word1_reg <= start_word1;
+        word2_reg <= start_word2;
+      end if;
+    end if;
+  end process;
+  
   FSM: process(clk)
   begin
     if rising_edge(clk) then
@@ -76,7 +89,7 @@ begin
     end if;
   end process;
 
-  NEXT_STATE: process(cr_state)
+  NEXT_STATE: process(cr_state, start_bind)
   begin
     nx_state <= cr_state;
     case cr_state is
@@ -108,26 +121,22 @@ begin
     case cr_state is
       when idle_t =>
         if start_bind = '1' then
-          mem_addr1      <= address1;
-          mem_rd_1       <= '1';
-          mem_addr2      <= address2;
-          mem_rd_2       <= '1';
           register_input <= '1';
         end if;
       when bind_t =>
         bind_done <= '1';
         trail     <= '1';
-        if fpwam_tag(mem_input1) = tag_ref_t
-        and ((fpwam_tag(mem_input2) /= tag_ref_t) or (unsigned(address2_reg) < unsigned(address1_reg))) then
-          trail_input <= address1_reg;
-          mem_addr1   <= address1_reg;
+        if fpwam_tag(word1_reg) = tag_ref_t
+        and ((fpwam_tag(word2_reg) /= tag_ref_t) or (unsigned(fpwam_value(word2_reg)) < unsigned(fpwam_value(word1_reg)))) then
+          trail_input <= fpwam_value(word1_reg);
+          mem_addr1   <= fpwam_value(word1_reg);
           mem_wr_1    <= '1';
-          mem_out1    <= mem_input2;
+          mem_out1    <= word2_reg;
         else
-          trail_input <= address2_reg;
-          mem_addr2   <= address2_reg;
+          trail_input <= fpwam_value(word2_reg);
+          mem_addr2   <= fpwam_value(word2_reg);
           mem_wr_2    <= '1';
-          mem_out2    <= mem_input1;
+          mem_out2    <= word1_reg;
         end if;
       when others =>
         null;

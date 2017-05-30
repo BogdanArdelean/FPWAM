@@ -73,7 +73,7 @@ begin
     end if;
   end process;
 
-  NEXT_STATE: process(cr_state)
+  NEXT_STATE: process(cr_state, start_deref, start_word, memory_in, word_reg, rst)
   begin
     nx_state <= cr_state;
     case cr_state is
@@ -94,7 +94,7 @@ begin
     end case;
  end process;
 
- OUTPUT_DECODE: process(cr_state, rst)
+ OUTPUT_DECODE: process(cr_state, start_deref, start_word, memory_in, word_reg, rst)
  begin
    wr_adr     <= '0';
    addr_out   <= fpwam_value(word_reg);

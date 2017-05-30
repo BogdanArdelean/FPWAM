@@ -227,17 +227,19 @@ begin
 
             wr_mode_reg <= '1';
             mode_value  <= mode_read_t;
-          elsif mem_obj_tag = tag_ref_t then
+          elsif mem_obj_tag = tag_ref_t then -- need to refactor
             mem_addr_input1 <= MA_H_t;
             mem_input1      <= MI_tag_unit_t;
             mem_addr_input2 <= MA_Hplus1_t;
             mem_input2      <= MI_constant_t;
 
+            rd_mem_port1 <= '1';
+            rd_mem_port2 <= '1';
             wr_mem_port1 <= '1';
             wr_mem_port2 <= '1';
           end if;
         end if;
-      when get_structure_t3 =>
+      when get_structure_t3 => -- refactor at bind input!!!
         bind       <= '1';             -- bind(
         bind_port1 <= BI_deref_unit_t; --    tag(STORE[addr])
         bind_port2 <= BI_H_t;          --     tag(STORE[H]))
