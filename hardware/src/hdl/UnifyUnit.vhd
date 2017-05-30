@@ -127,6 +127,43 @@ begin
         if fpwam_value(deref1_input) = fpwam_value(deref2_input) then
           nx_state <= check_stop_pop_t;
         else
-          nx_state <=
-
+          if fpwam_tag(deref1_input) or fpwam_tag(deref2_input) then
+            nx_state <= bind_t;
+          else
+            case fpwam_tag(deref2_input) is
+              when tag_int_t =>
+                nx_state <= check_stop_pop_t;
+              when tag_lis_t =>
+                if fpwam_tag(deref1_input) /= tag_list_t then
+                  nx_state <= check_stop_pop_t; -- move directly to end?
+                else
+                  nx_state <= push_list_t;
+                end if;
+              when tag_str_t =>
+                if fpwam_tag(deref1_input) /= tag_str_t then
+                  nx_state <= check_stop_pop_t; -- move directly to end?
+                else
+                  nx_state <= check_structure_t;
+                end if;
+              when others =>
+                null;
+            end case;
+          end if;
+        end if;
+      when push_list_t =>
+        nx_state <= check_stop_pop_t;
+      when check_structure_t =>
+        if fpwam_functor(mem1_input) /= fpwam_functor(mem2_input) or
+           fpwam_arity(mem1_input) /= fpwam_arity(mem2_input) then
+          nx_state => check_stop_pop_t;
+        else
+          nx_state => structure_iterate_t;
+        end if;
+      when structure_iterate_t =>
+        if iterate_done = '1' then
+          nx_state => check_stop_pop_t;
+        end if;
+      when others =>
+        null;
+    end case;
   end process;
