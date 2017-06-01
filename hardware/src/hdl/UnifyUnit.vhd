@@ -50,7 +50,10 @@ entity UnifyUnit is
     fail           : out std_logic;
 
     mem1_output    : out std_logic_vector(kAddressWidth -1 downto 0);
+    rd_mem_port1   : out std_logic;
+
     mem2_output    : out std_logic_vector(kAddressWidth -1 downto 0);
+    rd_mem_port2   : out std_logic;
 
     deref1_output  : out std_logic_vector(kWordWidth -1 downto 0);
     deref1_start   : out std_logic;
@@ -78,26 +81,105 @@ signal pdl_in_1     : std_logic_vector(kWordWidth -1 downto 0);
 signal pdl_in_2     : std_logic_vector(kWordWidth -1 downto 0);
 signal pdl_out_1    : std_logic_vector(kWordWidth -1 downto 0);
 signal pdl_out_2    : std_logic_vector(kWordWidth -1 downto 0);
+signal pdl_adr_1    : std_logic_vector(kPdlAddressWidth -1 downto 0);
+signal pdl_adr_2    : std_logic_vector(kPdlAddressWidth -1 downto 0);
 signal wr_pdl       : std_logic;
 signal rd_pdl       : std_logic;
 
-signal pdl_addr_reg : std_logic_vector(kAddressWidth -1 downto 0);
-signal wr_pdl_reg   : std_logic;
-signal pdl_empty    : boolean;
+signal pdl_addr_reg  : std_logic_vector(kAddressWidth -1 downto 0);
+signal pdl_addr_comb : std_logic_vector(kAddressWidth -1 downto 0);
+signal wr_pdl_reg    : std_logic;
+signal pdl_empty     : boolean;
 
-signal fail_local   : std_logic;
+signal fail_reg       : std_logic;
+signal fail_comb      : std_logic;
+signal reset_fail_reg : std_logic;
 
 signal deref1_done_reg : std_logic;
 signal deref2_done_reg : std_logic;
 signal reset_deref_reg : std_logic;
 
+signal iterate      : std_logic;
+signal iterate_done : std_logic;
+
+signal current_reg  : unsigned(kGPRAddressWidth downto 0);
+signal wr_curr_reg  : std_logic;
+signal rst_curr_reg : std_logic;
+
+signal goal_reg     : unsigned(kGPRAddressWidth downto 0);
+signal wr_goal_reg  : std_logic;
+
 begin
 
-  fail <= fail_local;
+  fail <= fail_reg or fail_comb;
+  pdl_empty <= unsigned(pdl_addr_reg) = 0;
+
+  CURRERG: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' or rst_curr_reg = '1' then
+        current_reg <= 1;
+      elsif wr_curr_reg = '1' then
+        current_reg <= current_reg + 1;
+      end if;
+    end if;
+  end process;
+
+  GOALREG: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        goal_reg <= 0;
+      elsif wr_goal_reg then
+        goal_reg <= unsigned(fpwam_arity(mem1_input));
+      end if;
+    end if;
+  end process;
+
+  STR_IT: process(clk)
+  begin
+    iterate_done <= '0';
+    wr_curr_reg
+    if rising_edge(clk) then
+      if iterate = '1' then
+        if current_reg > goal_reg then
+          iterate_done <= '1';
+        else
+          wr_curr_reg <= '1';
+        end if;
+      end if;
+    end if;
+  end process;
+
+
+
+  DEREFREGS: process(clk)
+  begin
+    if rising_edge(clk) then
+      if reset_deref_reg = '1' or rst = '1' then
+        deref1_done_reg <= '0';
+        deref2_done_reg <= '0';
+      else
+        deref1_done_reg <= deref1_done or deref1_done_reg;
+        deref2_done_reg <= deref2_done or deref2_done_reg;
+      end if;
+    end if;
+  end process;
+
+  FAILREG: process(clk_rst)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' or reset_fai_reg then
+        fail_reg <= '0';
+      else
+        fail_reg <= fail_comb or fail_reg;
+      end if;
+    end if;
+  end if;
+
 
   FSM: process(clk, rst)
   begin
-
     if rising_edge(clk) then
       if rst = '1' then
         cr_state <= idle_t;
@@ -108,7 +190,7 @@ begin
   end process;
 
 
-  NEXT_STATE: process(cr_state, start_unify, pdl_empty, fail, deref1_done_reg, deref2_done_reg)
+  NEXT_STATE: process(cr_state, start_unify, pdl_empty, fail_reg, deref1_done_reg, deref2_done_reg)
   begin
     case cr_state is
       when idle_t =>
@@ -116,8 +198,10 @@ begin
           nx_state <= check_stop_pop_t;
         end if;
       when check_stop_pop_t =>
-        if not(pdl_empty and fail = '0') then
+        if not(pdl_empty and fail_reg = '0') then
           nx_state <= deref_t;
+        else
+          nx_state <= done_t;
         end if;
       when deref_t =>
         if deref1_done_reg = '1' and deref2_done_reg = '1' then
@@ -150,6 +234,10 @@ begin
             end case;
           end if;
         end if;
+      when bind_t =>
+        if bind_done = '1' then
+          nx_state <= check_stop_pop_t;
+        end if;
       when push_list_t =>
         nx_state <= check_stop_pop_t;
       when check_structure_t =>
@@ -163,6 +251,137 @@ begin
         if iterate_done = '1' then
           nx_state => check_stop_pop_t;
         end if;
+      when others =>
+        null;
+    end case;
+  end process;
+
+
+  OUTPUT_DECODE: process(cr_state)
+  begin
+    -- Port outputs
+    unify_done     <= '0';
+    fail_comb      <= '0';
+    mem1_output    <= (others => '0');
+    rd_mem_port1   <= '0';
+    mem2_output    <= (others => '0');
+    rd_mem_port2   <= '0';
+    deref1_output  <= (others => '0');
+    deref1_start   <= '0';
+    deref2_output  <= (others => '0');
+    deref2_start   <= '0';
+    bind1_output   <= (others => '0');
+    bind2_output   <= (others => '0');
+    bind_start     <= '0';
+    mem_sel        <= sel_unify_t;
+    -- Internal control signals
+    pdl_in_1       <= (others => '0');
+    pdl_in_2       <= (others => '0');
+    wr_pdl         <= '0';
+    rd_pdl         <= '0';
+    pdl_addr_comb  <= (others => '0');
+    pdl_adr_1      <= (others => '0');
+    pdl_adr_2      <= (others => '0');
+    wr_pdl_reg     <= '0';
+    fail_comb      <= '0';
+    reset_fail_reg <= '0';
+    reset_deref_reg<= '1';
+    iterate        <= '0';
+    rst_curr_reg   <= '0';
+    wr_goal_reg    <= '0';
+
+
+    case cr_state is
+      when idle_t =>
+        if start_unify = '1' then
+          pdl_in_1  <= word1;
+          pdl_in_2  <= word2;
+          pdl_adr_1 <= pdl_addr_reg;
+          pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) + 1);
+          wr_pdl   <= '1';
+
+          pdl_addr_comb <= std_logic_vector(unsigned(pdl_addr_reg) + 2);
+          wr_pdl_reg <= '1';
+          reset_fail_reg <= '1';
+        end if;
+      when check_stop_pop_t =>
+        if not(pdl_empty and fail_reg = '0') then
+          pdl_adr_1 <= std_logic_vector(unsigned(pdl_addr_reg) - 2);
+          pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) - 1);
+          rd_pdl    <= '1';
+
+          pdl_addr_comb <= std_logic_vector(unsigned(pdl_addr_reg) - 2);
+          wrd_pdl_reg   <= '1';
+        else
+          nx_state <= done_t;
+        end if;
+      when deref_t =>
+        reset_deref_reg <= '0';
+        deref1_start  <= '1' and not deref1_done_reg;
+        deref2_start  <= '1' and not deref2_done_reg;
+        deref1_output <= mem1_input;
+        deref2_output <= mem2_input;
+        mem_sel <= sel_deref_t;
+      when check_equal_read_t =>
+        if fpwam_tag(deref1_input) or fpwam_tag(deref2_input)
+        and not(fpwam_value(deref1_input) = fpwam_value(deref2_input)) then
+          bind1_output <= deref1_input;
+          bind2_output <= deref2_input;
+          bind_start   <= '1';
+          mem_sel      <= sel_bind_t;
+        else
+          case fpwam_tag(deref2_input) is
+            when tag_int_t =>
+              fail_comb <= std_logic(fpwam_value(deref1_input) = fpwam_value(deref2_input));
+            when tag_lis_t =>
+              if fpwam_tag(deref1_input) /= tag_list_t then
+                fail_comb <= '1';
+              else
+                pdl_in_1  <= fpwam_word(std_logic_vector(fpwam_value(deref1_input)), tag_ref_t);
+                pdl_in_2  <= fpwam_word(std_logic_vector(fpwam_value(deref2_input)), tag_ref_t);
+                pdl_adr_1 <= pdl_addr_reg;
+                pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) + 1);
+                wr_pdl   <= '1';
+
+                pdl_addr_comb <= std_logic_vector(unsigned(pdl_addr_reg) + 2);
+                wr_pdl_reg <= '1';
+              end if;
+            when tag_str_t =>
+              if fpwam_tag(deref1_input) /= tag_str_t then
+                fail_comb <= '1';
+              else
+                mem1_output  <= fpwam_value(deref1_input);
+                rd_mem_port1 <= '1';
+                mem2_output  <= fpwam_value(deref2_input);
+                rd_mem_port2 <= '1';
+                mem_sel      <= sel_unify_t;
+              end if;
+            when others =>
+              null;
+          end case;
+        end if;
+      when bind_t =>
+        null;
+      when push_list_t =>
+        pdl_in_1  <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref1_input)+1)), tag_ref_t);
+        pdl_in_2  <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref2_input)+1)), tag_ref_t);
+        pdl_adr_1 <= pdl_addr_reg;
+        pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) + 1);
+        wr_pdl   <= '1';
+
+        pdl_addr_comb <= std_logic_vector(unsigned(pdl_addr_reg) + 2);
+        wr_pdl_reg <= '1';
+      when check_structure_t =>
+        if fpwam_functor(mem1_input) /= fpwam_functor(mem2_input) or
+           fpwam_arity(mem1_input) /= fpwam_arity(mem2_input) then
+          fail_comb <= '1';
+        else
+          rst_curr_reg <= '1';
+          wr_goal_reg  <= '1';
+          iterate <= '1';
+        end if;
+      when structure_iterate_t =>
+        iterate <= '1';
       when others =>
         null;
     end case;
