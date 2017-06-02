@@ -114,6 +114,29 @@ begin
   fail <= fail_reg or fail_comb;
   pdl_empty <= unsigned(pdl_addr_reg) = 0;
 
+  PDLIST: entity work.Memory(Behavioral)
+          generic map
+          (
+             kMemAddressWidth => kGPRAddressWidth+1
+            ,kWordWidth       => kWamWordWidth
+          )
+          port map
+          (
+             clk => clk
+
+            ,addr_port_1   => pdl_adr_1
+            ,word_port_1_o => pdl_out_1
+            ,word_port_1_i => pdl_in_1
+            ,wr_port_1     => wr_pdl
+            ,rd_port_1     => rd_pdl
+
+            ,addr_port_2   => pdl_adr_2
+            ,word_port_2_o => pdl_out_2
+            ,word_port_2_i => pdl_in_1
+            ,wr_port_2     => wr_pdl
+            ,rd_port_2     => rd_pdl
+          );
+
   CURRERG: process(clk)
   begin
     if rising_edge(clk) then
@@ -381,8 +404,19 @@ begin
           iterate <= '1';
         end if;
       when structure_iterate_t =>
-        iterate <= '1';
+        iterate  <= '1';
+        if not iterate_done then
+          pdl_in_1 <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref1_input)+current_reg)), tag_ref_t);
+          pdl_in_2 <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref1_input)+current_reg)), tag_ref_t);
+          pdl_adr_1 <= pdl_addr_reg;
+          pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) + 1);
+          wr_pdl   <= '1';
+
+          pdl_addr_comb <= std_logic_vector(unsigned(pdl_addr_reg) + 2);
+          wr_pdl_reg <= '1';
+        end if;
       when others =>
         null;
     end case;
   end process;
+end Behavioral;
