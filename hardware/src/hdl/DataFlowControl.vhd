@@ -31,14 +31,14 @@ entity DataFlowControl is
     -- interface
     instruction       : in std_logic_vector(31 downto 0);
     instruction_valid : in std_logic;
-    mem_obj_tag       : in tag_t;
-    mem_obj           : in std_logic_vector(15 downto 0);
+    mem_obj           : in std_logic_vector(kWamWordWidth -1 downto 0);
     deref_done        : in std_logic;
     mode_reg          : in wam_mode_t;
     unify_done        : in std_logic;
     bind_done         : in std_logic;
 
-    instruction_size  : out unsigned(2 downto 0);
+    get_instruction   : out std_logic;
+
     start_deref       : out std_logic;
     deref_input       : out deref_input_t;
 
@@ -137,9 +137,9 @@ begin
         nx_state <= get_structure_t2;
       when get_structure_t2 =>
         if deref_done = '1' then
-          if mem_obj_tag = tag_str_t and mem_obj = instruction(31 downto 15) then
-            nx_state <= next_instr_t;
-          elsif mem_obj_tag = tag_ref_t then
+          if mem_obj = instruction(17 downto 0) then
+            nx_state <= idle_t;
+          elsif fpwam_tag(mem_obj) = tag_ref_t then
             nx_state <= get_structure_t3;
           else
             nx_state <= fail_t;
@@ -147,17 +147,17 @@ begin
         end if;
       when get_structure_t3 => -- maybe should wait for trail and bind to finish?
         if bind_done = '1' then
-        nx_state <= next_instr_t;
+        nx_state <= idle_t;
         end if;
 ----- END get_structure f, a(i) -----
       when unify_variable_t =>
         if mode_reg = mode_read_t then
           nx_state <= unify_variable_t2;
         else
-          nx_state <= next_instr_t;
+          nx_state <= idle_t;
         end if;
       when unify_variable_t2 =>
-        nx_state <= next_instr_t;
+        nx_state <= idle_t;
       when unify_value_t =>
         if mode_reg = mode_read_t then
           nx_state <= unify_value_t2;
@@ -165,16 +165,16 @@ begin
           if instruction(0) = '1' then -- on stack need 2 cycles
             nx_state <= unify_value_t2;
           else
-            nx_state <= next_instr_t;
+            nx_state <= idle_t;
           end if;
         end if;
       when unify_value_t2 =>
         if mode_reg = mode_read_t then
           if unify_done = '1' then
-            nx_state <= next_instr_t;
+            nx_state <= idle_t;
           end if;
         else
-          nx_state <= next_instr_t;
+          nx_state <= idle_t;
         end if;
       when others => null;
     end case;
@@ -183,7 +183,7 @@ begin
   OUTPUT_DECODE: process(cr_state, deref_done)
   begin
     --DEFAULT VALUES
-    instruction_size <= (others => '0');
+    get_instruction  <= '0';
     start_deref      <= '0';
     deref_input      <= DI_ai_t;
     wr_s_reg         <= '0';
@@ -212,6 +212,8 @@ begin
     unify_input_b    <= UI_S_t;
 
     case cr_state is
+      when idle_t =>
+        get_instruction <= '1';
       when get_structure_t => -- deref(Ai)
         start_deref      <= '1';
         deref_input      <= DI_ai_t;  -- mux => input for deref = A(i)
