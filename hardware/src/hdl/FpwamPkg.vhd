@@ -7,6 +7,7 @@ use ieee.numeric_std.all;
 package FpwamPkg is
   constant kWamAddressWidth : natural := 16;
   constant kWamWordWidth    : natural := 18;
+  constant kGPRAddressWidth : natural := 4;
   -- Possible address inputs for memory (eg: MA_H_t => Memory Address from register H)
   type mem_addr_input_t is (MA_H_t, MA_Hplus1_t, MA_deref_unit_t, MA_untag_deref_t, MA_bind_unit_1_t, MA_bind_unit_2_t,
                             MA_unify_unit_a_t, MA_unify_unit_b_t, MA_stack_addr_t, MA_S_t);
