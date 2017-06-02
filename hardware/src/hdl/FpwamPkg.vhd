@@ -8,6 +8,9 @@ package FpwamPkg is
   constant kWamAddressWidth : natural := 16;
   constant kWamWordWidth    : natural := 18;
   constant kGPRAddressWidth : natural := 4;
+  constant kFunctorWidth    : natural := 12;
+  constant kArityWidth      : natural := kGPRAddressWidth;
+  
   -- Possible address inputs for memory (eg: MA_H_t => Memory Address from register H)
   type mem_addr_input_t is (MA_H_t, MA_Hplus1_t, MA_deref_unit_t, MA_untag_deref_t, MA_bind_unit_1_t, MA_bind_unit_2_t,
                             MA_unify_unit_a_t, MA_unify_unit_b_t, MA_stack_addr_t, MA_S_t);
@@ -41,9 +44,11 @@ package FpwamPkg is
   -- Currently isn't necessary.
 
   -- useful functions
-  function fpwam_tag   (word : std_logic_vector) return tag_t;
-  function fpwam_value (word : std_logic_vector) return std_logic_vector;
-  function fpwam_word  (word : std_logic_vector; tag : tag_t) return std_logic_vector;
+  function fpwam_tag     (word : std_logic_vector) return tag_t;
+  function fpwam_value   (word : std_logic_vector) return std_logic_vector;
+  function fpwam_word    (word : std_logic_vector; tag : tag_t) return std_logic_vector;
+  function fpwam_functor (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector;
+  function fpwam_arity   (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector;
 end FpwamPkg;
 
 package body FpwamPkg is
@@ -63,6 +68,16 @@ package body FpwamPkg is
   function fpwam_word (word : std_logic_vector; tag : tag_t) return std_logic_vector is
     begin
       return std_logic_vector(to_unsigned(tag_t'pos(tag),2)) & word;
+  end function;
+  
+  function fpwam_functor (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector is
+    begin
+      return word(word'length-1 downto word'length - kFunctorWidth+1);
+  end function;
+  
+  function fpwam_arity (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector is
+    begin
+      return word(kArityWidth-1 downto 0);
   end function;
 
 end package body;

@@ -117,7 +117,7 @@ begin
       rd_mem <= '1';
      when check_t =>
       word_comb  <= memory_in;
-      if not(fpwam_tag(memory_in) = tag_ref_t and fpwam_value(memory_in) /= fpwam_value(word_reg) then
+      if not(fpwam_tag(memory_in) = tag_ref_t and fpwam_value(memory_in) /= fpwam_value(word_reg)) then
         res_out    <= fpwam_value(memory_in);
         done       <= '1';
       else
