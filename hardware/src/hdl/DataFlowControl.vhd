@@ -29,7 +29,7 @@ entity DataFlowControl is
     rst               : in std_logic;
 
     -- interface
-    instruction       : in std_logic_vector(31 downto 0);
+    instruction       : in std_logic_vector(kInstructionWidth -1 downto 0);
     instruction_valid : in std_logic;
     mem_obj           : in std_logic_vector(kWamWordWidth -1 downto 0);
     deref_done        : in std_logic;
@@ -67,7 +67,6 @@ entity DataFlowControl is
     wr_h_reg          : out std_logic;
     h_input           : out h_input_t;
 
-    rd_gpr            : out std_logic;
     wr_gpr            : out std_logic;
     gpr_input         : out GPR_input_t;
 
@@ -185,7 +184,7 @@ begin
     --DEFAULT VALUES
     get_instruction  <= '0';
     start_deref      <= '0';
-    deref_input      <= DI_ai_t;
+    deref_input      <= DI_GPR_t;
     wr_s_reg         <= '0';
     s_reg_input      <= SI_untag_deref_p1_t;
     wr_mode_reg      <= '0';
@@ -194,8 +193,8 @@ begin
     rd_mem_port2     <= '0';
     wr_mem_port1     <= '0';
     wr_mem_port2     <= '0';
-    mem_input1       <= MI_H_t;
-    mem_input2       <= MI_H_t;
+    mem_input1       <= MI_str_Hplus1_t;
+    mem_input2       <= MI_str_Hplus1_t;
     mem_addr_input1  <= MA_H_t;
     mem_addr_input2  <= MA_H_t;
     bind             <= '0';
@@ -216,7 +215,7 @@ begin
         get_instruction <= '1';
       when get_structure_t => -- deref(Ai)
         start_deref      <= '1';
-        deref_input      <= DI_ai_t;  -- mux => input for deref = A(i)
+        deref_input      <= DI_GPR_t;  -- mux => input for deref = A(i)
         mem_addr_input1  <= MA_deref_unit_t;  -- mux => mem input from deref module
       when get_structure_t2 =>
         mem_addr_input1  <= MA_deref_unit_t;  -- mux => mem input from deref module
@@ -231,7 +230,7 @@ begin
             mode_value  <= mode_read_t;
           elsif fpwam_tag(mem_obj) = tag_ref_t then -- need to refactor
             mem_addr_input1 <= MA_H_t;
-            mem_input1      <= MI_tag_unit_t;
+            mem_input1      <= MI_str_Hplus1_t;
             mem_addr_input2 <= MA_Hplus1_t;
             mem_input2      <= MI_constant_t;
 
@@ -244,7 +243,7 @@ begin
       when get_structure_t3 => -- refactor at bind input!!!
         bind       <= '1';             -- bind(
         bind_port1 <= BI_deref_unit_t; --    tag(STORE[addr])
-        bind_port2 <= BI_H_t;          --     tag(STORE[H]))
+        bind_port2 <= BI_mem_port1_t;          --     tag(STORE[H]))
 
         mem_addr_input1 <= MA_bind_unit_1_t;
         mem_input1      <= MI_bind_unit_1_t;
@@ -294,6 +293,13 @@ begin
         if mode_reg = mode_read_t then
           start_unify     <= '1';
           unify_input_a   <= UI_mem_port2_t;
+          mem_addr_input1 <= MA_unify_unit_t;
+          mem_addr_input2 <= MA_unify_unit_t;
+          mem_input1      <= MI_unify_unit_t;
+          mem_input2      <= MI_unify_unit_t;
+          bind_port1      <= BI_unify_unit_t;
+          bind_port2      <= BI_unify_unit_t;
+          deref_input     <= DI_unify_unit_t;
           if instruction(0) = '1' then -- value on stack
             unify_input_b <= UI_mem_port1_t;
           else
@@ -313,7 +319,7 @@ begin
           rd_mem_port1    <= '1';
         else
           mem_addr_input1 <= MA_H_t;
-          mem_input1      <= MI_tag_unit_t;
+          mem_input1      <= MI_ref_H_t;
           wr_mem_port1    <= '1';
 
           wr_h_reg        <= '1';
@@ -321,11 +327,11 @@ begin
 
           if instruction(0) = '1' then --value on stack
             mem_addr_input2 <= MA_stack_addr_t;
-            mem_input2      <= MI_tag_unit_t;
+            mem_input2      <= MI_ref_H_t;
             wr_mem_port2    <= '1';
           else
             wr_gpr          <= '1';
-            gpr_input       <= GPRI_tag_unit_t;
+            gpr_input       <= GPRI_ref_H_t;
           end if;
         end if;
      when unify_variable_t2 =>

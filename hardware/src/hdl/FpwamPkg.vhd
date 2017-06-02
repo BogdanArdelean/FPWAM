@@ -5,18 +5,19 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 package FpwamPkg is
-  constant kWamAddressWidth : natural := 16;
-  constant kWamWordWidth    : natural := 18;
-  constant kGPRAddressWidth : natural := 4;
-  constant kFunctorWidth    : natural := 12;
-  constant kArityWidth      : natural := kGPRAddressWidth;
-  
+  constant kWamAddressWidth  : natural := 16;
+  constant kWamWordWidth     : natural := 18;
+  constant kGPRAddressWidth  : natural := 4;
+  constant kFunctorWidth     : natural := 12;
+  constant kArityWidth       : natural := kGPRAddressWidth;
+  constant kInstructionWidth : natural := 32;
+
   -- Possible address inputs for memory (eg: MA_H_t => Memory Address from register H)
   type mem_addr_input_t is (MA_H_t, MA_Hplus1_t, MA_deref_unit_t, MA_untag_deref_t, MA_bind_unit_1_t, MA_bind_unit_2_t,
-                            MA_unify_unit_a_t, MA_unify_unit_b_t, MA_stack_addr_t, MA_S_t);
+                            MA_unify_unit_t, MA_stack_addr_t, MA_S_t);
   -- Possible input sources for memory
-  type mem_port_input_t is (MI_H_t, MI_tag_unit_t, MI_constant_t, MI_GPR_t, MI_bind_unit_1_t, MI_bind_unit_2_t, MI_unify_unit_a_t,
-                            MI_unify_unit_b_t, MI_mem_port1_t, MI_mem_port2_t);
+  type mem_port_input_t is ( MI_str_Hplus1_t, MI_constant_t, MI_GPR_t, MI_bind_unit_1_t, MI_bind_unit_2_t, MI_unify_unit_t,
+                             MI_mem_port1_t, MI_mem_port2_t);
   -- Possible input sources for H register
   type h_input_t        is (HI_p1_t, HI_p2_t);
   -- Possible input sources for S register
@@ -24,11 +25,11 @@ package FpwamPkg is
   -- Possible input sources for P register
   type p_input_t        is (PI_pinstr_size_t);
   -- Possible input sources for General Purpose Registers
-  type GPR_input_t      is (GPRI_tag_unit_t, GPRI_mem_port1_t, GPRI_mem_port2_t);
+  type GPR_input_t      is (GPRI_ref_H_t, GPRI_mem_port1_t, GPRI_mem_port2_t);
   -- Possible input sources for deref unit
-  type deref_input_t    is (DI_ai_t, DI_unify_unit_a_t, DI_unify_unit_b_t);
+  type deref_input_t    is (DI_GPR_t, DI_unify_unit_t);
   -- Possible input sources for bind unit
-  type bind_input_t     is (BI_deref_unit_t, BI_H_t);
+  type bind_input_t     is (BI_deref_unit_t, BI_mem_port1_t, BI_unify_unit_t);
   -- Possible input sources for trail unit
   type trail_input_t    is (TI_bind_output_t);
   -- WAM execution modes
@@ -69,12 +70,12 @@ package body FpwamPkg is
     begin
       return std_logic_vector(to_unsigned(tag_t'pos(tag),2)) & word;
   end function;
-  
+
   function fpwam_functor (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector is
     begin
       return word(word'length-1 downto word'length - kFunctorWidth+1);
   end function;
-  
+
   function fpwam_arity (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector is
     begin
       return word(kArityWidth-1 downto 0);
