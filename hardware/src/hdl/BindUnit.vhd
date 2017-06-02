@@ -34,18 +34,13 @@ entity BindUnit is
     start_word1 : in  std_logic_vector(kWordWidth -1 downto 0);
     start_word2 : in  std_logic_vector(kWordWidth -1 downto 0);
 
-    mem_input1  : in  std_logic_vector(kWordWidth -1 downto 0);
-    mem_input2  : in  std_logic_vector(kWordWidth -1 downto 0);
-
     mem_addr1   : out std_logic_vector(kAddressWidth -1 downto 0);
     mem_out1    : out std_logic_vector(kWordWidth -1 downto 0);
     mem_wr_1    : out std_logic;
-    mem_rd_1    : out std_logic;
 
     mem_addr2   : out std_logic_vector(kAddressWidth -1 downto 0);
     mem_out2    : out std_logic_vector(kWordWidth -1 downto 0);
     mem_wr_2    : out std_logic;
-    mem_rd_2    : out std_logic;
 
     trail_input : out std_logic_vector(kAddressWidth -1 downto 0);
     trail       : out std_logic;
@@ -77,7 +72,7 @@ begin
       end if;
     end if;
   end process;
-  
+
   FSM: process(clk)
   begin
     if rising_edge(clk) then
@@ -109,11 +104,9 @@ begin
     mem_addr1   <= (others => '0');
     mem_out1    <= (others => '0');
     mem_wr_1    <= '0';
-    mem_rd_1    <= '0';
     mem_addr2   <= (others => '0');
     mem_out2    <= (others => '0');
     mem_wr_2    <= '0';
-    mem_rd_2    <= '0';
     trail_input <= (others => '0');
     trail       <= '0';
     bind_done   <= '0';

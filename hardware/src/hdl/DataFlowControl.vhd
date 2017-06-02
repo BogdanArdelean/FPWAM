@@ -137,7 +137,7 @@ begin
         nx_state <= get_structure_t2;
       when get_structure_t2 =>
         if deref_done = '1' then
-          if mem_obj = instruction(17 downto 0) then
+          if fpwam_tag(mem_obj) = tag_str_t and mem_obj = instruction(17 downto 0) then
             nx_state <= idle_t;
           elsif fpwam_tag(mem_obj) = tag_ref_t then
             nx_state <= get_structure_t3;
@@ -221,7 +221,7 @@ begin
       when get_structure_t2 =>
         mem_addr_input1  <= MA_deref_unit_t;  -- mux => mem input from deref module
         if deref_done = '1' then
-          if mem_obj_tag = tag_str_t and mem_obj = instruction(31 downto 15) then -- need to refactor
+          if fpwam_tag(mem_obj) = tag_str_t and mem_obj = instruction(17 downto 0) then
 
             -- S = a + 1
             wr_s_reg    <= '1';
@@ -229,7 +229,7 @@ begin
 
             wr_mode_reg <= '1';
             mode_value  <= mode_read_t;
-          elsif mem_obj_tag = tag_ref_t then -- need to refactor
+          elsif fpwam_tag(mem_obj) = tag_ref_t then -- need to refactor
             mem_addr_input1 <= MA_H_t;
             mem_input1      <= MI_tag_unit_t;
             mem_addr_input2 <= MA_Hplus1_t;
