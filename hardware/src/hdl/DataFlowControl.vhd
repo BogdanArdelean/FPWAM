@@ -123,12 +123,14 @@ begin
     end if;
   end process FSM;
 
-  NEXT_STATE_DECODE: process(decoded_state, cr_state)
+  NEXT_STATE_DECODE: process(decoded_state, cr_state, deref_done, mem_obj, instruction, instruction_valid, bind_done, mode_reg, unify_done)
   begin
     nx_state <= cr_state;
     case cr_state is
       when idle_t =>
-        nx_state <= decoded_state;
+        if instruction_valid='1' then
+          nx_state <= decoded_state;
+        end if;
       when put_structure_t =>
         nx_state <= idle_t;
 ----- BEGIN  get_structure f, a(i) -----
@@ -179,7 +181,7 @@ begin
     end case;
   end process NEXT_STATE_DECODE;
 
-  OUTPUT_DECODE: process(cr_state, deref_done)
+  OUTPUT_DECODE: process(cr_state, deref_done, mem_obj, instruction, bind_done, mode_reg)
   begin
     --DEFAULT VALUES
     get_instruction  <= '0';
@@ -198,14 +200,13 @@ begin
     mem_addr_input1  <= MA_H_t;
     mem_addr_input2  <= MA_H_t;
     bind             <= '0';
-    bind_port1       <= BI_H_t;
-    bind_port2       <= BI_H_t;
+    bind_port1       <= BI_deref_unit_t;
+    bind_port2       <= BI_deref_unit_t;
     trail_input      <= TI_bind_output_t;
     wr_h_reg         <= '0';
     h_input          <= HI_p1_t;
-    rd_gpr           <= '0';
     wr_gpr           <= '0';
-    gpr_input        <= GPRI_tag_unit_t;
+    gpr_input        <= GPRI_ref_H_t;
     start_unify      <= '0';
     unify_input_a    <= UI_GPR_t;
     unify_input_b    <= UI_GPR_t;
@@ -265,7 +266,7 @@ begin
         h_input   <= HI_p1_t;
 
         wr_gpr    <= '1';
-        gpr_input <= GPRI_tag_unit_t;
+        gpr_input <= GPRI_ref_H_t;
      when unify_value_t =>
         if mode_reg = mode_read_t then
           mem_addr_input2   <= MA_S_t;

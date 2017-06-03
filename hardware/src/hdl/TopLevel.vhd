@@ -22,8 +22,8 @@ use work.FpwamPkg.all;
 entity TopLevel is
   port
   (
-    clk : in std_logic;
-    rst : in std_logic
+    clk : in std_logic
+   ;rst : in std_logic
   );
 end TopLevel;
 
@@ -163,7 +163,7 @@ signal H_comb   : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal H_wr     : std_logic;
 ----- S REGISTER
 signal S_reg    : std_logic_vector(kWamAddressWidth -1 downto 0);
-signal S_comb   : std_logic;
+signal S_comb   : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal S_wr     : std_logic;
 ----- MODE REGISTER
 signal M_reg    : wam_mode_t;
@@ -171,8 +171,8 @@ signal M_comb   : wam_mode_t;
 signal M_wr     : std_logic;
 
 -- TEMPORARYMEMORY
-type instr_mem is array (0 to 2**8) of std_logic_vector(kInstructionWidth - 1 downto 0);
-constant mem : instr_mem := ("");
+type instr_mem is array (0 to 3) of std_logic_vector(kInstructionWidth - 1 downto 0);
+signal mem : instr_mem;
 signal instruction_counter : unsigned(7 downto 0);
 signal instruction         : std_logic_vector(kInstructionWidth -1 downto 0);
 signal instruction_valid   : std_logic;
@@ -181,7 +181,7 @@ begin
 
 -- INSTRUCTIONS
   instruction       <= mem(to_integer(instruction_counter));
-  instruction_valid <= '1' when instruction_counter < 2**7 else '0';
+  instruction_valid <= '1';
   INSTCNT: process(clk)
   begin
     if rising_edge(clk) then
@@ -190,7 +190,9 @@ begin
       elsif dfc_get_instruction = '1' then
         instruction_counter <= instruction_counter + 1;
       end if;
-  end if;
+    end if;
+  end process;
+  
 
 
 -- MODE REGISTER BEGIN
@@ -209,7 +211,7 @@ begin
 
 -- H REGISTER BEGIN
   H_wr <= dfc_H_wr;
-  HMUX: process(dfc_H_input)
+  HMUX: process(dfc_H_input, H_reg)
   begin
     H_comb <= H_reg;
     case dfc_H_input is
@@ -235,7 +237,7 @@ begin
 -- H REGISTER END
 -- S REGISTER START
   S_wr <= dfc_S_wr;
-  SMUX: process(dfc_S_input)
+  SMUX: process(dfc_S_input, S_reg, deref1_res_out)
   begin
     S_comb <= S_reg;
     case dfc_S_input is
@@ -275,7 +277,7 @@ begin
   mem_port2_wr <= bind_mem_port2_wr
                or dfc_mem_port2_wr;
 
-  ADDR1MUX: process(dfc_mem_addr1)
+  ADDR1MUX: process(dfc_mem_addr1, H_reg, deref1_mem_addr1, bind_mem_addr1, bind_mem_addr2, unifyComb_mem_addr1, S_reg)
   begin
     mem_addr1 <= (others => '0');
     case dfc_mem_addr1 is
@@ -300,7 +302,7 @@ begin
     end case;
   end process;
 
-  ADDR2MUX: process(dfc_mem_addr2)
+  ADDR2MUX: process(dfc_mem_addr2, H_reg, deref1_mem_addr1, bind_mem_addr1, bind_mem_addr2, unifyComb_mem_addr2, S_reg)
   begin
     mem_addr2 <= (others => '0');
     case dfc_mem_addr2 is
@@ -325,7 +327,7 @@ begin
     end case;
   end process;
 
-  PORT1MUX: process(dfc_mem_input1)
+  PORT1MUX: process(dfc_mem_input1,mem_output_2,H_reg, dfc_instruction_in, gpr_output, bind_mem_word1, bind_mem_word2, unifyComb_mem_word1, mem_input_2)
   begin
     mem_input_1 <= (others => '0');
     case dfc_mem_input1 is
@@ -341,14 +343,16 @@ begin
         mem_input_1 <= bind_mem_word2;
       when MI_unify_unit_t =>
         mem_input_1 <= unifyComb_mem_word1;
+      when MI_ref_H_t =>
+        mem_input_1 <= fpwam_word(H_reg, tag_ref_t);
       when MI_mem_port2_t =>
-        mem_input_1 <= mem_input_2;
+        mem_input_1 <= mem_output_2;
       when others =>
         null;
     end case;
   end process;
 
-  PORT2MUX: process(dfc_mem_input2)
+  PORT2MUX: process(dfc_mem_input2, H_reg, mem_output_1, dfc_instruction_in, gpr_output, bind_mem_word1, bind_mem_word2, unifyComb_mem_word2, mem_input_1)
   begin
     mem_input_2 <= (others => '0');
     case dfc_mem_input2 is
@@ -364,8 +368,10 @@ begin
         mem_input_2 <= bind_mem_word2;
       when MI_unify_unit_t =>
         mem_input_2 <= unifyComb_mem_word2;
+      when MI_ref_H_t =>
+        mem_input_2 <= fpwam_word(H_reg, tag_ref_t);
       when MI_mem_port1_t =>
-        mem_input_2 <= mem_input_1;
+        mem_input_2 <= mem_output_1;
       when others =>
         null;
     end case;
@@ -398,7 +404,7 @@ begin
 -- GPRs BEGIN
   gpr_address <= dfc_instruction_in(kGPRAddressWidth-1 + kWamWordWidth downto kWamWordWidth);
   gpr_wr    <= dfc_gpr_wr;
-  GPRINMUX: process(dfc_gpr_input)
+  GPRINMUX: process(dfc_gpr_input, H_reg, mem_output_1, mem_output_2)
   begin
     gpr_input <= (others => '0');
     case dfc_gpr_input is
@@ -432,12 +438,12 @@ begin
 -- BIND START
   bind_start <= dfc_bind_start
              or unify_bind_start;
-  BINDINPUT1MUX: process(dfc_bind_port1)
+  BINDINPUT1MUX: process(dfc_bind_port1, deref1_res_out, mem_output_1, unify_bind_word1)
   begin
     bind_word1 <= (others => '0');
     case dfc_bind_port1 is
       when BI_deref_unit_t =>
-        bind_word1 <= deref1_output;
+        bind_word1 <= deref1_res_out;
       when BI_mem_port1_t =>
         bind_word1 <= mem_output_1;
       when BI_unify_unit_t =>
@@ -447,12 +453,12 @@ begin
     end case;
   end process;
 
-  BINDINPUT2MUX: process(dfc_bind_port2)
+  BINDINPUT2MUX: process(dfc_bind_port2, deref1_res_out, mem_output_1, unify_bind_word2)
   begin
     bind_word2 <= (others => '0');
     case dfc_bind_port2 is
       when BI_deref_unit_t =>
-        bind_word2 <= deref1_output;
+        bind_word2 <= deref1_res_out;
       when BI_mem_port1_t =>
         bind_word2 <= mem_output_1;
       when BI_unify_unit_t =>
@@ -494,7 +500,7 @@ begin
   deref1_start <= dfc_deref1_start
                or unify_deref1_start;
   deref1_mem_word1 <= mem_output_1;
-  DEREFINPUTMUX: process(dfc_deref1_input)
+  DEREFINPUTMUX: process(dfc_deref1_input, gpr_output, mem_output_1, mem_output_2, unify_deref1_out)
   begin
     deref1_word <= (others => '0');
     case dfc_deref1_input is
@@ -523,7 +529,7 @@ begin
     ,addr_out    => deref1_mem_addr1
     ,rd_mem      => deref1_mem_port1_rd
     ,res_out     => deref1_res_out
-    ,done_t      => deref1_done
+    ,done        => deref1_done
    );
 -- DEREF1 END
 -- DEREF2 START
@@ -546,12 +552,12 @@ begin
     ,addr_out    => deref2_mem_addr2
     ,rd_mem      => deref2_mem_port2_rd
     ,res_out     => deref2_res_out
-    ,done_t      => deref2_done
+    ,done        => deref2_done
    );
 -- DEREF2 END
 -- UNIFYUNIT START
   unify_start <= dfc_unify_start;
-  UNIFY1MUX: process(dfc_unify_input_a)
+  UNIFY1MUX: process(dfc_unify_input_a, gpr_output, mem_output_1, mem_output_2)
   begin
     unify_word1 <= (others => '0');
     case dfc_unify_input_a is
@@ -565,7 +571,7 @@ begin
         null;
     end case;
   end process;
-  UNIFY2MUX: process(dfc_unify_input_b)
+  UNIFY2MUX: process(dfc_unify_input_b, gpr_output, mem_output_1, mem_output_2)
   begin
     unify_word2 <= (others => '0');
     case dfc_unify_input_b is
@@ -580,7 +586,7 @@ begin
     end case;
   end process;
 
-  UNIFYMEMSEL: process(unify_mem_sel)
+  UNIFYMEMSEL: process(unify_mem_sel, unify_mem_addr1, unify_mem_addr2, deref1_mem_addr1, deref2_mem_addr2, deref1_mem_word1, deref2_mem_word2, bind_mem_word1, bind_mem_word2, bind_mem_addr1, bind_mem_addr2)
   begin
 
     unifyComb_mem_addr1 <= (others => '0');
@@ -606,7 +612,8 @@ begin
         null;
     end case;
   end process;
-
+  unify_mem_word1 <= mem_output_1;
+  unify_mem_word2 <= mem_output_2;
   UNIFYU: entity work.UnifyUnit(Behavioral)
    generic map
    (

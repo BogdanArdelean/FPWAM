@@ -54,8 +54,8 @@ architecture Behavioral of BindUnit is
 type state_t is (idle_t, bind_t);
 signal cr_state, nx_state : state_t;
 
-signal word1_reg       : std_logic_vector(kAddressWidth -1 downto 0);
-signal word2_reg       : std_logic_vector(kAddressWidth -1 downto 0);
+signal word1_reg       : std_logic_vector(kWordWidth -1 downto 0);
+signal word2_reg       : std_logic_vector(kWordWidth -1 downto 0);
 signal register_input  : std_logic;
 
 begin
@@ -99,7 +99,7 @@ begin
     end case;
   end process;
 
-  OUTPUT_DECODE: process(cr_state)
+  OUTPUT_DECODE: process(cr_state, start_bind, word1_reg, word2_reg)
   begin
     mem_addr1   <= (others => '0');
     mem_out1    <= (others => '0');
@@ -110,7 +110,7 @@ begin
     trail_input <= (others => '0');
     trail       <= '0';
     bind_done   <= '0';
-
+    register_input <= '0';
     case cr_state is
       when idle_t =>
         if start_bind = '1' then

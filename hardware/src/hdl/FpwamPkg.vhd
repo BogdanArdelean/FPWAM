@@ -18,7 +18,7 @@ package FpwamPkg is
                             MA_unify_unit_t, MA_stack_addr_t, MA_S_t);
   -- Possible input sources for memory
   type mem_port_input_t is ( MI_str_Hplus1_t, MI_constant_t, MI_GPR_t, MI_bind_unit_1_t, MI_bind_unit_2_t, MI_unify_unit_t,
-                             MI_mem_port1_t, MI_mem_port2_t);
+                             MI_mem_port1_t, MI_mem_port2_t, MI_ref_H_t);
   -- Possible input sources for H register
   type h_input_t        is (HI_p1_t, HI_p2_t);
   -- Possible input sources for S register

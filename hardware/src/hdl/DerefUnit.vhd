@@ -96,13 +96,12 @@ begin
 
  OUTPUT_DECODE: process(cr_state, start_deref, start_word, memory_in, word_reg, rst)
  begin
-   wr_adr     <= '0';
    addr_out   <= fpwam_value(word_reg);
    word_comb  <= (others => '0');
    rd_mem     <= '0';
    res_out    <= word_reg;
    done       <= '0';
-
+   wr_word    <= '0';
    case cr_state is
      when idle_t =>
       if start_deref = '1' then
@@ -118,11 +117,10 @@ begin
      when check_t =>
       word_comb  <= memory_in;
       if not(fpwam_tag(memory_in) = tag_ref_t and fpwam_value(memory_in) /= fpwam_value(word_reg)) then
-        res_out    <= fpwam_value(memory_in);
+        res_out    <= memory_in;
         done       <= '1';
-      else
-        wr_word    <= '1';
       end if;
+      wr_word    <= '1';
     when others =>
       null;
     end case;

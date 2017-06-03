@@ -114,6 +114,19 @@ begin
 
   fail <= fail_reg or fail_comb;
   pdl_empty <= unsigned(pdl_addr_reg) = 0;
+  
+  PDLREG: process(clk)
+  begin
+    if rising_edge(clk) then
+       if rst = '1' then
+        pdl_addr_reg <= (others => '0');
+       elsif wr_pdl_reg = '1' then
+        pdl_addr_reg <= pdl_addr_comb;
+       end if;
+    end if;
+  end process;
+      
+        
 
   PDLIST: entity work.Memory(Behavioral)
           generic map
@@ -284,7 +297,7 @@ begin
   end process;
 
 
-  OUTPUT_DECODE: process(cr_state, start_unify, word1, word2, pdl_addr_reg, pdl_empty, fail_reg, deref1_done_reg,
+  OUTPUT_DECODE: process(cr_state, pdl_out_1, pdl_out_2, start_unify, word1, word2, pdl_addr_reg, pdl_empty, fail_reg, deref1_done_reg,
   deref2_done_reg, mem1_input, mem2_input, deref1_input, deref2_input, iterate_done, current_reg)
   begin
     -- Port outputs
@@ -345,8 +358,8 @@ begin
         reset_deref_reg <= '0';
         deref1_start  <= '1' and not deref1_done_reg;
         deref2_start  <= '1' and not deref2_done_reg;
-        deref1_output <= mem1_input;
-        deref2_output <= mem2_input;
+        deref1_output <= pdl_out_1;
+        deref2_output <= pdl_out_2;
         mem_sel <= sel_deref_t;
       when check_equal_read_t =>
         if (fpwam_tag(deref1_input) = tag_ref_t or fpwam_tag(deref2_input) = tag_ref_t)
