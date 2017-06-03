@@ -170,7 +170,28 @@ signal M_reg    : wam_mode_t;
 signal M_comb   : wam_mode_t;
 signal M_wr     : std_logic;
 
+-- TEMPORARYMEMORY
+type instr_mem is array (0 to 2**8) of std_logic_vector(kInstructionWidth - 1 downto 0);
+constant mem : instr_mem := ("");
+signal instruction_counter : unsigned(7 downto 0);
+signal instruction         : std_logic_vector(kInstructionWidth -1 downto 0);
+signal instruction_valid   : std_logic;
+
 begin
+
+-- INSTRUCTIONS
+  instruction       <= mem(to_integer(instruction_counter));
+  instruction_valid <= '1' when instruction_counter < 2**7 else '0';
+  INSTCNT: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        instruction_counter <= (others => '0');
+      elsif dfc_get_instruction = '1' then
+        instruction_counter <= instruction_counter + 1;
+      end if;
+  end if;
+
 
 -- MODE REGISTER BEGIN
   M_wr   <= dfc_mode_wr;
@@ -433,7 +454,7 @@ begin
       when BI_deref_unit_t =>
         bind_word2 <= deref1_output;
       when BI_mem_port1_t =>
-        bind_word2 <= mem_output_21;
+        bind_word2 <= mem_output_1;
       when BI_unify_unit_t =>
         bind_word2 <= unify_bind_word2;
       when others =>
@@ -469,6 +490,22 @@ begin
 -- TRAIL BEGIN
   -- TODO TRAIL
 -- TRAIL END
+-- DEREF1 START
+  deref1_start <= dfc_deref1_start
+               or unify_deref1_start;
+  deref1_mem_word1 <= mem_output_1;
+  DEREFINPUTMUX: process(dfc_deref1_input)
+  begin
+    deref1_word <= (others => '0');
+    case dfc_deref1_input is
+      when DI_GPR_t =>
+        deref1_word <= gpr_output;
+      when DI_unify_unit_t =>
+        deref1_word <= unify_deref1_out;
+      when others =>
+        null;
+    end case;
+  end process;
 
   DEREF1: entity work.DerefUnit(Behavioral)
    generic map
@@ -488,5 +525,172 @@ begin
     ,res_out     => deref1_res_out
     ,done_t      => deref1_done
    );
+-- DEREF1 END
+-- DEREF2 START
+  deref2_start     <= unify_deref2_start;
+  deref2_mem_word2 <= mem_output_2;
+  deref2_word      <= unify_deref2_out;
+  DEREF2: entity work.DerefUnit(Behavioral)
+   generic map
+   (
+     kAddressWidth => kWamAddressWidth
+    ,kWordWidth    => kWamWordWidth
+   )
+   port map
+   (
+     clk         => clk
+    ,rst         => rst
+    ,start_deref => deref2_start
+    ,start_word  => deref2_word
+    ,memory_in   => deref2_mem_word2
+    ,addr_out    => deref2_mem_addr2
+    ,rd_mem      => deref2_mem_port2_rd
+    ,res_out     => deref2_res_out
+    ,done_t      => deref2_done
+   );
+-- DEREF2 END
+-- UNIFYUNIT START
+  unify_start <= dfc_unify_start;
+  UNIFY1MUX: process(dfc_unify_input_a)
+  begin
+    unify_word1 <= (others => '0');
+    case dfc_unify_input_a is
+      when UI_GPR_t =>
+        unify_word1 <= gpr_output;
+      when UI_mem_port1_t =>
+        unify_word1 <= mem_output_1;
+      when UI_mem_port2_t =>
+        unify_word1 <= mem_output_2;
+      when others =>
+        null;
+    end case;
+  end process;
+  UNIFY2MUX: process(dfc_unify_input_b)
+  begin
+    unify_word2 <= (others => '0');
+    case dfc_unify_input_b is
+      when UI_GPR_t =>
+        unify_word2 <= gpr_output;
+      when UI_mem_port1_t =>
+        unify_word2 <= mem_output_1;
+      when UI_mem_port2_t =>
+        unify_word2 <= mem_output_2;
+      when others =>
+        null;
+    end case;
+  end process;
+
+  UNIFYMEMSEL: process(unify_mem_sel)
+  begin
+
+    unifyComb_mem_addr1 <= (others => '0');
+    unifyComb_mem_addr2 <= (others => '0');
+    unifyComb_mem_word1 <= (others => '0');
+    unifyComb_mem_word2 <= (others => '0');
+
+    case unify_mem_sel is
+      when sel_unify_t =>
+        unifyComb_mem_addr1 <= unify_mem_addr1;
+        unifyComb_mem_addr2 <= unify_mem_addr2;
+      when sel_deref_t =>
+        unifyComb_mem_addr1 <= deref1_mem_addr1;
+        unifyComb_mem_addr2 <= deref2_mem_addr2;
+        unifyComb_mem_word1 <= deref1_mem_word1;
+        unifyComb_mem_word2 <= deref2_mem_word2;
+      when sel_bind_t  =>
+        unifyComb_mem_addr1 <= bind_mem_addr1;
+        unifyComb_mem_addr2 <= bind_mem_addr2;
+        unifyComb_mem_word1 <= bind_mem_word1;
+        unifyComb_mem_word2 <= bind_mem_word2;
+      when others =>
+        null;
+    end case;
+  end process;
+
+  UNIFYU: entity work.UnifyUnit(Behavioral)
+   generic map
+   (
+     kAddressWidth     => kWamAddressWidth
+    ,kWordWidth        => kWamWordWidth
+    ,kPdlAddressWidth  => kWamPdlAddressWidth
+   )
+   port map
+   (
+     clk            => clk
+    ,rst            => rst
+    ,start_unify    => unify_start
+    ,word1          => unify_word1
+    ,word2          => unify_word2
+    ,mem1_input     => unify_mem_word1
+    ,mem2_input     => unify_mem_word2
+    ,deref1_input   => deref1_res_out
+    ,deref1_done    => deref1_done
+    ,deref2_input   => deref2_res_out
+    ,deref2_done    => deref2_done
+    ,bind_done      => bind_done
+    ,unify_done     => unify_done
+    ,fail           => unify_fail
+    ,mem1_output    => unify_mem_addr1
+    ,rd_mem_port1   => unify_mem_port1_rd
+    ,mem2_output    => unify_mem_addr2
+    ,rd_mem_port2   => unify_mem_port2_rd
+    ,deref1_output  => unify_deref1_out
+    ,deref1_start   => unify_deref1_start
+    ,deref2_output  => unify_deref2_out
+    ,deref2_start   => unify_deref2_start
+    ,bind1_output   => unify_bind_word1
+    ,bind2_output   => unify_bind_word2
+    ,bind_start     => unify_bind_start
+    ,mem_sel        => unify_mem_sel
+   );
+-- UNIFYUNIT END
+-- DFC BEGIN
+  dfc_instruction_in     <= instruction;
+  dfc_instruction_valid  <= instruction_valid;
+  dfc_mem_word1          <= mem_output_1;
+  dfc_deref1_done        <= deref1_done;
+  dfc_mode_reg           <= M_reg;
+  dfc_unify_done         <= unify_done;
+  dfc_bind_done          <= bind_done;
+  DFC: entity work.DataFlowControl(Behavioral)
+   port map
+   (
+     clk                => clk
+    ,rst                => rst
+    ,instruction        => dfc_instruction_in
+    ,instruction_valid  => dfc_instruction_valid
+    ,mem_obj            => dfc_mem_word1
+    ,deref_done         => dfc_deref1_done
+    ,mode_reg           => dfc_mode_reg
+    ,unify_done         => dfc_unify_done
+    ,bind_done          => dfc_bind_done
+    ,get_instruction    => dfc_get_instruction
+    ,start_deref        => dfc_deref1_start
+    ,deref_input        => dfc_deref1_input
+    ,wr_s_reg           => dfc_S_wr
+    ,s_reg_input        => dfc_S_input
+    ,wr_mode_reg        => dfc_mode_wr
+    ,mode_value         => dfc_mode_value
+    ,rd_mem_port1       => dfc_mem_port1_rd
+    ,wr_mem_port1       => dfc_mem_port1_wr
+    ,mem_input1         => dfc_mem_input1
+    ,mem_addr_input1    => dfc_mem_addr1
+    ,rd_mem_port2       => dfc_mem_port2_rd
+    ,wr_mem_port2       => dfc_mem_port2_wr
+    ,mem_input2         => dfc_mem_input2
+    ,mem_addr_input2    => dfc_mem_addr2
+    ,bind               => dfc_bind_start
+    ,bind_port1         => dfc_bind_port1
+    ,bind_port2         => dfc_bind_port2
+    ,trail_input        => dfc_trail_input
+    ,wr_h_reg           => dfc_H_wr
+    ,h_input            => dfc_H_input
+    ,wr_gpr             => dfc_gpr_wr
+    ,gpr_input          => dfc_gpr_input
+    ,start_unify        => dfc_unify_start
+    ,unify_input_a      => dfc_unify_input_a
+    ,unify_input_b      => dfc_unify_input_b
+   );
+-- DFC END
 
 end Structural;

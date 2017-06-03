@@ -207,8 +207,8 @@ begin
     wr_gpr           <= '0';
     gpr_input        <= GPRI_tag_unit_t;
     start_unify      <= '0';
-    unify_input_a    <= UI_S_t;
-    unify_input_b    <= UI_S_t;
+    unify_input_a    <= UI_GPR_t;
+    unify_input_b    <= UI_GPR_t;
 
     case cr_state is
       when idle_t =>

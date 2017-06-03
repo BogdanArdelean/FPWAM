@@ -47,7 +47,7 @@ signal cr_state, nx_state : state_t;
 
 signal word_reg  : std_logic_vector(kWordWidth -1 downto 0);
 signal word_comb : std_logic_vector(kWordWidth -1 downto 0);
-signal wr_word    : std_logic;
+signal wr_word   : std_logic;
 
 begin
 

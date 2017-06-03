@@ -5,12 +5,13 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 package FpwamPkg is
-  constant kWamAddressWidth  : natural := 16;
-  constant kWamWordWidth     : natural := 18;
-  constant kGPRAddressWidth  : natural := 4;
-  constant kFunctorWidth     : natural := 12;
-  constant kArityWidth       : natural := kGPRAddressWidth;
-  constant kInstructionWidth : natural := 32;
+  constant kWamAddressWidth    : natural := 16;
+  constant kWamWordWidth       : natural := 18;
+  constant kWamPdlAddressWidth : natural := 10;
+  constant kGPRAddressWidth    : natural := 4;
+  constant kFunctorWidth       : natural := 12;
+  constant kArityWidth         : natural := kGPRAddressWidth;
+  constant kInstructionWidth   : natural := 32;
 
   -- Possible address inputs for memory (eg: MA_H_t => Memory Address from register H)
   type mem_addr_input_t is (MA_H_t, MA_Hplus1_t, MA_deref_unit_t, MA_untag_deref_t, MA_bind_unit_1_t, MA_bind_unit_2_t,
@@ -37,7 +38,7 @@ package FpwamPkg is
   -- Types of objects supported in WAM
   type tag_t            is (tag_str_t, tag_ref_t, tag_int_t, tag_lis_t);
   -- Unify unit input
-  type unify_input_t    is (UI_S_t, UI_GPR_t, UI_mem_port1_t, UI_mem_port2_t);
+  type unify_input_t    is  (UI_GPR_t, UI_mem_port1_t, UI_mem_port2_t);
   -- Unify mem input
   type unify_mem_sel_t  is (sel_unify_t, sel_deref_t, sel_bind_t);
 
