@@ -26,7 +26,7 @@ package FpwamPkg is
   -- Possible input sources for P register
   type p_input_t        is (PI_pinstr_size_t);
   -- Possible input sources for General Purpose Registers
-  type GPR_input_t      is (GPRI_ref_H_t, GPRI_mem_port1_t, GPRI_mem_port2_t);
+  type GPR_input_t      is (GPRI_ref_H_t, GPRI_str_H_t, GPRI_mem_port1_t, GPRI_mem_port2_t);
   -- Possible input sources for deref unit
   type deref_input_t    is (DI_GPR_t, DI_unify_unit_t);
   -- Possible input sources for bind unit

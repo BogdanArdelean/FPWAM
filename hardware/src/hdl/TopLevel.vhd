@@ -171,8 +171,30 @@ signal M_comb   : wam_mode_t;
 signal M_wr     : std_logic;
 
 -- TEMPORARYMEMORY
-type instr_mem is array (0 to 3) of std_logic_vector(kInstructionWidth - 1 downto 0);
-signal mem : instr_mem;
+type instr_mem is array (0 to 20) of std_logic_vector(kInstructionWidth - 1 downto 0);
+signal mem : instr_mem :=
+("00000000000011000000000000010010"  -- put_structure h/2, x3
+,"01000000000010000000000000000000"  -- unify_variable x2
+,"01000000000101000000000000000000"  -- unify_variable x5
+,"00000000000100000000000000100001"  -- put_structure f/1, x4
+,"01100000000101000000000000000000"  -- unify_value x5
+,"00000000000001000000000000110011"  -- put_structure p/3, x1
+,"01100000000010000000000000000000"  -- unify_value x2
+,"01100000000011000000000000000000"  -- unify_value x3
+,"01100000000100000000000000000000"  -- unify_value x4
+,"00100000000001000000000000110011"  -- get_structure p/3, x1
+,"01000000000010000000000000000000"  -- unify_variable x2
+,"01000000000011000000000000000000"  -- unify_variable x3
+,"01000000000100000000000000000000"  -- unify_variable x4
+,"00100000000010000000000000100001"  -- get_structure f/1, x2
+,"01000000000101000000000000000000"  -- unify_variable x5
+,"00100000000011000000000000010010"  -- get_structure h/2, x3
+,"01100000000100000000000000000000"  -- unify_value x4
+,"01000000000110000000000000000000"  -- unify_variable x6
+,"00100000000110000000000000100001"  -- get_structure f/1, x6
+,"01000000000111000000000000000000"  -- unify_variable x7
+,"00100000000111000000000001000000"  -- get_structure a/0, x7
+);
 signal instruction_counter : unsigned(7 downto 0);
 signal instruction         : std_logic_vector(kInstructionWidth -1 downto 0);
 signal instruction_valid   : std_logic;
@@ -192,7 +214,7 @@ begin
       end if;
     end if;
   end process;
-  
+
 
 
 -- MODE REGISTER BEGIN
@@ -297,6 +319,8 @@ begin
         mem_addr1 <= (others => '0');
       when MA_S_t =>
         mem_addr1 <= S_reg;
+      when MA_untag_deref_t =>
+        mem_addr1 <= fpwam_value(deref1_res_out);
       when others =>
         null;
     end case;
@@ -322,6 +346,8 @@ begin
         mem_addr2 <= (others => '0');
       when MA_S_t =>
         mem_addr2 <= S_reg;
+      when MA_untag_deref_t =>
+        mem_addr2 <= fpwam_value(deref1_res_out);
       when others =>
         null;
     end case;
@@ -414,6 +440,8 @@ begin
         gpr_input <= mem_output_1;
       when GPRI_mem_port2_t =>
         gpr_input <= mem_output_2;
+      when GPRI_str_H_t =>
+        gpr_input <= fpwam_word(H_reg, tag_str_t);
       when others =>
         null;
     end case;
@@ -654,7 +682,7 @@ begin
 -- DFC BEGIN
   dfc_instruction_in     <= instruction;
   dfc_instruction_valid  <= instruction_valid;
-  dfc_mem_word1          <= mem_output_1;
+  dfc_mem_word1          <= mem_output_2;
   dfc_deref1_done        <= deref1_done;
   dfc_mode_reg           <= M_reg;
   dfc_unify_done         <= unify_done;

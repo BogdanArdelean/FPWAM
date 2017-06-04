@@ -135,16 +135,16 @@ begin
         nx_state <= idle_t;
 ----- BEGIN  get_structure f, a(i) -----
       when get_structure_t =>
-        nx_state <= get_structure_t2;
-      when get_structure_t2 =>
         if deref_done = '1' then
-          if fpwam_tag(mem_obj) = tag_str_t and mem_obj = instruction(17 downto 0) then
-            nx_state <= idle_t;
-          elsif fpwam_tag(mem_obj) = tag_ref_t then
-            nx_state <= get_structure_t3;
-          else
-            nx_state <= fail_t;
-          end if;
+          nx_state <= get_structure_t2;
+        end if;
+      when get_structure_t2 =>
+        if fpwam_tag(mem_obj) = tag_str_t and mem_obj = instruction(17 downto 0) then
+          nx_state <= idle_t;
+        elsif fpwam_tag(mem_obj) = tag_ref_t then
+          nx_state <= get_structure_t3;
+        else
+          nx_state <= fail_t;
         end if;
       when get_structure_t3 => -- maybe should wait for trail and bind to finish?
         if bind_done = '1' then
@@ -218,28 +218,29 @@ begin
         start_deref      <= '1';
         deref_input      <= DI_GPR_t;  -- mux => input for deref = A(i)
         mem_addr_input1  <= MA_deref_unit_t;  -- mux => mem input from deref module
-      when get_structure_t2 =>
-        mem_addr_input1  <= MA_deref_unit_t;  -- mux => mem input from deref module
         if deref_done = '1' then
-          if fpwam_tag(mem_obj) = tag_str_t and mem_obj = instruction(17 downto 0) then
+          mem_addr_input2  <= MA_untag_deref_t;
+          rd_mem_port2     <= '1';
+        end if;
+      when get_structure_t2 =>
+        if fpwam_tag(mem_obj) = tag_str_t and mem_obj = instruction(17 downto 0) then
 
-            -- S = a + 1
-            wr_s_reg    <= '1';
-            s_reg_input <= SI_untag_deref_p1_t;
+          -- S = a + 1
+          wr_s_reg    <= '1';
+          s_reg_input <= SI_untag_deref_p1_t;
 
-            wr_mode_reg <= '1';
-            mode_value  <= mode_read_t;
-          elsif fpwam_tag(mem_obj) = tag_ref_t then -- need to refactor
-            mem_addr_input1 <= MA_H_t;
-            mem_input1      <= MI_str_Hplus1_t;
-            mem_addr_input2 <= MA_Hplus1_t;
-            mem_input2      <= MI_constant_t;
+          wr_mode_reg <= '1';
+          mode_value  <= mode_read_t;
+        elsif fpwam_tag(mem_obj) = tag_ref_t then -- need to refactor
+          mem_addr_input1 <= MA_H_t;
+          mem_input1      <= MI_str_Hplus1_t;
+          mem_addr_input2 <= MA_Hplus1_t;
+          mem_input2      <= MI_constant_t;
 
-            rd_mem_port1 <= '1';
-            rd_mem_port2 <= '1';
-            wr_mem_port1 <= '1';
-            wr_mem_port2 <= '1';
-          end if;
+          rd_mem_port1 <= '1';
+          rd_mem_port2 <= '1';
+          wr_mem_port1 <= '1';
+          wr_mem_port2 <= '1';
         end if;
       when get_structure_t3 => -- refactor at bind input!!!
         bind       <= '1';             -- bind(
@@ -266,7 +267,10 @@ begin
         h_input   <= HI_p1_t;
 
         wr_gpr    <= '1';
-        gpr_input <= GPRI_ref_H_t;
+        gpr_input <= GPRI_str_H_t;
+
+        wr_mode_reg <= '1';
+        mode_value  <= mode_write_t;
      when unify_value_t =>
         if mode_reg = mode_read_t then
           mem_addr_input2   <= MA_S_t;
