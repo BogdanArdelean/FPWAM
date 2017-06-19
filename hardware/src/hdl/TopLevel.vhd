@@ -171,9 +171,10 @@ signal M_comb   : wam_mode_t;
 signal M_wr     : std_logic;
 
 -- TEMPORARYMEMORY
-type instr_mem is array (0 to 20) of std_logic_vector(kInstructionWidth - 1 downto 0);
+type instr_mem is array (-1 to 20) of std_logic_vector(kInstructionWidth - 1 downto 0);
 signal mem : instr_mem :=
-("00000000000011000000000000010010"  -- put_structure h/2, x3
+("00000000000000000000000000000000"
+,"00000000000011000000000000010010"  -- put_structure h/2, x3
 ,"01000000000010000000000000000000"  -- unify_variable x2
 ,"01000000000101000000000000000000"  -- unify_variable x5
 ,"00000000000100000000000000100001"  -- put_structure f/1, x4
@@ -197,20 +198,23 @@ signal mem : instr_mem :=
 );
 signal instruction_counter : unsigned(7 downto 0);
 signal instruction         : std_logic_vector(kInstructionWidth -1 downto 0);
+signal current_instruction : std_logic_vector(kInstructionWidth -1 downto 0);
 signal instruction_valid   : std_logic;
-
 begin
 
 -- INSTRUCTIONS
-  instruction       <= mem(to_integer(instruction_counter));
+  instruction         <= mem(to_integer(instruction_counter));
+  current_instruction <= mem(to_integer(instruction_counter)-1);
   instruction_valid <= '1';
   INSTCNT: process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
         instruction_counter <= (others => '0');
+        dfc_instruction_in <= instruction;
       elsif dfc_get_instruction = '1' then
         instruction_counter <= instruction_counter + 1;
+        dfc_instruction_in <= instruction;
       end if;
     end if;
   end process;
@@ -353,14 +357,14 @@ begin
     end case;
   end process;
 
-  PORT1MUX: process(dfc_mem_input1,mem_output_2,H_reg, dfc_instruction_in, gpr_output, bind_mem_word1, bind_mem_word2, unifyComb_mem_word1, mem_input_2)
+  PORT1MUX: process(dfc_mem_input1,mem_output_2,H_reg, current_instruction, gpr_output, bind_mem_word1, bind_mem_word2, unifyComb_mem_word1, mem_input_2)
   begin
     mem_input_1 <= (others => '0');
     case dfc_mem_input1 is
       when MI_str_Hplus1_t =>
         mem_input_1 <= fpwam_word(std_logic_vector(unsigned(H_reg)+1), tag_str_t);
       when MI_constant_t =>
-        mem_input_1 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
+        mem_input_1 <= current_instruction(kWamWordWidth -1 downto 0);
       when MI_GPR_t =>
         mem_input_1 <= gpr_output;
       when MI_bind_unit_1_t =>
@@ -378,14 +382,14 @@ begin
     end case;
   end process;
 
-  PORT2MUX: process(dfc_mem_input2, H_reg, mem_output_1, dfc_instruction_in, gpr_output, bind_mem_word1, bind_mem_word2, unifyComb_mem_word2, mem_input_1)
+  PORT2MUX: process(dfc_mem_input2, H_reg, mem_output_1, current_instruction, gpr_output, bind_mem_word1, bind_mem_word2, unifyComb_mem_word2, mem_input_1)
   begin
     mem_input_2 <= (others => '0');
     case dfc_mem_input2 is
       when MI_str_Hplus1_t =>
         mem_input_2 <= fpwam_word(std_logic_vector(unsigned(H_reg)+1), tag_str_t);
       when MI_constant_t =>
-        mem_input_2 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
+        mem_input_2 <= current_instruction(kWamWordWidth -1 downto 0);
       when MI_GPR_t =>
         mem_input_2 <= gpr_output;
       when MI_bind_unit_1_t =>
@@ -680,7 +684,6 @@ begin
    );
 -- UNIFYUNIT END
 -- DFC BEGIN
-  dfc_instruction_in     <= instruction;
   dfc_instruction_valid  <= instruction_valid;
   dfc_mem_word1          <= mem_output_2;
   dfc_deref1_done        <= deref1_done;

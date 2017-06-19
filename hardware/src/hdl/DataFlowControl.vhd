@@ -116,7 +116,7 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        cr_state <= idle_t;
+        cr_state <= next_instr_t;
       else
         cr_state <= nx_state;
       end if;
@@ -127,12 +127,14 @@ begin
   begin
     nx_state <= cr_state;
     case cr_state is
-      when idle_t =>
+      when next_instr_t =>
         if instruction_valid='1' then
-          nx_state <= decoded_state;
+          nx_state <= idle_t;
         end if;
+      when idle_t =>
+        nx_state <= decoded_state;
       when put_structure_t =>
-        nx_state <= idle_t;
+        nx_state <= next_instr_t;
 ----- BEGIN  get_structure f, a(i) -----
       when get_structure_t =>
         if deref_done = '1' then
@@ -140,7 +142,7 @@ begin
         end if;
       when get_structure_t2 =>
         if fpwam_tag(mem_obj) = tag_str_t and mem_obj = instruction(17 downto 0) then
-          nx_state <= idle_t;
+          nx_state <= next_instr_t;
         elsif fpwam_tag(mem_obj) = tag_ref_t then
           nx_state <= get_structure_t3;
         else
@@ -148,17 +150,17 @@ begin
         end if;
       when get_structure_t3 => -- maybe should wait for trail and bind to finish?
         if bind_done = '1' then
-        nx_state <= idle_t;
+        nx_state <= next_instr_t;
         end if;
 ----- END get_structure f, a(i) -----
       when unify_variable_t =>
         if mode_reg = mode_read_t then
           nx_state <= unify_variable_t2;
         else
-          nx_state <= idle_t;
+          nx_state <= next_instr_t;
         end if;
       when unify_variable_t2 =>
-        nx_state <= idle_t;
+        nx_state <= next_instr_t;
       when unify_value_t =>
         if mode_reg = mode_read_t then
           nx_state <= unify_value_t2;
@@ -166,16 +168,16 @@ begin
           if instruction(0) = '1' then -- on stack need 2 cycles
             nx_state <= unify_value_t2;
           else
-            nx_state <= idle_t;
+            nx_state <= next_instr_t;
           end if;
         end if;
       when unify_value_t2 =>
         if mode_reg = mode_read_t then
           if unify_done = '1' then
-            nx_state <= idle_t;
+            nx_state <= next_instr_t;
           end if;
         else
-          nx_state <= idle_t;
+          nx_state <= next_instr_t;
         end if;
       when others => null;
     end case;
@@ -212,8 +214,10 @@ begin
     unify_input_b    <= UI_GPR_t;
 
     case cr_state is
-      when idle_t =>
+      when next_instr_t =>
         get_instruction <= '1';
+      when idle_t =>
+        null;
       when get_structure_t => -- deref(Ai)
         start_deref      <= '1';
         deref_input      <= DI_GPR_t;  -- mux => input for deref = A(i)
@@ -272,26 +276,27 @@ begin
         wr_mode_reg <= '1';
         mode_value  <= mode_write_t;
      when unify_value_t =>
-        if mode_reg = mode_read_t then
-          mem_addr_input2   <= MA_S_t;
-          rd_mem_port2      <= '1';
-          if instruction(0) = '1' then -- if value is on stack. Issue read.
-            mem_addr_input1 <= MA_stack_addr_t;
-            rd_mem_port1    <= '1';
-          end if;
-        else -- mode_write_t
-          if instruction(0) = '1' then -- value on stack. Issue read.
-            mem_addr_input1 <= MA_stack_addr_t;
-            rd_mem_port1    <= '1';
-          else
-            mem_addr_input1 <= MA_H_t;
-            mem_input1      <= MI_GPR_t;
-            wr_mem_port1    <= '1';
+        case mode_reg is
+          when mode_read_t =>
+            mem_addr_input2   <= MA_S_t;
+            rd_mem_port2      <= '1';
+            if instruction(0) = '1' then -- if value is on stack. Issue read.
+              mem_addr_input1 <= MA_stack_addr_t;
+              rd_mem_port1    <= '1';
+            end if;
+          when mode_write_t =>
+            if instruction(0) = '1' then -- value on stack. Issue read.
+              mem_addr_input1 <= MA_stack_addr_t;
+              rd_mem_port1    <= '1';
+            else
+              mem_addr_input1 <= MA_H_t;
+              mem_input1      <= MI_GPR_t;
+              wr_mem_port1    <= '1';
 
-            wr_h_reg        <= '1';
-            h_input         <= HI_p1_t;
-          end if;
-        end if;
+              wr_h_reg        <= '1';
+              h_input         <= HI_p1_t;
+            end if;
+        end case;
         wr_s_reg    <= '1';
         s_reg_input <= SI_p1_t;
      when unify_value_t2 =>

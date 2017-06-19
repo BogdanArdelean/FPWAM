@@ -107,7 +107,7 @@ begin
       if start_deref = '1' then
         if fpwam_tag(start_word) /= tag_ref_t then
           done <= '1';
-          res_out <= start_word;
+          -- res_out <= start_word;
         end if;
         wr_word    <= '1';
         word_comb  <= start_word;
@@ -117,7 +117,7 @@ begin
      when check_t =>
       word_comb  <= memory_in;
       if not(fpwam_tag(memory_in) = tag_ref_t and fpwam_value(memory_in) /= fpwam_value(word_reg)) then
-        res_out    <= memory_in;
+        -- res_out    <= memory_in;
         done       <= '1';
       end if;
       wr_word    <= '1';
