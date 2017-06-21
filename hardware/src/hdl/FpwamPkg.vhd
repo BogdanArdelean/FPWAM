@@ -58,7 +58,7 @@ package body FpwamPkg is
   function fpwam_tag   (word : std_logic_vector) return tag_t is
    variable result : integer;
    begin
-      result := to_integer(unsigned(word(kWamWordWidth -1 downto kWamWordWidth -3)));
+      result := to_integer(unsigned(word(kWamWordWidth -1 downto kWamWordWidth -2)));
     return tag_t'val(result);
   end function;
 

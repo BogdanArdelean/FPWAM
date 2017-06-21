@@ -114,7 +114,7 @@ begin
 
   fail <= fail_reg or fail_comb;
   pdl_empty <= unsigned(pdl_addr_reg) = 0;
-  
+
   PDLREG: process(clk)
   begin
     if rising_edge(clk) then
@@ -125,8 +125,8 @@ begin
        end if;
     end if;
   end process;
-      
-        
+
+
 
   PDLIST: entity work.Memory(Behavioral)
           generic map
@@ -146,7 +146,7 @@ begin
 
             ,addr_port_2   => pdl_adr_2
             ,word_port_2_o => pdl_out_2
-            ,word_port_2_i => pdl_in_1
+            ,word_port_2_i => pdl_in_2
             ,wr_port_2     => wr_pdl
             ,rd_port_2     => rd_pdl
           );
@@ -173,17 +173,15 @@ begin
     end if;
   end process;
 
-  STR_IT: process(clk)
+  STR_IT: process(current_reg, goal_reg, iterate)
   begin
     iterate_done <= '0';
     wr_curr_reg  <= '0';
-    if rising_edge(clk) then
-      if iterate = '1' then
-        if current_reg > goal_reg then
-          iterate_done <= '1';
-        else
-          wr_curr_reg <= '1';
-        end if;
+    if iterate = '1' then
+      if current_reg > goal_reg then
+        iterate_done <= '1';
+      else
+        wr_curr_reg <= '1';
       end if;
     end if;
   end process;
@@ -227,7 +225,7 @@ begin
   end process;
 
 
-  NEXT_STATE: process(cr_state, start_unify, pdl_empty, fail_reg, deref1_done_reg, 
+  NEXT_STATE: process(cr_state, start_unify, pdl_empty, fail_reg, deref1_done_reg,
   deref2_done_reg, deref1_input, deref2_input, bind_done, mem1_input, mem2_input,
   iterate_done)
   begin
@@ -427,7 +425,7 @@ begin
         iterate  <= '1';
         if not iterate_done = '1' then
           pdl_in_1 <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref1_input))+current_reg), tag_ref_t);
-          pdl_in_2 <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref1_input))+current_reg), tag_ref_t);
+          pdl_in_2 <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref2_input))+current_reg), tag_ref_t);
           pdl_adr_1 <= pdl_addr_reg;
           pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) + 1);
           wr_pdl   <= '1';
@@ -435,6 +433,8 @@ begin
           pdl_addr_comb <= std_logic_vector(unsigned(pdl_addr_reg) + 2);
           wr_pdl_reg <= '1';
         end if;
+      when done_t =>
+ 	  	  unify_done <= '1';
       when others =>
         null;
     end case;

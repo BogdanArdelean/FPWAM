@@ -171,7 +171,7 @@ signal M_comb   : wam_mode_t;
 signal M_wr     : std_logic;
 
 -- TEMPORARYMEMORY
-type instr_mem is array (-1 to 20) of std_logic_vector(kInstructionWidth - 1 downto 0);
+type instr_mem is array (-1 to 21) of std_logic_vector(kInstructionWidth - 1 downto 0);
 signal mem : instr_mem :=
 ("00000000000000000000000000000000"
 ,"00000000000011000000000000010010"  -- put_structure h/2, x3

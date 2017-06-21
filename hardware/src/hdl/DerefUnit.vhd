@@ -42,7 +42,7 @@ end DerefUnit;
 
 architecture Behavioral of DerefUnit is
 
-type state_t is (idle_t, read_t, check_t);
+type state_t is (idle_t, read_t, check_t, done_t);
 signal cr_state, nx_state : state_t;
 
 signal word_reg  : std_logic_vector(kWordWidth -1 downto 0);
@@ -78,8 +78,12 @@ begin
     nx_state <= cr_state;
     case cr_state is
       when idle_t =>
-        if start_deref = '1' and fpwam_tag(start_word) = tag_ref_t then
-          nx_state <= read_t;
+        if start_deref = '1' then
+          if fpwam_tag(start_word) = tag_ref_t then
+            nx_state <= read_t;
+          else
+            nx_state <= done_t;
+          end if;
         end if;
       when read_t  =>
         nx_state <= check_t;
@@ -87,8 +91,10 @@ begin
         if fpwam_tag(memory_in) = tag_ref_t and fpwam_value(memory_in) /= fpwam_value(word_reg) then
           nx_state <= read_t;
         else
-          nx_state <= idle_t;
+          nx_state <= done_t;
         end if;
+      when done_t =>
+        nx_state <= idle_t;
       when others =>
         null;
     end case;
@@ -105,10 +111,6 @@ begin
    case cr_state is
      when idle_t =>
       if start_deref = '1' then
-        if fpwam_tag(start_word) /= tag_ref_t then
-          done <= '1';
-          -- res_out <= start_word;
-        end if;
         wr_word    <= '1';
         word_comb  <= start_word;
       end if;
@@ -116,11 +118,9 @@ begin
       rd_mem <= '1';
      when check_t =>
       word_comb  <= memory_in;
-      if not(fpwam_tag(memory_in) = tag_ref_t and fpwam_value(memory_in) /= fpwam_value(word_reg)) then
-        -- res_out    <= memory_in;
-        done       <= '1';
-      end if;
       wr_word    <= '1';
+     when done_t =>
+      done <= '1';
     when others =>
       null;
     end case;

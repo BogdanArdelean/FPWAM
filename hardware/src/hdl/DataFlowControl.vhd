@@ -245,6 +245,9 @@ begin
           rd_mem_port2 <= '1';
           wr_mem_port1 <= '1';
           wr_mem_port2 <= '1';
+
+          wr_mode_reg <= '1';
+          mode_value  <= mode_write_t;
         end if;
       when get_structure_t3 => -- refactor at bind input!!!
         bind       <= '1';             -- bind(
@@ -280,6 +283,8 @@ begin
           when mode_read_t =>
             mem_addr_input2   <= MA_S_t;
             rd_mem_port2      <= '1';
+            wr_s_reg    <= '1';
+            s_reg_input <= SI_p1_t;
             if instruction(0) = '1' then -- if value is on stack. Issue read.
               mem_addr_input1 <= MA_stack_addr_t;
               rd_mem_port1    <= '1';
@@ -297,8 +302,6 @@ begin
               h_input         <= HI_p1_t;
             end if;
         end case;
-        wr_s_reg    <= '1';
-        s_reg_input <= SI_p1_t;
      when unify_value_t2 =>
         if mode_reg = mode_read_t then
           start_unify     <= '1';
@@ -327,6 +330,9 @@ begin
         if mode_reg = mode_read_t then
           mem_addr_input1 <= MA_S_t;
           rd_mem_port1    <= '1';
+
+          wr_s_reg    <= '1';
+          s_reg_input <= SI_p1_t;
         else
           mem_addr_input1 <= MA_H_t;
           mem_input1      <= MI_ref_H_t;
