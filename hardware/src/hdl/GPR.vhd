@@ -29,11 +29,15 @@ entity GPR is
     --Common
     clk           : in std_logic;
 
-    address       : in std_logic_vector(kAddressWidth - 1 downto 0);
-    wr            : in std_logic;
-    input_word    : in std_logic_vector(kWordWidth - 1 downto 0);
+    address1       : in std_logic_vector(kAddressWidth - 1 downto 0);
+    wr1            : in std_logic;
+    input_word1    : in std_logic_vector(kWordWidth - 1 downto 0);
+    output_word1   : out std_logic_vector(kWordWidth - 1 downto 0);
 
-    output_word   : out std_logic_vector(kWordWidth - 1 downto 0)
+    address2       : in std_logic_vector(kAddressWidth - 1 downto 0);
+    wr2            : in std_logic;
+    input_word2    : in std_logic_vector(kWordWidth - 1 downto 0);
+    output_word2   : out std_logic_vector(kWordWidth - 1 downto 0)
   );
 end GPR;
 
@@ -47,11 +51,16 @@ begin
 WRITE_PROCESS: process(clk)
 begin
   if rising_edge(clk) then
-    if wr = '1' then
-      RAM(to_integer(unsigned(address))) <= input_word;
+    if wr1 = '1' then
+      RAM(to_integer(unsigned(address1))) <= input_word1;
+    end if;
+    if wr2 = '1' then
+      RAM(to_integer(unsigned(address2))) <= input_word2;
     end if;
   end if;
 end process;
 
-output_word <= RAM(to_integer(unsigned(address)));
+output_word1 <= RAM(to_integer(unsigned(address1)));
+output_word2 <= RAM(to_integer(unsigned(address2)));
+
 end Behavioral;

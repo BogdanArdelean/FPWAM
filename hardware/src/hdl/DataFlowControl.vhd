@@ -29,7 +29,7 @@ entity DataFlowControl is
     rst               : in std_logic;
 
     -- interface
-    instruction       : in std_logic_vector(kInstructionWidth -1 downto 0);
+    instruction       : in std_logic_vector(kWamInstructionWidth -1 downto 0);
     instruction_valid : in std_logic;
     mem_obj           : in std_logic_vector(kWamWordWidth -1 downto 0);
     deref_done        : in std_logic;
@@ -67,23 +67,40 @@ entity DataFlowControl is
     wr_h_reg          : out std_logic;
     h_input           : out h_input_t;
 
-    wr_gpr            : out std_logic;
-    gpr_input         : out GPR_input_t;
+    wr_gpr1            : out std_logic;
+    gpr_input1         : out gpr_input_t;
+
+    wr_gpr2            : out std_logic;
+    gpr_input2         : out gpr_input_t;
+
 
     start_unify       : out std_logic;
     unify_input_a     : out unify_input_t;
-    unify_input_b     : out unify_input_t
-  );
+    unify_input_b     : out unify_input_t;
+
+    p_input           : out p_input_t;
+    p_wr              : out std_logic;
+    cp_wr             : out std_logic;
+    nrargs_wr         : out std_logic
+   );
 end DataFlowControl;
 
 architecture Behavioral of DataFlowControl is
 -- FSM
-type state_t is (idle_t, next_instr_t,
-                put_structure_t,
-                get_structure_t, get_structure_t2, get_structure_t3,
-                unify_variable_t, unify_variable_t2,
-                unify_value_t, unify_value_t2,
-                fail_t);
+type state_t is (idle_t, next_instr_t
+                ,put_structure_t
+                ,get_structure_t, get_structure_t2, get_structure_t3
+                ,unify_variable_t, unify_variable_t2
+                ,unify_value_t, unify_value_t2
+                ,put_variable_X_t
+                ,put_variable_Y_t
+                ,put_value_t, put_value_t2
+                ,get_variable_t
+                ,get_value_t, get_value_t2
+                ,call_t
+                ,proceed_t
+                ,fail_t
+                );
 
 signal cr_state, nx_state, decoded_state : state_t;
 
@@ -95,15 +112,29 @@ begin
   begin
     decoded_state <= idle_t;
     if instruction_valid = '1' then
-      case instruction(31 downto 29) is
-        when "000" =>
+      case fpwam_instr(instruction) is
+        when i_put_structure_t =>
           decoded_state <= put_structure_t;
-        when "001" =>
+        when i_get_structure_t =>
           decoded_state <= get_structure_t;
-        when "010" =>
+        when i_unify_variable_t =>
           decoded_state <= unify_variable_t;
-        when "011" =>
+        when i_unify_value_t =>
           decoded_state <= unify_value_t;
+        when i_put_variable_X_t =>
+          decoded_state <= put_variable_X_t;
+        when i_put_variable_Y_t =>
+          decoded_state <= put_variable_Y_t;
+        when i_put_value_t =>
+          decoded_state <= put_value_t;
+        when i_get_variable_t =>
+          decoded_state <= get_variable_t;
+        when i_get_value_t =>
+          decoded_state <= get_value_t;
+        when i_call_t =>
+          decoded_state <= call_t;
+        when i_proceed_t =>
+          decoded_state <= proceed_t;
         when others =>
           decoded_state <= idle_t;
       end case;
@@ -179,6 +210,30 @@ begin
         else
           nx_state <= next_instr_t;
         end if;
+      when put_variable_X_t =>
+        nx_state <= next_instr_t;
+      when put_variable_Y_t =>
+        nx_state <= next_instr_t;
+      when put_value_t =>
+        if instruction(0) = '1' then -- value on stack
+          nx_state <= put_value_t2;
+        else
+          nx_state <= next_instr_t;
+        end if;
+      when put_value_t2 =>
+        nx_state <= next_instr_t;
+      when get_variable_t =>
+        nx_state <= next_instr_t;
+      when get_value_t =>
+        nx_state <= get_value_t2;
+      when get_value_t2 =>
+        if unify_done = '1' then
+          nx_state <= next_instr_t;
+        end if;
+      when call_t =>
+        nx_state <= next_instr_t;
+      when proceed_t =>
+        nx_state <= next_instr_t;
       when others => null;
     end case;
   end process NEXT_STATE_DECODE;
@@ -207,15 +262,22 @@ begin
     trail_input      <= TI_bind_output_t;
     wr_h_reg         <= '0';
     h_input          <= HI_p1_t;
-    wr_gpr           <= '0';
-    gpr_input        <= GPRI_ref_H_t;
+    wr_gpr1           <= '0';
+    gpr_input1        <= GPRI_ref_H_t;
+    wr_gpr2           <= '0';
+    gpr_input2        <= GPRI_ref_H_t;
     start_unify      <= '0';
     unify_input_a    <= UI_GPR_t;
     unify_input_b    <= UI_GPR_t;
-
+    p_input          <= PI_p1_t;
+    p_wr             <= '0';
+    cp_wr            <= '0';
+    nrargs_wr        <= '0';
     case cr_state is
       when next_instr_t =>
         get_instruction <= '1';
+        p_wr            <= '1';
+        p_input         <= PI_p1_t;
       when idle_t =>
         null;
       when get_structure_t => -- deref(Ai)
@@ -273,8 +335,8 @@ begin
         wr_h_reg  <= '1';
         h_input   <= HI_p1_t;
 
-        wr_gpr    <= '1';
-        gpr_input <= GPRI_str_H_t;
+        wr_gpr1    <= '1';
+        gpr_input1 <= GPRI_str_H_t;
 
         wr_mode_reg <= '1';
         mode_value  <= mode_write_t;
@@ -346,8 +408,8 @@ begin
             mem_input2      <= MI_ref_H_t;
             wr_mem_port2    <= '1';
           else
-            wr_gpr          <= '1';
-            gpr_input       <= GPRI_ref_H_t;
+            wr_gpr1          <= '1';
+            gpr_input1       <= GPRI_ref_H_t;
           end if;
         end if;
      when unify_variable_t2 =>
@@ -357,10 +419,78 @@ begin
             mem_input2      <= MI_mem_port1_t;
             wr_mem_port2    <= '1';
           else
-            gpr_input       <= GPRI_mem_port1_t;
-            wr_gpr          <= '1';
+            gpr_input1       <= GPRI_mem_port1_t;
+            wr_gpr1          <= '1';
           end if;
         end if;
+      when put_variable_X_t =>
+        wr_gpr1 <= '1';
+        wr_gpr2 <= '1';
+
+        gpr_input1 <= GPRI_ref_H_t;
+        gpr_input2 <= GPRI_ref_H_t;
+
+        wr_mem_port1    <= '1';
+        mem_addr_input1 <= MA_H_t;
+        mem_input1     <= MI_ref_H_t;
+
+        wr_h_reg <= '1';
+        h_input  <= HI_p1_t;
+      when put_variable_Y_t => -- TODO: make addr logic in TopLevel
+        wr_gpr1    <= '1';
+        gpr_input1 <= GPRI_ref_addr_t;
+
+        wr_mem_port1    <= '1';
+        mem_input1     <= MI_ref_addr_t;
+        mem_addr_input1 <= MA_addr_t;
+      when put_value_t =>
+        if instruction(0) = '1' then -- value on stack
+          rd_mem_port1    <= '1';
+          mem_addr_input1 <= MA_stack_addr_t;
+        else
+          wr_gpr1    <= '1';
+          gpr_input1 <= GPRI_gpr2_t;
+        end if;
+      when put_value_t2 =>
+        wr_gpr1    <= '1';
+        gpr_input1 <= GPRI_mem_port1_t;
+      when get_variable_t =>
+        if instruction(0) = '1' then
+          wr_mem_port1    <= '1';
+          mem_input1     <= MI_GPR_t;
+          mem_addr_input1 <= MA_stack_addr_t;
+        else
+          gpr_input1 <= GPRI_gpr2_t;
+          wr_gpr1    <= '1';
+        end if;
+      when get_value_t =>
+        if instruction(0) = '1' then
+          rd_mem_port1    <= '1';
+          mem_addr_input1 <= MA_stack_addr_t;
+        end if;
+      when get_value_t2 =>
+        start_unify     <= '1';
+        unify_input_a   <= UI_GPR_t;
+        mem_addr_input1 <= MA_unify_unit_t;
+        mem_addr_input2 <= MA_unify_unit_t;
+        mem_input1      <= MI_unify_unit_t;
+        mem_input2      <= MI_unify_unit_t;
+        bind_port1      <= BI_unify_unit_t;
+        bind_port2      <= BI_unify_unit_t;
+        deref_input     <= DI_unify_unit_t;
+        if instruction(0) = '1' then -- value on stack
+          unify_input_b <= UI_mem_port1_t;
+        else
+          unify_input_b <= UI_GPR_t;
+        end if;
+      when call_t =>
+        p_input   <= PI_instr_t;
+        p_wr      <= '1';
+        cp_wr     <= '1';
+        nrargs_wr <= '1';
+      when proceed_t =>
+        p_input <= PI_CP_t;
+        p_wr    <= '1';
      when others => null;
    end case;
  end process OUTPUT_DECODE;
