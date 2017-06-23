@@ -196,7 +196,7 @@ begin
         if mode_reg = mode_read_t then
           nx_state <= unify_value_t2;
         else
-          if instruction(0) = '1' then -- on stack need 2 cycles
+          if instruction(26) = '1' then -- on stack need 2 cycles
             nx_state <= unify_value_t2;
           else
             nx_state <= next_instr_t;
@@ -215,7 +215,7 @@ begin
       when put_variable_Y_t =>
         nx_state <= next_instr_t;
       when put_value_t =>
-        if instruction(0) = '1' then -- value on stack
+        if instruction(26) = '1' then -- value on stack
           nx_state <= put_value_t2;
         else
           nx_state <= next_instr_t;
@@ -347,12 +347,12 @@ begin
             rd_mem_port2      <= '1';
             wr_s_reg    <= '1';
             s_reg_input <= SI_p1_t;
-            if instruction(0) = '1' then -- if value is on stack. Issue read.
+            if instruction(26) = '1' then -- if value is on stack. Issue read.
               mem_addr_input1 <= MA_stack_addr_t;
               rd_mem_port1    <= '1';
             end if;
           when mode_write_t =>
-            if instruction(0) = '1' then -- value on stack. Issue read.
+            if instruction(26) = '1' then -- value on stack. Issue read.
               mem_addr_input1 <= MA_stack_addr_t;
               rd_mem_port1    <= '1';
             else
@@ -375,7 +375,7 @@ begin
           bind_port1      <= BI_unify_unit_t;
           bind_port2      <= BI_unify_unit_t;
           deref_input     <= DI_unify_unit_t;
-          if instruction(0) = '1' then -- value on stack
+          if instruction(26) = '1' then -- value on stack
             unify_input_b <= UI_mem_port1_t;
           else
             unify_input_b <= UI_GPR_t;
@@ -403,7 +403,7 @@ begin
           wr_h_reg        <= '1';
           h_input         <= HI_p1_t;
 
-          if instruction(0) = '1' then --value on stack
+          if instruction(26) = '1' then --value on stack
             mem_addr_input2 <= MA_stack_addr_t;
             mem_input2      <= MI_ref_H_t;
             wr_mem_port2    <= '1';
@@ -414,7 +414,7 @@ begin
         end if;
      when unify_variable_t2 =>
         if mode_reg = mode_read_t then
-          if instruction(0) = '1' then
+          if instruction(26) = '1' then
             mem_addr_input2 <= MA_stack_addr_t;
             mem_input2      <= MI_mem_port1_t;
             wr_mem_port2    <= '1';
@@ -444,7 +444,7 @@ begin
         mem_input1     <= MI_ref_addr_t;
         mem_addr_input1 <= MA_addr_t;
       when put_value_t =>
-        if instruction(0) = '1' then -- value on stack
+        if instruction(26) = '1' then -- value on stack
           rd_mem_port1    <= '1';
           mem_addr_input1 <= MA_stack_addr_t;
         else
@@ -455,7 +455,7 @@ begin
         wr_gpr1    <= '1';
         gpr_input1 <= GPRI_mem_port1_t;
       when get_variable_t =>
-        if instruction(0) = '1' then
+        if instruction(26) = '1' then
           wr_mem_port1    <= '1';
           mem_input1     <= MI_GPR_t;
           mem_addr_input1 <= MA_stack_addr_t;
@@ -464,7 +464,7 @@ begin
           wr_gpr1    <= '1';
         end if;
       when get_value_t =>
-        if instruction(0) = '1' then
+        if instruction(26) = '1' then
           rd_mem_port1    <= '1';
           mem_addr_input1 <= MA_stack_addr_t;
         end if;
@@ -478,7 +478,7 @@ begin
         bind_port1      <= BI_unify_unit_t;
         bind_port2      <= BI_unify_unit_t;
         deref_input     <= DI_unify_unit_t;
-        if instruction(0) = '1' then -- value on stack
+        if instruction(26) = '1' then -- value on stack
           unify_input_b <= UI_mem_port1_t;
         else
           unify_input_b <= UI_GPR_t;

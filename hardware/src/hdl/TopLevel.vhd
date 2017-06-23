@@ -197,27 +197,27 @@ signal NRARGS_wr  : std_logic;
 type instr_mem is array (-1 to 20) of std_logic_vector(kWamInstructionWidth - 1 downto 0);
 signal mem : instr_mem :=
 ("11111100000000000000000000000000"
-,"11111100000011000000000000010010"  -- put_structure h/2, x3
-,"11111100000010000000000000000000"  -- unify_variable x2
-,"11111100000101000000000000000000"  -- unify_variable x5
-,"11111100000100000000000000100001"  -- put_structure f/1, x4
-,"01100000000101000000000000000000"  -- unify_value x5
-,"00000000000001000000000000110011"  -- put_structure p/3, x1
-,"01100000000010000000000000000000"  -- unify_value x2
-,"01100000000011000000000000000000"  -- unify_value x3
-,"01100000000100000000000000000000"  -- unify_value x4
-,"00100000000001000000000000110011"  -- get_structure p/3, x1
-,"01000000000010000000000000000000"  -- unify_variable x2
-,"01000000000011000000000000000000"  -- unify_variable x3
-,"01000000000100000000000000000000"  -- unify_variable x4
-,"00100000000010000000000000100001"  -- get_structure f/1, x2
-,"01000000000101000000000000000000"  -- unify_variable x5
-,"00100000000011000000000000010010"  -- get_structure h/2, x3
-,"01100000000100000000000000000000"  -- unify_value x4
-,"01000000000110000000000000000000"  -- unify_variable x6
-,"00100000000110000000000000100001"  -- get_structure f/1, x6
-,"01000000000111000000000000000000"  -- unify_variable x7
-,"00100000000111000000000001000000"  -- get_structure a/0, x7
+,B"0001_0000000100_00000000000000_0001"  -- put_variable x4, A1
+,B"0000_0000000010_00000000000001_0010"  -- put_structure h/2, A2
+,B"1000_0000000100_00000000000000_0000"  -- unify_value x4
+,B"0111_0000000101_00000000000000_0000"  -- unify_variable x5
+,B"0000_0000000011_00000000000010_0001"  -- put_structure f/1, A3
+,B"1000_0000000101_00000000000000_0000"  -- unify_value x5
+,B"1001_0000000000_00000000001000_0011"  -- call p/3
+,"00000000000000000000000000000000"  -- block
+,B"0100_0000000001_00000000000010_0001"  -- get_structure f/1, A1
+,B"0111_0000000100_00000000000000_0000"  -- unify_variable x4
+,B"0100_0000000010_00000000000001_0010"  -- get_structure h/2, A2
+,B"0111_0000000101_00000000000000_0000"  -- unify_variable x5
+,B"0111_0000000110_00000000000000_0000"  -- unify_variable x6
+,B"0110_0000000101_00000000000000_0011"  -- get_value x5, A3
+,B"0100_0000000110_00000000000010_0001"  -- get_structure f/1, x6
+,B"0111_0000000111_00000000000000_0000"  -- unify_variable x7
+,B"0100_0000000111_00000000000011_0000"  -- get_structure a/0, x7
+,B"1010_0000000000_00000000000000_0000"  -- proceed
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
 );
 signal instruction_counter : unsigned(7 downto 0);
 signal instruction         : std_logic_vector(kWamInstructionWidth -1 downto 0);
@@ -363,13 +363,14 @@ end process;
 
   -- CP REGISTER BEGIN
   CP_wr <= dfc_CP_wr;
+  CP_comb <= P_reg;
   CPREG: process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
         CP_reg <= (others => '0');
       elsif CP_wr = '1' then
-        CP_reg <= P_reg;
+        CP_reg <= CP_comb;
       end if;
     end if;
   end process;
@@ -725,7 +726,7 @@ end process;
     unify_word2 <= (others => '0');
     case dfc_unify_input_b is
       when UI_GPR_t =>
-        unify_word2 <= gpr_output1;
+        unify_word2 <= gpr_output2;
       when UI_mem_port1_t =>
         unify_word2 <= mem_output_1;
       when UI_mem_port2_t =>
@@ -806,7 +807,7 @@ end process;
   dfc_deref1_done        <= deref1_done;
   dfc_mode_reg           <= M_reg;
   dfc_unify_done         <= unify_done;
-  dfc_bind_done          <= bind_done; 
+  dfc_bind_done          <= bind_done;
   DFC: entity work.DataFlowControl(Behavioral)
    port map
    (

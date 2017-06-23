@@ -402,7 +402,7 @@ begin
           end case;
         end if;
       when bind_t =>
-        null;
+        mem_sel <= sel_bind_t;
       when push_list_t =>
         pdl_in_1  <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref1_input))+1), tag_ref_t);
         pdl_in_2  <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref2_input))+1), tag_ref_t);

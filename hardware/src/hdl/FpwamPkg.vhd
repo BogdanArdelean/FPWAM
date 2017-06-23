@@ -43,17 +43,17 @@ package FpwamPkg is
   -- Unify mem input
   type unify_mem_sel_t  is (sel_unify_t, sel_deref_t, sel_bind_t);
 
-  type instruction_t    is (i_put_structure_t   -- put_structure p/n, Xm -> [INSTRNUM][Xm][p][n]
-                           ,i_put_variable_X_t
-                           ,i_put_variable_Y_t
-                           ,i_put_value_t
-                           ,i_get_structure_t
-                           ,i_get_variable_t
-                           ,i_get_value_t
-                           ,i_unify_variable_t
-                           ,i_unify_value_t
-                           ,i_call_t
-                           ,i_proceed_t
+  type instruction_t    is (i_put_structure_t   -- 0000 put_structure p/n, Xm -> [INSTRNUM][Xm][p][n]
+                           ,i_put_variable_X_t  -- 0001
+                           ,i_put_variable_Y_t  -- 0010
+                           ,i_put_value_t       -- 0011
+                           ,i_get_structure_t   -- 0100
+                           ,i_get_variable_t    -- 0101
+                           ,i_get_value_t       -- 0110
+                           ,i_unify_variable_t  -- 0111
+                           ,i_unify_value_t     -- 1000
+                           ,i_call_t            -- 1001
+                           ,i_proceed_t         -- 1010
                            );
   constant kInstrDecodeWidth : integer := 4;
 
@@ -109,12 +109,12 @@ package body FpwamPkg is
 
   function fpwam_instr_addr (word : std_logic_vector) return std_logic_vector is
     begin
-      return word(kWamInstrMemWidth -1 downto 0);
+      return word(kWamInstrMemWidth + kGPRAddressWidth -1 downto kGPRAddressWidth);
   end function;
 
   function fpwam_instr_arity (word : std_logic_vector) return std_logic_vector is
     begin
-      return word(kWamInstrMemWidth + kGPRAddressWidth -1 downto kWamInstrMemWidth);
+      return word(kGPRAddressWidth -1 downto 0);
   end function;
 
 end package body;
