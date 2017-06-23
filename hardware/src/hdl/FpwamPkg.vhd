@@ -13,19 +13,25 @@ package FpwamPkg is
   constant kArityWidth          : natural := kGPRAddressWidth;
   constant kWamInstructionWidth : natural := 32;
   constant kWamInstrMemWidth    : natural := 10;
+  constant kWamHeapStart        : std_logic_vector(kWamAddressWidth -1 downto 0) := (others=>'0');
+  constant kWamStackStart       : std_logic_vector(kWamAddressWidth -1 downto 0) := std_logic_vector(unsigned(2**(kWamAddressWidth-1)+1, kWamAddressWidth));
 
   -- Possible address inputs for memory (eg: MA_H_t => Memory Address from register H)
   type mem_addr_input_t is (MA_H_t, MA_Hplus1_t, MA_deref_unit_t, MA_untag_deref_t, MA_bind_unit_1_t, MA_bind_unit_2_t,
-                            MA_unify_unit_t, MA_stack_addr_t, MA_S_t, MA_addr_t);
+                            MA_unify_unit_t, MA_stack_addr_t, MA_S_t, MA_addr_t, MA_Ep2orB_t, MA_newE_t, MA_newEp1_t, MA_newEp2_t, MA_E_t, MA_Ep1_t);
   -- Possible input sources for memory
-  type mem_port_input_t is ( MI_str_Hplus1_t, MI_constant_t, MI_GPR_t, MI_bind_unit_1_t, MI_bind_unit_2_t, MI_unify_unit_t,
-                             MI_mem_port1_t, MI_mem_port2_t, MI_ref_H_t, MI_ref_addr_t);
+  type mem_port_input_t is ( MI_str_Hplus1_t, MI_constant_t, MI_GPR_t, MI_GPR2_t, MI_bind_unit_1_t, MI_bind_unit_2_t, MI_unify_unit_t,
+                             MI_mem_port1_t, MI_mem_port2_t, MI_ref_H_t, MI_ref_addr_t, MI_E_t, MI_CP_t);
   -- Possible input sources for H register
   type h_input_t        is (HI_p1_t, HI_p2_t);
   -- Possible input sources for S register
   type s_input_t        is (SI_untag_deref_p1_t, SI_p1_t);
   -- Possible input sources for P register
-  type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t);
+  type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t, PI_mem_port1_t, PI_mem_port2_t);
+  -- Possible input sources for E register
+  type e_input_t        is (EI_newE_t, EI_mem_port1_t, EI_mem_port2_t);
+  -- Possible input sources for CP register
+  type cp_input_t       is (CPI_P_t, CPI_mem_port1_t, CPI_mem_port2_t);
   -- Possible input sources for General Purpose Registers
   type GPR_input_t      is (GPRI_ref_H_t, GPRI_str_H_t, GPRI_mem_port1_t, GPRI_mem_port2_t, GPRI_ref_addr_t, GPRI_gpr2_t);
   -- Possible input sources for deref unit
@@ -54,21 +60,22 @@ package FpwamPkg is
                            ,i_unify_value_t     -- 1000
                            ,i_call_t            -- 1001
                            ,i_proceed_t         -- 1010
+                           ,i_allocate_t        -- 1011
+                           ,i_deallocate_t      -- 1100
                            );
   constant kInstrDecodeWidth : integer := 4;
 
-  -- Maybe shoud create for tag unit the same thing?
-  -- Currently isn't necessary.
 
-  -- useful functions
-  function fpwam_tag         (word : std_logic_vector) return tag_t;
-  function fpwam_value       (word : std_logic_vector) return std_logic_vector;
-  function fpwam_word        (word : std_logic_vector; tag : tag_t) return std_logic_vector;
-  function fpwam_functor     (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector;
-  function fpwam_arity       (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector;
-  function fpwam_instr       (word : std_logic_vector(31 downto 0)) return instruction_t;
-  function fpwam_instr_addr  (word : std_logic_vector) return std_logic_vector;
-  function fpwam_instr_arity (word : std_logic_vector) return std_logic_vector;
+  function fpwam_tag           (word : std_logic_vector) return tag_t;
+  function fpwam_value         (word : std_logic_vector) return std_logic_vector;
+  function fpwam_word          (word : std_logic_vector; tag : tag_t) return std_logic_vector;
+  function fpwam_functor       (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector;
+  function fpwam_arity         (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector;
+  function fpwam_instr         (word : std_logic_vector(31 downto 0)) return instruction_t;
+  function fpwam_instr_addr    (word : std_logic_vector) return std_logic_vector;
+  function fpwam_instr_arity   (word : std_logic_vector) return std_logic_vector;
+  function fpwam_var_on_stack  (word : std_logic_vector) return boolean;
+  function fpwam_var_stack_addr(instr : std_logic_vector; E : std_logic_vector) return std_logic_vector;
 end FpwamPkg;
 
 package body FpwamPkg is
@@ -117,4 +124,15 @@ package body FpwamPkg is
       return word(kGPRAddressWidth -1 downto 0);
   end function;
 
+  function fpwam_var_on_stack(word : std_logic_vector) return boolean is
+    begin
+      return word(22) = '1';
+  end function;
+
+  function fpwam_var_stack_addr(instr : std_logic_vector; E : std_logic_vector) return std_logic_vector is
+    variable result : std_logic_vector(kWamAddressWidth -1 downto 0);
+    begin
+      result := std_logic_vector(unsigned(instr(kGPRAddressWidth + kWamWordWidth - 1 downto kWamWordWidth)) + unsigned(E) + 2);
+      return result;
+  end function;
 end package body;

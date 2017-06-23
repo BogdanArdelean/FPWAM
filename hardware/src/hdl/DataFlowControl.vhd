@@ -81,7 +81,12 @@ entity DataFlowControl is
     p_input           : out p_input_t;
     p_wr              : out std_logic;
     cp_wr             : out std_logic;
-    nrargs_wr         : out std_logic
+    cp_input          : out cp_input_t;
+    nrargs_wr         : out std_logic;
+
+    newE_wr           : out std_logic;
+    E_wr              : out std_logic;
+    e_input           : out e_input_t
    );
 end DataFlowControl;
 
@@ -99,6 +104,8 @@ type state_t is (idle_t, next_instr_t
                 ,get_value_t, get_value_t2
                 ,call_t
                 ,proceed_t
+                ,allocate_t, allocate_t2, allocate_t3, allocate_t4
+                ,deallocate_t, deallocate_t2
                 ,fail_t
                 );
 
@@ -135,6 +142,10 @@ begin
           decoded_state <= call_t;
         when i_proceed_t =>
           decoded_state <= proceed_t;
+        when i_allocate_t =>
+          decoded_state <= allocate_t;
+        when i_deallocate_t =>
+          decoded_state <= deallocate_t;
         when others =>
           decoded_state <= idle_t;
       end case;
@@ -196,7 +207,7 @@ begin
         if mode_reg = mode_read_t then
           nx_state <= unify_value_t2;
         else
-          if instruction(26) = '1' then -- on stack need 2 cycles
+          if fpwam_var_on_stack(instruction) then -- on stack need 2 cycles
             nx_state <= unify_value_t2;
           else
             nx_state <= next_instr_t;
@@ -215,7 +226,7 @@ begin
       when put_variable_Y_t =>
         nx_state <= next_instr_t;
       when put_value_t =>
-        if instruction(26) = '1' then -- value on stack
+        if fpwam_var_on_stack(instruction) then -- value on stack
           nx_state <= put_value_t2;
         else
           nx_state <= next_instr_t;
@@ -233,6 +244,18 @@ begin
       when call_t =>
         nx_state <= next_instr_t;
       when proceed_t =>
+        nx_state <= next_instr_t;
+      when allocate_t =>
+        nx_state <= allocate_t2;
+      when allocate_t2 =>
+        nx_state <= allocate_t3;
+      when allocate_t3 =>
+        nx_state <= allocate_t4;
+      when allocate_t4 =>
+        nx_state <= next_instr_t;
+      when deallocate_t =>
+        nx_state <= deallocate_t2;
+      when deallocate_t2 =>
         nx_state <= next_instr_t;
       when others => null;
     end case;
@@ -272,7 +295,11 @@ begin
     p_input          <= PI_p1_t;
     p_wr             <= '0';
     cp_wr            <= '0';
+    cp_input         <= CPI_P_t;
     nrargs_wr        <= '0';
+    newE_wr          <= '0';
+    E_wr             <= '0';
+    e_input          <= EI_newE_t;
     case cr_state is
       when next_instr_t =>
         get_instruction <= '1';
@@ -347,12 +374,12 @@ begin
             rd_mem_port2      <= '1';
             wr_s_reg    <= '1';
             s_reg_input <= SI_p1_t;
-            if instruction(26) = '1' then -- if value is on stack. Issue read.
+            if fpwam_var_on_stack(instruction) then -- if value is on stack. Issue read.
               mem_addr_input1 <= MA_stack_addr_t;
               rd_mem_port1    <= '1';
             end if;
           when mode_write_t =>
-            if instruction(26) = '1' then -- value on stack. Issue read.
+            if fpwam_var_on_stack(instruction) then -- value on stack. Issue read.
               mem_addr_input1 <= MA_stack_addr_t;
               rd_mem_port1    <= '1';
             else
@@ -375,7 +402,7 @@ begin
           bind_port1      <= BI_unify_unit_t;
           bind_port2      <= BI_unify_unit_t;
           deref_input     <= DI_unify_unit_t;
-          if instruction(26) = '1' then -- value on stack
+          if fpwam_var_on_stack(instruction) then -- value on stack
             unify_input_b <= UI_mem_port1_t;
           else
             unify_input_b <= UI_GPR_t;
@@ -403,7 +430,7 @@ begin
           wr_h_reg        <= '1';
           h_input         <= HI_p1_t;
 
-          if instruction(26) = '1' then --value on stack
+          if fpwam_var_on_stack(instruction) then --value on stack
             mem_addr_input2 <= MA_stack_addr_t;
             mem_input2      <= MI_ref_H_t;
             wr_mem_port2    <= '1';
@@ -414,7 +441,7 @@ begin
         end if;
      when unify_variable_t2 =>
         if mode_reg = mode_read_t then
-          if instruction(26) = '1' then
+          if fpwam_var_on_stack(instruction) then
             mem_addr_input2 <= MA_stack_addr_t;
             mem_input2      <= MI_mem_port1_t;
             wr_mem_port2    <= '1';
@@ -442,9 +469,9 @@ begin
 
         wr_mem_port1    <= '1';
         mem_input1     <= MI_ref_addr_t;
-        mem_addr_input1 <= MA_addr_t;
+        mem_addr_input1 <= MA_stack_addr_t;
       when put_value_t =>
-        if instruction(26) = '1' then -- value on stack
+        if fpwam_var_on_stack(instruction) then -- value on stack
           rd_mem_port1    <= '1';
           mem_addr_input1 <= MA_stack_addr_t;
         else
@@ -452,19 +479,19 @@ begin
           gpr_input1 <= GPRI_gpr2_t;
         end if;
       when put_value_t2 =>
-        wr_gpr1    <= '1';
-        gpr_input1 <= GPRI_mem_port1_t;
+        wr_gpr2    <= '1';
+        gpr_input2 <= GPRI_mem_port1_t;
       when get_variable_t =>
-        if instruction(26) = '1' then
+        if fpwam_var_on_stack(instruction) then
           wr_mem_port1    <= '1';
-          mem_input1     <= MI_GPR_t;
+          mem_input1     <= MI_GPR2_t;
           mem_addr_input1 <= MA_stack_addr_t;
         else
           gpr_input1 <= GPRI_gpr2_t;
           wr_gpr1    <= '1';
         end if;
       when get_value_t =>
-        if instruction(26) = '1' then
+        if fpwam_var_on_stack(instruction) then
           rd_mem_port1    <= '1';
           mem_addr_input1 <= MA_stack_addr_t;
         end if;
@@ -478,7 +505,7 @@ begin
         bind_port1      <= BI_unify_unit_t;
         bind_port2      <= BI_unify_unit_t;
         deref_input     <= DI_unify_unit_t;
-        if instruction(26) = '1' then -- value on stack
+        if fpwam_var_on_stack(instruction) then -- value on stack
           unify_input_b <= UI_mem_port1_t;
         else
           unify_input_b <= UI_GPR_t;
@@ -491,6 +518,37 @@ begin
       when proceed_t =>
         p_input <= PI_CP_t;
         p_wr    <= '1';
+      when allocate_t =>
+        rd_mem_port1     <= '1';
+        mem_addr_input1  <= MA_Ep2orB_t;
+      when allocate_t2 =>
+        newE_wr <= '1';
+      when allocate_t3 =>
+        mem_addr_input1 <= MA_newE_t;
+        mem_input1      <= MI_E_t;
+        wr_mem_port1    <= '1';
+
+        mem_addr_input2 <= MA_newEp1_t;
+        mem_input2      <= MI_CP_t;
+        wr_mem_port2    <= '1';
+      when allocate_t4 =>
+        mem_addr_input1 <= MA_newEp2_t;
+        mem_input1      <= MI_constant_t;
+        wr_mem_port1    <= '1';
+
+        E_wr <= '1';
+      when deallocate_t =>
+        rd_mem_port1     <= '1';
+        mem_addr_input1  <= MA_E_t;
+
+        rd_mem_port2     <= '1';
+        mem_addr_input2  <= MA_Ep1_t;
+      when deallocate_t2 =>
+        E_wr     <= '1';
+        e_input  <= EI_mem_port1_t;
+
+        p_wr    <= '1';
+        p_input <= PI_mem_port2_t;
      when others => null;
    end case;
  end process OUTPUT_DECODE;

@@ -165,7 +165,11 @@ signal dfc_unify_input_b      : unify_input_t;
 signal dfc_P_input            : p_input_t;
 signal dfc_P_wr               : std_logic;
 signal dfc_CP_wr              : std_logic;
+signal dfc_CP_input           : cp_input_t;
 signal dfc_nr_wr              : std_logic;
+signal dfc_newE_wr            : std_logic;
+signal dfc_E_wr               : std_logic;
+signal dfc_E_input            : e_input_t;
 ----- REGISTERS ------
 
 ----- H REGISTER
@@ -188,36 +192,49 @@ signal P_wr     : std_logic;
 signal CP_reg    : std_logic_vector(kWamInstrMemWidth -1 downto 0);
 signal CP_comb   : std_logic_vector(kWamInstrMemWidth -1 downto 0);
 signal CP_wr     : std_logic;
-
 ----- NRARGS REGISTER
 signal NRARGS_reg : std_logic_vector(kGPRAddressWidth -1 downto 0);
 signal NRARGS_wr  : std_logic;
+----- E REGISTER
+signal E_reg  : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal E_comb : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal E_wr   : std_logic;
+----- NewE REGISTER
+signal NewE_reg  : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal NewE_comb : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal NewE_wr   : std_logic;
+----- B register
+signal B_reg  : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal B_comb : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal B_wr   : std_logic;
+
 
 -- TEMPORARYMEMORY
-type instr_mem is array (-1 to 20) of std_logic_vector(kWamInstructionWidth - 1 downto 0);
+type instr_mem is array (-1 to 21) of std_logic_vector(kWamInstructionWidth - 1 downto 0);
 signal mem : instr_mem :=
 ("11111100000000000000000000000000"
-,B"0001_0000000100_00000000000000_0001"  -- put_variable x4, A1
-,B"0000_0000000010_00000000000001_0010"  -- put_structure h/2, A2
-,B"1000_0000000100_00000000000000_0000"  -- unify_value x4
-,B"0111_0000000101_00000000000000_0000"  -- unify_variable x5
-,B"0000_0000000011_00000000000010_0001"  -- put_structure f/1, A3
-,B"1000_0000000101_00000000000000_0000"  -- unify_value x5
-,B"1001_0000000000_00000000001000_0011"  -- call p/3
+,B"0001_0000000011_00000000000000_0001"  -- put_variable x3, A1
+,B"0001_0000000100_00000000000000_0010"  -- put_variable x4, A2
+,B"1001_0000000000_00000000000100_0010"  -- call p/2
 ,"00000000000000000000000000000000"  -- block
-,B"0100_0000000001_00000000000010_0001"  -- get_structure f/1, A1
-,B"0111_0000000100_00000000000000_0000"  -- unify_variable x4
-,B"0100_0000000010_00000000000001_0010"  -- get_structure h/2, A2
-,B"0111_0000000101_00000000000000_0000"  -- unify_variable x5
-,B"0111_0000000110_00000000000000_0000"  -- unify_variable x6
-,B"0110_0000000101_00000000000000_0011"  -- get_value x5, A3
-,B"0100_0000000110_00000000000010_0001"  -- get_structure f/1, x6
-,B"0111_0000000111_00000000000000_0000"  -- unify_variable x7
-,B"0100_0000000111_00000000000011_0000"  -- get_structure a/0, x7
+,B"1011_0000000000_00000000000000_0010"  -- allocate 2		  p(X,Y) :- q(X,Z), r(Z,Y).
+,B"0101_0000000011_00000000000000_0001"  -- get_variable x3, A1
+,B"0101_0000010001_00000000000000_0010"  -- get_variable Y1, A2
+,B"0011_0000000011_00000000000000_0001"  -- put_value x3, A1
+,B"0010_0000010010_00000000000000_0010"  -- put_variable Y2, A2
+,B"1001_0000000000_00000000001111_0010"  -- call q/2
+,B"0011_0000010010_00000000000000_0001"  -- put_value Y2, A1
+,B"0011_0000010001_00000000000000_0010"  -- put_value Y1, A2
+,B"1001_0000000000_00000000010011_0010"  -- call r/2
+,B"1100_0000000000_00000000000000_0000"  -- deallocate
+,"00000000000000000000000000000000"  -- block
+,B"0100_0000000001_00000000000001_0000"  -- get_structure a/0, A1  -- q(a,b). 15
+,B"0100_0000000010_00000000000010_0000"  -- get_structure b/0, A2
 ,B"1010_0000000000_00000000000000_0000"  -- proceed
 ,"00000000000000000000000000000000"  -- block
-,"00000000000000000000000000000000"  -- block
-,"00000000000000000000000000000000"  -- block
+,B"0100_0000000001_00000000000010_0000"  -- get_structure b/0, A1  -- r(b,a). 19
+,B"0100_0000000010_00000000000001_0000"  -- get_structure a/0, A2
+,B"1010_0000000000_00000000000000_0000"  -- proceed
 );
 signal instruction_counter : unsigned(7 downto 0);
 signal instruction         : std_logic_vector(kWamInstructionWidth -1 downto 0);
@@ -300,7 +317,7 @@ end process;
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        H_reg <= (others => '0');
+        H_reg <= kWamHeapStart;
       elsif H_wr = '1' then
         H_reg <= H_comb;
       end if;
@@ -344,6 +361,10 @@ end process;
         P_comb <= CP_reg;
       when PI_instr_t =>
         P_comb <= fpwam_instr_addr(instr_mem_out);
+      when PI_mem_port1_t =>
+        P_comb <= mem_output_1(kWamInstrMemWidth -1 downto 0);
+      when PI_mem_port2_t =>
+  	  	P_comb <= mem_output_2(kWamInstrMemWidth -1 downto 0);
       when others =>
         P_comb <= std_logic_vector(unsigned(P_reg)+1);
     end case;
@@ -361,9 +382,12 @@ end process;
     end if;
   end process;
 
-  -- CP REGISTER BEGIN
+-- CP REGISTER BEGIN
   CP_wr <= dfc_CP_wr;
-  CP_comb <= P_reg;
+  CP_comb <= P_reg        when dfc_CP_input = CPI_P_t else
+             mem_output_1(kWamInstrMemWidth -1 downto 0) when dfc_CP_input = CPI_mem_port1_t else
+             mem_output_2(kWamInstrMemWidth -1 downto 0);
+
   CPREG: process(clk)
   begin
     if rising_edge(clk) then
@@ -384,6 +408,51 @@ end process;
         NRARGS_reg <= (others => '0');
       elsif NRARGS_wr = '1' then
         NRARGS_reg <= fpwam_instr_arity(instr_mem_out);
+      end if;
+    end if;
+  end process;
+
+-- E REGISTER BEGIN
+  E_wr   <= dfc_E_wr;
+  E_comb <=   NewE_reg     when dfc_E_input = EI_newE_t else
+              mem_output_1(kWamAddressWidth -1 downto 0) when dfc_E_input = EI_mem_port1_t else
+              mem_output_2(kWamAddressWidth -1 downto 0);
+  EREG: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        E_reg <= kWamStackStart;
+      elsif E_wr = '1' then
+        E_reg <= E_comb;
+      end if;
+    end if;
+  end process;
+
+-- NewE REGISTER BEGIN
+  NewE_wr <= dfc_newE_wr;
+  NewE_comb  <=   std_logic_vector(unsigned(mem_output_1) + unsigned(E_reg) + 3) when E_reg > B_reg
+else std_logic_vector(unsigned(mem_output_1) + unsigned(B_reg) + 7);
+  NEWEREG: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        NewE_reg <= kWamStackStart;
+      elsif NewE_wr = '1' then
+        NewE_reg <= NewE_comb;
+      end if;
+    end if;
+  end process;
+
+-- B REGISTER BEGIN
+  B_wr <= '0';
+  B_comb <= (others => '0');
+  BREG: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        B_reg <= kWamStackStart;
+      elsif B_wr = '1' then
+        B_reg <= B_comb;
       end if;
     end if;
   end process;
@@ -420,11 +489,27 @@ end process;
       when MA_unify_unit_t =>
         mem_addr1 <= unifyComb_mem_addr1;
       when MA_stack_addr_t => -- TODO
-        mem_addr1 <= (others => '0');
+        mem_addr1 <= fpwam_var_stack_addr(dfc_instruction_in, E_reg);
       when MA_S_t =>
         mem_addr1 <= S_reg;
       when MA_untag_deref_t =>
         mem_addr1 <= fpwam_value(deref1_res_out);
+      when MA_Ep2orB_t =>
+        if E_reg > B_reg then
+          mem_addr1 <= std_logic_vector(unsigned(E_reg)+1);
+        else
+          mem_addr1 <= B_reg;
+        end if;
+      when MA_newE_t =>
+        mem_addr1 <= NewE_reg;
+      when MA_newEp1_t =>
+        mem_addr1 <= std_logic_vector(unsigned(NewE_reg)+1);
+      when MA_newEp2_t =>
+        mem_addr1 <= std_logic_vector(unsigned(NewE_reg)+2);
+      when MA_E_t =>
+        mem_addr1 <= E_reg;
+      when MA_Ep1_t =>
+        mem_addr1 <= std_logic_vector(unsigned(E_reg)+1);
       when others =>
         null;
     end case;
@@ -447,11 +532,27 @@ end process;
       when MA_unify_unit_t =>
         mem_addr2 <= unifyComb_mem_addr2;
       when MA_stack_addr_t => -- TODO
-        mem_addr2 <= (others => '0');
+        mem_addr2 <= fpwam_var_stack_addr(dfc_instruction_in, E_reg);
       when MA_S_t =>
         mem_addr2 <= S_reg;
       when MA_untag_deref_t =>
         mem_addr2 <= fpwam_value(deref1_res_out);
+        when MA_Ep2orB_t =>
+          if E_reg > B_reg then
+            mem_addr2 <= std_logic_vector(unsigned(E_reg)+1);
+          else
+            mem_addr2 <= B_reg;
+          end if;
+        when MA_newE_t =>
+          mem_addr2 <= NewE_reg;
+        when MA_newEp1_t =>
+          mem_addr2 <= std_logic_vector(unsigned(NewE_reg)+1);
+        when MA_newEp2_t =>
+          mem_addr2 <= std_logic_vector(unsigned(NewE_reg)+2);
+        when MA_E_t =>
+          mem_addr2 <= E_reg;
+        when MA_Ep1_t =>
+          mem_addr2 <= std_logic_vector(unsigned(E_reg)+1);
       when others =>
         null;
     end case;
@@ -467,6 +568,8 @@ end process;
         mem_input_1 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
       when MI_GPR_t =>
         mem_input_1 <= gpr_output1;
+      when MI_GPR2_t =>
+  	  	mem_input_1 <= gpr_output2;
       when MI_bind_unit_1_t =>
         mem_input_1 <= bind_mem_word1;
       when MI_bind_unit_2_t =>
@@ -477,6 +580,12 @@ end process;
         mem_input_1 <= fpwam_word(H_reg, tag_ref_t);
       when MI_mem_port2_t =>
         mem_input_1 <= mem_output_2;
+      when MI_E_t =>
+        mem_input_1 <= "00"&E_reg; -- TEMPORARY FIX
+      when MI_CP_t =>
+        mem_input_1 <= "00000000"&CP_reg; -- TEMPORARY FIX
+      when MI_ref_addr_t =>
+  	  	mem_input_1 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
       when others =>
         null;
     end case;
@@ -492,6 +601,8 @@ end process;
         mem_input_2 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
       when MI_GPR_t =>
         mem_input_2 <= gpr_output1;
+      when MI_GPR2_t =>
+  	  	mem_input_2 <= gpr_output2;
       when MI_bind_unit_1_t =>
         mem_input_2 <= bind_mem_word1;
       when MI_bind_unit_2_t =>
@@ -502,6 +613,12 @@ end process;
         mem_input_2 <= fpwam_word(H_reg, tag_ref_t);
       when MI_mem_port1_t =>
         mem_input_2 <= mem_output_1;
+      when MI_E_t =>
+        mem_input_2 <= "00"&E_reg;
+      when MI_CP_t =>
+        mem_input_2 <= "00000000"&CP_reg;
+      when MI_ref_addr_t =>
+  	  	mem_input_2 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
       when others =>
         null;
     end case;
@@ -546,6 +663,8 @@ end process;
         gpr_input1 <= mem_output_2;
       when GPRI_str_H_t =>
         gpr_input1 <= fpwam_word(H_reg, tag_str_t);
+      when GPRI_ref_addr_t =>
+  	  	gpr_input1 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
       when others =>
         null;
     end case;
@@ -559,6 +678,10 @@ end process;
     case dfc_gpr_input2 is
       when GPRI_ref_H_t =>
         gpr_input2 <= fpwam_word(H_reg, tag_ref_t);
+      when GPRI_mem_port1_t =>
+          gpr_input2 <= mem_output_1;
+      when GPRI_ref_addr_t =>
+  	  	gpr_input2 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
       when others =>
         null;
     end case;
@@ -851,7 +974,11 @@ end process;
     ,p_input            => dfc_P_input
     ,p_wr               => dfc_P_wr
     ,cp_wr              => dfc_CP_wr
+    ,cp_input           => dfc_CP_input
     ,nrargs_wr          => dfc_nr_wr
+    ,newE_wr            => dfc_newE_wr
+    ,E_wr               => dfc_E_wr
+    ,e_input            => dfc_E_input
    );
 -- DFC END
 
