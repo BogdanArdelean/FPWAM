@@ -36,6 +36,7 @@ entity DataFlowControl is
     mode_reg          : in wam_mode_t;
     unify_done        : in std_logic;
     bind_done         : in std_logic;
+    nr_args           : in std_logic_vector(kGPRAddressWidth -1 downto 0);
 
     get_instruction   : out std_logic;
 
@@ -68,9 +69,11 @@ entity DataFlowControl is
     h_input           : out h_input_t;
 
     wr_gpr1            : out std_logic;
+    gpr_addr1          : out GPR_addr_input_t;
     gpr_input1         : out gpr_input_t;
 
     wr_gpr2            : out std_logic;
+    gpr_addr2          : out GPR_addr_input_t;
     gpr_input2         : out gpr_input_t;
 
 
@@ -83,14 +86,29 @@ entity DataFlowControl is
     cp_wr             : out std_logic;
     cp_input          : out cp_input_t;
     nrargs_wr         : out std_logic;
-
+    nrargs_input      : out nrargs_input_t;
     newE_wr           : out std_logic;
     E_wr              : out std_logic;
-    e_input           : out e_input_t
+    e_input           : out e_input_t;
+
+    b_input           : out b_input_t;
+    b_wr              : out std_logic;
+    newB_wr           : out std_logic;
+
+    tr_wr             : out std_logic;
+    tr_input          : out tr_input_t;
+
+    hb_wr             : out std_logic;
+    hb_input          : out hb_input_t;
+    i                 : out unsigned(kWamAddressWidth -1 downto 0)
    );
 end DataFlowControl;
 
 architecture Behavioral of DataFlowControl is
+
+signal counter : unsigned(kWamAddressWidth -1 downto 0);
+signal count   : std_logic;
+signal rst_cnt : std_logic;
 -- FSM
 type state_t is (idle_t, next_instr_t
                 ,put_structure_t
@@ -106,6 +124,10 @@ type state_t is (idle_t, next_instr_t
                 ,proceed_t
                 ,allocate_t, allocate_t2, allocate_t3, allocate_t4
                 ,deallocate_t, deallocate_t2
+                ,try_me_else_t, try_me_else_t2, try_me_else_t3, try_me_else_t4, try_me_else_t5, try_me_else_t6, try_me_else_t7
+                ,retry_me_else_t
+                ,trust_me_t
+                ,update_delete_common_t
                 ,fail_t
                 );
 
@@ -146,6 +168,12 @@ begin
           decoded_state <= allocate_t;
         when i_deallocate_t =>
           decoded_state <= deallocate_t;
+        when i_try_me_else_t =>
+          decoded_state <= try_me_else_t;
+        when i_retry_me_else_t =>
+          decoded_state <= retry_me_else_t;
+        when i_trust_me_t =>
+          decoded_state <= trust_me_t;
         when others =>
           decoded_state <= idle_t;
       end case;
@@ -257,6 +285,22 @@ begin
         nx_state <= deallocate_t2;
       when deallocate_t2 =>
         nx_state <= next_instr_t;
+      when try_me_else_t =>
+        nx_state <= try_me_else_t2;
+      when try_me_else_t2 =>
+        nx_state <= try_me_else_t3;
+      when try_me_else_t3 =>
+        nx_state <= try_me_else_t4;
+      when try_me_else_t4 =>
+        nx_state <= try_me_else_t5;
+      when try_me_else_t5 =>
+        nx_state <= try_me_else_t6;
+      when try_me_else_t6 =>
+        nx_state <= try_me_else_t7;
+      when try_me_else_t7 =>
+        if counter+2 > nr_args then
+          nx_state <= next_instr_t;
+        end if;
       when others => null;
     end case;
   end process NEXT_STATE_DECODE;
@@ -285,10 +329,12 @@ begin
     trail_input      <= TI_bind_output_t;
     wr_h_reg         <= '0';
     h_input          <= HI_p1_t;
-    wr_gpr1           <= '0';
-    gpr_input1        <= GPRI_ref_H_t;
-    wr_gpr2           <= '0';
-    gpr_input2        <= GPRI_ref_H_t;
+    wr_gpr1          <= '0';
+    gpr_addr1        <= GPRA_instr_t;
+    gpr_input1       <= GPRI_ref_H_t;
+    wr_gpr2          <= '0';
+    gpr_addr2        <= GPRA_instr_t;
+    gpr_input2       <= GPRI_ref_H_t;
     start_unify      <= '0';
     unify_input_a    <= UI_GPR_t;
     unify_input_b    <= UI_GPR_t;
@@ -297,9 +343,18 @@ begin
     cp_wr            <= '0';
     cp_input         <= CPI_P_t;
     nrargs_wr        <= '0';
+    nrargs_input     <= NRARGSI_instr_t;
     newE_wr          <= '0';
     E_wr             <= '0';
     e_input          <= EI_newE_t;
+    b_input          <= BRI_newB_t;
+    b_wr             <= '0';
+    newB_wr          <= '0';
+    tr_wr            <= '0';
+    tr_input         <= TRI_Trp1_t;
+    hb_wr            <= '0';
+    hb_input         <= HBI_H_t;
+    i                <= 0;
     case cr_state is
       when next_instr_t =>
         get_instruction <= '1';
@@ -549,7 +604,117 @@ begin
 
         p_wr    <= '1';
         p_input <= PI_mem_port2_t;
+      when try_me_else_t =>
+        rd_mem_port1 <= '1';
+        mem_addr_input1 <= MA_Ep2orB_t;
+      when try_me_else_t2 =>
+        newB_wr <= '1';
+      when try_me_else_t3 =>
+        mem_addr_input1 <= MA_newB_t;
+        mem_input1      <= MI_NRAGRGS_t;
+        wr_mem_port1    <= '1';
+
+        i <= 1;
+        mem_addr_input2 <= MA_newBNRi_t;
+        mem_input2      <= MI_E_t;
+        wr_mem_port2    <= '1';
+      when try_me_else_t4 =>
+        i <= 2;
+        mem_addr_input1 <= MA_newBNRi_t;
+        mem_input1      <= MI_CP_t;
+        wr_mem_port1    <= '1';
+
+        mem_addr_input2 <= MA_newBNRip1_t;
+        mem_input2      <= MI_B_t;
+        wr_mem_port2    <= '1';
+      when try_me_else_t5 =>
+        i <= 4;
+        mem_addr_input1 <= MA_newBNRi_t;
+        mem_input1      <= MI_constant_t;
+        wr_mem_port1    <= '1';
+
+        mem_addr_input2 <= MA_newBNRip1_t;
+        mem_input2      <= MI_TR_t;
+        wr_mem_port2    <= '1';
+      when try_me_else_t6 =>
+        i <= 6;
+        mem_addr_input1 <= MA_newBNRi_t;
+        mem_input1      <= MI_H_t;
+        wr_mem_port1    <= '1';
+
+        b_input <= BI_newB_t;
+        b_wr    <= '1';
+
+        hb_wr    <= '1';
+        hb_input <= HBI_H_t;
+
+        rst_cnt <= '1';
+      when try_me_else_t7 =>
+        i <= counter;
+        count <= '1';
+        mem_addr_input1 <= MA_newBI_t;
+        mem_input1      <= MI_GPR_t;
+        wr_mem_port1    <= to_std_logic(counter <= nr_args);
+
+        mem_addr_input2 <= MA_newBIp1_t;
+        mem_input2      <= MI_GPR2_t;
+        wr_mem_port2    <= to_std_logic(counter+1 <= nr_args);
+
+        gpr_addr1 <= GPRA_I_t;
+        gpr_addr2 <= GPRA_Ip1_t;
+      when retry_me_else_t =>
+        mem_addr_input1 <= MA_B_t;
+        rd_mem_port1 <= '1';
+
+        hb_input <= HBI_H_t;
+        hb_wr    <= '1';
+      when retry_me_else_t2 =>
+        nrargs_wr    <= '1';
+        nrargs_input <= NRARGSI_mem_port1_t;
+      when retry_me_else_t3 =>
+        i <= 4;
+        wr_mem_port1 <= '1';
+        mem_addr_input1 <= MA_BNRI_t;
+        mem_input1      <= MI_constant_t;
+      when update_delete_common_t =>
+        i <= 1;
+        mem_addr_input1 <= MA_BNRI_t;
+        rd_mem_port1    <= '1';
+
+        mem_addr_input2 <= MA_BNRIp1_t;
+        rd_mem_port1    <= '1';
+      when update_delete_common_t2 =>
+        i <= 5;
+        mem_addr_input1 <= MA_BNRI_t;
+        rd_mem_port1    <= '1';
+
+        mem_addr_input2 <= MA_BNRIp1_t;
+        rd_mem_port1    <= '1';
+
+        E_wr    <= '1';
+        e_input <= EI_mem_port1_t;
+
+        cp_wr    <= '1';
+        cp_input <= CPI_mem_port2_t;
+      when update_delete_common_t3 =>
+        tr_wr    <= '1';
+        tr_input <= TRI_mem_port1_t
+
+        h_wr     <= '1';
+        h_input  <= HI_mem_port2_t;
      when others => null;
    end case;
  end process OUTPUT_DECODE;
+
+ CNTR: process(clk)
+ begin
+   if rising_edge(clk) then
+     if rst_cnt = '1' then
+       counter <= 1;
+     elsif count = '1' then
+       counter <= counter + 2;
+     end if;
+   end if;
+ end process;
+
 end Behavioral;
