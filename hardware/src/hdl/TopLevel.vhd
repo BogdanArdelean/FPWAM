@@ -127,6 +127,7 @@ signal dfc_mode_reg           : wam_mode_t;
 signal dfc_unify_done         : std_logic;
 signal dfc_bind_done          : std_logic;
 signal dfc_nr_args            : std_logic_vector(kGPRAddressWidth -1 downto 0);
+signal dfc_unwind_done        : std_logic;
 signal dfc_get_instruction    : std_logic;
 signal dfc_deref1_start       : std_logic;
 signal dfc_deref1_input       : deref_input_t;
@@ -174,6 +175,7 @@ signal dfc_tr_input           : tr_input_t;
 signal dfc_hb_wr              : std_logic;
 signal dfc_hb_input           : hb_input_t;
 signal dfc_i                  : unsigned(kWamAddressWidth -1 downto 0);
+signal dfc_start_unwind       : std_logic;
 ----- TRAIL -----
 signal trail_start            : std_logic;
 signal trail_address          : std_logic_vector(kWamTrailAddressWidth -1 downto 0);
@@ -193,6 +195,23 @@ signal trailm_output_2        : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal trailm_input_2         : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal trailm_wr_2            : std_logic;
 signal trailm_rd_2            : std_logic;
+----- UNWIND TRAIL ----
+signal untrail_start          : std_logic;
+signal untrail_a1             : std_logic_vector(kWamTrailAddressWidth -1 downto 0);
+signal untrail_a2             : std_logic_vector(kWamTrailAddressWidth -1 downto 0);
+signal untrail_port_1         : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal untrail_port_1_rd      : std_logic;
+signal untrail_addr_1         : std_logic_vector(kWamTrailAddressWidth -1 downto 0);
+signal untrail_port_2         : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal untrail_port_2_rd      : std_logic;
+signal untrail_addr_2         : std_logic_vector(kWamTrailAddressWidth -1 downto 0);
+signal untrail_mem_port_1     : std_logic_vector(kWamWordWidth -1 downto 0);
+signal untrail_mem_port_1_wr  : std_logic;
+signal untrail_mem_addr_1     : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal untrail_mem_port_2     : std_logic_vector(kWamWordWidth -1 downto 0);
+signal untrail_mem_port_2_wr  : std_logic;
+signal untrail_mem_addr_2     : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal untrail_done           : std_logic;
 ----- REGISTERS ------
 ----- H REGISTER
 signal H_reg    : std_logic_vector(kWamAddressWidth -1 downto 0);
@@ -425,7 +444,7 @@ end process;
 
 -- CP REGISTER BEGIN
   CP_wr <= dfc_CP_wr;
-  CP_comb <= P_reg        when dfc_CP_input = CPI_P_t else
+  CP_comb <= P_reg                                       when dfc_CP_input = CPI_P_t else
              mem_output_1(kWamInstrMemWidth -1 downto 0) when dfc_CP_input = CPI_mem_port1_t else
              mem_output_2(kWamInstrMemWidth -1 downto 0);
 
@@ -442,7 +461,7 @@ end process;
 
 -- NRARGS REGISTER BEGIN
   NRARGS_wr   <= dfc_nr_wr;
-  NRARGS_comb <= fpwam_instr_arity(dfc_instruction_in) when dfc_nr_input = NRARGSI_instr_t else
+  NRARGS_comb <= fpwam_instr_arity(dfc_instruction_in)      when dfc_nr_input = NRARGSI_instr_t else
                  mem_output_1(kGPRAddressWidth -1 downto 0) when dfc_nr_input = NRARGSI_mem_port1_t else
                  mem_output_2(kGPRAddressWidth -1 downto 0);
   NRARGSREG: process(clk)
@@ -545,9 +564,11 @@ end process;
 
   mem_port1_wr <= bind_mem_port1_wr
                or dfc_mem_port1_wr;
+               or untrail_mem_port_1_wr;
 
   mem_port2_wr <= bind_mem_port2_wr
                or dfc_mem_port2_wr;
+               or untrail_mem_port_2_wr;
 
   ADDR1MUX: process(deref1_res_out,dfc_mem_addr1, H_reg, deref1_mem_addr1, bind_mem_addr1, bind_mem_addr2, unifyComb_mem_addr1, S_reg)
   begin
@@ -599,6 +620,16 @@ end process;
         mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + dfc_i + 1);
       when MA_B_t =>
         mem_addr1 <= B_reg;
+      when MA_BI_t =>
+        mem_addr1 <= std_logic_vector(unsigned(B_reg) + dfc_i);
+      when MA_BIp1_t =>
+        mem_addr1 <= std_logic_vector(unsigned(B_reg) + dfc_i + 1);
+      when MA_BNRI_t =>
+        mem_addr1 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i);
+      when MA_BNRIp1_t =>
+        mem_addr1 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
+      when MA_unwind_trail_t =>
+        mem_addr1 <= untrail_mem_addr_1;
       when others =>
         null;
     end case;
@@ -654,6 +685,16 @@ end process;
           mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + dfc_i + 1);
         when MA_B_t =>
           mem_addr2 <= B_reg;
+        when MA_BI_t =>
+          mem_addr2 <= std_logic_vector(unsigned(B_reg) + dfc_i);
+        when MA_BIp1_t =>
+          mem_addr2 <= std_logic_vector(unsigned(B_reg) + dfc_i + 1);
+        when MA_BNRI_t =>
+          mem_addr2 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i);
+        when MA_BNRIp1_t =>
+          mem_addr2 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
+        when MA_unwind_trail_t =>
+          mem_addr2 <= untrail_mem_addr_2;
       when others =>
         null;
     end case;
@@ -693,6 +734,8 @@ end process;
         mem_input_1 <= "00000000"&TR_reg; -- TEMPORARY FIX
       when MI_NRAGRGS_t =>
         mem_input_1 <= "00000000000000"&NRARGS_reg; -- TEMPORARY FIX
+      when MI_unwind_trail_t =>
+        mem_input_1 <= untrail_mem_port_1;
       when others =>
         null;
     end case;
@@ -732,6 +775,8 @@ end process;
         mem_input_2 <= "00000000"&TR_reg; -- TEMPORARY FIX
       when MI_NRAGRGS_t =>
         mem_input_2 <= "00000000000000"&NRARGS_reg; -- TEMPORARY FIX
+      when MI_unwind_trail_t =>
+        mem_input_2 <= untrail_port_2;
       when others =>
         null;
     end case;
@@ -1057,6 +1102,7 @@ end process;
     ,unify_done         => dfc_unify_done
     ,bind_done          => dfc_bind_done
     ,nr_args            => dfc_nr_args
+    ,unwind_done        => dfc_unwind_done
     ,get_instruction    => dfc_get_instruction
     ,start_deref        => dfc_deref1_start
     ,deref_input        => dfc_deref1_input
@@ -1104,6 +1150,7 @@ end process;
     ,hb_wr              => dfc_hb_wr
     ,hb_input           => dfc_hb_input
     ,i                  => dfc_i
+    ,start_unwind       => dfc_start_unwind
    );
 -- DFC END
 -- TRAIL BEGIN
@@ -1120,24 +1167,24 @@ TRAILUNIT: entity work.TrailUnit(Behavioral)
  port
  (
    trail          => trail_start
-   trail_address  => trail_address
-   H              => trail_H
-   HB             => trail_HB
-   B              => trail_B
+  ,trail_address  => trail_address
+  ,H              => trail_H
+  ,HB             => trail_HB
+  ,B              => trail_B
 
-   a              => trail_a
-   do_trail       => trail_do
+  ,a              => trail_a
+  ,do_trail       => trail_do
  );
 
 trailm_addr_1  <= TR_reg when dfc_trail_input = TI_bind_output_t else
-                  (others => '0');
+                  untrail_addr_1;
 trailm_input_1 <= trail_a;
 trail_wr_1     <= trail_do;
-trail_rd_1     <= '0';
+trail_rd_1     <= untrail_port_1_rd;
 
-trail,_addr_2 <= (others => '0');
+trail_addr_2  <= untrail_addr_2;
 trail_wr_2    <= '0';
-trail_rd_2    <= '0';
+trail_rd_2    <= untrail_port_2_rd;
 TRAIL: entity work.Memory(Behavioral)
  generic map
  (
@@ -1159,5 +1206,34 @@ TRAIL: entity work.Memory(Behavioral)
   ,wr_port_2     => trailm_wr_2
   ,rd_port_2     => trailm_rd_2
  );
+
+ untrail_start     <= dfc_start_unwind;
+ untrail_a1        <= mem_output_1;
+ untrail_a2        <= TR_reg;
+ untrail_port_1    <= trailm_output_1;
+ untrail_port_2    <= trailm_output_2;
+ UNWINDTRAIL: entity work.UnwindTrailUnit(Behavioral)
+  port map
+  (
+    clk => clk
+   ,rst => rst
+
+   ,start_unwind     => untrail_start
+   ,a1               => untrail_a1
+   ,a2               => untrail_a2
+   ,trail_port_1     => untrail_port_1
+   ,trail_port_1_rd  => untrail_port_1_rd
+   ,trail_addr_1     => untrail_addr_1
+   ,trail_port_2     => untrail_port_2
+   ,trail_port_2_rd  => untrail_port_2_rd
+   ,trail_addr_2     => untrail_addr_2
+   ,mem_port_1       => untrail_mem_port_1
+   ,mem_port_1_wr    => untrail_mem_port_1_wr
+   ,mem_addr_1       => untrail_mem_addr_1
+   ,mem_port_2       => untrail_mem_port_2
+   ,mem_port_2_wr    => untrail_mem_port_2_wr
+   ,mem_addr_2       => untrail_mem_addr_2
+   ,done             => untrail_done
+  );
 
 end Structural;

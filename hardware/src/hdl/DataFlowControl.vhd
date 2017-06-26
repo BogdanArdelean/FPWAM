@@ -37,6 +37,7 @@ entity DataFlowControl is
     unify_done        : in std_logic;
     bind_done         : in std_logic;
     nr_args           : in std_logic_vector(kGPRAddressWidth -1 downto 0);
+    unwind_done       : in std_logic;
 
     get_instruction   : out std_logic;
 
@@ -100,7 +101,8 @@ entity DataFlowControl is
 
     hb_wr             : out std_logic;
     hb_input          : out hb_input_t;
-    i                 : out unsigned(kWamAddressWidth -1 downto 0)
+    i                 : out unsigned(kWamAddressWidth -1 downto 0);
+    start_unwind      : out std_logic
    );
 end DataFlowControl;
 
@@ -171,9 +173,9 @@ begin
         when i_try_me_else_t =>
           decoded_state <= try_me_else_t;
         when i_retry_me_else_t =>
-          decoded_state <= retry_me_else_t;
+          decoded_state <= update_delete_common_t;
         when i_trust_me_t =>
-          decoded_state <= trust_me_t;
+          decoded_state <= update_delete_common_t;
         when others =>
           decoded_state <= idle_t;
       end case;
@@ -301,6 +303,33 @@ begin
         if counter+2 > nr_args then
           nx_state <= next_instr_t;
         end if;
+      when update_delete_common_t =>
+        nx_state <= update_delete_common_t2;
+      when update_delete_common_t2 =>
+        nx_state <= update_delete_common_t3;
+      when update_delete_common_t4 =>
+        if unwind_done = '1' then
+          nx_state <= update_delete_common_t5;
+        end if;
+      when update_delete_common_t5 =>
+        nx_state <= update_delete_common_t6;
+      when update_delete_common_t6 =>
+        if counter+2 > nr_args then
+          case fpwam_instr(instruction) is
+            when i_retry_me_else_t =>
+              nx_state <= retry_me_else_t;
+            when i_trust_me_t =>
+              nx_state <= trust_me_t;
+            when others =>
+              null;
+          end case;
+        end if;
+      when retry_me_else_t =>
+        nx_state <= next_instr_t;
+      when trust_me_t =>
+        nx_state <= trust_me_t2;
+      when trust_me_t2 =>
+        nx_state <= next_instr_t;
       when others => null;
     end case;
   end process NEXT_STATE_DECODE;
@@ -355,6 +384,7 @@ begin
     hb_wr            <= '0';
     hb_input         <= HBI_H_t;
     i                <= 0;
+    start_unwind     <= '0';
     case cr_state is
       when next_instr_t =>
         get_instruction <= '1';
@@ -663,19 +693,29 @@ begin
         gpr_addr1 <= GPRA_I_t;
         gpr_addr2 <= GPRA_Ip1_t;
       when retry_me_else_t =>
-        mem_addr_input1 <= MA_B_t;
-        rd_mem_port1 <= '1';
+        i <= 4;
+        wr_mem_port1    <= '1';
+        mem_addr_input1 <= MA_BNRI_t;
+        mem_input1      <= MI_constant_t;
 
         hb_input <= HBI_H_t;
         hb_wr    <= '1';
-      when retry_me_else_t2 =>
+      when trust_me_t =>
+        i <= 3;
+        rd_mem_port1    <= '1';
+        mem_addr_input1 <= MA_BNRI_t;
+      when trust_me_t2 =>
+        B_wr    <= '1';
+        b_input <= BI_mem_port1_t;
+
+        hb_wr   <= '1';
+        hb_input <= HBI_H_t;
+      when update_delete_start_t =>
+        mem_addr_input1 <= MA_B_t;
+        rd_mem_port1 <= '1';
+      when update_delete_start_t2 =>
         nrargs_wr    <= '1';
         nrargs_input <= NRARGSI_mem_port1_t;
-      when retry_me_else_t3 =>
-        i <= 4;
-        wr_mem_port1 <= '1';
-        mem_addr_input1 <= MA_BNRI_t;
-        mem_input1      <= MI_constant_t;
       when update_delete_common_t =>
         i <= 1;
         mem_addr_input1 <= MA_BNRI_t;
@@ -683,6 +723,8 @@ begin
 
         mem_addr_input2 <= MA_BNRIp1_t;
         rd_mem_port1    <= '1';
+
+        rst_cnt         <= '1';
       when update_delete_common_t2 =>
         i <= 5;
         mem_addr_input1 <= MA_BNRI_t;
@@ -702,6 +744,35 @@ begin
 
         h_wr     <= '1';
         h_input  <= HI_mem_port2_t;
+
+        start_unwind <= '1';
+      when update_delete_common_t4 =>
+        trail_input     <= TI_unwind_trail_t;
+        mem_addr_input1 <= MA_unwind_trail_t;
+        mem_addr_input2 <= MA_unwind_trail_t;
+        mem_input1      <= MI_unwind_trail_t;
+        mem_input2      <= MI_unwind_trail_t;
+      when update_delete_common_t5 =>
+        i <= counter;
+        mem_addr_input1 <= MA_BI_t;
+        rd_mem_port1    <= to_std_logic(counter <= nr_args);
+
+        mem_addr_inpu2  <= MA_BIp1_t;
+        rd_mem_port2    <= to_std_logic(counter+1 <= nr_args);
+      when update_delete_common_t6 =>
+        i <= counter;
+
+        mem_addr_input1 <= MA_BI_t;
+        rd_mem_port1    <= to_std_logic(counter+2 <= nr_args);
+
+        mem_addr_inpu2  <= MA_BIp1_t;
+        rd_mem_port2    <= to_std_logic(counter+3 <= nr_args);
+
+        gpr_addr1  <= GPRA_I_t;
+        gpr_addr2  <= GPRA_Ip1_t;
+
+        gpr_wr1    <= to_std_logic(counter <= nr_args);
+        gpr_wr2    <= to_std_logic(counter+1 <= nr_args);
      when others => null;
    end case;
  end process OUTPUT_DECODE;
