@@ -29,7 +29,6 @@ entity TopLevel is
 end TopLevel;
 
 architecture Structural of TopLevel is
-
 ----- STACK AND HEAP MEMORY ----
 signal mem_addr1     : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal mem_addr2     : std_logic_vector(kWamAddressWidth -1 downto 0);
@@ -257,11 +256,18 @@ signal NewB_wr   : std_logic;
 signal TR_reg   : std_logic_vector(kWamTrailAddressWidth -1 downto 0);
 signal TR_comb  : std_logic_vector(kWamTrailAddressWidth -1 downto 0);
 signal TR_wr    : std_logic;
------- HB register TODO
+------ HB register
 signal HB_reg  : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal HB_comb : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal HB_wr   : std_logic;
-
+------ LOCALFAIL register
+signal LCLFAIL_reg  : std_logic;
+signal LCLFAIL_comb : std_logic;
+signal LCLFAIL_rst  : std_logic;
+------ GLOBALFAIL register
+signal GLBFAIL_reg  : std_logic;
+signal GLBFAIL_comb : std_logic;
+signal GLBFAIL_rst  : std_logic;
 
 -- TEMPORARYMEMORY
 type instr_mem is array (-1 to 21) of std_logic_vector(kWamInstructionWidth - 1 downto 0);
@@ -549,6 +555,29 @@ end process;
         TR_reg <= (others => '0');
       elsif TR_wr = '1' then
         TR_reg <= TR_comb;
+      end if;
+    end if;
+  end process;
+
+  LCLFAIL_comb <= unify_fail;
+  LCLFAIL: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' or LCLFAIL_rst = '1' then
+        LCLFAIL_reg <= '0';
+      else
+        LCLFAIL_reg <= LCLFAIL_reg or LCLFAIL_comb;
+      end if;
+    end if;
+  end process;
+
+  GLBFAIL: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then GLBFAIL_rst = '1' then
+        GLBFAIL_reg <= '0';
+      else
+        GLBFAIL_reg <= GLBFAIL_reg or GLBFAIL_comb;
       end if;
     end if;
   end process;

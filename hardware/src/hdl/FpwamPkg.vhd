@@ -62,24 +62,25 @@ package FpwamPkg is
   -- Unify mem input
   type unify_mem_sel_t  is (sel_unify_t, sel_deref_t, sel_bind_t);
 
-  type instruction_t    is (i_put_structure_t   -- 0000 put_structure p/n, Xm -> [INSTRNUM][Xm][p][n]
-                           ,i_put_variable_X_t  -- 0001
-                           ,i_put_variable_Y_t  -- 0010
-                           ,i_put_value_t       -- 0011
-                           ,i_get_structure_t   -- 0100
-                           ,i_get_variable_t    -- 0101
-                           ,i_get_value_t       -- 0110
-                           ,i_unify_variable_t  -- 0111
-                           ,i_unify_value_t     -- 1000
-                           ,i_call_t            -- 1001
-                           ,i_proceed_t         -- 1010
-                           ,i_allocate_t        -- 1011
-                           ,i_deallocate_t      -- 1100
-                           ,i_try_me_else_t     -- 1101
-                           ,i_retry_me_else_t   -- 1110
-                           ,i_trust_me_t        -- 1111
+  type instruction_t    is (i_nop               -- 00000
+                           ,i_put_structure_t   -- 00001 put_structure p/n, Xm -> [INSTRNUM][Xm][p][n]
+                           ,i_put_variable_X_t  -- 00010
+                           ,i_put_variable_Y_t  -- 00011
+                           ,i_put_value_t       -- 00100
+                           ,i_get_structure_t   -- 00101
+                           ,i_get_variable_t    -- 00110
+                           ,i_get_value_t       -- 00111
+                           ,i_unify_variable_t  -- 01000
+                           ,i_unify_value_t     -- 01001
+                           ,i_call_t            -- 01010
+                           ,i_proceed_t         -- 01011
+                           ,i_allocate_t        -- 01100
+                           ,i_deallocate_t      -- 01101
+                           ,i_try_me_else_t     -- 01110
+                           ,i_retry_me_else_t   -- 01111
+                           ,i_trust_me_t        -- 10000
                            );
-  constant kInstrDecodeWidth : integer := 4;
+  constant kInstrDecodeWidth : integer := 5;
 
 
   function fpwam_tag           (word : std_logic_vector) return tag_t;

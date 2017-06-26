@@ -38,6 +38,13 @@ entity DataFlowControl is
     bind_done         : in std_logic;
     nr_args           : in std_logic_vector(kGPRAddressWidth -1 downto 0);
     unwind_done       : in std_logic;
+    local_fail        : in std_logic;
+    global_fail       : in std_logic;
+    b_reg             : in std_logic_vector(kWamAddressWidth -1 downto 0);
+
+    local_fail_rst    : out std_logic;
+    global_fail_out   : out std_logic;
+    global_fail_rst   : out std_logic;
 
     get_instruction   : out std_logic;
 
@@ -130,7 +137,7 @@ type state_t is (idle_t, next_instr_t
                 ,retry_me_else_t
                 ,trust_me_t
                 ,update_delete_common_t
-                ,fail_t
+                ,backtrack_t
                 );
 
 signal cr_state, nx_state, decoded_state : state_t;
@@ -142,7 +149,7 @@ begin
   DECODE_STATE_FIRST: process(instruction, instruction_valid)
   begin
     decoded_state <= idle_t;
-    if instruction_valid = '1' then
+    if instruction_valid = '1' and global_fail /= '1' then
       case fpwam_instr(instruction) is
         when i_put_structure_t =>
           decoded_state <= put_structure_t;
@@ -200,9 +207,21 @@ begin
     nx_state <= cr_state;
     case cr_state is
       when next_instr_t =>
-        if instruction_valid='1' then
+        if local_fail /= '1' then
           nx_state <= idle_t;
+        else
+          nx_state <= backtrack_t;
         end if;
+      when backtrack_t =>
+        if b_reg = kWamStackStart then
+          nx_state <= idle_t;
+        else
+          nx_state <= backtrack_t2;
+        end if;
+      when backtrack_t2 =>
+        nx_state <= backtrack_t3;
+      when backtrack_t3 =>
+        nx_state <= next_instr_t;
       when idle_t =>
         nx_state <= decoded_state;
       when put_structure_t =>
@@ -218,7 +237,7 @@ begin
         elsif fpwam_tag(mem_obj) = tag_ref_t then
           nx_state <= get_structure_t3;
         else
-          nx_state <= fail_t;
+          nx_state <= backtrack_t;
         end if;
       when get_structure_t3 => -- maybe should wait for trail and bind to finish?
         if bind_done = '1' then
@@ -337,6 +356,9 @@ begin
   OUTPUT_DECODE: process(cr_state, deref_done, mem_obj, instruction, bind_done, mode_reg)
   begin
     --DEFAULT VALUES
+    local_fail_rst   <= '0';
+    global_fail_out  <= '0';
+    global_fail_rst  <= '0';
     get_instruction  <= '0';
     start_deref      <= '0';
     deref_input      <= DI_GPR_t;
@@ -387,9 +409,26 @@ begin
     start_unwind     <= '0';
     case cr_state is
       when next_instr_t =>
-        get_instruction <= '1';
-        p_wr            <= '1';
-        p_input         <= PI_p1_t;
+        if local_fail /= '1' then
+          get_instruction <= '1';
+          p_wr            <= '1';
+          p_input         <= PI_p1_t;
+        end if;
+      when backtrack_t =>
+        if b_reg = kWamStackStart then
+          global_fail_out <= '1';
+        else
+          local_fail_rst  <= '1';
+          rd_mem_port1    <= '1';
+          mem_addr_input1 <= MA_B_t;
+        end if;
+      when backtrack_t2 =>
+        i <= 4;
+        rd_mem_port1    <= '1';
+        mem_addr_input1 <= MA_BI_t;
+      when backtrack_t3 =>
+        p_wr    <= '1';
+        p_input <= PI_mem_port1_t;
       when idle_t =>
         null;
       when get_structure_t => -- deref(Ai)
