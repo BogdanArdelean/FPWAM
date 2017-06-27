@@ -22,9 +22,9 @@ use work.FpwamPkg.all;
 entity TopLevel is
   port
   (
-    clk : in std_logic
-   ;rst : in std_logic
-   ;led : out std_logic_vector(7 downto 0)
+    clk   : in std_logic
+   ;rst_i : in std_logic
+   ;led   : out std_logic_vector(7 downto 0)
   );
 end TopLevel;
 
@@ -122,6 +122,7 @@ signal dfc_unwind_done        : std_logic;
 signal dfc_local_fail         : std_logic;
 signal dfc_global_fail        : std_logic;
 signal dfc_b_reg              : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal dfc_new_b_reg          : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal dfc_local_fail_rst     : std_logic;
 signal dfc_global_fail_out    : std_logic;
 signal dfc_global_fail_rst    : std_logic;
@@ -173,6 +174,8 @@ signal dfc_hb_wr              : std_logic;
 signal dfc_hb_input           : hb_input_t;
 signal dfc_i                  : unsigned(kWamAddressWidth -1 downto 0);
 signal dfc_start_unwind       : std_logic;
+signal dfc_mem_addr1_out      : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal dfc_mem_addr2_out      : std_logic_vector(kWamAddressWidth -1 downto 0);           
 ----- TRAIL -----
 signal trail_start            : std_logic;
 signal trail_address          : std_logic_vector(kWamAddressWidth -1 downto 0);
@@ -305,8 +308,22 @@ signal instruction_valid   : std_logic;
 signal instr_mem_addr : std_logic_vector(kWamInstrMemWidth -1 downto 0);
 signal instr_mem_out  : std_logic_vector(kWamInstructionWidth -1 downto 0);
 signal instr_mem_rd   : std_logic;
+
+signal rst : std_logic := '1';
+
 begin
-led <= dfc_mem_word1(7 downto 0);
+
+RSTPRC: process(clk)
+begin
+    if rising_edge(clk) then
+       rst <= '0';
+    end if;
+end process;
+
+led(0) <= GLBFAIL_reg;
+led(1) <= to_std_logic(fpwam_instr(dfc_instruction_in) = i_nop);
+led(2) <= to_std_logic(unsigned(P_reg) = to_unsigned(3, P_reg'length));
+led(3) <= '1';
 -- INSTRUCTION MEMORY
 instr_mem_addr <= P_reg;
 instr_mem_rd <= dfc_get_instruction;
@@ -604,11 +621,13 @@ end process;
 -- STACK AND HEAP MEMORY BEGIN
   mem_port1_rd <= deref1_mem_port1_rd
                or unify_mem_port1_rd
-               or dfc_mem_port1_rd;
+               or dfc_mem_port1_rd
+               or mem_port1_wr;
 
   mem_port2_rd <= deref2_mem_port2_rd
                or unify_mem_port2_rd
-               or dfc_mem_port2_rd;
+               or dfc_mem_port2_rd
+               or mem_port2_wr;
 
   mem_port1_wr <= bind_mem_port1_wr
                or dfc_mem_port1_wr
@@ -659,28 +678,28 @@ end process;
         mem_addr1 <= std_logic_vector(unsigned(E_reg)+1);
       when MA_newB_t =>
         mem_addr1 <= NewB_reg;
-      when MA_newBNRi_t =>
-        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i);
-      when MA_newBNRip1_t =>
-        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
-      when MA_newBI_t =>
-        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + dfc_i);
-      when MA_newBIp1_t =>
-        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + dfc_i + 1);
+--      when MA_newBNRi_t =>
+--        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i);
+--      when MA_newBNRip1_t =>
+--        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
+--      when MA_newBI_t =>
+--        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + dfc_i);
+--      when MA_newBIp1_t =>
+--        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + dfc_i + 1);
       when MA_B_t =>
         mem_addr1 <= B_reg;
-      when MA_BI_t =>
-        mem_addr1 <= std_logic_vector(unsigned(B_reg) + dfc_i);
-      when MA_BIp1_t =>
-        mem_addr1 <= std_logic_vector(unsigned(B_reg) + dfc_i + 1);
-      when MA_BNRI_t =>
-        mem_addr1 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i);
-      when MA_BNRIp1_t =>
-        mem_addr1 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
+--      when MA_BI_t =>
+--        mem_addr1 <= std_logic_vector(unsigned(B_reg) + dfc_i);
+--      when MA_BIp1_t =>
+--        mem_addr1 <= std_logic_vector(unsigned(B_reg) + dfc_i + 1);
+--      when MA_BNRI_t =>
+--        mem_addr1 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i);
+--      when MA_BNRIp1_t =>
+--        mem_addr1 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
       when MA_unwind_trail_t =>
         mem_addr1 <= untrail_mem_addr_1;
-      when MA_BImem_port1_t =>
-        mem_addr1 <= std_logic_vector(unsigned(fpwam_value(mem_output_1)) + unsigned(B_reg) + dfc_i);
+      when MA_DFC_t =>
+        mem_addr1 <= dfc_mem_addr1_out;
       when others =>
         null;
     end case;
@@ -727,26 +746,28 @@ end process;
           mem_addr2 <= std_logic_vector(unsigned(E_reg)+1);
         when MA_newB_t =>
           mem_addr2 <= NewB_reg;
-        when MA_newBNRi_t =>
-          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i);
-        when MA_newBNRip1_t =>
-          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
-        when MA_newBI_t =>
-          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + dfc_i);
-        when MA_newBIp1_t =>
-          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + dfc_i + 1);
+--        when MA_newBNRi_t =>
+--          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i);
+--        when MA_newBNRip1_t =>
+--          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
+--        when MA_newBI_t =>
+--          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + dfc_i);
+--        when MA_newBIp1_t =>
+--          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + dfc_i + 1);
         when MA_B_t =>
           mem_addr2 <= B_reg;
-        when MA_BI_t =>
-          mem_addr2 <= std_logic_vector(unsigned(B_reg) + dfc_i);
-        when MA_BIp1_t =>
-          mem_addr2 <= std_logic_vector(unsigned(B_reg) + dfc_i + 1);
-        when MA_BNRI_t =>
-          mem_addr2 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i);
-        when MA_BNRIp1_t =>
-          mem_addr2 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
+--        when MA_BI_t =>
+--          mem_addr2 <= std_logic_vector(unsigned(B_reg) + dfc_i);
+--        when MA_BIp1_t =>
+--          mem_addr2 <= std_logic_vector(unsigned(B_reg) + dfc_i + 1);
+--        when MA_BNRI_t =>
+--          mem_addr2 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i);
+--        when MA_BNRIp1_t =>
+--          mem_addr2 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
         when MA_unwind_trail_t =>
           mem_addr2 <= untrail_mem_addr_2;
+        when MA_DFC_t =>
+          mem_addr2 <= dfc_mem_addr2_out; 
       when others =>
         null;
     end case;
@@ -1153,6 +1174,7 @@ end process;
   dfc_local_fail         <= LCLFAIL_reg;
   dfc_global_fail        <= GLBFAIL_reg;
   dfc_b_reg              <= B_reg;
+  dfc_new_b_reg          <= NewB_reg;
   dfc_unwind_done        <= untrail_done;
   DFC: entity work.DataFlowControl(Behavioral)
    port map
@@ -1171,6 +1193,7 @@ end process;
     ,local_fail         => dfc_local_fail
     ,global_fail        => dfc_global_fail
     ,b_reg              => dfc_b_reg
+    ,new_b_reg          => dfc_new_b_reg
     ,local_fail_rst     => dfc_local_fail_rst
     ,global_fail_out    => dfc_global_fail_out
     ,global_fail_rst    => dfc_global_fail_rst
@@ -1222,11 +1245,13 @@ end process;
     ,hb_input           => dfc_hb_input
     ,i                  => dfc_i
     ,start_unwind       => dfc_start_unwind
+    ,mem_addr1          => dfc_mem_addr1_out
+    ,mem_addr2          => dfc_mem_addr2_out
    );
 -- DFC END
 -- TRAIL BEGIN
 trail_start   <= bind_trail;
-trail_address <= TR_reg;
+trail_address <= bind_trail_input;
 trail_H       <= H_reg;
 trail_HB      <= HB_reg;
 trail_B       <= B_reg;
@@ -1251,7 +1276,7 @@ trailm_addr_1  <= TR_reg when dfc_trail_input = TI_bind_output_t else
                   untrail_addr_1;
 trailm_input_1  <= bind_trail_input;
 trailm_wr_1     <= trail_do;
-trailm_rd_1     <= untrail_port_1_rd;
+trailm_rd_1     <= untrail_port_1_rd or trailm_wr_1;
 
 trailm_addr_2  <= untrail_addr_2;
 trailm_wr_2    <= '0';

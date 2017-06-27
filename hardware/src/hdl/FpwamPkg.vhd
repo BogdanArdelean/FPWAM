@@ -15,13 +15,13 @@ package FpwamPkg is
   constant kWamInstructionWidth  : natural := 32;
   constant kWamInstrMemWidth     : natural := 10;
   constant kWamHeapStart         : std_logic_vector(kWamAddressWidth -1 downto 0) := (others=>'0');
-  constant kWamStackStart        : std_logic_vector(kWamAddressWidth -1 downto 0) := std_logic_vector(unsigned(2**(kWamAddressWidth-1)+1, kWamAddressWidth));
+  constant kWamStackStart        : std_logic_vector(kWamAddressWidth -1 downto 0) := std_logic_vector(to_unsigned(2**(kWamAddressWidth-1)+1, kWamAddressWidth));
 
   -- Possible address inputs for memory (eg: MA_H_t => Memory Address from register H)
   type mem_addr_input_t is (MA_H_t, MA_Hplus1_t, MA_deref_unit_t, MA_untag_deref_t, MA_bind_unit_1_t, MA_bind_unit_2_t,
                             MA_unify_unit_t, MA_stack_addr_t, MA_S_t, MA_addr_t, MA_Ep2orB_t, MA_newE_t, MA_newEp1_t,
                             MA_newEp2_t, MA_E_t, MA_Ep1_t, MA_newB_t, MA_newBNRi_t, MA_newBNRip1_t, MA_newBI_t, MA_newBIp1_t,
-                            MA_B_t, MA_BI_t, MA_BIp1_t, MA_BNRI_t, MA_BNRIp1_t, MA_unwind_trail_t, MA_BImem_port1_t);
+                            MA_B_t, MA_BI_t, MA_BIp1_t, MA_BNRI_t, MA_BNRIp1_t, MA_unwind_trail_t, MA_BImem_port1_t, MA_DFC_t);
   -- Possible input sources for memory
   type mem_port_input_t is ( MI_str_Hplus1_t, MI_constant_t, MI_GPR_t, MI_GPR2_t, MI_bind_unit_1_t, MI_bind_unit_2_t, MI_unify_unit_t,
                              MI_mem_port1_t, MI_mem_port2_t, MI_ref_H_t, MI_ref_addr_t, MI_E_t, MI_CP_t, MI_B_t, MI_TR_t, MI_NRAGRGS_t, MI_unwind_trail_t, MI_H_t);

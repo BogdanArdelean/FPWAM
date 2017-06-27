@@ -41,7 +41,8 @@ entity DataFlowControl is
     local_fail        : in std_logic;
     global_fail       : in std_logic;
     b_reg             : in std_logic_vector(kWamAddressWidth -1 downto 0);
-
+    new_b_reg         : in std_logic_vector(kWamAddressWidth -1 downto 0);                                                 
+    
     local_fail_rst    : out std_logic;
     global_fail_out   : out std_logic;
     global_fail_rst   : out std_logic;
@@ -109,7 +110,9 @@ entity DataFlowControl is
     hb_wr             : out std_logic;
     hb_input          : out hb_input_t;
     i                 : out unsigned(kWamAddressWidth -1 downto 0);
-    start_unwind      : out std_logic
+    start_unwind      : out std_logic;
+    mem_addr1         : out std_logic_vector(kWamAddressWidth -1 downto 0);
+    mem_addr2         : out std_logic_vector(kWamAddressWidth -1 downto 0)
    );
 end DataFlowControl;
 
@@ -121,7 +124,7 @@ signal rst_cnt : std_logic;
 -- FSM
 type state_t is (idle_t, next_instr_t
                 ,put_structure_t
-                ,get_structure_t, get_structure_t2, get_structure_t3
+                ,get_structure_t, get_structure_t2, get_structure_t3, get_structure_t4
                 ,unify_variable_t, unify_variable_t2
                 ,unify_value_t, unify_value_t2
                 ,put_variable_X_t
@@ -134,15 +137,50 @@ type state_t is (idle_t, next_instr_t
                 ,allocate_t, allocate_t2, allocate_t3, allocate_t4
                 ,deallocate_t, deallocate_t2
                 ,try_me_else_t, try_me_else_t2, try_me_else_t3, try_me_else_t4, try_me_else_t5, try_me_else_t6, try_me_else_t7
-                ,retry_me_else_t
-                ,trust_me_t, trust_me_t2
+                ,retry_me_else_t, retry_me_else_t2
+                ,trust_me_t, trust_me_t2, trust_me_t3
                 ,update_delete_start_t, update_delete_start_t2, update_delete_common_t, update_delete_common_t2, update_delete_common_t3, update_delete_common_t4, update_delete_common_t5, update_delete_common_t6
-                ,backtrack_t, backtrack_t2, backtrack_t3
+                ,backtrack_t, backtrack_t2, backtrack_t3, backtrack_t4
                 );
 
 signal cr_state, nx_state, decoded_state : state_t;
+signal mem_obj_reg : std_logic_vector(kWamWordWidth -1 downto 0);
+signal wr_mem_reg  : std_logic;
 
+signal mem_addr1_reg   : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal mem_addr2_reg   : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal mem_addr1_comb  : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal mem_addr2_comb  : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal mem_addr_reg_wr : std_logic;
 begin
+
+  mem_addr1 <= mem_addr1_reg;
+  mem_addr2 <= mem_addr2_reg;
+  
+  MEMOBJ_reg: process(clk)
+  begin
+    if rising_edge(clk) then 
+        if rst = '1' then
+            mem_obj_reg <= (others => '0');
+        elsif wr_mem_reg = '1' then
+            mem_obj_reg <= mem_obj;
+        end if;
+    end if;
+  end process;
+  
+  MEMADDRREG: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        mem_addr1_reg <= (others => '0');
+        mem_addr2_reg <= (others => '0');
+      elsif mem_addr_reg_wr = '1' then
+        mem_addr1_reg <= mem_addr1_comb;
+        mem_addr2_reg <= mem_addr2_comb;
+      end if;
+    end if;
+  end process;  
+     
 
   -- Decode the first state based on current instruction
   -- TO DO: maybe put in function?
@@ -221,6 +259,8 @@ begin
       when backtrack_t2 =>
         nx_state <= backtrack_t3;
       when backtrack_t3 =>
+        nx_state <= backtrack_t4;
+      when backtrack_t4 =>
         nx_state <= next_instr_t;
       when idle_t =>
         nx_state <= decoded_state;
@@ -232,16 +272,18 @@ begin
           nx_state <= get_structure_t2;
         end if;
       when get_structure_t2 =>
-        if fpwam_tag(mem_obj) = tag_str_t and mem_obj = instruction(17 downto 0) then
+        nx_state <= get_structure_t3;
+      when get_structure_t3 =>
+        if fpwam_tag(mem_obj_reg) = tag_str_t and mem_obj_reg = instruction(17 downto 0) then
           nx_state <= next_instr_t;
-        elsif fpwam_tag(mem_obj) = tag_ref_t then
+        elsif fpwam_tag(mem_obj_reg) = tag_ref_t then
           nx_state <= get_structure_t3;
         else
           nx_state <= backtrack_t;
         end if;
-      when get_structure_t3 => -- maybe should wait for trail and bind to finish?
+      when get_structure_t4 => -- maybe should wait for trail and bind to finish?
         if bind_done = '1' then
-        nx_state <= next_instr_t;
+          nx_state <= next_instr_t;
         end if;
 ----- END get_structure f, a(i) -----
       when unify_variable_t =>
@@ -339,7 +381,7 @@ begin
       when update_delete_common_t5 =>
         nx_state <= update_delete_common_t6;
       when update_delete_common_t6 =>
-        if counter+2 > nr_args then
+        if counter+2 > unsigned(nr_args) then
           case fpwam_instr(instruction) is
             when i_retry_me_else_t =>
               nx_state <= retry_me_else_t;
@@ -350,10 +392,14 @@ begin
           end case;
         end if;
       when retry_me_else_t =>
+        nx_state <= retry_me_else_t2;
+      when retry_me_else_t2 =>
         nx_state <= next_instr_t;
       when trust_me_t =>
         nx_state <= trust_me_t2;
       when trust_me_t2 =>
+        nx_state <= trust_me_t3;
+      when trust_me_t3 =>
         nx_state <= next_instr_t;
       when others => null;
     end case;
@@ -415,6 +461,11 @@ begin
     start_unwind     <= '0';
     rst_cnt          <= '0';
     count            <= '0';
+    wr_mem_reg       <= '0';
+    mem_addr_reg_wr  <= '0';
+    mem_addr1_comb   <= (others => '0');
+    mem_addr2_comb   <= (others => '0');
+    
     case cr_state is
       when next_instr_t =>
         if local_fail /= '1' then
@@ -427,14 +478,19 @@ begin
           global_fail_out <= '1';
         else
           local_fail_rst  <= '1';
-          rd_mem_port1    <= '1';
-          mem_addr_input1 <= MA_B_t;
+          rd_mem_port2    <= '1';
+          mem_addr_input2 <= MA_B_t;
         end if;
       when backtrack_t2 =>
-        i <= to_unsigned(4, i'length);
-        rd_mem_port1    <= '1';
-        mem_addr_input1 <= MA_BI_t;
+        nrargs_wr <= '1';
+        nrargs_input <= NRARGSI_mem_port1_t;
+        -- risky
+        mem_addr1_comb <= std_logic_vector((unsigned(b_reg(kWamAddressWidth -1 downto 0))+unsigned(mem_obj(kWamAddressWidth -1 downto 0)))+to_unsigned(4, i'length));
+        mem_addr_reg_wr <= '1';
       when backtrack_t3 =>
+        rd_mem_port1    <= '1';
+        mem_addr_input1 <= MA_DFC_t;
+      when backtrack_t4 =>
         p_wr    <= '1';
         p_input <= PI_mem_port1_t;
       when idle_t =>
@@ -448,7 +504,9 @@ begin
           rd_mem_port2     <= '1';
         end if;
       when get_structure_t2 =>
-        if fpwam_tag(mem_obj) = tag_str_t and mem_obj = instruction(17 downto 0) then
+        wr_mem_reg <= '1';
+      when get_structure_t3 =>
+        if fpwam_tag(mem_obj_reg) = tag_str_t and mem_obj_reg = instruction(17 downto 0) then
 
           -- S = a + 1
           wr_s_reg    <= '1';
@@ -456,7 +514,7 @@ begin
 
           wr_mode_reg <= '1';
           mode_value  <= mode_read_t;
-        elsif fpwam_tag(mem_obj) = tag_ref_t then -- need to refactor
+        elsif fpwam_tag(mem_obj_reg) = tag_ref_t then -- need to refactor
           mem_addr_input1 <= MA_H_t;
           mem_input1      <= MI_str_Hplus1_t;
           mem_addr_input2 <= MA_Hplus1_t;
@@ -470,7 +528,7 @@ begin
           wr_mode_reg <= '1';
           mode_value  <= mode_write_t;
         end if;
-      when get_structure_t3 => -- refactor at bind input!!!
+      when get_structure_t4 => -- refactor at bind input!!!
         bind       <= '1';             -- bind(
         bind_port1 <= BI_deref_unit_t; --    tag(STORE[addr])
         bind_port2 <= BI_mem_port1_t;          --     tag(STORE[H]))
@@ -682,40 +740,50 @@ begin
         p_wr    <= '1';
         p_input <= PI_mem_port2_t;
       when try_me_else_t =>
-        rd_mem_port1 <= '1';
-        mem_addr_input1 <= MA_Ep2orB_t;
+        rd_mem_port2 <= '1';
+        mem_addr_input2 <= MA_Ep2orB_t;
       when try_me_else_t2 =>
         newB_wr <= '1';
+        --risky
+        mem_addr2_comb <= std_logic_vector(unsigned(mem_obj(kWamAddressWidth -1 downto 0))+unsigned(nr_args)+to_unsigned(1, i'length));
+        mem_addr_reg_wr <= '1';
       when try_me_else_t3 =>
         mem_addr_input1 <= MA_newB_t;
         mem_input1      <= MI_NRAGRGS_t;
         wr_mem_port1    <= '1';
 
-        i <= to_unsigned(1, i'length);
-        mem_addr_input2 <= MA_newBNRi_t;
+        mem_addr_input2 <= MA_DFC_t;
         mem_input2      <= MI_E_t;
         wr_mem_port2    <= '1';
+        
+        mem_addr1_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(2, i'length));
+        mem_addr2_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(3, i'length));
+        mem_addr_reg_wr <= '1';
       when try_me_else_t4 =>
-        i <= to_unsigned(2, i'length);
-        mem_addr_input1 <= MA_newBNRi_t;
+        mem_addr_input1 <= MA_DFC_t;
         mem_input1      <= MI_CP_t;
         wr_mem_port1    <= '1';
 
-        mem_addr_input2 <= MA_newBNRip1_t;
+        mem_addr_input2 <= MA_DFC_t;
         mem_input2      <= MI_B_t;
         wr_mem_port2    <= '1';
+        
+        mem_addr1_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(4, i'length));
+        mem_addr2_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(5, i'length));
+        mem_addr_reg_wr <= '1';
       when try_me_else_t5 =>
-        i <= to_unsigned(4, i'length);
-        mem_addr_input1 <= MA_newBNRi_t;
+        mem_addr_input1 <= MA_DFC_t;
         mem_input1      <= MI_constant_t;
         wr_mem_port1    <= '1';
 
-        mem_addr_input2 <= MA_newBNRip1_t;
+        mem_addr_input2 <= MA_DFC_t;
         mem_input2      <= MI_TR_t;
         wr_mem_port2    <= '1';
+        
+        mem_addr2_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(6, i'length));
+        mem_addr_reg_wr <= '1';
       when try_me_else_t6 =>
-        i <= to_unsigned(6, i'length);
-        mem_addr_input1 <= MA_newBNRi_t;
+        mem_addr_input1 <= MA_DFC_t;
         mem_input1      <= MI_H_t;
         wr_mem_port1    <= '1';
 
@@ -726,32 +794,45 @@ begin
         hb_input <= HBI_H_t;
 
         rst_cnt <= '1';
+        mem_addr1_comb <= std_logic_vector(unsigned(b_reg) + to_unsigned(1, b_reg'length));
+        mem_addr2_comb <= std_logic_vector(unsigned(b_reg) + to_unsigned(2, b_reg'length));
+        mem_addr_reg_wr <= '1';
       when try_me_else_t7 =>
         i <= counter;
         count <= '1';
-        mem_addr_input1 <= MA_newBI_t;
+        mem_addr_input1 <= MA_DFC_t;
         mem_input1      <= MI_GPR_t;
         wr_mem_port1    <= to_std_logic(counter <= unsigned(nr_args));
 
-        mem_addr_input2 <= MA_newBIp1_t;
+        mem_addr_input2 <= MA_DFC_t;
         mem_input2      <= MI_GPR2_t;
         wr_mem_port2    <= to_std_logic(counter+1 <= unsigned(nr_args));
 
         gpr_addr1 <= GPRA_I_t;
         gpr_addr2 <= GPRA_Ip1_t;
+        
+        mem_addr1_comb <= std_logic_vector(unsigned(mem_addr1_reg) + 2);
+        mem_addr2_comb <= std_logic_vector(unsigned(mem_addr2_reg) + 2);
+        mem_addr_reg_wr <= '1';
+        
+        count <= '1';
       when retry_me_else_t =>
-        i <= to_unsigned(4, i'length);
-        wr_mem_port1    <= '1';
-        mem_addr_input1 <= MA_BNRI_t;
-        mem_input1      <= MI_constant_t;
+        mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(nr_args)+to_unsigned(1, i'length));
+        mem_addr_reg_wr <= '1';
+      when retry_me_else_t2 =>
+       wr_mem_port1    <= '1';
+       mem_addr_input1 <= MA_DFC_t;
+       mem_input1      <= MI_constant_t;
 
-        hb_input <= HBI_H_t;
-        hb_wr    <= '1';
+       hb_input <= HBI_H_t;
+       hb_wr    <= '1';
       when trust_me_t =>
-        i <= to_unsigned(3, i'length);
-        rd_mem_port1    <= '1';
-        mem_addr_input1 <= MA_BNRI_t;
+        mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(nr_args)+to_unsigned(3, i'length));
+        mem_addr_reg_wr <= '1';
       when trust_me_t2 =>
+        rd_mem_port1    <= '1';
+        mem_addr_input1 <= MA_DFC_t;
+      when trust_me_t3 =>
         B_wr    <= '1';
         b_input <= BRI_mem_port1_t;
 
@@ -763,21 +844,25 @@ begin
       when update_delete_start_t2 =>
         nrargs_wr    <= '1';
         nrargs_input <= NRARGSI_mem_port1_t;
+        mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj(kWamAddressWidth -1 downto 0))+to_unsigned(1, i'length));
+        mem_addr2_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj(kWamAddressWidth -1 downto 0))+to_unsigned(2, i'length));
+        mem_addr_reg_wr <= '1';
       when update_delete_common_t =>
-        i <= to_unsigned(1, i'length);
-        mem_addr_input1 <= MA_BNRI_t;
+        mem_addr_input1 <= MA_DFC_t;
         rd_mem_port1    <= '1';
 
-        mem_addr_input2 <= MA_BNRIp1_t;
+        mem_addr_input2 <= MA_DFC_t;
         rd_mem_port2    <= '1';
 
         rst_cnt         <= '1';
+        mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj(kWamAddressWidth -1 downto 0))+to_unsigned(5, i'length));
+        mem_addr2_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj(kWamAddressWidth -1 downto 0))+to_unsigned(6, i'length));
+        mem_addr_reg_wr <= '1';
       when update_delete_common_t2 =>
-        i <= to_unsigned(5, i'length);
-        mem_addr_input1 <= MA_BNRI_t;
+        mem_addr_input1 <= MA_DFC_t;
         rd_mem_port1    <= '1';
 
-        mem_addr_input2 <= MA_BNRIp1_t;
+        mem_addr_input2 <= MA_DFC_t;
         rd_mem_port2    <= '1';
 
         E_wr    <= '1';
@@ -799,20 +884,30 @@ begin
         mem_addr_input2 <= MA_unwind_trail_t;
         mem_input1      <= MI_unwind_trail_t;
         mem_input2      <= MI_unwind_trail_t;
+        
+        mem_addr1_comb <= std_logic_vector(unsigned(b_reg) + to_unsigned(1, b_reg'length));
+        mem_addr2_comb <= std_logic_vector(unsigned(b_reg) + to_unsigned(2, b_reg'length));
+        mem_addr_reg_wr <= '1';
+        
+        rst_cnt <= '1';
       when update_delete_common_t5 =>
         i <= counter;
-        mem_addr_input1 <= MA_BI_t;
+        mem_addr_input1 <= MA_DFC_t;
         rd_mem_port1    <= to_std_logic(counter <= unsigned(nr_args));
 
-        mem_addr_input2 <= MA_BIp1_t;
+        mem_addr_input2 <= MA_DFC_t;
         rd_mem_port2    <= to_std_logic(counter+1 <= unsigned(nr_args));
+        
+        mem_addr1_comb <= std_logic_vector(unsigned(mem_addr1_reg) + 2);
+        mem_addr2_comb <= std_logic_vector(unsigned(mem_addr2_reg) + 2);
+        mem_addr_reg_wr <= '1';
       when update_delete_common_t6 =>
         i <= counter;
 
-        mem_addr_input1 <= MA_BI_t;
+        mem_addr_input1 <= MA_DFC_t;
         rd_mem_port1    <= to_std_logic(counter+2 <= unsigned(nr_args));
 
-        mem_addr_input2  <= MA_BIp1_t;
+        mem_addr_input2  <= MA_DFC_t;
         rd_mem_port2    <= to_std_logic(counter+3 <= unsigned(nr_args));
 
         gpr_addr1  <= GPRA_I_t;
@@ -823,6 +918,11 @@ begin
 
         gpr_input1 <= GPRI_mem_port1_t;
         gpr_input2 <= GPRI_mem_port2_t;
+        
+        mem_addr1_comb <= std_logic_vector(unsigned(mem_addr1_reg) + 2);
+        mem_addr2_comb <= std_logic_vector(unsigned(mem_addr2_reg) + 2);
+        mem_addr_reg_wr <= '1';
+        count <= '1';
      when others => null;
    end case;
  end process OUTPUT_DECODE;

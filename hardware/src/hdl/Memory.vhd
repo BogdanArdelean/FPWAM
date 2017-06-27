@@ -48,26 +48,28 @@ begin
   PORT_1: process(clk)
   begin
     if rising_edge(clk) then
-      word_port_1_o <= (others => '0');
+      if rd_port_1 = '1' then
       if wr_port_1 = '1' then
         BRAM(to_integer(unsigned(addr_port_1))) <= word_port_1_i;
-      end if;
-      if rd_port_1 = '1' then
+        word_port_1_o <= word_port_1_i;
+      else
         word_port_1_o <= BRAM(to_integer(unsigned(addr_port_1)));
       end if;
+    end if;
     end if;
   end process;
 
   PORT_2: process(clk)
   begin
     if rising_edge(clk) then
-      word_port_2_o <= (others => '0');
+    if rd_port_2 = '1' then
       if wr_port_2 = '1' then
         BRAM(to_integer(unsigned(addr_port_2))) <= word_port_2_i;
-      end if;
-      if rd_port_2 = '1' then
+        word_port_2_o <= word_port_2_i;
+      else
         word_port_2_o <= BRAM(to_integer(unsigned(addr_port_2)));
       end if;
+    end if;
     end if;
   end process;
 

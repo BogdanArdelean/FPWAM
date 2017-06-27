@@ -73,7 +73,7 @@ end UnifyUnit;
 architecture Behavioral of UnifyUnit is
 
 type state_t is (idle_t, check_stop_pop_t, done_t, check_equal_read_t, deref_t, bind_t, push_list_t,
-                 check_structure_t, structure_iterate_t);
+                 check_structure_t, check_structure_t2, structure_iterate_t);
 signal cr_state, nx_state : state_t;
 
 --Interface with PDL memory
@@ -110,11 +110,28 @@ signal rst_curr_reg : std_logic;
 signal goal_reg     : unsigned(kGPRAddressWidth downto 0);
 signal wr_goal_reg  : std_logic;
 
+signal mem1_input_reg : std_logic_vector(kWamWordWidth -1 downto 0);
+signal mem2_input_reg : std_logic_vector(kWamWordWidth -1 downto 0);
+signal mem_reg_wr    : std_logic;
+
 begin
 
   fail <= fail_reg or fail_comb;
   pdl_empty <= unsigned(pdl_addr_reg) = 0;
-
+  
+  INPUTRGS: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        mem1_input_reg <= (others => '0');
+        mem2_input_reg <= (others => '0');
+      elsif mem_reg_wr = '1' then
+        mem1_input_reg <= mem1_input;
+        mem2_input_reg <= mem2_input;
+      end if;
+    end if;
+  end process; 
+  
   PDLREG: process(clk)
   begin
     if rising_edge(clk) then
@@ -168,7 +185,7 @@ begin
       if rst = '1' then
         goal_reg <= (others => '0');
       elsif wr_goal_reg = '1' then
-        goal_reg <= "0" & unsigned(fpwam_arity(mem1_input));
+        goal_reg <= "0" & unsigned(fpwam_arity(mem1_input_reg));
       end if;
     end if;
   end process;
@@ -279,8 +296,10 @@ begin
       when push_list_t =>
         nx_state <= check_stop_pop_t;
       when check_structure_t =>
-        if fpwam_functor(mem1_input) /= fpwam_functor(mem2_input) or
-           fpwam_arity(mem1_input) /= fpwam_arity(mem2_input) then
+        nx_state <= check_structure_t2;
+      when check_structure_t2 =>
+        if fpwam_functor(mem1_input_reg) /= fpwam_functor(mem2_input_reg) or
+           fpwam_arity(mem1_input_reg) /= fpwam_arity(mem2_input_reg) then
           nx_state <= check_stop_pop_t;
         else
           nx_state <= structure_iterate_t;
@@ -328,8 +347,8 @@ begin
     iterate        <= '0';
     rst_curr_reg   <= '0';
     wr_goal_reg    <= '0';
-
-
+    mem_reg_wr     <= '0';
+    
     case cr_state is
       when idle_t =>
         if start_unify = '1' then
@@ -338,7 +357,7 @@ begin
           pdl_adr_1 <= pdl_addr_reg;
           pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) + 1);
           wr_pdl   <= '1';
-
+          rd_pdl   <= '1';
           pdl_addr_comb <= std_logic_vector(unsigned(pdl_addr_reg) + 2);
           wr_pdl_reg <= '1';
           reset_fail_reg <= '1';
@@ -383,7 +402,7 @@ begin
                 pdl_adr_1 <= pdl_addr_reg;
                 pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) + 1);
                 wr_pdl   <= '1';
-
+                rd_pdl   <= '1';
                 pdl_addr_comb <= std_logic_vector(unsigned(pdl_addr_reg) + 2);
                 wr_pdl_reg <= '1';
               end if;
@@ -409,12 +428,14 @@ begin
         pdl_adr_1 <= pdl_addr_reg;
         pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) + 1);
         wr_pdl   <= '1';
-
+        rd_pdl   <= '1';
         pdl_addr_comb <= std_logic_vector(unsigned(pdl_addr_reg) + 2);
         wr_pdl_reg <= '1';
       when check_structure_t =>
-        if fpwam_functor(mem1_input) /= fpwam_functor(mem2_input) or
-           fpwam_arity(mem1_input) /= fpwam_arity(mem2_input) then
+        mem_reg_wr <= '1';
+      when check_structure_t2 =>
+        if fpwam_functor(mem1_input_reg) /= fpwam_functor(mem2_input_reg) or
+           fpwam_arity(mem1_input_reg) /= fpwam_arity(mem2_input_reg) then
           fail_comb <= '1';
         else
           rst_curr_reg <= '1';
@@ -429,7 +450,7 @@ begin
           pdl_adr_1 <= pdl_addr_reg;
           pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) + 1);
           wr_pdl   <= '1';
-
+          rd_pdl   <= '1';
           pdl_addr_comb <= std_logic_vector(unsigned(pdl_addr_reg) + 2);
           wr_pdl_reg <= '1';
         end if;
