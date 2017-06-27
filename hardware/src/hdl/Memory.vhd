@@ -42,7 +42,7 @@ end Memory;
 
 architecture Behavioral of Memory is
 type mem is array (0 to 2**kMemAddressWidth) of std_logic_vector(kWordWidth - 1 downto 0);
-signal BRAM : mem;
+signal BRAM : mem := (others => (others => '0'));
 begin
 
   PORT_1: process(clk)
@@ -75,7 +75,7 @@ end Behavioral;
 
 architecture Simulation of Memory is
 type mem is array (0 to 2**kMemAddressWidth) of std_logic_vector(kWordWidth - 1 downto 0);
-signal BRAM : mem;
+signal BRAM : mem := (others => (others => '0'));
 signal reg_addr1 : std_logic_vector(kMemAddressWidth -1 downto 0) := (others =>'0');
 signal reg_addr2 : std_logic_vector(kMemAddressWidth -1 downto 0) := (others =>'0');
 begin

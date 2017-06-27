@@ -32,7 +32,7 @@ entity UnwindTrailUnit is
   ; trail_port_1_rd : out std_logic
   ; trail_addr_1    : out std_logic_vector(kWamTrailAddressWidth -1 downto 0)
   ; trail_port_2    : in std_logic_vector(kWamAddressWidth -1 downto 0)
-  ; trail_port_2_rd : out std_logic;
+  ; trail_port_2_rd : out std_logic
   ; trail_addr_2    : out std_logic_vector(kWamTrailAddressWidth -1 downto 0)
   ; mem_port_1      : out std_logic_vector(kWamWordWidth -1 downto 0)
   ; mem_port_1_wr   : out std_logic
@@ -45,7 +45,7 @@ entity UnwindTrailUnit is
 end UnwindTrailUnit;
 
 architecture Behavioral of UnwindTrailUnit is
-type state_t is (idle_t);
+type state_t is (idle_t, first_read_t, read_write_t, done_t);
 signal cr_state, nx_state : state_t;
 
 signal counter : unsigned(kWamTrailAddressWidth -1 downto 0);
@@ -57,7 +57,7 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        counter <= 0;
+        counter <= to_unsigned(0, counter'length);
       elsif start_unwind = '1' then
         counter <= unsigned(a1);
       elsif count = '1' then
@@ -70,8 +70,8 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        goal <= 0;
-      elsif start_unwind '1' then
+        goal <= to_unsigned(0, goal'length);
+      elsif start_unwind = '1' then
         goal <= unsigned(a2);
       end if;
     end if;
@@ -82,13 +82,13 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         cr_state <= idle_t;
-      elsif
+      else
         cr_state <= nx_state;
       end if;
     end if;
   end process;
 
-  NXSTATE: process(cr_state, start_unwind, counter, goal_reg)
+  NXSTATE: process(cr_state, start_unwind, counter, goal)
   begin
     nx_state <= cr_state;
     case cr_state is
@@ -99,7 +99,7 @@ begin
       when first_read_t =>
         nx_state <= read_write_t;
       when read_write_t =>
-        if counter+1 > goal_reg then
+        if counter+1 > goal then
           nx_state <= done_t;
         end if;
       when done_t =>
@@ -122,7 +122,7 @@ begin
     mem_port_2_wr   <= '0';
     mem_addr_2      <= (others => '0');
     done            <= '0';
-
+    count           <= '0';
     case cr_state is
       when idle_t =>
         null;

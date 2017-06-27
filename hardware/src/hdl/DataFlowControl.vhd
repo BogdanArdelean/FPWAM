@@ -135,9 +135,9 @@ type state_t is (idle_t, next_instr_t
                 ,deallocate_t, deallocate_t2
                 ,try_me_else_t, try_me_else_t2, try_me_else_t3, try_me_else_t4, try_me_else_t5, try_me_else_t6, try_me_else_t7
                 ,retry_me_else_t
-                ,trust_me_t
-                ,update_delete_common_t
-                ,backtrack_t
+                ,trust_me_t, trust_me_t2
+                ,update_delete_start_t, update_delete_start_t2, update_delete_common_t, update_delete_common_t2, update_delete_common_t3, update_delete_common_t4, update_delete_common_t5, update_delete_common_t6
+                ,backtrack_t, backtrack_t2, backtrack_t3
                 );
 
 signal cr_state, nx_state, decoded_state : state_t;
@@ -180,9 +180,9 @@ begin
         when i_try_me_else_t =>
           decoded_state <= try_me_else_t;
         when i_retry_me_else_t =>
-          decoded_state <= update_delete_common_t;
+          decoded_state <= update_delete_start_t;
         when i_trust_me_t =>
-          decoded_state <= update_delete_common_t;
+          decoded_state <= update_delete_start_t;
         when others =>
           decoded_state <= idle_t;
       end case;
@@ -202,7 +202,7 @@ begin
     end if;
   end process FSM;
 
-  NEXT_STATE_DECODE: process(decoded_state, cr_state, deref_done, mem_obj, instruction, instruction_valid, bind_done, mode_reg, unify_done)
+  NEXT_STATE_DECODE: process(decoded_state, cr_state, deref_done, mem_obj, instruction, instruction_valid, bind_done, mode_reg, unify_done, unwind_done, counter)
   begin
     nx_state <= cr_state;
     case cr_state is
@@ -319,13 +319,19 @@ begin
       when try_me_else_t6 =>
         nx_state <= try_me_else_t7;
       when try_me_else_t7 =>
-        if counter+2 > nr_args then
+        if counter+2 > unsigned(nr_args) then
           nx_state <= next_instr_t;
         end if;
+      when update_delete_start_t =>
+        nx_state <= update_delete_start_t2;
+      when update_delete_start_t2 =>
+        nx_state <= update_delete_common_t;
       when update_delete_common_t =>
         nx_state <= update_delete_common_t2;
       when update_delete_common_t2 =>
         nx_state <= update_delete_common_t3;
+      when update_delete_common_t3 =>
+        nx_state <= update_delete_common_t4;
       when update_delete_common_t4 =>
         if unwind_done = '1' then
           nx_state <= update_delete_common_t5;
@@ -353,7 +359,7 @@ begin
     end case;
   end process NEXT_STATE_DECODE;
 
-  OUTPUT_DECODE: process(cr_state, deref_done, mem_obj, instruction, bind_done, mode_reg)
+  OUTPUT_DECODE: process(cr_state, deref_done, mem_obj, instruction, bind_done, mode_reg, counter, nr_args)
   begin
     --DEFAULT VALUES
     local_fail_rst   <= '0';
@@ -405,8 +411,10 @@ begin
     tr_input         <= TRI_Trp1_t;
     hb_wr            <= '0';
     hb_input         <= HBI_H_t;
-    i                <= 0;
+    i                <= to_unsigned(0, i'length);
     start_unwind     <= '0';
+    rst_cnt          <= '0';
+    count            <= '0';
     case cr_state is
       when next_instr_t =>
         if local_fail /= '1' then
@@ -423,7 +431,7 @@ begin
           mem_addr_input1 <= MA_B_t;
         end if;
       when backtrack_t2 =>
-        i <= 4;
+        i <= to_unsigned(4, i'length);
         rd_mem_port1    <= '1';
         mem_addr_input1 <= MA_BI_t;
       when backtrack_t3 =>
@@ -683,12 +691,12 @@ begin
         mem_input1      <= MI_NRAGRGS_t;
         wr_mem_port1    <= '1';
 
-        i <= 1;
+        i <= to_unsigned(1, i'length);
         mem_addr_input2 <= MA_newBNRi_t;
         mem_input2      <= MI_E_t;
         wr_mem_port2    <= '1';
       when try_me_else_t4 =>
-        i <= 2;
+        i <= to_unsigned(2, i'length);
         mem_addr_input1 <= MA_newBNRi_t;
         mem_input1      <= MI_CP_t;
         wr_mem_port1    <= '1';
@@ -697,7 +705,7 @@ begin
         mem_input2      <= MI_B_t;
         wr_mem_port2    <= '1';
       when try_me_else_t5 =>
-        i <= 4;
+        i <= to_unsigned(4, i'length);
         mem_addr_input1 <= MA_newBNRi_t;
         mem_input1      <= MI_constant_t;
         wr_mem_port1    <= '1';
@@ -706,12 +714,12 @@ begin
         mem_input2      <= MI_TR_t;
         wr_mem_port2    <= '1';
       when try_me_else_t6 =>
-        i <= 6;
+        i <= to_unsigned(6, i'length);
         mem_addr_input1 <= MA_newBNRi_t;
         mem_input1      <= MI_H_t;
         wr_mem_port1    <= '1';
 
-        b_input <= BI_newB_t;
+        b_input <= BRI_newB_t;
         b_wr    <= '1';
 
         hb_wr    <= '1';
@@ -723,16 +731,16 @@ begin
         count <= '1';
         mem_addr_input1 <= MA_newBI_t;
         mem_input1      <= MI_GPR_t;
-        wr_mem_port1    <= to_std_logic(counter <= nr_args);
+        wr_mem_port1    <= to_std_logic(counter <= unsigned(nr_args));
 
         mem_addr_input2 <= MA_newBIp1_t;
         mem_input2      <= MI_GPR2_t;
-        wr_mem_port2    <= to_std_logic(counter+1 <= nr_args);
+        wr_mem_port2    <= to_std_logic(counter+1 <= unsigned(nr_args));
 
         gpr_addr1 <= GPRA_I_t;
         gpr_addr2 <= GPRA_Ip1_t;
       when retry_me_else_t =>
-        i <= 4;
+        i <= to_unsigned(4, i'length);
         wr_mem_port1    <= '1';
         mem_addr_input1 <= MA_BNRI_t;
         mem_input1      <= MI_constant_t;
@@ -740,12 +748,12 @@ begin
         hb_input <= HBI_H_t;
         hb_wr    <= '1';
       when trust_me_t =>
-        i <= 3;
+        i <= to_unsigned(3, i'length);
         rd_mem_port1    <= '1';
         mem_addr_input1 <= MA_BNRI_t;
       when trust_me_t2 =>
         B_wr    <= '1';
-        b_input <= BI_mem_port1_t;
+        b_input <= BRI_mem_port1_t;
 
         hb_wr   <= '1';
         hb_input <= HBI_H_t;
@@ -756,21 +764,21 @@ begin
         nrargs_wr    <= '1';
         nrargs_input <= NRARGSI_mem_port1_t;
       when update_delete_common_t =>
-        i <= 1;
+        i <= to_unsigned(1, i'length);
         mem_addr_input1 <= MA_BNRI_t;
         rd_mem_port1    <= '1';
 
         mem_addr_input2 <= MA_BNRIp1_t;
-        rd_mem_port1    <= '1';
+        rd_mem_port2    <= '1';
 
         rst_cnt         <= '1';
       when update_delete_common_t2 =>
-        i <= 5;
+        i <= to_unsigned(5, i'length);
         mem_addr_input1 <= MA_BNRI_t;
         rd_mem_port1    <= '1';
 
         mem_addr_input2 <= MA_BNRIp1_t;
-        rd_mem_port1    <= '1';
+        rd_mem_port2    <= '1';
 
         E_wr    <= '1';
         e_input <= EI_mem_port1_t;
@@ -779,9 +787,9 @@ begin
         cp_input <= CPI_mem_port2_t;
       when update_delete_common_t3 =>
         tr_wr    <= '1';
-        tr_input <= TRI_mem_port1_t
+        tr_input <= TRI_mem_port1_t;
 
-        h_wr     <= '1';
+        wr_h_reg <= '1';
         h_input  <= HI_mem_port2_t;
 
         start_unwind <= '1';
@@ -794,24 +802,27 @@ begin
       when update_delete_common_t5 =>
         i <= counter;
         mem_addr_input1 <= MA_BI_t;
-        rd_mem_port1    <= to_std_logic(counter <= nr_args);
+        rd_mem_port1    <= to_std_logic(counter <= unsigned(nr_args));
 
-        mem_addr_inpu2  <= MA_BIp1_t;
-        rd_mem_port2    <= to_std_logic(counter+1 <= nr_args);
+        mem_addr_input2 <= MA_BIp1_t;
+        rd_mem_port2    <= to_std_logic(counter+1 <= unsigned(nr_args));
       when update_delete_common_t6 =>
         i <= counter;
 
         mem_addr_input1 <= MA_BI_t;
-        rd_mem_port1    <= to_std_logic(counter+2 <= nr_args);
+        rd_mem_port1    <= to_std_logic(counter+2 <= unsigned(nr_args));
 
-        mem_addr_inpu2  <= MA_BIp1_t;
-        rd_mem_port2    <= to_std_logic(counter+3 <= nr_args);
+        mem_addr_input2  <= MA_BIp1_t;
+        rd_mem_port2    <= to_std_logic(counter+3 <= unsigned(nr_args));
 
         gpr_addr1  <= GPRA_I_t;
         gpr_addr2  <= GPRA_Ip1_t;
 
-        gpr_wr1    <= to_std_logic(counter <= nr_args);
-        gpr_wr2    <= to_std_logic(counter+1 <= nr_args);
+        wr_gpr1    <= to_std_logic(counter   <= unsigned(nr_args));
+        wr_gpr2    <= to_std_logic(counter+1 <= unsigned(nr_args));
+
+        gpr_input1 <= GPRI_mem_port1_t;
+        gpr_input2 <= GPRI_mem_port2_t;
      when others => null;
    end case;
  end process OUTPUT_DECODE;
@@ -819,8 +830,8 @@ begin
  CNTR: process(clk)
  begin
    if rising_edge(clk) then
-     if rst_cnt = '1' then
-       counter <= 1;
+     if rst_cnt = '1' or rst = '1' then
+       counter <= to_unsigned(1, counter'length);
      elsif count = '1' then
        counter <= counter + 2;
      end if;
