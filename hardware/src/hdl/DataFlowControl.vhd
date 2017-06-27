@@ -428,7 +428,7 @@ begin
         else
           local_fail_rst  <= '1';
           rd_mem_port1    <= '1';
-          mem_addr_input1 <= MA_B_t;
+          mem_addr_input1 <= MA_BImem_port1_t;
         end if;
       when backtrack_t2 =>
         i <= to_unsigned(4, i'length);
