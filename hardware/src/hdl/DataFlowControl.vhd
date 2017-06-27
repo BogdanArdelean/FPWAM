@@ -483,7 +483,7 @@ begin
         end if;
       when backtrack_t2 =>
         nrargs_wr <= '1';
-        nrargs_input <= NRARGSI_mem_port1_t;
+        nrargs_input <= NRARGSI_mem_port2_t;
         -- risky
         mem_addr1_comb <= std_logic_vector((unsigned(b_reg(kWamAddressWidth -1 downto 0))+unsigned(mem_obj(kWamAddressWidth -1 downto 0)))+to_unsigned(4, i'length));
         mem_addr_reg_wr <= '1';
@@ -839,11 +839,11 @@ begin
         hb_wr   <= '1';
         hb_input <= HBI_H_t;
       when update_delete_start_t =>
-        mem_addr_input1 <= MA_B_t;
-        rd_mem_port1 <= '1';
+        mem_addr_input2 <= MA_B_t;
+        rd_mem_port2 <= '1';
       when update_delete_start_t2 =>
         nrargs_wr    <= '1';
-        nrargs_input <= NRARGSI_mem_port1_t;
+        nrargs_input <= NRARGSI_mem_port2_t;
         mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj(kWamAddressWidth -1 downto 0))+to_unsigned(1, i'length));
         mem_addr2_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj(kWamAddressWidth -1 downto 0))+to_unsigned(2, i'length));
         mem_addr_reg_wr <= '1';
@@ -855,8 +855,8 @@ begin
         rd_mem_port2    <= '1';
 
         rst_cnt         <= '1';
-        mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj(kWamAddressWidth -1 downto 0))+to_unsigned(5, i'length));
-        mem_addr2_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj(kWamAddressWidth -1 downto 0))+to_unsigned(6, i'length));
+        mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(nr_args)+to_unsigned(5, i'length));
+        mem_addr2_comb <= std_logic_vector(unsigned(b_reg)+unsigned(nr_args)+to_unsigned(6, i'length));
         mem_addr_reg_wr <= '1';
       when update_delete_common_t2 =>
         mem_addr_input1 <= MA_DFC_t;
