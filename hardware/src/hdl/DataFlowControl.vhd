@@ -41,8 +41,8 @@ entity DataFlowControl is
     local_fail        : in std_logic;
     global_fail       : in std_logic;
     b_reg             : in std_logic_vector(kWamAddressWidth -1 downto 0);
-    new_b_reg         : in std_logic_vector(kWamAddressWidth -1 downto 0);                                                 
-    
+    new_b_reg         : in std_logic_vector(kWamAddressWidth -1 downto 0);
+
     local_fail_rst    : out std_logic;
     global_fail_out   : out std_logic;
     global_fail_rst   : out std_logic;
@@ -156,10 +156,10 @@ begin
 
   mem_addr1 <= mem_addr1_reg;
   mem_addr2 <= mem_addr2_reg;
-  
+
   MEMOBJ_reg: process(clk)
   begin
-    if rising_edge(clk) then 
+    if rising_edge(clk) then
         if rst = '1' then
             mem_obj_reg <= (others => '0');
         elsif wr_mem_reg = '1' then
@@ -167,7 +167,7 @@ begin
         end if;
     end if;
   end process;
-  
+
   MEMADDRREG: process(clk)
   begin
     if rising_edge(clk) then
@@ -179,8 +179,8 @@ begin
         mem_addr2_reg <= mem_addr2_comb;
       end if;
     end if;
-  end process;  
-     
+  end process;
+
 
   -- Decode the first state based on current instruction
   -- TO DO: maybe put in function?
@@ -405,7 +405,7 @@ begin
     end case;
   end process NEXT_STATE_DECODE;
 
-  OUTPUT_DECODE: process(cr_state, deref_done, mem_obj, instruction, bind_done, mode_reg, counter, nr_args)
+  OUTPUT_DECODE: process(cr_state, deref_done, mem_obj, instruction, bind_done, mode_reg, counter, nr_args, new_b_reg, b_reg, mem_addr1_reg, mem_addr2_reg)
   begin
     --DEFAULT VALUES
     local_fail_rst   <= '0';
@@ -465,7 +465,7 @@ begin
     mem_addr_reg_wr  <= '0';
     mem_addr1_comb   <= (others => '0');
     mem_addr2_comb   <= (others => '0');
-    
+
     case cr_state is
       when next_instr_t =>
         if local_fail /= '1' then
@@ -744,18 +744,11 @@ begin
         mem_addr_input2 <= MA_Ep2orB_t;
       when try_me_else_t2 =>
         newB_wr <= '1';
-        --risky
-        mem_addr2_comb <= std_logic_vector(unsigned(mem_obj(kWamAddressWidth -1 downto 0))+unsigned(nr_args)+to_unsigned(1, i'length));
-        mem_addr_reg_wr <= '1';
       when try_me_else_t3 =>
         mem_addr_input1 <= MA_newB_t;
         mem_input1      <= MI_NRAGRGS_t;
         wr_mem_port1    <= '1';
 
-        mem_addr_input2 <= MA_DFC_t;
-        mem_input2      <= MI_E_t;
-        wr_mem_port2    <= '1';
-        
         mem_addr1_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(2, i'length));
         mem_addr2_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(3, i'length));
         mem_addr_reg_wr <= '1';
@@ -767,7 +760,7 @@ begin
         mem_addr_input2 <= MA_DFC_t;
         mem_input2      <= MI_B_t;
         wr_mem_port2    <= '1';
-        
+
         mem_addr1_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(4, i'length));
         mem_addr2_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(5, i'length));
         mem_addr_reg_wr <= '1';
@@ -779,13 +772,18 @@ begin
         mem_addr_input2 <= MA_DFC_t;
         mem_input2      <= MI_TR_t;
         wr_mem_port2    <= '1';
-        
-        mem_addr2_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(6, i'length));
+
+        mem_addr1_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(6, i'length));
+        mem_addr2_comb <= std_logic_vector(unsigned(new_b_reg)+unsigned(nr_args)+to_unsigned(1, i'length));
         mem_addr_reg_wr <= '1';
       when try_me_else_t6 =>
         mem_addr_input1 <= MA_DFC_t;
         mem_input1      <= MI_H_t;
         wr_mem_port1    <= '1';
+
+        mem_addr_input2 <= MA_DFC_t;
+        mem_input2      <= MI_E_t;
+        wr_mem_port2    <= '1';
 
         b_input <= BRI_newB_t;
         b_wr    <= '1';
@@ -794,8 +792,8 @@ begin
         hb_input <= HBI_H_t;
 
         rst_cnt <= '1';
-        mem_addr1_comb <= std_logic_vector(unsigned(b_reg) + to_unsigned(1, b_reg'length));
-        mem_addr2_comb <= std_logic_vector(unsigned(b_reg) + to_unsigned(2, b_reg'length));
+        mem_addr1_comb <= std_logic_vector(unsigned(new_b_reg) + to_unsigned(1, b_reg'length));
+        mem_addr2_comb <= std_logic_vector(unsigned(new_b_reg) + to_unsigned(2, b_reg'length));
         mem_addr_reg_wr <= '1';
       when try_me_else_t7 =>
         i <= counter;
@@ -810,14 +808,14 @@ begin
 
         gpr_addr1 <= GPRA_I_t;
         gpr_addr2 <= GPRA_Ip1_t;
-        
+
         mem_addr1_comb <= std_logic_vector(unsigned(mem_addr1_reg) + 2);
         mem_addr2_comb <= std_logic_vector(unsigned(mem_addr2_reg) + 2);
         mem_addr_reg_wr <= '1';
-        
+
         count <= '1';
       when retry_me_else_t =>
-        mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(nr_args)+to_unsigned(1, i'length));
+        mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(nr_args)+to_unsigned(4, i'length));
         mem_addr_reg_wr <= '1';
       when retry_me_else_t2 =>
        wr_mem_port1    <= '1';
@@ -884,11 +882,11 @@ begin
         mem_addr_input2 <= MA_unwind_trail_t;
         mem_input1      <= MI_unwind_trail_t;
         mem_input2      <= MI_unwind_trail_t;
-        
+
         mem_addr1_comb <= std_logic_vector(unsigned(b_reg) + to_unsigned(1, b_reg'length));
         mem_addr2_comb <= std_logic_vector(unsigned(b_reg) + to_unsigned(2, b_reg'length));
         mem_addr_reg_wr <= '1';
-        
+
         rst_cnt <= '1';
       when update_delete_common_t5 =>
         i <= counter;
@@ -897,7 +895,7 @@ begin
 
         mem_addr_input2 <= MA_DFC_t;
         rd_mem_port2    <= to_std_logic(counter+1 <= unsigned(nr_args));
-        
+
         mem_addr1_comb <= std_logic_vector(unsigned(mem_addr1_reg) + 2);
         mem_addr2_comb <= std_logic_vector(unsigned(mem_addr2_reg) + 2);
         mem_addr_reg_wr <= '1';
@@ -918,7 +916,7 @@ begin
 
         gpr_input1 <= GPRI_mem_port1_t;
         gpr_input2 <= GPRI_mem_port2_t;
-        
+
         mem_addr1_comb <= std_logic_vector(unsigned(mem_addr1_reg) + 2);
         mem_addr2_comb <= std_logic_vector(unsigned(mem_addr2_reg) + 2);
         mem_addr_reg_wr <= '1';

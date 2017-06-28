@@ -175,7 +175,7 @@ signal dfc_hb_input           : hb_input_t;
 signal dfc_i                  : unsigned(kWamAddressWidth -1 downto 0);
 signal dfc_start_unwind       : std_logic;
 signal dfc_mem_addr1_out      : std_logic_vector(kWamAddressWidth -1 downto 0);
-signal dfc_mem_addr2_out      : std_logic_vector(kWamAddressWidth -1 downto 0);           
+signal dfc_mem_addr2_out      : std_logic_vector(kWamAddressWidth -1 downto 0);
 ----- TRAIL -----
 signal trail_start            : std_logic;
 signal trail_address          : std_logic_vector(kWamAddressWidth -1 downto 0);
@@ -322,7 +322,7 @@ end process;
 
 led(0) <= GLBFAIL_reg;
 led(1) <= to_std_logic(fpwam_instr(dfc_instruction_in) = i_nop);
-led(2) <= to_std_logic(unsigned(P_reg) = to_unsigned(3, P_reg'length));
+led(2) <= to_std_logic(unsigned(P_reg) = to_unsigned(4, P_reg'length));
 led(3) <= '1';
 -- INSTRUCTION MEMORY
 instr_mem_addr <= P_reg;
@@ -518,8 +518,8 @@ end process;
 
 -- NewE REGISTER BEGIN
   NewE_wr <= dfc_newE_wr;
-  NewE_comb  <=   std_logic_vector(unsigned(mem_output_1(kWamAddressWidth -1 downto 0)) + unsigned(E_reg) + 3) when E_reg > B_reg else
-                  std_logic_vector(unsigned(mem_output_1(kWamAddressWidth -1 downto 0)) + unsigned(B_reg) + 7);
+  NewE_comb  <=   std_logic_vector(unsigned(mem_output_2(kWamAddressWidth -1 downto 0)) + unsigned(E_reg) + 3) when E_reg > B_reg else
+                  std_logic_vector(unsigned(mem_output_2(kWamAddressWidth -1 downto 0)) + unsigned(B_reg) + 7);
   NEWEREG: process(clk)
   begin
     if rising_edge(clk) then
@@ -549,8 +549,8 @@ end process;
 
 -- NewB REGISTER BEGIN
   NewB_wr   <= dfc_newB_wr;
-  NewB_comb <= std_logic_vector(unsigned(mem_output_1(kWamAddressWidth -1 downto 0)) + unsigned(E_reg) + 3) when E_reg > B_reg else
-               std_logic_vector(unsigned(mem_output_1(kWamAddressWidth -1 downto 0)) + unsigned(B_reg) + 7);
+  NewB_comb <= std_logic_vector(unsigned(mem_output_2(kWamAddressWidth -1 downto 0)) + unsigned(E_reg) + 3) when E_reg > B_reg else
+               std_logic_vector(unsigned(mem_output_2(kWamAddressWidth -1 downto 0)) + unsigned(B_reg) + 7);
   NEWBREG: process(clk)
   begin
     if rising_edge(clk) then
@@ -638,7 +638,7 @@ end process;
                or untrail_mem_port_2_wr;
 
   ADDR1MUX: process(deref1_res_out,dfc_mem_addr1, H_reg, deref1_mem_addr1, bind_mem_addr1, bind_mem_addr2, unifyComb_mem_addr1, S_reg,
-                   E_reg, dfc_instruction_in, B_reg, NewE_reg, NewB_reg, NRARGS_reg, dfc_i, untrail_mem_addr_1, mem_output_1)
+                   E_reg, dfc_instruction_in, B_reg, NewE_reg, NewB_reg, NRARGS_reg, dfc_i, untrail_mem_addr_1, mem_output_1, dfc_mem_addr1_out)
   begin
     mem_addr1 <= (others => '0');
     case dfc_mem_addr1 is
@@ -706,7 +706,7 @@ end process;
   end process;
 
   ADDR2MUX: process(deref1_res_out, dfc_mem_addr2, H_reg, deref1_mem_addr1, bind_mem_addr1, bind_mem_addr2, unifyComb_mem_addr2, S_reg,
-                    E_reg, dfc_instruction_in, B_reg, NewE_reg, NewB_reg, NRARGS_reg, dfc_i, untrail_mem_addr_2)
+                    E_reg, dfc_instruction_in, B_reg, NewE_reg, NewB_reg, NRARGS_reg, dfc_i, untrail_mem_addr_2, dfc_mem_addr2_out)
   begin
     mem_addr2 <= (others => '0');
     case dfc_mem_addr2 is
@@ -767,7 +767,7 @@ end process;
         when MA_unwind_trail_t =>
           mem_addr2 <= untrail_mem_addr_2;
         when MA_DFC_t =>
-          mem_addr2 <= dfc_mem_addr2_out; 
+          mem_addr2 <= dfc_mem_addr2_out;
       when others =>
         null;
     end case;
@@ -922,7 +922,9 @@ end process;
       when GPRI_ref_H_t =>
         gpr_input2 <= fpwam_word(H_reg, tag_ref_t);
       when GPRI_mem_port1_t =>
-          gpr_input2 <= mem_output_1;
+        gpr_input2 <= mem_output_1;
+      when GPRI_mem_port2_t =>
+	  	  gpr_input2 <= mem_output_2;
       when GPRI_ref_addr_t =>
   	  	gpr_input2 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
       when others =>
