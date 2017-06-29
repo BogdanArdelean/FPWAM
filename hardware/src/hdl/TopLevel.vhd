@@ -69,6 +69,8 @@ signal deref1_mem_word1    : std_logic_vector(kWamWordWidth -1 downto 0);
 signal deref1_mem_addr1    : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal deref1_mem_port1_rd : std_logic;
 signal deref1_res_out      : std_logic_vector(kWamWordWidth -1 downto 0);
+signal deref1_addr_word    : std_logic_vector(kWamWordWidth -1 downto 0);
+signal deref1_addr         : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal deref1_done         : std_logic;
 ----- DEREF UNIT2 ----
 ----- THIS IS USED JUST BY UNIFYUNIT ----
@@ -123,6 +125,9 @@ signal dfc_local_fail         : std_logic;
 signal dfc_global_fail        : std_logic;
 signal dfc_b_reg              : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal dfc_new_b_reg          : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal dfc_deref_addr         : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal dfc_deref_word         : std_logic_vector(kWamWordWidth -1 downto 0);
+signal dfc_h_reg              : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal dfc_local_fail_rst     : std_logic;
 signal dfc_global_fail_out    : std_logic;
 signal dfc_global_fail_rst    : std_logic;
@@ -176,6 +181,9 @@ signal dfc_i                  : unsigned(kWamAddressWidth -1 downto 0);
 signal dfc_start_unwind       : std_logic;
 signal dfc_mem_addr1_out      : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal dfc_mem_addr2_out      : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal dfc_mem_out1           : std_logic_vector(kWamWordWidth -1 downto 0);
+signal dfc_mem_out2           : std_logic_vector(kWamWordWidth -1 downto 0);
+signal dfc_trail_do           : std_logic;
 ----- TRAIL -----
 signal trail_start            : std_logic;
 signal trail_address          : std_logic_vector(kWamAddressWidth -1 downto 0);
@@ -393,6 +401,8 @@ end process;
         H_comb <= mem_output_1(kWamAddressWidth -1 downto 0);
       when HI_mem_port2_t =>
         H_comb <= mem_output_2(kWamAddressWidth -1 downto 0);
+      when HI_Hpconstant_t =>
+        H_comb <= std_logic_vector(unsigned(H_reg)+unsigned(dfc_instruction_in(kGPRAddressWidth -1 downto 0)));
       when others =>
         null;
     end case;
@@ -419,6 +429,10 @@ end process;
         S_comb <= std_logic_vector(unsigned(fpwam_value(deref1_res_out))+1);
       when SI_p1_t =>
         S_comb <= std_logic_vector(unsigned(S_reg)+1);
+      when SI_untag_deref_t =>
+        S_comb <= std_logic_vector(fpwam_value(deref1_res_out));
+      when SI_pconstant_t =>
+        S_comb <= std_logic_vector(unsigned(S_reg)+unsigned(dfc_instruction_in(kGPRAddressWidth -1 downto 0)));
       when others =>
         null;
     end case;
@@ -678,24 +692,8 @@ end process;
         mem_addr1 <= std_logic_vector(unsigned(E_reg)+1);
       when MA_newB_t =>
         mem_addr1 <= NewB_reg;
---      when MA_newBNRi_t =>
---        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i);
---      when MA_newBNRip1_t =>
---        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
---      when MA_newBI_t =>
---        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + dfc_i);
---      when MA_newBIp1_t =>
---        mem_addr1 <= std_logic_vector(unsigned(NewB_reg) + dfc_i + 1);
       when MA_B_t =>
         mem_addr1 <= B_reg;
---      when MA_BI_t =>
---        mem_addr1 <= std_logic_vector(unsigned(B_reg) + dfc_i);
---      when MA_BIp1_t =>
---        mem_addr1 <= std_logic_vector(unsigned(B_reg) + dfc_i + 1);
---      when MA_BNRI_t =>
---        mem_addr1 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i);
---      when MA_BNRIp1_t =>
---        mem_addr1 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
       when MA_unwind_trail_t =>
         mem_addr1 <= untrail_mem_addr_1;
       when MA_DFC_t =>
@@ -746,24 +744,8 @@ end process;
           mem_addr2 <= std_logic_vector(unsigned(E_reg)+1);
         when MA_newB_t =>
           mem_addr2 <= NewB_reg;
---        when MA_newBNRi_t =>
---          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i);
---        when MA_newBNRip1_t =>
---          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
---        when MA_newBI_t =>
---          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + dfc_i);
---        when MA_newBIp1_t =>
---          mem_addr2 <= std_logic_vector(unsigned(NewB_reg) + dfc_i + 1);
         when MA_B_t =>
           mem_addr2 <= B_reg;
---        when MA_BI_t =>
---          mem_addr2 <= std_logic_vector(unsigned(B_reg) + dfc_i);
---        when MA_BIp1_t =>
---          mem_addr2 <= std_logic_vector(unsigned(B_reg) + dfc_i + 1);
---        when MA_BNRI_t =>
---          mem_addr2 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i);
---        when MA_BNRIp1_t =>
---          mem_addr2 <= std_logic_vector(unsigned(B_reg) + unsigned(NRARGS_reg) + dfc_i + 1);
         when MA_unwind_trail_t =>
           mem_addr2 <= untrail_mem_addr_2;
         when MA_DFC_t =>
@@ -812,7 +794,8 @@ end process;
         mem_input_1 <= untrail_mem_port_1;
       when MI_H_t =>
         mem_input_1 <= "00"&H_reg;
-
+      when MI_dfc_t =>
+        mem_input_1 <= dfc_mem_out1;
       when others =>
         null;
     end case;
@@ -857,7 +840,8 @@ end process;
         mem_input_2 <= untrail_mem_port_2;
       when MI_H_t =>
         mem_input_2 <= "00"&H_reg;
-
+      when MI_dfc_t =>
+        mem_input_2 <= dfc_mem_out2;
       when others =>
         null;
     end case;
@@ -906,6 +890,10 @@ end process;
         gpr_input1 <= fpwam_word(H_reg, tag_str_t);
       when GPRI_ref_addr_t =>
   	  	gpr_input1 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
+      when GPRI_lis_H_t =>
+        gpr_input1 <= fpwam_word(H_reg, tag_lis_t);
+      when GPRI_con_t =>
+        gpr_input1 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
       when others =>
         null;
     end case;
@@ -927,6 +915,10 @@ end process;
 	  	  gpr_input2 <= mem_output_2;
       when GPRI_ref_addr_t =>
   	  	gpr_input2 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
+      when GPRI_lis_H_t =>
+        gpr_input2 <= fpwam_word(H_reg, tag_lis_t);
+      when GPRI_con_t =>
+        gpr_input2 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
       when others =>
         null;
     end case;
@@ -1022,11 +1014,15 @@ end process;
         deref1_word <= gpr_output1;
       when DI_unify_unit_t =>
         deref1_word <= unify_deref1_out;
+      when DI_EYnp1_t =>
+        deref1_word <= fpwam_word(std_logic_vector(unsigned(E_reg)+
+                                  unsigned(dfc_instruction_in(kGPRAddressWidth-1 + kWamWordWidth downto kWamWordWidth))+1), tag_ref_t);
       when others =>
         null;
     end case;
   end process;
 
+  deref1_addr <= fpwam_value(deref1_addr_word);
   DEREF1: entity work.DerefUnit(Behavioral)
    generic map
    (
@@ -1043,6 +1039,7 @@ end process;
     ,addr_out    => deref1_mem_addr1
     ,rd_mem      => deref1_mem_port1_rd
     ,res_out     => deref1_res_out
+    ,res_addr    => deref1_addr_word
     ,done        => deref1_done
    );
 -- DEREF1 END
@@ -1066,6 +1063,7 @@ end process;
     ,addr_out    => deref2_mem_addr2
     ,rd_mem      => deref2_mem_port2_rd
     ,res_out     => deref2_res_out
+    ,res_addr    => open
     ,done        => deref2_done
    );
 -- DEREF2 END
@@ -1178,6 +1176,9 @@ end process;
   dfc_b_reg              <= B_reg;
   dfc_new_b_reg          <= NewB_reg;
   dfc_unwind_done        <= untrail_done;
+  dfc_deref_addr         <= deref1_addr;
+  dfc_deref_word         <= deref1_res_out;
+  dfc_h_reg              <= H_reg;
   DFC: entity work.DataFlowControl(Behavioral)
    port map
    (
@@ -1196,6 +1197,9 @@ end process;
     ,global_fail        => dfc_global_fail
     ,b_reg              => dfc_b_reg
     ,new_b_reg          => dfc_new_b_reg
+    ,deref_addr         => dfc_deref_addr
+    ,deref_word         => dfc_deref_word
+    ,H_reg              => dfc_h_reg
     ,local_fail_rst     => dfc_local_fail_rst
     ,global_fail_out    => dfc_global_fail_out
     ,global_fail_rst    => dfc_global_fail_rst
@@ -1249,11 +1253,16 @@ end process;
     ,start_unwind       => dfc_start_unwind
     ,mem_addr1          => dfc_mem_addr1_out
     ,mem_addr2          => dfc_mem_addr2_out
+    ,mem_out1           => dfc_mem_out1
+    ,mem_out2           => dfc_mem_out2
+    ,trail_do           => dfc_trail_do
    );
 -- DFC END
 -- TRAIL BEGIN
-trail_start   <= bind_trail;
-trail_address <= bind_trail_input;
+trail_start   <= bind_trail or dfc_trail_do;
+trail_address <= bind_trail_input when TI_bind_output_t else
+                 fpwam_value(deref1_res_out) when TI_deref_t else
+                 bind_trail_input;
 trail_H       <= H_reg;
 trail_HB      <= HB_reg;
 trail_B       <= B_reg;
@@ -1275,7 +1284,8 @@ TRAILUNIT: entity work.TrailUnit(Behavioral)
  );
 
 trailm_addr_1  <= TR_reg when dfc_trail_input = TI_bind_output_t else
-                  untrail_addr_1;
+                  untrail_addr_1 when dfc_trail_input = TI_unwind_trail_t else
+                  TR_reg;
 trailm_input_1  <= bind_trail_input;
 trailm_wr_1     <= trail_do;
 trailm_rd_1     <= untrail_port_1_rd or trailm_wr_1;

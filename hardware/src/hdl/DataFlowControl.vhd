@@ -135,7 +135,7 @@ type state_t is (idle_t, next_instr_t
                 ,unify_value_t, unify_value_t2
                 ,unify_local_value_t, unify_local_value_t2, unify_local_value_t3, unify_local_value_t4, unify_local_value_t5
                 ,unify_constant_t, unify_constant_t2, unify_constant_t3
-                ,unify_void_t
+                ,unify_void_t, unify_void_t2
                 ,put_variable_X_t
                 ,put_variable_Y_t
                 ,put_value_t, put_value_t2
@@ -144,8 +144,8 @@ type state_t is (idle_t, next_instr_t
                 ,put_constant_t
                 ,get_variable_t
                 ,get_value_t, get_value_t2
-                ,get_list_t
-                ,get_constant_t
+                ,get_list_t, get_list_t2, get_list_t3, get_list_t4
+                ,get_constant_t, get_constant_t2
                 ,call_t
                 ,proceed_t
                 ,allocate_t, allocate_t2, allocate_t3, allocate_t4
@@ -920,7 +920,7 @@ begin
 
         wr_h_reg <= '1';
         h_input  <= HI_p1_t;
-      when put_variable_Y_t => -- TODO: make addr logic in TopLevel
+      when put_variable_Y_t =>
         wr_gpr1    <= '1';
         gpr_input1 <= GPRI_ref_addr_t;
 
@@ -998,14 +998,14 @@ begin
         bind_port1      <= BI_unify_unit_t;
         bind_port2      <= BI_unify_unit_t;
         deref_input     <= DI_unify_unit_t;
-        if fpwam_var_on_stack(instruction) then -- value on stack
+        if fpwam_var_on_stack(instruction) then
           unify_input_b <= UI_mem_port1_t;
         else
           unify_input_b <= UI_GPR_t;
         end if;
       when get_list_t =>
         start_deref      <= '1';
-        deref_input      <= DI_GPR_t;  -- mux => input for deref = A(i)
+        deref_input      <= DI_GPR_t;
         mem_addr_input1  <= MA_deref_unit_t;
       when get_list_t2 =>
         wr_s_reg    <= '1';
@@ -1035,7 +1035,7 @@ begin
         trail_input      <= TI_bind_output_t;
       when get_constant_t =>
         start_deref      <= '1';
-        deref_input      <= DI_GPR_t;  -- mux => input for deref = A(i)
+        deref_input      <= DI_GPR_t;
         mem_addr_input1  <= MA_deref_unit_t;
       when get_constant_t2 =>
         mem_addr_input1 <= MA_deref_unit_t;
