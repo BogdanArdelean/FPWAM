@@ -42,6 +42,9 @@ entity DataFlowControl is
     global_fail       : in std_logic;
     b_reg             : in std_logic_vector(kWamAddressWidth -1 downto 0);
     new_b_reg         : in std_logic_vector(kWamAddressWidth -1 downto 0);
+    deref_addr        : in std_logic_vector(kWamAddressWidth -1 downto 0);
+    deref_word        : in std_logic_vector(kWamWordWidth -1 downto 0);
+    H_reg             : in std_logic_vector(kWamAddressWidth -1 downto 0);
 
     local_fail_rst    : out std_logic;
     global_fail_out   : out std_logic;
@@ -112,7 +115,10 @@ entity DataFlowControl is
     i                 : out unsigned(kWamAddressWidth -1 downto 0);
     start_unwind      : out std_logic;
     mem_addr1         : out std_logic_vector(kWamAddressWidth -1 downto 0);
-    mem_addr2         : out std_logic_vector(kWamAddressWidth -1 downto 0)
+    mem_addr2         : out std_logic_vector(kWamAddressWidth -1 downto 0);
+    mem_out1          : out std_logic_vector(kWamWordWidth -1 downto 0);
+    mem_out2          : out std_logic_vector(kWamWordWidth -1 downto 0);
+    trail_do          : out std_logic
    );
 end DataFlowControl;
 
@@ -127,11 +133,19 @@ type state_t is (idle_t, next_instr_t
                 ,get_structure_t, get_structure_t2, get_structure_t3, get_structure_t4
                 ,unify_variable_t, unify_variable_t2
                 ,unify_value_t, unify_value_t2
+                ,unify_local_value_t, unify_local_value_t2, unify_local_value_t3, unify_local_value_t4, unify_local_value_t5
+                ,unify_constant_t, unify_constant_t2, unify_constant_t3
+                ,unify_void_t
                 ,put_variable_X_t
                 ,put_variable_Y_t
                 ,put_value_t, put_value_t2
+                ,put_unsafe_value_t, put_unsafe_value_t2, put_unsafe_value_t3, put_unsafe_value_t4,
+                ,put_list_t
+                ,put_constant_t
                 ,get_variable_t
                 ,get_value_t, get_value_t2
+                ,get_list_t
+                ,get_constant_t
                 ,call_t
                 ,proceed_t
                 ,allocate_t, allocate_t2, allocate_t3, allocate_t4
@@ -152,12 +166,35 @@ signal mem_addr2_reg   : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal mem_addr1_comb  : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal mem_addr2_comb  : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal mem_addr_reg_wr : std_logic;
+
+signal mem_out1_reg   : std_logic_vector(kWamWordWidth -1 downto 0);
+signal mem_out2_reg   : std_logic_vector(kWamWordWidth -1 downto 0);
+signal mem_out1_comb  : std_logic_vector(kWamWordWidth -1 downto 0);
+signal mem_out2_comb  : std_logic_vector(kWamWordWidth -1 downto 0);
+signal mem_out_reg_wr : std_logic;
+
 begin
 
   mem_addr1 <= mem_addr1_reg;
   mem_addr2 <= mem_addr2_reg;
 
-  MEMOBJ_reg: process(clk)
+  mem_out1 <= mem_out1_reg;
+  mem_out2 <= mem_out2_reg;
+
+  MEMOUTREG: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        mem_out1_reg <= (others => '0');
+        mem_out2_reg <= (others => '0');
+      elsif mem_out_reg_wr = '1' then
+        mem_out1_reg <= mem_out1_comb;
+        mem_out2_reg <= mem_out2_comb;
+      end if;
+    end if;
+  end process;
+
+  MEMOBJREG: process(clk)
   begin
     if rising_edge(clk) then
         if rst = '1' then
@@ -197,16 +234,32 @@ begin
           decoded_state <= unify_variable_t;
         when i_unify_value_t =>
           decoded_state <= unify_value_t;
+        when i_unify_local_value_t =>
+          decoded_state <= unify_local_value_t;
+        when i_unify_constant_t =>
+          decoded_state <= unify_constant_t;
+        when i_unify_void =>
+          decoded_state <= unify_void_t;
         when i_put_variable_X_t =>
           decoded_state <= put_variable_X_t;
         when i_put_variable_Y_t =>
           decoded_state <= put_variable_Y_t;
         when i_put_value_t =>
           decoded_state <= put_value_t;
+        when i_put_unsafe_value_t =>
+          decoded_state <= put_unsafe_value_t;
+        when i_put_list_t =>
+          decoded_state <= put_list_t;
+        when i_put_constant_t =>
+          decoded_state <= put_constant_t;
         when i_get_variable_t =>
           decoded_state <= get_variable_t;
         when i_get_value_t =>
           decoded_state <= get_value_t;
+        when i_get_list_t =>
+          decoded_state <= get_list_t;
+        when i_get_constant_t =>
+          decoded_state <= get_constant_t;
         when i_call_t =>
           decoded_state <= call_t;
         when i_proceed_t =>
@@ -220,6 +273,12 @@ begin
         when i_retry_me_else_t =>
           decoded_state <= update_delete_start_t;
         when i_trust_me_t =>
+          decoded_state <= update_delete_start_t;
+        when i_try_t =>
+          decoded_state <= try_me_else_t;
+        when i_retry_t =>
+          decoded_state <= update_delete_start_t;
+        when i_trust_t =>
           decoded_state <= update_delete_start_t;
         when others =>
           decoded_state <= idle_t;
@@ -312,6 +371,53 @@ begin
         else
           nx_state <= next_instr_t;
         end if;
+      when unify_local_value_t =>
+        nx_state <= unify_local_value_t2;
+      when unify_local_value_t2 =>
+        case mode_reg is
+          when mode_read_t =>
+            if unify_done = '1' then
+              nx_state <= next_instr_t;
+            end if;
+          when mode_write_t =>
+            if deref_done = '1' then
+              if deref_addr < H_reg then
+                nx_state <= unify_local_value_t3;
+              else
+                nx_state <= unify_local_value_t4;
+              end if;
+            end if;
+        end case;
+      when unify_local_value_t3 =>
+        nx_state <= next_instr_t;
+      when unify_local_value_t4 =>
+        nx_state <= unify_local_value_t5;
+      when unify_local_value_t5 =>
+        if bind_done = '1' then
+          nx_state <= next_instr_t;
+        end if;
+      when unify_constant_t =>
+        case mode_reg is
+          when mode_read_t =>
+            nx_state <= unify_constant_t2;
+          when mode_write_t
+            nx_state <= next_instr_t;
+        end case;
+      when unify_constant_t2 =>
+        if deref_done = '1' then
+          case fpwam_tag(deref_word) is
+            when tag_ref_t =>
+              nx_state <= unify_constant_t3;
+            when tag_int_t =>
+              if deref_word = instr(kWamWordWidth -1 downto 0) then
+                nx_state <= next_instr_t;
+              else
+                nx_state <= backtrack_t;
+              end if;
+          end case;
+        end if;
+      when unify_constant_t3 =>
+        nx_state <= next_instr_t;
       when put_variable_X_t =>
         nx_state <= next_instr_t;
       when put_variable_Y_t =>
@@ -324,6 +430,26 @@ begin
         end if;
       when put_value_t2 =>
         nx_state <= next_instr_t;
+      when put_unsafe_value_t =>
+        if deref_done = '1' then
+          if deref_addr < E_reg then
+            nx_state <= put_unsafe_value_t2;
+          else
+            nx_state <= put_unsafe_value_t3;
+          end if;
+        end if;
+      when put_unsafe_value_t2 =>
+        nx_state <= next_instr_t;
+      when put_unsafe_value_t3 =>
+        nx_state <= put_unsafe_value_t4;
+      when put_unsafe_value_t4 =>
+        if bind_done = '1' then
+          nx_state <= next_instr_t;
+        end if;
+      when put_list_t =>
+        nx_state <= next_instr_t;
+      when put_constant_t =>
+        nx_state <= next_instr_t;
       when get_variable_t =>
         nx_state <= next_instr_t;
       when get_value_t =>
@@ -331,6 +457,40 @@ begin
       when get_value_t2 =>
         if unify_done = '1' then
           nx_state <= next_instr_t;
+        end if;
+      when get_list_t =>
+        if deref_done = '1' then
+          case fpwam_tag(deref_word) is
+            when tag_ref_t =>
+              nx_state <= get_list_t3;
+            when tag_lis_t =>
+              nx_state <= get_list_t2;
+            when others =>
+              nx_state <= backtrack_t;
+          end case;
+        end if;
+      when get_list_t2 =>
+        nx_state <= next_instr_t;
+      when get_list_t3 =>
+        nx_state <= get_list_t4;
+      when get_list_t4 =>
+        if bind_done = '1' then
+          nx_state <= next_instr_t;
+        end if;
+      when get_constant_t =>
+        if deref_done = '1' then
+          case fpwam_tag(deref_word) is
+            when tag_ref_t =>
+              nx_state <= get_constant_t2;
+            when tag_int_t =>
+              if deref_word = instruction(kWamWordWidth -1 downto 0) then
+                nx_state <= next_instr_t;
+              else
+                nx_state <= backtrack_t;
+              end if;
+            when others =>
+              nx_state <= backtrack_t;
+          end case;
         end if;
       when call_t =>
         nx_state <= next_instr_t;
@@ -385,7 +545,11 @@ begin
           case fpwam_instr(instruction) is
             when i_retry_me_else_t =>
               nx_state <= retry_me_else_t;
+            when i_retry_t =>
+              nx_state <= retry_me_else_t;
             when i_trust_me_t =>
+              nx_state <= trust_me_t;
+            when i_try_t =>
               nx_state <= trust_me_t;
             when others =>
               null;
@@ -401,6 +565,17 @@ begin
         nx_state <= trust_me_t3;
       when trust_me_t3 =>
         nx_state <= next_instr_t;
+      when unify_void_t =>
+        case mode_reg is
+          when mode_read_t =>
+            nx_state <= next_instr_t;
+          when mode_write_t =>
+            nx_state <= unify_void_t2;
+        end case;
+      when unify_void_t2 =>
+        if counter+2 > instruction(kGPRAddressWidth -1 downto 0) then
+          nx_state <= next_instr_t;
+        end if;
       when others => null;
     end case;
   end process NEXT_STATE_DECODE;
@@ -462,10 +637,11 @@ begin
     rst_cnt          <= '0';
     count            <= '0';
     wr_mem_reg       <= '0';
+    mem_out_reg_wr   <= '0';
     mem_addr_reg_wr  <= '0';
     mem_addr1_comb   <= (others => '0');
     mem_addr2_comb   <= (others => '0');
-
+    trail_do         <= '0';
     case cr_state is
       when next_instr_t =>
         if local_fail /= '1' then
@@ -605,6 +781,75 @@ begin
           wr_h_reg        <= '1';
           h_input         <= HI_p1_t;
         end if;
+     when unify_local_value_t =>
+       case mode_reg is
+         when mode_read_t =>
+           mem_addr_input2   <= MA_S_t;
+           rd_mem_port2      <= '1';
+           wr_s_reg    <= '1';
+           s_reg_input <= SI_p1_t;
+           if fpwam_var_on_stack(instruction) then -- if value is on stack. Issue read.
+             mem_addr_input1 <= MA_stack_addr_t;
+             rd_mem_port1    <= '1';
+           end if;
+         when mode_write_t =>
+           if fpwam_var_on_stack(instruction) then -- value on stack. Issue read.
+             mem_addr_input1 <= MA_stack_addr_t;
+             rd_mem_port1    <= '1';
+           end if;
+       end case;
+     when unify_local_value_t2 =>
+      case mode_reg is
+        when mode_read_t =>
+          start_unify     <= '1';
+          unify_input_a   <= UI_mem_port2_t;
+          mem_addr_input1 <= MA_unify_unit_t;
+          mem_addr_input2 <= MA_unify_unit_t;
+          mem_input1      <= MI_unify_unit_t;
+          mem_input2      <= MI_unify_unit_t;
+          bind_port1      <= BI_unify_unit_t;
+          bind_port2      <= BI_unify_unit_t;
+          deref_input     <= DI_unify_unit_t;
+          if fpwam_var_on_stack(instruction) then -- value on stack
+            unify_input_b <= UI_mem_port1_t;
+          else
+            unify_input_b <= UI_GPR_t;
+          end if;
+        when mode_write_t =>
+          start_deref <= '1';
+          mem_addr_input1 <= MA_deref_unit_t;
+          if fpwam_var_on_stack(instruction) then
+            deref_input <= DI_mem_port1_t;
+          else
+            deref_input <= DI_GPR_t;
+          end if;
+      end case;
+     when unify_local_value_t3 =>
+        mem_addr_input1 <= MA_H_t;
+        mem_input1      <= MI_deref_t;
+        wr_mem_port1    <= '1';
+
+        wr_h_reg <= '1';
+     when unify_local_value_t4 =>
+        mem_addr_input1 <= MA_H_t;
+        mem_input1      <= MI_ref_H_t;
+
+        wr_mem_port1    <= '1';
+        rd_mem_port1    <= '1';
+
+        wr_h_reg   <= '1';
+        h_input    <= HI_p1_t;
+     when unify_local_value_t5 =>
+       bind       <= '1';             -- bind(
+       bind_port1 <= BI_deref_unit_t; --    tag(STORE[addr])
+       bind_port2 <= BI_mem_port1_t;          --     tag(STORE[H]))
+
+       mem_addr_input1 <= MA_bind_unit_1_t;
+       mem_input1      <= MI_bind_unit_1_t;
+       mem_addr_input2 <= MA_bind_unit_2_t;
+       mem_input2      <= MI_bind_unit_2_t;
+
+       trail_input      <= TI_bind_output_t;
      when unify_variable_t =>
         if mode_reg = mode_read_t then
           mem_addr_input1 <= MA_S_t;
@@ -640,6 +885,28 @@ begin
             wr_gpr1          <= '1';
           end if;
         end if;
+      when unify_constant_t =>
+        case mode_reg is
+          when mode_read_t =>
+            mem_addr_input1 <= MA_S_t;
+            rd_mem_port1    <= '1';
+          when mode_write_t =>
+            mem_addr_input1 <= MA_H_t;
+            mem_input_1     <= MI_constant_t;
+
+            wr_h_reg  <= '1';
+        end case;
+      when unify_constant_t2 =>
+        start_deref     <= '1';
+        deref_input     <= DI_mem_port1_t;
+        mem_addr_input1 <= MA_deref_unit_t;
+      when unify_constant_t3 =>
+        mem_addr_input1 <= MA_deref_unit_t;
+        mem_input1      <= MI_constant_t;
+        wr_mem_port1    <= '1';
+
+        trail_input <= TI_deref_t;
+        trail_do    <= '1';
       when put_variable_X_t =>
         wr_gpr1 <= '1';
         wr_gpr2 <= '1';
@@ -658,7 +925,7 @@ begin
         gpr_input1 <= GPRI_ref_addr_t;
 
         wr_mem_port1    <= '1';
-        mem_input1     <= MI_ref_addr_t;
+        mem_input1      <= MI_ref_addr_t;
         mem_addr_input1 <= MA_stack_addr_t;
       when put_value_t =>
         if fpwam_var_on_stack(instruction) then -- value on stack
@@ -671,6 +938,42 @@ begin
       when put_value_t2 =>
         wr_gpr2    <= '1';
         gpr_input2 <= GPRI_mem_port1_t;
+      when put_unsafe_value_t =>
+        start_deref <= '1';
+        deref_input      <= DI_EYnp1_t;
+        mem_addr_input1  <= MA_deref_unit_t;
+      when put_unsafe_value_t2 =>
+        wr_gpr2 <= '1';
+        gpr_input2 <= GPRI_deref_t;
+        gpr_addr2  <= GPRA_instr_t;
+      when put_unsafe_value_t3 =>
+        mem_addr_input1 <= MA_H_t;
+        mem_input1      <= MI_ref_H_t
+        rd_mem_port1 <= '1';
+        wr_mem_port1 <= '1';
+
+        gpr_input2 <= GPRI_ref_H_t;
+        gpr_addr2  <= GPRA_instr_t;
+        wr_gpr2    <= '1';
+
+        wr_h_reg <= '1';
+      when put_unsafe_value_t4 =>
+        bind       <= '1';
+        bind_port1 <= BI_deref_unit_t;
+        bind_port2 <= BI_mem_port1_t;
+
+        mem_addr_input1 <= MA_bind_unit_1_t;
+        mem_input1      <= MI_bind_unit_1_t;
+        mem_addr_input2 <= MA_bind_unit_2_t;
+        mem_input2      <= MI_bind_unit_2_t;
+
+        trail_input      <= TI_bind_output_t;
+      when put_list_t =>
+        gpr_input1 <= GPRI_lis_H_t;
+        wr_gpr1    <= '1';
+      when put_constant_t =>
+        gpr_input1 <= GPRI_constant_t;
+        wr_gpr1    <= '1';
       when get_variable_t =>
         if fpwam_var_on_stack(instruction) then
           wr_mem_port1    <= '1';
@@ -700,6 +1003,47 @@ begin
         else
           unify_input_b <= UI_GPR_t;
         end if;
+      when get_list_t =>
+        start_deref      <= '1';
+        deref_input      <= DI_GPR_t;  -- mux => input for deref = A(i)
+        mem_addr_input1  <= MA_deref_unit_t;
+      when get_list_t2 =>
+        wr_s_reg    <= '1';
+        s_reg_input <= SI_untag_deref_p1_t;
+
+        wr_mode_reg <= '1';
+        mode_value  <= mode_read_t;
+      when get_list_t3 =>
+        mem_addr_input1 <= MA_H_t;
+        mem_input1      <= MI_lis_Hplus1_t;
+
+        rd_mem_port2    <= '1';
+        wr_mem_port2    <= '1';
+
+        wr_mode_reg <= '1';
+        mode_value  <= mode_write_t;
+      when get_list_t4 =>
+        bind       <= '1';
+        bind_port1 <= BI_deref_unit_t;
+        bind_port2 <= BI_mem_port1_t;
+
+        mem_addr_input1 <= MA_bind_unit_1_t;
+        mem_input1      <= MI_bind_unit_1_t;
+        mem_addr_input2 <= MA_bind_unit_2_t;
+        mem_input2      <= MI_bind_unit_2_t;
+
+        trail_input      <= TI_bind_output_t;
+      when get_constant_t =>
+        start_deref      <= '1';
+        deref_input      <= DI_GPR_t;  -- mux => input for deref = A(i)
+        mem_addr_input1  <= MA_deref_unit_t;
+      when get_constant_t2 =>
+        mem_addr_input1 <= MA_deref_unit_t;
+        mem_input_1     <= MI_constant_t;
+        wr_mem_port1    <= '1';
+
+        trail_input     <= TI_deref_t;
+        trail_do        <= '1';
       when call_t =>
         p_input   <= PI_instr_t;
         p_wr      <= '1';
@@ -766,7 +1110,14 @@ begin
         mem_addr_reg_wr <= '1';
       when try_me_else_t5 =>
         mem_addr_input1 <= MA_DFC_t;
-        mem_input1      <= MI_constant_t;
+        if fpwam_instr(instruction) = i_try_t then
+          mem_input1 <= MI_Pp1_t;
+          p_input    <= PI_instr_t;
+          p_wr       <= '1';
+        else
+          mem_input1      <= MI_constant_t;
+        end if;
+
         wr_mem_port1    <= '1';
 
         mem_addr_input2 <= MA_DFC_t;
@@ -820,8 +1171,13 @@ begin
       when retry_me_else_t2 =>
        wr_mem_port1    <= '1';
        mem_addr_input1 <= MA_DFC_t;
-       mem_input1      <= MI_constant_t;
-
+       if fpwam_instr(instruction) = i_retry_t then
+        mem_input1 <= MI_Pp1_t;
+        p_input    <= PI_instr_t;
+        p_wr       <= '1';
+       else
+        mem_input1 <= MI_constant_t;
+       end if;
        hb_input <= HBI_H_t;
        hb_wr    <= '1';
       when trust_me_t =>
@@ -836,6 +1192,11 @@ begin
 
         hb_wr   <= '1';
         hb_input <= HBI_H_t;
+
+        if fpwam_instr(instruction) = i_trust_t then
+          p_input <= PI_instr_t;
+          p_wr    <= '1';
+        end if;
       when update_delete_start_t =>
         mem_addr_input2 <= MA_B_t;
         rd_mem_port2 <= '1';
@@ -921,6 +1282,43 @@ begin
         mem_addr2_comb <= std_logic_vector(unsigned(mem_addr2_reg) + 2);
         mem_addr_reg_wr <= '1';
         count <= '1';
+      when unify_void_t =>
+        case mode_reg is
+          when mode_read_t =>
+            wr_s_reg    <= '1';
+            s_reg_input <= SI_pconstant_t;
+          when mode_write_t =>
+            rst_cnt <= '1';
+            mem_addr1_comb <= H_reg;
+            mem_addr2_comb <= std_logic_vector(unsigned(H_reg)+1);
+            mem_addr_reg_wr <= '1';
+
+            mem_out1_comb  <= fpwam_word(H_reg, tag_ref_t);
+            mem_out2_comb  <= fpwam_word(std_logic_vector(unsigned(H_reg)+1), tag_ref_t);
+            mem_out_reg_wr <= '1';
+       end case;
+     when unify_void_t2 =>
+      mem_addr_input1 <= MA_DFC_t;
+      mem_input1      <= MI_DFC_t;
+      wr_mem_port1    <= to_std_logic(counter <= instruction(kGPRAddressWidth -1 downto 0));
+
+      mem_addr_input2 <= MA_DFC_t;
+      mem_input2      <= MI_DFC_t;
+      wr_mem_port2    <= to_std_logic(counter+1 <= instruction(kGPRAddressWidth -1 downto 0));
+
+      mem_addr1_comb <= std_logic_vector(unsigned(mem_addr1_reg)+2);
+      mem_addr2_comb <= std_logic_vector(unsigned(mem_addr2_reg)+2);
+      mem_addr_reg_wr <= '1';
+
+      mem_out1_comb  <= fpwam_word(mem_addr1_comb, tag_ref_t);
+      mem_out2_comb  <= fpwam_word(mem_addr2_comb, tag_ref_t);
+      mem_out_reg_wr <= '1';
+
+      count <= '1';
+      if counter+2 > instruction(kGPRAddressWidth -1 downto 0) then
+        wr_h_reg <= '1';
+        h_input  <= HI_Hpconstant_t;
+      end if;
      when others => null;
    end case;
  end process OUTPUT_DECODE;

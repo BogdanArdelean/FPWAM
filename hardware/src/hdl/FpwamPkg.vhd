@@ -24,11 +24,11 @@ package FpwamPkg is
                             MA_B_t, MA_BI_t, MA_BIp1_t, MA_BNRI_t, MA_BNRIp1_t, MA_unwind_trail_t, MA_BImem_port1_t, MA_DFC_t);
   -- Possible input sources for memory
   type mem_port_input_t is ( MI_str_Hplus1_t, MI_constant_t, MI_GPR_t, MI_GPR2_t, MI_bind_unit_1_t, MI_bind_unit_2_t, MI_unify_unit_t,
-                             MI_mem_port1_t, MI_mem_port2_t, MI_ref_H_t, MI_ref_addr_t, MI_E_t, MI_CP_t, MI_B_t, MI_TR_t, MI_NRAGRGS_t, MI_unwind_trail_t, MI_H_t);
+                             MI_mem_port1_t, MI_mem_port2_t, MI_ref_H_t, MI_ref_addr_t, MI_E_t, MI_CP_t, MI_B_t, MI_TR_t, MI_NRAGRGS_t, MI_unwind_trail_t, MI_H_t, MI_dfc_t);
   -- Possible input sources for H register
-  type h_input_t        is (HI_p1_t, HI_p2_t, HI_HB_t, HI_mem_port1_t, HI_mem_port2_t);
+  type h_input_t        is (HI_p1_t, HI_p2_t, HI_HB_t, HI_mem_port1_t, HI_mem_port2_t, HI_Hpconstant_t);
   -- Possible input sources for S register
-  type s_input_t        is (SI_untag_deref_p1_t, SI_p1_t);
+  type s_input_t        is (SI_untag_deref_p1_t, SI_p1_t, SI_untag_deref_t, SI_pconstant_t);
   -- Possible input sources for P register
   type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t, PI_mem_port1_t, PI_mem_port2_t);
   -- Possible input sources for E register
@@ -44,15 +44,15 @@ package FpwamPkg is
   -- Possible input sources for NRARGS register
   type nrargs_input_t   is (NRARGSI_instr_t, NRARGSI_mem_port1_t, NRARGSI_mem_port2_t);
   -- Possible input sources for General Purpose Registers
-  type GPR_input_t      is (GPRI_ref_H_t, GPRI_str_H_t, GPRI_mem_port1_t, GPRI_mem_port2_t, GPRI_ref_addr_t, GPRI_gpr2_t);
+  type GPR_input_t      is (GPRI_ref_H_t, GPRI_str_H_t, GPRI_lis_H_t, GPRI_con_t, GPRI_mem_port1_t, GPRI_mem_port2_t, GPRI_ref_addr_t, GPRI_gpr2_t);
   -- Possible input sources for General Purpose Registers address
   type GPR_addr_input_t is (GPRA_instr_t, GPRA_I_t, GPRA_Ip1_t);
   -- Possible input sources for deref unit
-  type deref_input_t    is (DI_GPR_t, DI_unify_unit_t);
+  type deref_input_t    is (DI_GPR_t, DI_unify_unit_t, DI_EYnp1_t);
   -- Possible input sources for bind unit
   type bind_input_t     is (BI_deref_unit_t, BI_mem_port1_t, BI_unify_unit_t);
   -- Possible input sources for trail unit
-  type trail_input_t    is (TI_bind_output_t, TI_unwind_trail_t);
+  type trail_input_t    is (TI_bind_output_t, TI_unwind_trail_t, TI_deref_t);
   -- WAM execution modes
   type wam_mode_t       is (mode_write_t, mode_read_t);
   -- Types of objects supported in WAM
@@ -62,23 +62,34 @@ package FpwamPkg is
   -- Unify mem input
   type unify_mem_sel_t  is (sel_unify_t, sel_deref_t, sel_bind_t);
 
-  type instruction_t    is (i_nop               -- 00000
-                           ,i_put_structure_t   -- 00001 put_structure p/n, Xm -> [INSTRNUM][Xm][p][n]
-                           ,i_put_variable_X_t  -- 00010
-                           ,i_put_variable_Y_t  -- 00011
-                           ,i_put_value_t       -- 00100
-                           ,i_get_structure_t   -- 00101
-                           ,i_get_variable_t    -- 00110
-                           ,i_get_value_t       -- 00111
-                           ,i_unify_variable_t  -- 01000
-                           ,i_unify_value_t     -- 01001
-                           ,i_call_t            -- 01010
-                           ,i_proceed_t         -- 01011
-                           ,i_allocate_t        -- 01100
-                           ,i_deallocate_t      -- 01101
-                           ,i_try_me_else_t     -- 01110
-                           ,i_retry_me_else_t   -- 01111
-                           ,i_trust_me_t        -- 10000
+  type instruction_t    is (i_nop                 -- 00000
+                           ,i_put_structure_t     -- 00001 put_structure p/n, Xm -> [INSTRNUM][Xm][p][n]
+                           ,i_put_variable_X_t    -- 00010
+                           ,i_put_variable_Y_t    -- 00011
+                           ,i_put_value_t         -- 00100
+                           ,i_get_structure_t     -- 00101
+                           ,i_get_variable_t      -- 00110
+                           ,i_get_value_t         -- 00111
+                           ,i_unify_variable_t    -- 01000
+                           ,i_unify_value_t       -- 01001
+                           ,i_call_t              -- 01010
+                           ,i_proceed_t           -- 01011
+                           ,i_allocate_t          -- 01100
+                           ,i_deallocate_t        -- 01101
+                           ,i_try_me_else_t       -- 01110
+                           ,i_retry_me_else_t     -- 01111
+                           ,i_trust_me_t          -- 10000
+                           ,i_put_unsafe_value_t  -- 10001
+                           ,i_put_list_t          -- 10010
+                           ,i_put_constant_t      -- 10011
+                           ,i_get_list_t          -- 10100
+                           ,i_get_constant_t      -- 10101
+                           ,i_unify_local_value_t -- 10110
+                           ,i_unify_constant_t    -- 10111
+                           ,i_unify_void          -- 11000
+                           ,i_try_t               -- 11001
+                           ,i_retry_t             -- 11010
+                           ,i_trust_t             -- 11011
                            );
   constant kInstrDecodeWidth : integer := 5;
 

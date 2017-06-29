@@ -36,6 +36,7 @@ entity DerefUnit is
      rd_mem      : out std_logic;
 
      res_out     : out std_logic_vector(kWordWidth -1 downto 0);
+     res_addr    : out std_logic_vector(kWrodWidth -1 downto 0);
      done        : out std_logic
   );
 end DerefUnit;
@@ -45,11 +46,13 @@ architecture Behavioral of DerefUnit is
 type state_t is (idle_t, read_t, check_t, done_t);
 signal cr_state, nx_state : state_t;
 
-signal word_reg  : std_logic_vector(kWordWidth -1 downto 0);
-signal word_comb : std_logic_vector(kWordWidth -1 downto 0);
-signal wr_word   : std_logic;
+signal word_reg      : std_logic_vector(kWordWidth -1 downto 0);
+signal word_reg_addr : std_logic_vector(kWordWidth -1 downto 0);
+signal word_comb     : std_logic_vector(kWordWidth -1 downto 0);
+signal wr_word       : std_logic;
 
 begin
+  res_addr <= word_reg_addr;
 
   WORDREG: process(clk, rst)
   begin
@@ -58,6 +61,11 @@ begin
         word_reg <= (others => '0');
       elsif wr_word = '1' then
         word_reg <= word_comb;
+        if cr_state = idle_t then
+          word_reg_addr <= start_word;
+        else
+          word_reg_addr <= word_reg;
+        end if;
       end if;
     end if;
   end process;
