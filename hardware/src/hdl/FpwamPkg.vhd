@@ -24,7 +24,7 @@ package FpwamPkg is
                             MA_B_t, MA_BI_t, MA_BIp1_t, MA_BNRI_t, MA_BNRIp1_t, MA_unwind_trail_t, MA_BImem_port1_t, MA_DFC_t);
   -- Possible input sources for memory
   type mem_port_input_t is ( MI_str_Hplus1_t, MI_constant_t, MI_GPR_t, MI_GPR2_t, MI_bind_unit_1_t, MI_bind_unit_2_t, MI_unify_unit_t,
-                             MI_mem_port1_t, MI_mem_port2_t, MI_ref_H_t, MI_ref_addr_t, MI_E_t, MI_CP_t, MI_B_t, MI_TR_t, MI_NRAGRGS_t, MI_unwind_trail_t, MI_H_t, MI_dfc_t);
+                             MI_mem_port1_t, MI_mem_port2_t, MI_ref_H_t, MI_ref_addr_t, MI_E_t, MI_CP_t, MI_B_t, MI_TR_t, MI_NRAGRGS_t, MI_unwind_trail_t, MI_H_t, MI_dfc_t, MI_deref_t,  MI_lis_Hplus1_t, MI_Pp1_t);
   -- Possible input sources for H register
   type h_input_t        is (HI_p1_t, HI_p2_t, HI_HB_t, HI_mem_port1_t, HI_mem_port2_t, HI_Hpconstant_t);
   -- Possible input sources for S register
@@ -44,11 +44,11 @@ package FpwamPkg is
   -- Possible input sources for NRARGS register
   type nrargs_input_t   is (NRARGSI_instr_t, NRARGSI_mem_port1_t, NRARGSI_mem_port2_t);
   -- Possible input sources for General Purpose Registers
-  type GPR_input_t      is (GPRI_ref_H_t, GPRI_str_H_t, GPRI_lis_H_t, GPRI_con_t, GPRI_mem_port1_t, GPRI_mem_port2_t, GPRI_ref_addr_t, GPRI_gpr2_t);
+  type GPR_input_t      is (GPRI_ref_H_t, GPRI_str_H_t, GPRI_lis_H_t, GPRI_con_t, GPRI_mem_port1_t, GPRI_mem_port2_t, GPRI_ref_addr_t, GPRI_gpr2_t,  GPRI_deref_t, GPRI_constant_t);
   -- Possible input sources for General Purpose Registers address
   type GPR_addr_input_t is (GPRA_instr_t, GPRA_I_t, GPRA_Ip1_t);
   -- Possible input sources for deref unit
-  type deref_input_t    is (DI_GPR_t, DI_unify_unit_t, DI_EYnp1_t);
+  type deref_input_t    is (DI_GPR_t, DI_unify_unit_t, DI_EYnp1_t, DI_mem_port1_t);
   -- Possible input sources for bind unit
   type bind_input_t     is (BI_deref_unit_t, BI_mem_port1_t, BI_unify_unit_t);
   -- Possible input sources for trail unit

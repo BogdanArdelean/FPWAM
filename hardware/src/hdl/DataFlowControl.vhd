@@ -45,6 +45,7 @@ entity DataFlowControl is
     deref_addr        : in std_logic_vector(kWamAddressWidth -1 downto 0);
     deref_word        : in std_logic_vector(kWamWordWidth -1 downto 0);
     H_reg             : in std_logic_vector(kWamAddressWidth -1 downto 0);
+    E_reg 			  : in std_logic_vector(kWamAddressWidth -1 downto 0);
 
     local_fail_rst    : out std_logic;
     global_fail_out   : out std_logic;
@@ -139,7 +140,7 @@ type state_t is (idle_t, next_instr_t
                 ,put_variable_X_t
                 ,put_variable_Y_t
                 ,put_value_t, put_value_t2
-                ,put_unsafe_value_t, put_unsafe_value_t2, put_unsafe_value_t3, put_unsafe_value_t4,
+                ,put_unsafe_value_t, put_unsafe_value_t2, put_unsafe_value_t3, put_unsafe_value_t4
                 ,put_list_t
                 ,put_constant_t
                 ,get_variable_t
@@ -400,7 +401,7 @@ begin
         case mode_reg is
           when mode_read_t =>
             nx_state <= unify_constant_t2;
-          when mode_write_t
+          when mode_write_t =>
             nx_state <= next_instr_t;
         end case;
       when unify_constant_t2 =>
@@ -409,11 +410,13 @@ begin
             when tag_ref_t =>
               nx_state <= unify_constant_t3;
             when tag_int_t =>
-              if deref_word = instr(kWamWordWidth -1 downto 0) then
+              if deref_word = instruction(kWamWordWidth -1 downto 0) then
                 nx_state <= next_instr_t;
               else
                 nx_state <= backtrack_t;
               end if;
+            when others =>
+              nx_state <= backtrack_t;
           end case;
         end if;
       when unify_constant_t3 =>
@@ -573,7 +576,7 @@ begin
             nx_state <= unify_void_t2;
         end case;
       when unify_void_t2 =>
-        if counter+2 > instruction(kGPRAddressWidth -1 downto 0) then
+        if counter+2 > unsigned(instruction(kGPRAddressWidth -1 downto 0)) then
           nx_state <= next_instr_t;
         end if;
       when others => null;
@@ -892,7 +895,7 @@ begin
             rd_mem_port1    <= '1';
           when mode_write_t =>
             mem_addr_input1 <= MA_H_t;
-            mem_input_1     <= MI_constant_t;
+            mem_input1     <= MI_constant_t;
 
             wr_h_reg  <= '1';
         end case;
@@ -948,7 +951,7 @@ begin
         gpr_addr2  <= GPRA_instr_t;
       when put_unsafe_value_t3 =>
         mem_addr_input1 <= MA_H_t;
-        mem_input1      <= MI_ref_H_t
+        mem_input1      <= MI_ref_H_t;
         rd_mem_port1 <= '1';
         wr_mem_port1 <= '1';
 
@@ -1039,7 +1042,7 @@ begin
         mem_addr_input1  <= MA_deref_unit_t;
       when get_constant_t2 =>
         mem_addr_input1 <= MA_deref_unit_t;
-        mem_input_1     <= MI_constant_t;
+        mem_input1     <= MI_constant_t;
         wr_mem_port1    <= '1';
 
         trail_input     <= TI_deref_t;
@@ -1300,11 +1303,11 @@ begin
      when unify_void_t2 =>
       mem_addr_input1 <= MA_DFC_t;
       mem_input1      <= MI_DFC_t;
-      wr_mem_port1    <= to_std_logic(counter <= instruction(kGPRAddressWidth -1 downto 0));
+      wr_mem_port1    <= to_std_logic(counter <= unsigned(instruction(kGPRAddressWidth -1 downto 0)));
 
       mem_addr_input2 <= MA_DFC_t;
       mem_input2      <= MI_DFC_t;
-      wr_mem_port2    <= to_std_logic(counter+1 <= instruction(kGPRAddressWidth -1 downto 0));
+      wr_mem_port2    <= to_std_logic(counter+1 <= unsigned(instruction(kGPRAddressWidth -1 downto 0)));
 
       mem_addr1_comb <= std_logic_vector(unsigned(mem_addr1_reg)+2);
       mem_addr2_comb <= std_logic_vector(unsigned(mem_addr2_reg)+2);
@@ -1315,7 +1318,7 @@ begin
       mem_out_reg_wr <= '1';
 
       count <= '1';
-      if counter+2 > instruction(kGPRAddressWidth -1 downto 0) then
+      if counter+2 > unsigned(instruction(kGPRAddressWidth -1 downto 0)) then
         wr_h_reg <= '1';
         h_input  <= HI_Hpconstant_t;
       end if;

@@ -36,7 +36,7 @@ entity DerefUnit is
      rd_mem      : out std_logic;
 
      res_out     : out std_logic_vector(kWordWidth -1 downto 0);
-     res_addr    : out std_logic_vector(kWrodWidth -1 downto 0);
+     res_addr    : out std_logic_vector(kWordWidth -1 downto 0);
      done        : out std_logic
   );
 end DerefUnit;
