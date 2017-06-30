@@ -225,7 +225,7 @@ begin
 
   -- Decode the first state based on current instruction
   -- TO DO: maybe put in function?
-  DECODE_STATE_FIRST: process(instruction, instruction_valid)
+  DECODE_STATE_FIRST: process(instruction, instruction_valid, global_fail)
   begin
     decoded_state <= idle_t;
     if instruction_valid = '1' and global_fail /= '1' then
@@ -1404,13 +1404,13 @@ begin
            p_wr    <= '1';
           case fpwam_tag(deref_word) is
             when tag_ref_t =>
-              i <= to_unsigned(1, i'length);
+              i <= to_unsigned(0, i'length);
             when tag_int_t =>
-              i <= to_unsigned(2, i'length);
+              i <= to_unsigned(1, i'length);
             when tag_lis_t =>
-              i <= to_unsigned(3, i'length);
+              i <= to_unsigned(2, i'length);
             when tag_str_t =>
-              i <= to_unsigned(4, i'length);
+              i <= to_unsigned(3, i'length);
            end case;
         end if;      
      when others => null;

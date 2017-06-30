@@ -400,7 +400,7 @@ type instr_mem is array (-1 to 25) of std_logic_vector(kWamInstructionWidth - 1 
 -- );
 signal mem : instr_mem :=            -- 
 ("00000000000000000000000000000000"  -- block
-,B"10011_000000000_11000000000000_0001"  -- put_constant A0, a
+,B"00001_000000000_00000000000001_0000"  -- put_structure A0, x/0
 ,B"01010_000000000_00000000000100_0001"  -- call p/1
 ,"00000000000000000000000000000000"  -- block
 ,"00000000000000000000000000000000"  -- block 
@@ -449,7 +449,7 @@ end process;
 
 led(0) <= GLBFAIL_reg;
 led(1) <= to_std_logic(fpwam_instr(dfc_instruction_in) = i_nop);
-led(2) <= to_std_logic(unsigned(P_reg) = to_unsigned(3, P_reg'length));
+led(2) <= to_std_logic(unsigned(P_reg) = to_unsigned(9, P_reg'length));
 led(3) <= '1';
 -- INSTRUCTION MEMORY
 instr_mem_addr <= P_reg;
