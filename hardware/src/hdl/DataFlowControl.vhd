@@ -154,10 +154,11 @@ type state_t is (idle_t, next_instr_t
                 ,try_me_else_t, try_me_else_t2, try_me_else_t3, try_me_else_t4, try_me_else_t5, try_me_else_t6, try_me_else_t7
                 ,retry_me_else_t, retry_me_else_t2
                 ,trust_me_t, trust_me_t2, trust_me_t3
-                ,update_delete_start_t, update_delete_start_t2, update_delete_common_t, update_delete_common_t2, update_delete_common_t3, update_delete_common_t4, update_delete_common_t5, update_delete_common_t6
-                ,backtrack_t, backtrack_t2, backtrack_t3, backtrack_t4
+                ,update_delete_start_t, update_delete_start_t2, update_delete_start_t3, update_delete_common_t, update_delete_common_t2, update_delete_common_t3, update_delete_common_t4, update_delete_common_t5, update_delete_common_t6
+                ,backtrack_t, backtrack_t2, backtrack_t3, backtrack_t4, backtrack_t5
                 ,execute_t
                 ,unify_structure_t, unify_structure_t2
+                ,switch_on_term_t
                 );
 
 signal cr_state, nx_state, decoded_state : state_t;
@@ -287,6 +288,10 @@ begin
           decoded_state <= execute_t;
         when i_unify_structure_t =>
           decoded_state <= unify_structure_t;
+        when i_switch_on_term_t =>
+          decoded_state <= switch_on_term_t;
+        when i_fail_t =>
+          decoded_state <= backtrack_t;
         when others =>
           decoded_state <= idle_t;
       end case;
@@ -327,6 +332,8 @@ begin
       when backtrack_t3 =>
         nx_state <= backtrack_t4;
       when backtrack_t4 =>
+        nx_state <= backtrack_t5;
+      when backtrack_t5 =>
         nx_state <= next_instr_t;
       when idle_t =>
         nx_state <= decoded_state;
@@ -536,6 +543,8 @@ begin
       when update_delete_start_t =>
         nx_state <= update_delete_start_t2;
       when update_delete_start_t2 =>
+        nx_state <= update_delete_start_t3;
+      when update_delete_start_t3=>
         nx_state <= update_delete_common_t;
       when update_delete_common_t =>
         nx_state <= update_delete_common_t2;
@@ -598,6 +607,10 @@ begin
         if deref_done = '1' then
           nx_state <= get_structure_t2;
         end if;
+      when switch_on_term_t =>
+        if deref_done = '1' then
+          nx_state <= next_instr_t;
+        end if;  
       when others => null;
     end case;
   end process NEXT_STATE_DECODE;
@@ -682,13 +695,15 @@ begin
       when backtrack_t2 =>
         nrargs_wr <= '1';
         nrargs_input <= NRARGSI_mem_port2_t;
-        -- risky
-        mem_addr1_comb <= std_logic_vector((unsigned(b_reg(kWamAddressWidth -1 downto 0))+unsigned(mem_obj(kWamAddressWidth -1 downto 0)))+to_unsigned(4, i'length));
-        mem_addr_reg_wr <= '1';
+        
+        wr_mem_reg <= '1';
       when backtrack_t3 =>
+        mem_addr1_comb <= std_logic_vector((unsigned(b_reg(kWamAddressWidth -1 downto 0))+unsigned(mem_obj_reg(kWamAddressWidth -1 downto 0)))+to_unsigned(4, i'length));
+        mem_addr_reg_wr <= '1';
+      when backtrack_t4 =>
         rd_mem_port1    <= '1';
         mem_addr_input1 <= MA_DFC_t;
-      when backtrack_t4 =>
+      when backtrack_t5 =>
         p_wr    <= '1';
         p_input <= PI_mem_port1_t;
       when idle_t =>
@@ -1233,10 +1248,12 @@ begin
         mem_addr_input2 <= MA_B_t;
         rd_mem_port2 <= '1';
       when update_delete_start_t2 =>
+        wr_mem_reg <= '1';
+      when update_delete_start_t3 =>
         nrargs_wr    <= '1';
         nrargs_input <= NRARGSI_mem_port2_t;
-        mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj(kWamAddressWidth -1 downto 0))+to_unsigned(1, i'length));
-        mem_addr2_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj(kWamAddressWidth -1 downto 0))+to_unsigned(2, i'length));
+        mem_addr1_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj_reg(kWamAddressWidth -1 downto 0))+to_unsigned(1, i'length));
+        mem_addr2_comb <= std_logic_vector(unsigned(b_reg)+unsigned(mem_obj_reg(kWamAddressWidth -1 downto 0))+to_unsigned(2, i'length));
         mem_addr_reg_wr <= '1';
       when update_delete_common_t =>
         mem_addr_input1 <= MA_DFC_t;
@@ -1377,6 +1394,25 @@ begin
           mem_addr_input2  <= MA_untag_deref_t;
           rd_mem_port2     <= '1';
         end if;  
+     when switch_on_term_t =>
+        start_deref     <= '1';
+        deref_input     <= DI_GPR_t;
+        mem_addr_input1 <= MA_deref_unit_t;
+        
+        if deref_done = '1' then
+           p_input <= PI_PpI_t;
+           p_wr    <= '1';
+          case fpwam_tag(deref_word) is
+            when tag_ref_t =>
+              i <= to_unsigned(1, i'length);
+            when tag_int_t =>
+              i <= to_unsigned(2, i'length);
+            when tag_lis_t =>
+              i <= to_unsigned(3, i'length);
+            when tag_str_t =>
+              i <= to_unsigned(4, i'length);
+           end case;
+        end if;      
      when others => null;
    end case;
  end process OUTPUT_DECODE;

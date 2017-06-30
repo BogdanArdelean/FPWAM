@@ -30,7 +30,7 @@ package FpwamPkg is
   -- Possible input sources for S register
   type s_input_t        is (SI_untag_deref_p1_t, SI_p1_t, SI_untag_deref_t, SI_pconstant_t);
   -- Possible input sources for P register
-  type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t, PI_mem_port1_t, PI_mem_port2_t);
+  type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t, PI_mem_port1_t, PI_mem_port2_t, PI_PpI_t);
   -- Possible input sources for E register
   type e_input_t        is (EI_newE_t, EI_mem_port1_t, EI_mem_port2_t);
   -- Possible input sources for CP register
@@ -92,6 +92,8 @@ package FpwamPkg is
                            ,i_trust_t             -- 11011
                            ,i_execute_t           -- 11100
                            ,i_unify_structure_t   -- 11101
+                           ,i_switch_on_term_t    -- 11110
+                           ,i_fail_t              -- 11111
                            );
   constant kInstrDecodeWidth : integer := 5;
 
