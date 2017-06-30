@@ -56,7 +56,7 @@ package FpwamPkg is
   -- WAM execution modes
   type wam_mode_t       is (mode_write_t, mode_read_t);
   -- Types of objects supported in WAM
-  type tag_t            is (tag_str_t, tag_ref_t, tag_int_t, tag_lis_t);
+  type tag_t            is (tag_str_t, tag_ref_t, tag_lis_t, tag_int_t);
   -- Unify unit input
   type unify_input_t    is  (UI_GPR_t, UI_mem_port1_t, UI_mem_port2_t);
   -- Unify mem input

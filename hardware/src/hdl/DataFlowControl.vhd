@@ -337,7 +337,7 @@ begin
         if fpwam_tag(mem_obj_reg) = tag_str_t and mem_obj_reg = instruction(17 downto 0) then
           nx_state <= next_instr_t;
         elsif fpwam_tag(mem_obj_reg) = tag_ref_t then
-          nx_state <= get_structure_t3;
+          nx_state <= get_structure_t4;
         else
           nx_state <= backtrack_t;
         end if;
@@ -896,7 +896,7 @@ begin
           when mode_write_t =>
             mem_addr_input1 <= MA_H_t;
             mem_input1     <= MI_constant_t;
-
+            wr_mem_port1   <= '1';
             wr_h_reg  <= '1';
         end case;
       when unify_constant_t2 =>
@@ -974,6 +974,9 @@ begin
       when put_list_t =>
         gpr_input1 <= GPRI_lis_H_t;
         wr_gpr1    <= '1';
+
+        wr_mode_reg <= '1';
+        mode_value <= mode_write_t;
       when put_constant_t =>
         gpr_input1 <= GPRI_constant_t;
         wr_gpr1    <= '1';
@@ -1012,7 +1015,7 @@ begin
         mem_addr_input1  <= MA_deref_unit_t;
       when get_list_t2 =>
         wr_s_reg    <= '1';
-        s_reg_input <= SI_untag_deref_p1_t;
+        s_reg_input <= SI_untag_deref_t;
 
         wr_mode_reg <= '1';
         mode_value  <= mode_read_t;
