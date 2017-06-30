@@ -156,6 +156,8 @@ type state_t is (idle_t, next_instr_t
                 ,trust_me_t, trust_me_t2, trust_me_t3
                 ,update_delete_start_t, update_delete_start_t2, update_delete_common_t, update_delete_common_t2, update_delete_common_t3, update_delete_common_t4, update_delete_common_t5, update_delete_common_t6
                 ,backtrack_t, backtrack_t2, backtrack_t3, backtrack_t4
+                ,execute_t
+                ,unify_structure_t, unify_structure_t2
                 );
 
 signal cr_state, nx_state, decoded_state : state_t;
@@ -281,6 +283,10 @@ begin
           decoded_state <= update_delete_start_t;
         when i_trust_t =>
           decoded_state <= update_delete_start_t;
+        when i_execute_t =>
+          decoded_state <= execute_t;
+        when i_unify_structure_t =>
+          decoded_state <= unify_structure_t;
         when others =>
           decoded_state <= idle_t;
       end case;
@@ -578,6 +584,19 @@ begin
       when unify_void_t2 =>
         if counter+2 > unsigned(instruction(kGPRAddressWidth -1 downto 0)) then
           nx_state <= next_instr_t;
+        end if;
+      when execute_t =>
+        nx_state <= next_instr_t;
+      when unify_structure_t =>
+        case mode_reg is
+          when mode_read_t =>
+            nx_state <= unify_structure_t2;
+          when mode_write_t =>
+            nx_state <= next_instr_t;
+        end case;
+      when unify_structure_t2 =>
+        if deref_done = '1' then
+          nx_state <= get_structure_t2;
         end if;
       when others => null;
     end case;
@@ -910,6 +929,9 @@ begin
 
         trail_input <= TI_deref_t;
         trail_do    <= '1';
+        
+        wr_s_reg <= '1';
+        s_reg_input <= SI_p1_t;
       when put_variable_X_t =>
         wr_gpr1 <= '1';
         wr_gpr2 <= '1';
@@ -1055,6 +1077,10 @@ begin
         p_wr      <= '1';
         cp_wr     <= '1';
         nrargs_wr <= '1';
+      when execute_t =>
+        p_input   <= PI_instr_t;
+        p_wr      <= '1';
+        nrargs_wr <= '1';
       when proceed_t =>
         p_input <= PI_CP_t;
         p_wr    <= '1';
@@ -1087,8 +1113,8 @@ begin
         E_wr     <= '1';
         e_input  <= EI_mem_port1_t;
 
-        p_wr    <= '1';
-        p_input <= PI_mem_port2_t;
+        cp_wr    <= '1';
+        cp_input <= CPI_mem_port2_t;
       when try_me_else_t =>
         rd_mem_port2 <= '1';
         mem_addr_input2 <= MA_Ep2orB_t;
@@ -1325,6 +1351,32 @@ begin
         wr_h_reg <= '1';
         h_input  <= HI_Hpconstant_t;
       end if;
+     when unify_structure_t =>
+        case mode_reg is
+          when mode_read_t =>
+            mem_addr_input1 <= MA_S_t;
+            rd_mem_port1    <= '1';
+          when mode_write_t =>
+            mem_addr_input1 <= MA_Hplus1_t;
+            mem_input1     <= MI_constant_t;
+            
+            mem_addr_input2 <= MA_H_t;
+            mem_input2      <= MI_str_Hplus1_t;
+            wr_mem_port1   <= '1';
+            wr_mem_port2   <= '1';
+           
+            wr_h_reg   <= '1';             
+            h_input    <= HI_p2_t;          
+         end case;
+     when unify_structure_t2 =>
+        start_deref     <= '1';
+        deref_input     <= DI_mem_port1_t;
+        mem_addr_input1 <= MA_deref_unit_t;
+        
+        if deref_done = '1' then
+          mem_addr_input2  <= MA_untag_deref_t;
+          rd_mem_port2     <= '1';
+        end if;  
      when others => null;
    end case;
  end process OUTPUT_DECODE;

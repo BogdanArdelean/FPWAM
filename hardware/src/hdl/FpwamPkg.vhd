@@ -90,6 +90,8 @@ package FpwamPkg is
                            ,i_try_t               -- 11001
                            ,i_retry_t             -- 11010
                            ,i_trust_t             -- 11011
+                           ,i_execute_t           -- 11100
+                           ,i_unify_structure_t   -- 11101
                            );
   constant kInstrDecodeWidth : integer := 5;
 
