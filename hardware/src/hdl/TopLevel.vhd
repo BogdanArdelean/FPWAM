@@ -1567,7 +1567,7 @@ TRAIL: entity work.Memory(Behavioral)
   bsearch_low_addr  <= bsearch_laddr_reg;
   bsearch_high_addr <= bsearch_haddr_reg;
   bsearch_start     <= dfc_bsearch_start;
-  bsearch_memory_in <= bind_mem_word1(kWamWordWidth+kWamInstrMemWidth -1 downto kWamInstrMemWidth);
+  bsearch_memory_in <= bmem_port_1_out(kWamWordWidth+kWamInstrMemWidth -1 downto kWamInstrMemWidth);
   BSEARCH: entity work.BinarySearch(Behavioral)
    generic map
    (

@@ -43,7 +43,7 @@ begin
   a <= trail_address;
   DOTRAIL: process(trail, trail_address, H, HB, B)
   begin
-
+    do_trail <= '0';
     if trail = '1' then
       if (unsigned(trail_address) < unsigned(HB))
       or ((unsigned(H) < unsigned(trail_address)) and (unsigned(trail_address) < unsigned(B))) then

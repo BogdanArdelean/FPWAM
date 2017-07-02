@@ -706,6 +706,8 @@ begin
     bladdr_wr        <= '0';
     bhaddr_wr        <= '0';
     bsearch_start    <= '0';
+    mem_out1_comb    <= (others => '0');
+    mem_out2_comb    <= (others => '0');
     case cr_state is
       when next_instr_t =>
         if local_fail /= '1' then
@@ -1451,7 +1453,7 @@ begin
        mem_addr_input1 <= MA_deref_unit_t;
      when switch_on_int_str_t4 =>
        bsearch_start <= '1';
-       p_wr <= bsearch_done and search_found;
+       p_wr <= bsearch_done and bsearch_found;
        p_input <= PI_bmem_port1_t;
      when others => null;
    end case;

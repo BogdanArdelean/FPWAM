@@ -107,7 +107,7 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         mem_word <= (others => '0');
-      elsif wr_mem_word = '1' and memory_valid = '1' then
+      elsif wr_mem_word = '1' then
         mem_word <= memory_in;
       end if;
     end if;
@@ -124,7 +124,7 @@ begin
     end if;
   end process FSM;
 
-  NEXT_STATE_DECODE: process(cr_state, start_search, memory_in, memory_valid)
+  NEXT_STATE_DECODE: process(cr_state, start_search, memory_in)
   begin
     nx_state <= cr_state;
     case(cr_state) is
@@ -149,7 +149,7 @@ begin
      end case;
    end process NEXT_STATE_DECODE;
 
-  CONTROL_AND_OUTPUT: process(cr_state, start_search, memory_valid)
+  CONTROL_AND_OUTPUT: process(cr_state, start_search)
   begin
 
     wr_low             <= '0';
