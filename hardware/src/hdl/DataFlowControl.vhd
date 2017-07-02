@@ -164,7 +164,7 @@ type state_t is (idle_t, next_instr_t
                 ,execute_t
                 ,unify_structure_t, unify_structure_t2
                 ,switch_on_term_t
-                ,switch_on_int_str_t
+                ,switch_on_int_str_t, switch_on_int_str_t2, switch_on_int_str_t3, switch_on_int_str_t4
                 );
 
 signal cr_state, nx_state, decoded_state : state_t;
