@@ -39,7 +39,6 @@ entity BinarySearch is
                found               : out std_logic;
                -- Memory interface
                memory_in           : in std_logic_vector(kWordWidth - 1 downto 0);
-               memory_valid        : in std_logic;
                memory_address_out  : out std_logic_vector(kMemAddressWidth - 1 downto 0);
                memory_read         : out std_logic
       );
@@ -136,11 +135,7 @@ begin
           nx_state <= idle_t;
         end if;
       when wait_mem_t =>
-        if memory_valid = '1' then
           nx_state <= decision_t;
-        else
-          nx_state <= wait_mem_t;
-        end if;
       when decision_t =>
         if mem_word = search_word_reg or low_addr_reg >= high_addr_reg then
           nx_state <= done_t;
@@ -179,7 +174,6 @@ begin
         end if;
       when wait_mem_t =>
         memory_read <= '1';
-        wr_mem_word <= memory_valid;
       when decision_t =>
         wr_low         <= '1';
         wr_high        <= '1';

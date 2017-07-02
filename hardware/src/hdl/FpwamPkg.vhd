@@ -30,7 +30,7 @@ package FpwamPkg is
   -- Possible input sources for S register
   type s_input_t        is (SI_untag_deref_p1_t, SI_p1_t, SI_untag_deref_t, SI_pconstant_t);
   -- Possible input sources for P register
-  type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t, PI_mem_port1_t, PI_mem_port2_t, PI_PpI_t);
+  type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t, PI_mem_port1_t, PI_mem_port2_t, PI_PpI_t, PI_bmem_port1_t);
   -- Possible input sources for E register
   type e_input_t        is (EI_newE_t, EI_mem_port1_t, EI_mem_port2_t);
   -- Possible input sources for CP register
@@ -62,40 +62,41 @@ package FpwamPkg is
   -- Unify mem input
   type unify_mem_sel_t  is (sel_unify_t, sel_deref_t, sel_bind_t);
 
-  type instruction_t    is (i_nop                 -- 00000
-                           ,i_put_structure_t     -- 00001 put_structure p/n, Xm -> [INSTRNUM][Xm][p][n]
-                           ,i_put_variable_X_t    -- 00010
-                           ,i_put_variable_Y_t    -- 00011
-                           ,i_put_value_t         -- 00100
-                           ,i_get_structure_t     -- 00101
-                           ,i_get_variable_t      -- 00110
-                           ,i_get_value_t         -- 00111
-                           ,i_unify_variable_t    -- 01000
-                           ,i_unify_value_t       -- 01001
-                           ,i_call_t              -- 01010
-                           ,i_proceed_t           -- 01011
-                           ,i_allocate_t          -- 01100
-                           ,i_deallocate_t        -- 01101
-                           ,i_try_me_else_t       -- 01110
-                           ,i_retry_me_else_t     -- 01111
-                           ,i_trust_me_t          -- 10000
-                           ,i_put_unsafe_value_t  -- 10001
-                           ,i_put_list_t          -- 10010
-                           ,i_put_constant_t      -- 10011
-                           ,i_get_list_t          -- 10100
-                           ,i_get_constant_t      -- 10101
-                           ,i_unify_local_value_t -- 10110
-                           ,i_unify_constant_t    -- 10111
-                           ,i_unify_void          -- 11000
-                           ,i_try_t               -- 11001
-                           ,i_retry_t             -- 11010
-                           ,i_trust_t             -- 11011
-                           ,i_execute_t           -- 11100
-                           ,i_unify_structure_t   -- 11101
-                           ,i_switch_on_term_t    -- 11110
-                           ,i_fail_t              -- 11111
+  type instruction_t    is (i_nop                 -- 000000
+                           ,i_put_structure_t     -- 000001 put_structure p/n, Xm -> [INSTRNUM][Xm][p][n]
+                           ,i_put_variable_X_t    -- 000010
+                           ,i_put_variable_Y_t    -- 000011
+                           ,i_put_value_t         -- 000100
+                           ,i_get_structure_t     -- 000101
+                           ,i_get_variable_t      -- 000110
+                           ,i_get_value_t         -- 000111
+                           ,i_unify_variable_t    -- 001000
+                           ,i_unify_value_t       -- 001001
+                           ,i_call_t              -- 001010
+                           ,i_proceed_t           -- 001011
+                           ,i_allocate_t          -- 001100
+                           ,i_deallocate_t        -- 001101
+                           ,i_try_me_else_t       -- 001110
+                           ,i_retry_me_else_t     -- 001111
+                           ,i_trust_me_t          -- 010000
+                           ,i_put_unsafe_value_t  -- 010001
+                           ,i_put_list_t          -- 010010
+                           ,i_put_constant_t      -- 010011
+                           ,i_get_list_t          -- 010100
+                           ,i_get_constant_t      -- 010101
+                           ,i_unify_local_value_t -- 010110
+                           ,i_unify_constant_t    -- 010111
+                           ,i_unify_void          -- 011000
+                           ,i_try_t               -- 011001
+                           ,i_retry_t             -- 011010
+                           ,i_trust_t             -- 011011
+                           ,i_execute_t           -- 011100
+                           ,i_unify_structure_t   -- 011101
+                           ,i_switch_on_term_t    -- 011110
+                           ,i_fail_t              -- 011111
+                           ,i_switch_on_int_str_t -- 100000
                            );
-  constant kInstrDecodeWidth : integer := 5;
+  constant kInstrDecodeWidth : integer := 6;
 
 
   function fpwam_tag           (word : std_logic_vector) return tag_t;

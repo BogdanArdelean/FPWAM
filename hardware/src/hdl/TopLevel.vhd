@@ -129,6 +129,8 @@ signal dfc_deref_addr         : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal dfc_deref_word         : std_logic_vector(kWamWordWidth -1 downto 0);
 signal dfc_h_reg              : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal dfc_e_reg              : std_logic_vector(kWamAddressWidth -1 downto 0);
+signal dfc_bsearch_done       : std_logic;
+signal dfc_bsearch_found      : std_logic;
 signal dfc_local_fail_rst     : std_logic;
 signal dfc_global_fail_out    : std_logic;
 signal dfc_global_fail_rst    : std_logic;
@@ -185,6 +187,9 @@ signal dfc_mem_addr2_out      : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal dfc_mem_out1           : std_logic_vector(kWamWordWidth -1 downto 0);
 signal dfc_mem_out2           : std_logic_vector(kWamWordWidth -1 downto 0);
 signal dfc_trail_do           : std_logic;
+signal dfc_bladdr_wr          : std_logic;
+signal dfc_bhaddr_wr          : std_logic;
+signal dfc_bsearch_start      : std_logic;
 ----- TRAIL -----
 signal trail_start            : std_logic;
 signal trail_address          : std_logic_vector(kWamAddressWidth -1 downto 0);
@@ -339,7 +344,7 @@ type instr_mem is array (-1 to 25) of std_logic_vector(kWamInstructionWidth - 1 
 --,"00000000000000000000000000000000"  -- block
 --,"00000000000000000000000000000000"  -- block
 -- );
---signal mem : instr_mem :=            -- p(Z. h(Z, W), f(W))? 
+--signal mem : instr_mem :=            -- p(Z. h(Z, W), f(W))?
 --("00000000000000000000000000000000"  -- block
 --,B"00001_000000001_00000000000001_0010"  -- put_list x5
 --,B"01000_000000000_00000000000000_0000"  -- unify_variable x6
@@ -398,33 +403,33 @@ type instr_mem is array (-1 to 25) of std_logic_vector(kWamInstructionWidth - 1 
 --,"00000000000000000000000000000000"  -- block
 --,"00000000000000000000000000000000"  -- block
 -- );
-signal mem : instr_mem :=            -- 
+signal mem : instr_mem :=            --
 ("00000000000000000000000000000000"  -- block
 ,B"00001_000000000_00000000000001_0000"  -- put_structure A0, x/0
 ,B"01010_000000000_00000000000100_0001"  -- call p/1
 ,"00000000000000000000000000000000"  -- block
-,"00000000000000000000000000000000"  -- block 
+,"00000000000000000000000000000000"  -- block
 ,B"11110_000000000_00000000000000_0000"  -- switch_on_term fail, 9, fail, fail
 ,B"11111_000000000_00000000000000_0000"  -- fail
-,B"11100_000000000_00000000001001_0001"  -- execute 
+,B"11100_000000000_00000000001001_0001"  -- execute
 ,B"11111_000000000_00000000000010_0001"  -- fail
 ,B"11111_000000000_00000000000010_0001"  -- fail
 ,B"10101_000000000_11000000000000_0001"  -- get_constant a, A0
 ,B"01011_000000000_00000000000000_0000"  -- proceed
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
 ,"00000000000000000000000000000000"  -- block
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
-,"00000000000000000000000000000000"  -- block 
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
+,"00000000000000000000000000000000"  -- block
 ,"00000000000000000000000000000000"  -- block
 );
 
@@ -437,6 +442,40 @@ signal instr_mem_out  : std_logic_vector(kWamInstructionWidth -1 downto 0);
 signal instr_mem_rd   : std_logic;
 
 signal rst : std_logic := '1';
+
+-- HASH TABLE REPLACEMENT
+signal bsearch_word        : std_logic_vector(kWamWordWidth -1 downto 0);
+signal bsearch_low_addr    : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+signal bsearch_high_addr   : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+signal bsearch_start       : std_logic;
+
+signal bsearch_done        : std_logic;
+signal bsearch_found       : std_logic;
+
+signal bsearch_memory_in   : std_logic_vector(kWamWordWidth -1 downto 0);
+signal bsearch_addr_out    : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+signal bsearch_memory_read : std_logic;
+
+signal bsearch_laddr_wr    : std_logic;
+signal bsearch_laddr_comb  : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+signal bsearch_laddr_reg   : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+
+signal bsearch_haddr_wr    : std_logic;
+signal bsearch_haddr_comb  : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+signal bsearch_haddr_reg   : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+
+
+signal bmem_addr_port_1    : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+signal bmem_port_1_out     : std_logic_vector(kWamWordWidth+kWamInstrMemWidth -1 downto 0);
+signal bmem_port_1_in      : std_logic_vector(kWamWordWidth+kWamInstrMemWidth -1 downto 0);
+signal bmem_port_1_wr      : std_logic;
+signal bmem_port_1_rd      : std_logic;
+
+signal bmem_addr_port_2    : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+signal bmem_port_2_out     : std_logic_vector(kWamWordWidth+kWamInstrMemWidth -1 downto 0);
+signal bmem_port_2_in      : std_logic_vector(kWamWordWidth+kWamInstrMemWidth -1 downto 0);
+signal bmem_port_2_wr      : std_logic;
+signal bmem_port_2_rd      : std_logic;
 
 begin
 
@@ -570,7 +609,7 @@ end process;
 -- S REGISTER END
 
 -- P REGISTER BEGIN
-  PMUX: process(dfc_P_input, P_reg, CP_reg, instr_mem_out, dfc_i)
+  PMUX: process(dfc_P_input, P_reg, CP_reg, instr_mem_out, dfc_i, bmem_port_1_out)
   begin
     case dfc_P_input is
       when PI_p1_t =>
@@ -585,6 +624,8 @@ end process;
   	  	P_comb <= mem_output_2(kWamInstrMemWidth -1 downto 0);
   	  when PI_PpI_t =>
   	    P_comb <= std_logic_vector(unsigned(P_reg)+dfc_i(kWamInstrMemWidth -1 downto 0));
+      when PI_bmem_port1_t =>
+        P_comb <= bmem_port_1_out(kWamInstrMemWidth -1 downto 0);
       when others =>
         P_comb <= std_logic_vector(unsigned(P_reg)+1);
     end case;
@@ -749,6 +790,32 @@ end process;
         GLBFAIL_reg <= '0';
       else
         GLBFAIL_reg <= GLBFAIL_reg or GLBFAIL_comb;
+      end if;
+    end if;
+  end process;
+
+  bsearch_laddr_comb <= dfc_instruction_in(kWamInstrMemWidth -1 downto 0);
+  bsearch_laddr_wr   <= dfc_bladdr_wr;
+  BLADDR: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        bsearch_laddr_reg <= (others => '0');
+      elsif bsearch_laddr_wr = '1' then
+        bsearch_laddr_reg <= bsearch_laddr_comb;
+      end if;
+    end if;
+  end process;
+
+  bsearch_haddr_comb <= dfc_instruction_in(kWamInstrMemWidth -1 downto 0);
+  bsearch_haddr_wr   <= dfc_bhaddr_wr;
+  BHADDR: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        bsearch_haddr_reg <= (others => '0');
+      elsif bsearch_haddr_wr = '1' then
+        bsearch_haddr_reg <= bsearch_haddr_comb;
       end if;
     end if;
   end process;
@@ -1323,6 +1390,8 @@ end process;
   dfc_deref_word         <= deref1_res_out;
   dfc_h_reg              <= H_reg;
   dfc_e_reg              <= E_reg;
+  dfc_bsearch_done       <= bsearch_done;
+  dfc_bsearch_found      <= bsearch_found;
   DFC: entity work.DataFlowControl(Behavioral)
    port map
    (
@@ -1345,6 +1414,8 @@ end process;
     ,deref_word         => dfc_deref_word
     ,H_reg              => dfc_h_reg
     ,E_reg              => dfc_e_reg
+    ,bsearch_done       => dfc_bsearch_done
+    ,bsearch_found      => dfc_bsearch_found
     ,local_fail_rst     => dfc_local_fail_rst
     ,global_fail_out    => dfc_global_fail_out
     ,global_fail_rst    => dfc_global_fail_rst
@@ -1401,6 +1472,9 @@ end process;
     ,mem_out1           => dfc_mem_out1
     ,mem_out2           => dfc_mem_out2
     ,trail_do           => dfc_trail_do
+    ,bladdr_wr          => dfc_bladdr_wr
+    ,bhaddr_wr          => dfc_bhaddr_wr
+    ,bsearch_start      => dfc_bsearch_start
    );
 -- DFC END
 -- TRAIL BEGIN
@@ -1488,5 +1562,59 @@ TRAIL: entity work.Memory(Behavioral)
    ,mem_addr_2       => untrail_mem_addr_2
    ,done             => untrail_done
   );
+
+  bsearch_word      <= deref1_res_out;
+  bsearch_low_addr  <= bsearch_laddr_reg;
+  bsearch_high_addr <= bsearch_haddr_reg;
+  bsearch_start     <= dfc_bsearch_start;
+  bsearch_memory_in <= bind_mem_word1(kWamWordWidth+kWamInstrMemWidth -1 downto kWamInstrMemWidth);
+  BSEARCH: entity work.BinarySearch(Behavioral)
+   generic map
+   (
+      kWordWidth       => kWamWordWidth
+     ,kMemAddressWidth => kWamInstrMemWidth
+   )
+   port map
+   (
+     clk => clk
+    ,rst => rst
+
+    ,search_word        => bsearch_word
+    ,low_address        => bsearch_low_addr
+    ,high_address       => bsearch_high_addr
+    ,start_search       => bsearch_start
+
+    ,done               => bsearch_done
+    ,found              => bsearch_found
+
+    ,memory_in          => bsearch_memory_in
+    ,memory_address_out => bsearch_addr_out
+    ,memory_read        => bsearch_memory_read
+   );
+
+  bmem_addr_port_1 <= bsearch_addr_out;
+  bmem_port_1_rd   <= bsearch_memory_read;
+  BMEM: entity work.Memory(Behavioral)
+   generic map
+   (
+     kMemAddressWidth => kWamInstrMemWidth
+    ,kWordWidth       => kWamWordWidth+kWamInstrMemWidth
+   )
+   port map
+   (
+     clk => clk
+
+    ,addr_port_1   => bmem_addr_port_1
+    ,word_port_1_o => bmem_port_1_out
+    ,word_port_1_i => bmem_port_1_in
+    ,wr_port_1     => bmem_port_1_wr
+    ,rd_port_1     => bmem_port_1_rd
+
+    ,addr_port_2   => bmem_addr_port_2
+    ,word_port_2_o => bmem_port_2_out
+    ,word_port_2_i => bmem_port_2_in
+    ,wr_port_2     => bmem_port_2_wr
+    ,rd_port_2     => bmem_port_2_rd
+   );
 
 end Structural;
