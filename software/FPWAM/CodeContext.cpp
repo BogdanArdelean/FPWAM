@@ -499,6 +499,9 @@ void CodeContext::resolve_instructions()
                     {
                         const std::string& functor = instruction.get_functor();
                         const std::string  name = functor.substr(0, functor.find_first_of("/"));
+                        const std::string  sarity = functor.substr(functor.find_first_of("/")+1, functor.length());
+                        uint8_t  arity = stoi(sarity, nullptr,  10);
+
                         if(!(FOUND(m_predicateNameToNr, name)))
                         {
                             std::cerr << instruction.to_string() <<" ERROR " << predicate.get_name() << ": " << "Predicate " << functor << " not found."
@@ -506,7 +509,7 @@ void CodeContext::resolve_instructions()
                             exit(-1);
                         }
 
-                        int32_t index = m_predicateValueToIndex[m_predicateNameToNr[name]];
+                        int32_t index = m_predicateValueToIndex[Predicate::composeValue(m_predicateNameToNr[name], arity)];
                         const Predicate& p = m_facts[index];
                         instruction.set_constant(fpwam_call_execute(p.get_startInstrNumber(), p.get_arity()));
                         break;

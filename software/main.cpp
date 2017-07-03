@@ -17,10 +17,10 @@ int main(int argc, char *argv[])
     std::vector<FPWAM::Instruction> instr;
     codeCtx.get_instructions(instr);
 
-    int k = 0;
+    std::cout << instr.size() << std::endl;
     for(auto& i : instr)
     {
-        std::cout << k++ << ": " <<i.get_number() << " " << i.to_string() << std::endl;
+        std::cout << ',' << "B\"" << i.to_string() << '"' << std::endl;
     }
 
     return 0;

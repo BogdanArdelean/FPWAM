@@ -1452,7 +1452,7 @@ begin
 
             wr_h_reg  <= '1';
           end case;
-     when unify_list_t2 =.
+     when unify_list_t2 =>
        start_deref     <= '1';
        deref_input     <= DI_mem_port1_t;
        mem_addr_input1 <= MA_deref_unit_t;
