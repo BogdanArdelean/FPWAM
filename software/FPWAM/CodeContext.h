@@ -1,0 +1,82 @@
+//
+// Created by Bogdan  Ardelean on 7/2/17.
+//
+
+#ifndef SOFTWARE_CODECONTEXT_H
+#define SOFTWARE_CODECONTEXT_H
+
+#include "Predicate.h"
+
+namespace FPWAM
+{
+    struct CodeContext
+    {
+        uint16_t m_currentInstruction;
+        int32_t  m_predicateNr;
+        int32_t  m_constantNr;
+
+        uint16_t m_backupInstruction;
+        int32_t  m_backupPredicateNr;
+        int32_t  m_backupConstantNr;
+
+        std::vector<Predicate> m_facts;
+        std::vector<Predicate> m_queries;
+        std::map<std::string, int32_t> m_predicateNameToNr;
+        std::map<int32_t, int32_t>     m_predicateValueToIndex;
+
+        std::map<std::string, int32_t> m_queryNameToIndex;
+        std::map<int32_t, int32_t>     m_queryValueToIndex;
+
+        std::map<std::string, int32_t> m_constantNameToValue;
+
+        void predicate(const std::string name, const int8_t arity);
+        void get_value(const int8_t XYn, const char c, const int8_t Ai);
+        void get_constant(const std::string atom, const int8_t Ai);
+        void get_list(const int8_t Ai);
+        void get_structure(const std::string name, const int8_t arity, const int8_t Ai);
+        void put_variableX(const int8_t Xn, const int8_t Ai);
+        void put_variableY(const int8_t Yn, const int8_t Ai);
+        void put_value(const int8_t XYn, const char c, const int8_t Ai);
+        void put_unsafe_value(const int8_t Yn, const int8_t Ai);
+        void put_constant(const std::string name, const int8_t Ai);
+        void put_list(const int8_t Ai);
+        void put_structure(const std::string name, const int8_t arity, const int8_t Ai);
+        void unify_variable(const int8_t XYn, const char c);
+        void unify_void(const int8_t n);
+        void unify_value(const int8_t XYn, const char c);
+        void unify_local_value(const int8_t XYn, const char c);
+        void unify_constant(const std::string name);
+        void unify_list();
+        void unify_structure(const std::string name, const int8_t arity);
+        void allocate(const int8_t n);
+        void deallocate();
+        void call(const std::string name, const int8_t arity);
+        void execute(const std::string name, const int8_t arity);
+        void proceed();
+        void fail();
+        void label(int32_t l);
+        void switch_on_term(const int32_t v, const int32_t c, const int32_t l, const int32_t s);
+        void switch_on_con(std::vector<std::string>& constants, std::vector<int32_t>& labels);
+        void try_me_else(const int32_t label);
+        void retry_me_else(const int32_t label);
+        void trust_me_else_fail(const int32_t label);
+        void ttry(const int32_t label);
+        void retry(const int32_t label);
+        void trust(const int32_t label);
+
+    private:
+        enum State
+        {
+            PROGRAM
+            ,QUERY
+        };
+
+        State m_state;
+        Predicate *m_currentPredicate;
+
+        void add_predicate(const std::string &name, const int8_t arity, int32_t number, int32_t predicateValue);
+    };
+}
+
+
+#endif //SOFTWARE_CODECONTEXT_H
