@@ -4,6 +4,7 @@
 
 #include "Instruction.h"
 
+
 using namespace FPWAM;
 
 void Instruction::set_label(int32_t m_label)
@@ -48,11 +49,20 @@ void Instruction::set_instruction(uint32_t m_instruction)
 
 std::string Instruction::to_string()
 {
-    char str[33];
-    str[32] = 0;
-    for(int32_t i = 0; i < 32; ++i)
+    static int32_t separator[36];
+    separator[34 - kInstructionTypeWidth] = 1;
+    separator[kRegWidth] = 1;
+    separator[kWamWordWidth+1] = 1;
+
+    char str[36];
+    str[35] = 0;
+    int32_t instrI = 0;
+    for(int32_t i = 0; i < 36; ++i)
     {
-        str[31 - i] = ((m_instruction & (1 << i)) ? '1' : '0');
+        if(!separator[i])
+            str[34 - i] = ((m_instruction & (1 << instrI++)) ? '1' : '0');
+        else
+            str[34 - i] = '_';
     }
 
     return std::string(str);

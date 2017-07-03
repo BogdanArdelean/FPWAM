@@ -21,7 +21,7 @@ namespace FPWAM
 
         Predicate(const std::string &m_name, int8_t m_arity, int32_t m_value, uint16_t instrNumber);
 
-        const std::map<int32_t, int16_t> &get_labelToInstruction() const
+        const std::map<int32_t, uint16_t> &get_labelToInstruction() const
         {
             return m_labelToInstruction;
         }
@@ -56,17 +56,17 @@ namespace FPWAM
             Predicate::m_value = m_value;
         }
 
-        const std::vector<Instruction> &get_instructions() const
+        std::vector<Instruction> &get_instructions()
         {
             return m_instructions;
         }
 
-        const std::vector<int32_t> &get_unresolvedInstr() const
+        std::vector<int32_t> &get_unresolvedInstr()
         {
             return m_unresolvedInstr;
         }
 
-        std::vector<std::map<int32_t, int16_t> > &get_switchValues()
+        std::vector<std::map<int32_t, uint16_t> > &get_switchValues()
         {
             return m_switchValues;
         }
@@ -85,8 +85,8 @@ namespace FPWAM
         void add_instruction_unresolved(Instruction &instruction);
         void add_label(int32_t label, uint16_t currInstr);
     private:
-        std::map<int32_t, int16_t> m_labelToInstruction;
-        std::vector<std::map<int32_t, int16_t> > m_switchValues;
+        std::map<int32_t, uint16_t> m_labelToInstruction;
+        std::vector<std::map<int32_t, uint16_t> > m_switchValues;
         std::string m_name;
         int8_t m_arity;
         int32_t m_value;

@@ -405,38 +405,27 @@ int
 parse(int argc, char *argv[])
 {
   Parse_Arguments(argc, argv);
-  setlocale (LC_ALL, "");
-  setlocale (LC_NUMERIC, "C");	/* make sure floats come out right... */
 
   if (file_name_out == NULL)
     file_out = stdout;
-  else if ((file_out = fopen(file_name_out, "wt")) == NULL)
-    {
-      fprintf(stderr, "cannot open output file %s\n", file_name_out);
-      exit(1);
-    }
 
   BT_String_Init(&bt_atom);
   BT_String_Init(&bt_tagged_atom);
   BT_String_Init(&bt_tagged_f_n);
-
-  Init_Foreign_Table();
-  dummy_pred_start.next = NULL;
-  dummy_direct_start.next = NULL;
+//
+//   Init_Foreign_Table();
+//  dummy_pred_start.next = NULL;
+//  dummy_direct_start.next = NULL;
 
   if (!Parse_Wam_File(file_name_in, comment))
     {
       fprintf(stderr, "Translation aborted\n");
-      exit(1);
+      return 1;
     }
 
-  Emit_Obj_Initializer();
-  Emit_Exec_Directives();
-
-  if (file_out != stdout)
-    fclose(file_out);
-
-  exit(0);
+//  Emit_Obj_Initializer();
+//  Emit_Exec_Directives();
+  return 0;
 }
 
 
@@ -463,8 +452,6 @@ void
 F_file_name(ArgVal arg[])
 {
   Args1(STR(pl_file));
-
-  cur_pl_file = BT_String_Add(&bt_atom, pl_file);
 }
 
 
@@ -476,115 +463,11 @@ F_file_name(ArgVal arg[])
 void
 F_predicate(ArgVal arg[])
 {
-  BTNode *atom_module = NULL;
-  BTNode *atom_functor;
-  int module_user_system = 0;
-  int prop;
-  int local_symbol = 0;
 	/* ArgsN macro must be last or need C99 mode (under MSVC++ use -TP) */
   Args6(MP_N(module, functor, arity), INTEGER(pl_line),
 	STR(static_dynamic), STR(public_private), STR(mono_multi), STR(built_in_local_global));
 
-  if (cur_pl_file == NULL)
-    Syntax_Error("file_name declaration missing");
-
-  atom_functor = BT_String_Add(&bt_atom, functor);
-
-  cur_arity = arity;
-  cur_sub_label = 0;
-
-  if (strcmp(static_dynamic, "dynamic") == 0)
-    prop = MASK_PRED_DYNAMIC;
-  else if (strcmp(static_dynamic, "static") == 0)
-    prop = MASK_PRED_NATIVE_CODE;
-  else
-    Syntax_Error("static or dynamic expected");
-
-  if (strcmp(public_private, "public") == 0)
-    prop |= MASK_PRED_PUBLIC;
-  else if (strcmp(public_private, "private") != 0)
-    Syntax_Error("public or private expected");
-
-  if (strcmp(mono_multi, "monofile") == 0)
-    ;
-  else if (strcmp(mono_multi, "multifile") == 0)
-    {
-      prop |= MASK_PRED_MULTIFILE;
-      prop &= ~MASK_PRED_NATIVE_CODE; /* if multifile it needs to be emulated */
-    }
-  else
-    Syntax_Error("multifile or multifile expected");
-
-
-
-    local_symbol = 0;
-  if (strcmp(built_in_local_global, "built_in") == 0)
-    prop |= MASK_PRED_BUILTIN;
-  else if (strcmp(built_in_local_global, "built_in_fd") == 0)
-    prop |= MASK_PRED_BUILTIN_FD;
-  else if (strcmp(built_in_local_global, "local") == 0)
-    local_symbol = 1;
-  else if (strcmp(built_in_local_global, "user") != 0 &&
-	   strcmp(built_in_local_global, "global") != 0)
-    Syntax_Error("built_in, built_in_fd, local or global (or user) expected");
-  /* 'user' is accepted for compatibility as 'global' - no longer generated */
-
-
-  if (!local_symbol)
-    prop |= MASK_PRED_EXPORTED;
-
-  cur_pred_no++;
-
-  cur_pred = (Pred *) malloc(sizeof(Pred));
-  if (cur_pred == NULL)
-    {
-      fprintf(stderr, "Cannot allocate memory for predicate #%d (%s/%" PL_FMT_d ")\n",
-	      cur_pred_no, functor, arity);
-      exit(1);
-    }
-
-  if (module == NULL || *module == '\0') /* 'module' should be given in the future */
-    {
-      if (prop & MASK_PRED_BUILTIN || prop & MASK_PRED_BUILTIN_FD)
-	module = "system";
-      else
-	module = "user";
-    }
-  atom_module = BT_String_Add(&bt_atom, module);
-  if (strcmp(module, "user") == 0 || strcmp(module, "system") == 0)
-    module_user_system = 1;
-
-
-  cur_pred->module = atom_module;
-  cur_pred->functor = atom_functor;
-  cur_pred->arity = arity;
-  cur_pred->pl_file = cur_pl_file;
-  cur_pred->pl_line = pl_line;
-  cur_pred->prop = prop;
-  cur_pred->swt_tbl[0] = NULL;
-  cur_pred->swt_tbl[1] = NULL;
-  cur_pred->swt_tbl[2] = NULL;
-  cur_pred->next = NULL;
-
-  pred_end->next = cur_pred;
-  pred_end = cur_pred;
-
-  if (comment)
-    {
-      Label_Printf("\n\n; *** Predicate: %s:%s/%d (%s:%d)",
-		   module, functor, arity, cur_pl_file->str, pl_line);
-    }
-
-  /* do not qualif with module in Encode_Hexa if:
-   *    - it is not an exported predicate (i.e. it is a local_symbol)
-   *    - it owns to module 'user' or 'system'
-   */
-
-  Encode_Hexa((local_symbol || module_user_system) ? NULL : module, functor, arity, buff_hexa + 1);
-  *buff_hexa = '&';
-  cur_pred->hexa = strdup(buff_hexa);
-
-  Label_Printf("\n\npl_code %s %s", (local_symbol) ? "local" : "global", buff_hexa + 1);
+    predicate(functor, arity);
 }
 
 
@@ -597,45 +480,8 @@ F_predicate(ArgVal arg[])
 void
 F_directive(ArgVal arg[])
 {
-  Direct *p;
-  int system;
-	/* ArgsN macro must be last or need C99 mode (under MSVC++ use -TP) */
-  Args2(INTEGER(pl_line), STR(user_system));
-
-  if (cur_pl_file == NULL)
-    Syntax_Error("file_name declaration missing");
-
-
-  if (strcmp(user_system, "system") == 0)
-    system = 1;
-  else if (strcmp(user_system, "user") == 0)
-    system = 0;
-  else
-    Syntax_Error("user or system expected");
-
-
-  cur_direct_no++;
-  p = (Direct *) malloc(sizeof(Direct));
-  if (p == NULL)
-    {
-      fprintf(stderr, "Cannot allocate memory for directive #%d\n",
-	      cur_direct_no);
-      exit(1);
-    }
-
-  p->pl_file = cur_pl_file;
-  p->pl_line = pl_line;
-  p->system = system;
-  p->next = NULL;
-
-  direct_end->next = p;
-  direct_end = p;
-
-  if (comment)
-    Label_Printf("\n\n; *** %s Directive (%s:%d)",
-		 (system) ? "System" : "User", cur_pl_file->str, pl_line);
-
-  Label_Printf("\n\npl_code local directive_%d", cur_direct_no);
+    fprintf(stderr, "ERROR: WAM2FPWAM DIRECTIVE");
+    exit(-1);
 }
 
 
@@ -648,16 +494,8 @@ F_directive(ArgVal arg[])
 void
 F_ensure_linked(ArgVal arg[])
 {
-  DEF_MP_N(m, p, n);
-  Args1(INTEGER(nb_elem));
-
-  Label_Printf("\n\npl_code local ensure_linked");
-  while (nb_elem--)
-    {
-      LOAD_MP_N(m, p, n);
-      Encode_Hexa(m, p, n, buff_hexa);
-      Inst_Printf("pl_jump", buff_hexa);
-    }
+    fprintf(stderr, "ERROR: WAM2FPWAM ENSURE LINKED");
+    exit(-1);
 }
 
 
@@ -671,7 +509,7 @@ void
 F_get_variable(ArgVal arg[])
 {
   Args2(X_Y(xy), INTEGER(a));
-  Inst_Printf("move", "X(%" PL_FMT_d "),%c(%" PL_FMT_d ")", a, c, xy);
+  get_variable(xy, c, a);
 }
 
 
@@ -685,8 +523,7 @@ void
 F_get_value(ArgVal arg[])
 {
   Args2(X_Y(xy), INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Unify(%c(%" PL_FMT_d "),X(%" PL_FMT_d "))", c, xy, a);
-  Inst_Printf("fail_ret", "");
+  get_value(xy, c, a);
 }
 
 
@@ -700,12 +537,7 @@ void
 F_get_atom(ArgVal arg[])
 {
   Args2(ATOM(atom), INTEGER(a));
-#ifdef USE_TAGGED_CALLS_FOR_WAM_FCTS
-  Inst_Printf("call_c", FAST "Pl_Get_Atom_Tagged(ta(%d),X(%" PL_FMT_d "))", atom->no, a);
-#else
-  Inst_Printf("call_c", FAST "Pl_Get_Atom(at(%d),X(%" PL_FMT_d "))", atom->no, a);
-#endif
-  Inst_Printf("fail_ret", "");
+  get_constant(atom->str, a);
 }
 
 
@@ -718,13 +550,9 @@ F_get_atom(ArgVal arg[])
 void
 F_get_integer(ArgVal arg[])
 {
-  Args2(INTEGER(n), INTEGER(a));
-#ifdef USE_TAGGED_CALLS_FOR_WAM_FCTS
-  Inst_Printf("call_c", FAST "Pl_Get_Integer_Tagged(%" PL_FMT_d ",X(%" PL_FMT_d "))", Tag_INT(n), a);
-#else
-  Inst_Printf("call_c", FAST "Pl_Get_Integer(%" PL_FMT_d ",X(%" PL_FMT_d "))", n, a);
-#endif
-  Inst_Printf("fail_ret", "");
+    Args2(INTEGER(n), INTEGER(a));
+    fprintf(stderr, "ERROR: WAM2FPWAM GET_INTEGER -> INTEGERS NOT SUPPORTED YET");
+    exit(-1);
 }
 
 
@@ -737,9 +565,9 @@ F_get_integer(ArgVal arg[])
 void
 F_get_float(ArgVal arg[])
 {
-  Args2(FLOAT(n), INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Get_Float(%1.20e,X(%" PL_FMT_d "))", n, a);
-  Inst_Printf("fail_ret", "");
+    Args2(FLOAT(n), INTEGER(a));
+    fprintf(stderr, "ERROR: WAM2FPWAM GET_FLOAT -> FLOATS NOT SUPPORTED YET");
+    exit(-1);
 }
 
 
@@ -753,8 +581,7 @@ void
 F_get_nil(ArgVal arg[])
 {
   Args1(INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Get_Nil(X(%" PL_FMT_d "))", a);
-  Inst_Printf("fail_ret", "");
+  get_constant("FPWAM_NIL_CONSTANT", a);
 }
 
 
@@ -768,8 +595,7 @@ void
 F_get_list(ArgVal arg[])
 {
   Args1(INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Get_List(X(%" PL_FMT_d "))", a);
-  Inst_Printf("fail_ret", "");
+  get_list(a);
 }
 
 
@@ -783,14 +609,7 @@ void
 F_get_structure(ArgVal arg[])
 {
   Args2(F_N(atom, n), INTEGER(a));
-#ifdef USE_TAGGED_CALLS_FOR_WAM_FCTS
-  Inst_Printf("call_c", FAST "Pl_Get_Structure_Tagged(fn(%d),X(%" PL_FMT_d "))", f_n_no,
-	      a);
-#else
-  Inst_Printf("call_c", FAST "Pl_Get_Structure(at(%d),%" PL_FMT_d ",X(%" PL_FMT_d "))", atom->no,
-	      n, a);
-#endif
-  Inst_Printf("fail_ret", "");
+  get_structure(str_atom, n, a);
 }
 
 
@@ -806,14 +625,11 @@ F_put_variable(ArgVal arg[])
   Args2(X_Y(xy), INTEGER(a));
   if (c == 'X')
     {
-      Inst_Printf("call_c", FAST "Pl_Put_X_Variable()");
-      Inst_Printf("move_ret", "X(%" PL_FMT_d ")", a);
-      Inst_Printf("move", "X(%" PL_FMT_d "),X(%" PL_FMT_d ")", a, xy);
+      put_variableX(xy, a);
     }
   else
     {
-      Inst_Printf("call_c", FAST "Pl_Put_Y_Variable(&Y(%" PL_FMT_d "))", xy);
-      Inst_Printf("move_ret", "X(%" PL_FMT_d ")", a);
+      put_variableY(xy, a);
     }
 }
 
@@ -828,8 +644,7 @@ void
 F_put_void(ArgVal arg[])
 {
   Args1(INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Put_X_Variable()");
-  Inst_Printf("move_ret", "X(%" PL_FMT_d ")", a);
+  put_variableX(0, a);
 }
 
 
@@ -843,7 +658,7 @@ void
 F_put_value(ArgVal arg[])
 {
   Args2(X_Y(xy), INTEGER(a));
-  Inst_Printf("move", "%c(%" PL_FMT_d "),X(%" PL_FMT_d ")", c, xy, a);
+  put_value(xy, c, a);
 }
 
 
@@ -857,8 +672,7 @@ void
 F_put_unsafe_value(ArgVal arg[])
 {
   Args2(X_Y(xy), INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Put_Unsafe_Value(%c(%" PL_FMT_d "))", c, xy);
-  Inst_Printf("move_ret", "X(%" PL_FMT_d ")", a);
+  put_unsafe_value(xy, a);
 }
 
 
@@ -872,12 +686,7 @@ void
 F_put_atom(ArgVal arg[])
 {
   Args2(ATOM(atom), INTEGER(a));
-#ifdef USE_TAGGED_CALLS_FOR_WAM_FCTS
-  Inst_Printf("call_c", FAST "Pl_Put_Atom_Tagged(ta(%d))", atom->no);
-#else
-  Inst_Printf("call_c", FAST "Pl_Put_Atom(at(%d))", atom->no);
-#endif
-  Inst_Printf("move_ret", "X(%" PL_FMT_d ")", a);
+  put_constant(str_atom, a);
 }
 
 
@@ -891,12 +700,9 @@ void
 F_put_integer(ArgVal arg[])
 {
   Args2(INTEGER(n), INTEGER(a));
-#ifdef USE_TAGGED_CALLS_FOR_WAM_FCTS
-  Inst_Printf("call_c", FAST "Pl_Put_Integer_Tagged(%" PL_FMT_d ")", Tag_INT(n));
-#else
-  Inst_Printf("call_c", FAST "Pl_Put_Integer(%" PL_FMT_d ")", n);
-#endif
-  Inst_Printf("move_ret", "X(%" PL_FMT_d ")", a);
+    fprintf(stderr, "ERROR: WAM2FPWAM PUT_INTEGER -> INTEGERS NOT SUPPORTED YET");
+    exit(-1);
+
 }
 
 
@@ -910,8 +716,8 @@ void
 F_put_float(ArgVal arg[])
 {
   Args2(FLOAT(n), INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Put_Float(%1.20e)", n);
-  Inst_Printf("move_ret", "X(%" PL_FMT_d ")", a);
+    fprintf(stderr, "ERROR: WAM2FPWAM GET_FLOAT -> FLOATS NOT SUPPORTED YET");
+    exit(-1);
 }
 
 
@@ -925,8 +731,7 @@ void
 F_put_nil(ArgVal arg[])
 {
   Args1(INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Put_Nil()");
-  Inst_Printf("move_ret", "X(%" PL_FMT_d ")", a);
+  put_constant("FPWAM_NIL_CONSTANT", a);
 }
 
 
@@ -940,8 +745,7 @@ void
 F_put_list(ArgVal arg[])
 {
   Args1(INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Put_List()");
-  Inst_Printf("move_ret", "X(%" PL_FMT_d ")", a);
+  put_list(a);
 }
 
 
@@ -955,12 +759,7 @@ void
 F_put_structure(ArgVal arg[])
 {
   Args2(F_N(atom, n), INTEGER(a));
-#ifdef USE_TAGGED_CALLS_FOR_WAM_FCTS
-  Inst_Printf("call_c", FAST "Pl_Put_Structure_Tagged(fn(%d))", f_n_no);
-#else
-  Inst_Printf("call_c", FAST "Pl_Put_Structure(at(%d),%" PL_FMT_d ")", atom->no, n);
-#endif
-  Inst_Printf("move_ret", "X(%" PL_FMT_d ")", a);
+  put_structure(str_atom, n, a);
 }
 
 
@@ -974,11 +773,8 @@ void
 F_put_meta_term(ArgVal arg[])
 {
   Args2(ATOM(module), INTEGER(a));
-#ifdef USE_TAGGED_CALLS_FOR_WAM_FCTS
-  Inst_Printf("call_c", FAST "Pl_Put_Meta_Term_Tagged(ta(%d), %" PL_FMT_d ")", module->no, a);
-#else
-  Inst_Printf("call_c", FAST "Pl_Put_Meta_Term(at(%d), %" PL_FMT_d ")", module->no, a);
-#endif
+    fprintf(stderr, "ERROR: WAM2FPWAM PUT_META_TERM -> NOT SUPPORTED YET");
+    exit(-1);
 }
 
 
@@ -992,7 +788,8 @@ void
 F_math_load_value(ArgVal arg[])
 {
   Args2(X_Y(xy), INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Math_Load_Value(%c(%" PL_FMT_d "),&X(%" PL_FMT_d "))", c, xy, a);
+  fprintf(stderr, "ERROR: WAM2FPWAM MATH_LOAD_VALUE -> NOT SUPPORTED YET");
+  exit(-1);
 }
 
 
@@ -1006,7 +803,8 @@ void
 F_math_fast_load_value(ArgVal arg[])
 {
   Args2(X_Y(xy), INTEGER(a));
-  Inst_Printf("call_c", FAST "Pl_Math_Fast_Load_Value(%c(%" PL_FMT_d "),&X(%" PL_FMT_d "))", c, xy, a);
+  fprintf(stderr, "ERROR: WAM2FPWAM MATH_FAST_LOAD_VALUE -> NOT SUPPORTED YET");
+  exit(-1);
 }
 
 
@@ -1020,8 +818,7 @@ void
 F_unify_variable(ArgVal arg[])
 {
   Args1(X_Y(xy));
-  Inst_Printf("call_c", FAST "Pl_Unify_Variable()");
-  Inst_Printf("move_ret", "%c(%" PL_FMT_d ")", c, xy);
+  unify_variable(xy, c);
 }
 
 
@@ -1035,7 +832,7 @@ void
 F_unify_void(ArgVal arg[])
 {
   Args1(INTEGER(n));
-  Inst_Printf("call_c", FAST "Pl_Unify_Void(%" PL_FMT_d ")", n);
+  unify_void(n);
 }
 
 
@@ -1049,8 +846,7 @@ void
 F_unify_value(ArgVal arg[])
 {
   Args1(X_Y(xy));
-  Inst_Printf("call_c", FAST "Pl_Unify_Value(%c(%" PL_FMT_d "))", c, xy);
-  Inst_Printf("fail_ret", "");
+  unify_value(xy, c);
 }
 
 
@@ -1064,8 +860,7 @@ void
 F_unify_local_value(ArgVal arg[])
 {
   Args1(X_Y(xy));
-  Inst_Printf("call_c", FAST "Pl_Unify_Local_Value(%c(%" PL_FMT_d "))", c, xy);
-  Inst_Printf("fail_ret", "");
+  unify_local_value(xy, c);
 }
 
 
@@ -1079,12 +874,7 @@ void
 F_unify_atom(ArgVal arg[])
 {
   Args1(ATOM(atom));
-#ifdef USE_TAGGED_CALLS_FOR_WAM_FCTS
-  Inst_Printf("call_c", FAST "Pl_Unify_Atom_Tagged(ta(%d))", atom->no);
-#else
-  Inst_Printf("call_c", FAST "Pl_Unify_Atom(at(%d))", atom->no);
-#endif
-  Inst_Printf("fail_ret", "");
+  unify_constant(str_atom);
 }
 
 
@@ -1098,12 +888,8 @@ void
 F_unify_integer(ArgVal arg[])
 {
   Args1(INTEGER(n));
-#ifdef USE_TAGGED_CALLS_FOR_WAM_FCTS
-  Inst_Printf("call_c", FAST "Pl_Unify_Integer_Tagged(%" PL_FMT_d ")", Tag_INT(n));
-#else
-  Inst_Printf("call_c", FAST "Pl_Unify_Integer(%" PL_FMT_d ")", n);
-#endif
-  Inst_Printf("fail_ret", "");
+  fprintf(stderr, "ERROR: WAM2FPWAM UNIFY_INTEGER -> NOT SUPPORTED YET");
+  exit(-1);
 }
 
 
@@ -1116,8 +902,7 @@ F_unify_integer(ArgVal arg[])
 void
 F_unify_nil(ArgVal arg[])
 {
-  Inst_Printf("call_c", FAST "Pl_Unify_Nil()");
-  Inst_Printf("fail_ret", "");
+   unify_constant("FPWAM_NIL_CONSTANT");
 }
 
 
@@ -1130,8 +915,7 @@ F_unify_nil(ArgVal arg[])
 void
 F_unify_list(ArgVal arg[])
 {
-  Inst_Printf("call_c", FAST "Pl_Unify_List()");
-  Inst_Printf("fail_ret", "");
+   unify_list();
 }
 
 
@@ -1145,12 +929,7 @@ void
 F_unify_structure(ArgVal arg[])
 {
   Args1(F_N(atom, n));
-#ifdef USE_TAGGED_CALLS_FOR_WAM_FCTS
-  Inst_Printf("call_c", FAST "Pl_Unify_Structure_Tagged(fn(%d))", f_n_no);
-#else
-  Inst_Printf("call_c", FAST "Pl_Unify_Structure(at(%d),%" PL_FMT_d ")", atom->no, n);
-#endif
-  Inst_Printf("fail_ret", "");
+  unify_structure(str_atom, n);
 }
 
 
@@ -1164,7 +943,7 @@ void
 F_allocate(ArgVal arg[])
 {
   Args1(INTEGER(n));
-  Inst_Printf("call_c", FAST "Pl_Allocate(%" PL_FMT_d ")", n);
+  allocate(n);
 }
 
 
@@ -1177,7 +956,7 @@ F_allocate(ArgVal arg[])
 void
 F_deallocate(ArgVal arg[])
 {
-  Inst_Printf("call_c", FAST "Pl_Deallocate()");
+  deallocate();
 }
 
 
@@ -1191,10 +970,7 @@ void
 F_call(ArgVal arg[])
 {
   Args1(MP_N(m, p, n));
-
-  Encode_Hexa(m, p, n, buff_hexa);
-
-  Inst_Printf("pl_call", buff_hexa);
+  call(p, n);
 }
 
 
@@ -1208,10 +984,7 @@ void
 F_execute(ArgVal arg[])
 {
   Args1(MP_N(m, p, n));
-
-  Encode_Hexa(m, p, n, buff_hexa);
-
-  Inst_Printf("pl_jump", buff_hexa);
+  execute(p, n);
 }
 
 
@@ -1224,7 +997,7 @@ F_execute(ArgVal arg[])
 void
 F_proceed(ArgVal arg[])
 {
-  Inst_Printf("pl_ret", "");
+  proceed();
 }
 
 
@@ -1237,7 +1010,7 @@ F_proceed(ArgVal arg[])
 void
 F_fail(ArgVal arg[])
 {
-  Inst_Printf("pl_fail", "");
+  fail();
 }
 
 
@@ -1251,7 +1024,7 @@ void
 F_label(ArgVal arg[])
 {
   Args1(LABEL(l));
-  Label_Printf("\n%s:", l);
+  label(val_l);
 }
 
 
@@ -1274,51 +1047,14 @@ F_switch_on_term(ArgVal arg[])
 
   Args0;
   DEF_INTEGER(val_label);
-  static char l[NB_SWT_LIST][MAX_LABEL_LENGTH];
-  int mask = 0, i;
-
+  static int32_t l[NB_SWT_LIST];
+  int i;
   for (i = 0; i < NB_SWT_LIST; i++)
-    {
+  {
       LOAD_INTEGER(val_label);
-
-      if (val_label == -1)
-	strcpy(l[i], "0");
-      else
-	{
-	  sprintf(l[i], "&" FORMAT_LABEL(val_label));
-	  mask |= (1 << i);
-	}
-    }
-
-  switch(mask)			/* some specialized functions */
-    {
-    case LVAR | LATM:
-      Inst_Printf("call_c", FAST "Pl_Switch_On_Term_Var_Atm(%s,%s)",
-		  l[0], l[1]);
-      break;
-
-    case LVAR | LSTC:
-      Inst_Printf("call_c", FAST "Pl_Switch_On_Term_Var_Stc(%s,%s)",
-		  l[0], l[4]);
-      break;
-
-    case LVAR | LATM | LLST:
-      Inst_Printf("call_c", FAST "Pl_Switch_On_Term_Var_Atm_Lst(%s,%s,%s)",
-		  l[0], l[1], l[3]);
-      break;
-
-    case LVAR | LATM | LSTC:
-      Inst_Printf("call_c", FAST "Pl_Switch_On_Term_Var_Atm_Stc(%s,%s,%s)",
-		  l[0], l[1], l[4]);
-      break;
-
-    default:
-      Inst_Printf("call_c", FAST "Pl_Switch_On_Term(%s,%s,%s,%s,%s)",
-		  l[0], l[1], l[2], l[3], l[4]);
-      break;
-    }
-
-  Inst_Printf("jump_ret", "");
+      l[i] = val_label;
+  }
+  switch_on_term(l[0], l[1], l[3], l[4]);
 }
 
 
@@ -1360,27 +1096,25 @@ Create_Switch_Table(int type, int nb_elem)
 void
 F_switch_on_atom(ArgVal arg[])
 {
-  SwtTbl *t;
-  SwtElt *elem;
 
   DEF_STR(str);
   DEF_INTEGER(label);
   Args1(INTEGER(nb_elem));
 
-
-//  t = Create_Switch_Table(TBL_ATM, nb_elem);
-
-  for (elem = t->elem; nb_elem--; elem++)
+  char **atoms = (char**)malloc(sizeof(char*)*nb_elem);
+  int32_t *labels = (int*)malloc(sizeof(int32_t)*nb_elem);
+  int32_t cnt;
+  for (cnt = 0; nb_elem--; cnt++)
     {
       LOAD_STR(str);
       LOAD_INTEGER(label);
-      elem->atom = BT_String_Add(&bt_atom, str);
-      elem->label = label;
+      atoms[cnt] = str;
+      labels[cnt] = label;
     }
+  switch_on_con(atoms, labels, nb_elem);
 
-  Inst_Printf("call_c", FAST "Pl_Switch_On_Atom(st(%d),%d)",
-	      nb_swt_tbl - 1, t->nb_elem);
-  Inst_Printf("jump_ret", "");
+  free(atoms);
+  free(labels);
 }
 
 
@@ -1393,6 +1127,10 @@ F_switch_on_atom(ArgVal arg[])
 void
 F_switch_on_integer(ArgVal arg[])
 {
+
+  fprintf(stderr, "ERROR: WAM2FPWAM SWITCH_ON_INTEGER -> NOT SUPPORTED YET");
+  exit(-1);
+
 #ifdef SWT_INT_NO_OPT
   SwtTbl *t;
   SwtElt *elem;
@@ -1447,30 +1185,31 @@ F_switch_on_integer(ArgVal arg[])
 void
 F_switch_on_structure(ArgVal arg[])
 {
-  SwtTbl *t;
-  SwtElt *elem;
-
   DEF_STR(str);
   DEF_INTEGER(arity);
   DEF_INTEGER(label);
   Args1(INTEGER(nb_elem));
 
+  char **strs     = (char**)malloc(sizeof(char*)*nb_elem);
+  int8_t *arities = (int8_t*)malloc(sizeof(int8_t)*nb_elem);
+  int32_t *labels = (int32_t*)malloc(sizeof(int32_t)*nb_elem);
 
-//  t = Create_Switch_Table(TBL_STC, nb_elem);
-
-  for (elem = t->elem; nb_elem--; elem++)
+  int32_t cnt;
+  for (cnt = 0; nb_elem--; cnt++)
     {
       LOAD_STR(str);
       LOAD_INTEGER(arity);
       LOAD_INTEGER(label);
-      elem->atom = BT_String_Add(&bt_atom, str);
-      elem->n = arity;
-      elem->label = label;
+      strs[cnt] = str;
+      arities[cnt] = arity;
+      labels[cnt] = label;
     }
 
-  Inst_Printf("call_c", FAST "Pl_Switch_On_Structure(st(%d),%d)",
-	      nb_swt_tbl - 1, t->nb_elem);
-  Inst_Printf("jump_ret", "");
+  switch_on_str(strs, arities, labels, nb_elem);
+
+  free(strs);
+  free(arities);
+  free(labels);
 }
 
 
@@ -1484,7 +1223,7 @@ void
 F_try_me_else(ArgVal arg[])
 {
   Args1(LABEL(l));
-  CREATE_CHOICE_INST(l);
+  try_me_else(val_l);
 }
 
 
@@ -1498,7 +1237,7 @@ void
 F_retry_me_else(ArgVal arg[])
 {
   Args1(LABEL(l));
-  UPDATE_CHOICE_INST(l);
+  retry_me_else(val_l);
 }
 
 
@@ -1511,7 +1250,7 @@ F_retry_me_else(ArgVal arg[])
 void
 F_trust_me_else_fail(ArgVal arg[])
 {
-  DELETE_CHOICE_INST;
+  trust_me_else_fail();
 }
 
 
@@ -1524,15 +1263,8 @@ F_trust_me_else_fail(ArgVal arg[])
 void
 F_try(ArgVal arg[])
 {
-  char sl[MAX_LABEL_LENGTH];
-
   Args1(LABEL(l));
-
-  sprintf(sl, FORMAT_SUB_LABEL(cur_sub_label++));
-
-  CREATE_CHOICE_INST(sl);
-  Inst_Printf("jump", "%s", l);
-  Label_Printf("%s:", sl);
+  ttry(val_l);
 }
 
 
@@ -1545,15 +1277,8 @@ F_try(ArgVal arg[])
 void
 F_retry(ArgVal arg[])
 {
-  char sl[MAX_LABEL_LENGTH];
-
   Args1(LABEL(l));
-
-  sprintf(sl, FORMAT_SUB_LABEL(cur_sub_label++));
-
-  UPDATE_CHOICE_INST(sl);
-  Inst_Printf("jump", "%s", l);
-  Label_Printf("%s:", sl);
+  retry(val_l);
 }
 
 
@@ -1567,9 +1292,7 @@ void
 F_trust(ArgVal arg[])
 {
   Args1(LABEL(l));
-
-  DELETE_CHOICE_INST;
-  Inst_Printf("jump", "%s", l);
+  trust(val_l);
 }
 
 
@@ -1584,10 +1307,8 @@ F_pragma_arity(ArgVal arg[])
 {
   Args1(INTEGER(a));
 
-  /* Used for for a pred/arity with cuts (not soft cuts).
-   * Since the cut level is stored in X(arity) we have to save it in choice-points
-   * This pragma adjusts the number of args to save in choice-points.
-   */
+  fprintf(stderr, "ERROR: WAM2FPWAM PRAGMA_ARITY-> NOT SUPPORTED YET");
+  exit(-1);
 
   cur_arity = a;	
 
@@ -1606,8 +1327,8 @@ F_get_current_choice(ArgVal arg[])
 {
   Args1(X_Y(xy));
 
-  Inst_Printf("call_c", FAST "Pl_Get_Current_Choice()");
-  Inst_Printf("move_ret", "%c(%" PL_FMT_d ")", c, xy);
+  fprintf(stderr, "ERROR: WAM2FPWAM  -> CUTS NOT SUPPORTED YET");
+  exit(-1);
 }
 
 
@@ -1621,7 +1342,8 @@ void
 F_cut(ArgVal arg[])
 {
   Args1(X_Y(xy));
-  Inst_Printf("call_c", FAST "Pl_Cut(%c(%" PL_FMT_d "))", c, xy);
+  fprintf(stderr, "ERROR: WAM2FPWAM -> CUTS NOT SUPPORTED YET");
+  exit(-1);
 }
 
 
@@ -1635,7 +1357,8 @@ void
 F_soft_cut(ArgVal arg[])
 {
   Args1(X_Y(xy));
-  Inst_Printf("call_c", FAST "Pl_Soft_Cut(%c(%" PL_FMT_d "))", c, xy);
+  fprintf(stderr, "ERROR: WAM2FPWAM-> CUTS NOT SUPPORTED YET");
+  exit(-1);
 }
 
 
@@ -2277,14 +2000,7 @@ Emit_One_F_N_Tagged(int no, char *str, void *info)
 void
 Label_Printf(char *label, ...)
 {
-  va_list arg_ptr;
 
-  va_start(arg_ptr, label);
-
-  vfprintf(file_out, label, arg_ptr);
-
-  va_end(arg_ptr);
-  fputc('\n', file_out);
 }
 
 
@@ -2297,18 +2013,6 @@ Label_Printf(char *label, ...)
 void
 Inst_Printf(char *op, char *operands, ...)
 {
-  va_list arg_ptr;
-
-  va_start(arg_ptr, operands);
-
-  fprintf(file_out, "\t%-10s ", op);
-  if (operands)
-    {
-      vfprintf(file_out, operands, arg_ptr);
-      fputc('\n', file_out);
-    }
-
-  va_end(arg_ptr);
 }
 
 

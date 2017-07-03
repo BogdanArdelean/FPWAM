@@ -66,5 +66,10 @@ namespace FPWAM
     {
         return ((int32_t)tag << 16) | word;
     }
+
+    static int32_t fpwam_call_execute(uint16_t number, int8_t arity)
+    {
+        return ((int32_t)number << kRegWidth) | arity;
+    }
 }
 #endif //SOFTWARE_FPWAMDEFS_H

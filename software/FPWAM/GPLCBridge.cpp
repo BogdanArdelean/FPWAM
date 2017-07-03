@@ -23,62 +23,72 @@ void predicate(const char *name, const int8_t arity)
 
 void get_value(const int8_t XYn, const char c, const int8_t Ai)
 {
-    contextObj->get_value(XYn, c, Ai);
+    contextObj->get_value(XYn+1, c, Ai+1);
 }
+
+void get_variable(const int8_t XYn, const char c, const int8_t Ai)
+{
+    contextObj->get_variable(XYn+1, c, Ai+1);
+}
+
 
 void get_constant(const char *atom, const int8_t Ai)
 {
-    contextObj->get_constant(atom, Ai);
+    contextObj->get_constant(atom, Ai+1);
 }
 
 void get_list(const int8_t Ai)
 {
-    contextObj->get_list(Ai);
+    contextObj->get_list(Ai+1);
 }
 
 void get_structure(const char *name, const int8_t arity, const int8_t Ai)
 {
-    contextObj->get_structure(name, arity, Ai);
+    std::string s(name);
+    int32_t found = s.find_first_of("/");
+    contextObj->get_structure(s.substr(0, found), arity, Ai+1);
 }
 
 void put_variableX(const int8_t Xn, const int8_t Ai)
 {
-    contextObj->put_variableX(Xn, Ai);
+    contextObj->put_variableX(Xn+1, Ai+1);
 }
 
 void put_variableY(const int8_t Yn, const int8_t Ai)
 {
-    contextObj->put_variableY(Yn, Ai);
+    contextObj->put_variableY(Yn+1, Ai+1);
 }
 
 void put_value(const int8_t XYn, const char c, const int8_t Ai)
 {
-    contextObj->put_value(XYn, c, Ai);
+    contextObj->put_value(XYn+1, c, Ai+1);
 }
 
 void put_unsafe_value(const int8_t Yn, const int8_t Ai)
 {
-    contextObj->put_unsafe_value(Yn, Ai);
+    contextObj->put_unsafe_value(Yn+1, Ai+1);
 }
 
 void put_constant(const char *name, const int8_t Ai)
 {
-    contextObj->put_constant(name, Ai);
+    contextObj->put_constant(name, Ai+1);
 }
 
 void put_list(const int8_t Ai)
 {
-    contextObj->put_list(Ai);
+    contextObj->put_list(Ai+1);
 }
 
 void put_structure(const char *name, const int8_t arity, const int8_t Ai)
 {
-    contextObj->put_structure(name, arity, Ai);
+    std::string s(name);
+    int32_t found = s.find_first_of("/");
+    contextObj->put_structure(s.substr(0, found), arity, Ai+1);
 }
 
 void unify_variable(const int8_t XYn, const char c)
 {
-    contextObj->unify_variable(XYn, c);
+    contextObj->unify_variable(XYn+1, c);
 }
 
 void unify_void(const int8_t n)
@@ -88,12 +98,12 @@ void unify_void(const int8_t n)
 
 void unify_value(const int8_t XYn, const char c)
 {
-    contextObj->unify_value(XYn, c);
+    contextObj->unify_value(XYn+1, c);
 }
 
 void unify_local_value(const int8_t XYn, const char c)
 {
-    contextObj->unify_local_value(XYn, c);
+    contextObj->unify_local_value(XYn+1, c);
 }
 
 void unify_constant(const char *name)
@@ -108,7 +118,9 @@ void unify_list()
 
 void unify_structure(const char *name, const int8_t arity)
 {
-    contextObj->unify_structure(name, arity);
+    std::string s(name);
+    int32_t found = s.find_first_of("/");
+    contextObj->unify_structure(s.substr(0, found), arity);
 }
 
 void allocate(const int8_t n)
@@ -151,7 +163,7 @@ void switch_on_term(const int32_t v, const int32_t c, const int32_t l, const int
     contextObj->switch_on_term(v, c, l, s);
 }
 
-void switch_on_con(char **constants, int32_t nr_constants, int32_t *labels, int32_t nr_labels)
+void switch_on_con(char **constants, int32_t *labels, int32_t nr_constants)
 {
     std::vector<std::string> constVec;
     std::vector<int32_t> labelsVec;
@@ -159,13 +171,25 @@ void switch_on_con(char **constants, int32_t nr_constants, int32_t *labels, int3
     for(int i = 0; i < nr_constants; ++i)
     {
         constVec.push_back(std::string(constants[i]));
-    }
-
-    for(int i = 0; i < nr_labels; ++i)
-    {
         labelsVec.push_back(labels[i]);
     }
     contextObj->switch_on_con(constVec, labelsVec);
+}
+
+void switch_on_str(char **str, int8_t *arity, int32_t *labels, int32_t nr_str)
+{
+    std::vector<std::string> strVec(nr_str);
+    std::vector<int8_t> arityVec(nr_str);
+    std::vector<int32_t> labelsVec(nr_str);
+
+    for(int i = 0; i < nr_str; ++i)
+    {
+        strVec.push_back(std::string(str[i]));
+        arityVec.push_back(arity[i]);
+        labelsVec.push_back(labels[i]);
+    }
+
+    contextObj->switch_on_str(strVec, arityVec, labelsVec);
 }
 
 void try_me_else(const int32_t label)
@@ -178,9 +202,9 @@ void retry_me_else(const int32_t label)
     contextObj->retry_me_else(label);
 }
 
-void trust_me_else_fail(const int32_t label)
+void trust_me_else_fail()
 {
-    contextObj->trust_me_else_fail(label);
+    contextObj->trust_me_else_fail();
 }
 
 void ttry(const int32_t label)
@@ -197,3 +221,4 @@ void trust(const int32_t label)
 {
     contextObj->trust(label);
 }
+

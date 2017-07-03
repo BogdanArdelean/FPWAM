@@ -21,6 +21,8 @@ void Predicate::add_instruction(Instruction &instruction)
 
 void Predicate::add_instruction_unresolved(Instruction &instruction)
 {
+    //HACK
+    instruction.set_constant(this->m_instructions.size()+1);
     this->add_instruction(instruction);
     this->m_unresolvedInstr.push_back(this->m_instructions.size()-1);
 }

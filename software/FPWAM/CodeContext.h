@@ -11,6 +11,8 @@ namespace FPWAM
 {
     struct CodeContext
     {
+        CodeContext();
+
         uint16_t m_currentInstruction;
         int32_t  m_predicateNr;
         int32_t  m_constantNr;
@@ -18,19 +20,19 @@ namespace FPWAM
         uint16_t m_backupInstruction;
         int32_t  m_backupPredicateNr;
         int32_t  m_backupConstantNr;
+        std::vector<Predicate> m_backupFacts;
+        std::map<std::string, int32_t> m_backupPredicateNameToNr;
+        std::map<int32_t, int32_t>     m_backupPredicateValueToIndex;
 
         std::vector<Predicate> m_facts;
-        std::vector<Predicate> m_queries;
         std::map<std::string, int32_t> m_predicateNameToNr;
         std::map<int32_t, int32_t>     m_predicateValueToIndex;
-
-        std::map<std::string, int32_t> m_queryNameToIndex;
-        std::map<int32_t, int32_t>     m_queryValueToIndex;
 
         std::map<std::string, int32_t> m_constantNameToValue;
 
         void predicate(const std::string name, const int8_t arity);
         void get_value(const int8_t XYn, const char c, const int8_t Ai);
+        void get_variable(const int8_t XYn, const char c, const int8_t Ai);
         void get_constant(const std::string atom, const int8_t Ai);
         void get_list(const int8_t Ai);
         void get_structure(const std::string name, const int8_t arity, const int8_t Ai);
@@ -57,24 +59,28 @@ namespace FPWAM
         void label(int32_t l);
         void switch_on_term(const int32_t v, const int32_t c, const int32_t l, const int32_t s);
         void switch_on_con(std::vector<std::string>& constants, std::vector<int32_t>& labels);
+        void switch_on_str(std::vector<std::string>& str, std::vector<int8_t> &arity, std::vector<int32_t>& labels);
         void try_me_else(const int32_t label);
         void retry_me_else(const int32_t label);
-        void trust_me_else_fail(const int32_t label);
+        void trust_me_else_fail();
         void ttry(const int32_t label);
         void retry(const int32_t label);
         void trust(const int32_t label);
 
+        void resolve_instructions();
+        void query();
+        void end_query();
+        void get_instructions(std::vector<Instruction>& instr);
+
     private:
-        enum State
-        {
-            PROGRAM
-            ,QUERY
-        };
 
-        State m_state;
-        Predicate *m_currentPredicate;
-
+        int32_t m_query_fact;
+        int32_t m_current_predicate_index;
         void add_predicate(const std::string &name, const int8_t arity, int32_t number, int32_t predicateValue);
+        Predicate& getCurrentPredicate()
+        {
+            return m_facts[m_current_predicate_index];
+        }
     };
 }
 
