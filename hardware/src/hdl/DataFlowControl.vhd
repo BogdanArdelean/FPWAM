@@ -165,6 +165,7 @@ type state_t is (idle_t, next_instr_t
                 ,unify_structure_t, unify_structure_t2
                 ,switch_on_term_t
                 ,switch_on_int_str_t, switch_on_int_str_t2, switch_on_int_str_t3, switch_on_int_str_t4
+                ,unify_list_t, unify_list_t2
                 );
 
 signal cr_state, nx_state, decoded_state : state_t;
@@ -300,6 +301,8 @@ begin
           decoded_state <= backtrack_t;
         when i_switch_on_int_str_t =>
           decoded_state <= switch_on_int_str_t;
+        when i_unify_list_t =>
+          decoded_state <= unify_list_t;
         when others =>
           decoded_state <= idle_t;
       end case;
@@ -634,6 +637,24 @@ begin
           else
             nx_state <= backtrack_t;
           end if;
+        end if;
+      when unify_list_t =>
+        case mode_reg is
+          when mode_read_t =>
+            nx_state <= unify_list_t2;
+          when mode_write_t =>
+            nx_state <= next_instr_t;
+        end case;
+      when unify_list_t2 =>
+        if deref_done = '1' then
+          case fpwam_tag(deref_word) is
+            when tag_ref_t =>
+              nx_state <= get_list_t3;
+            when tag_lis_t =>
+              nx_state <= get_list_t2;
+            when others =>
+              nx_state <= backtrack_t;
+          end case;
         end if;
       when others => null;
     end case;
@@ -1420,6 +1441,25 @@ begin
 
         mem_addr_input2  <= MA_untag_deref_t;
         rd_mem_port2     <= deref_done;
+     when unify_list_t =>
+        case mode_reg is
+          when mode_read_t =>
+            mem_addr_input1 <= MA_S_t;
+            rd_mem_port1    <= '1';
+          when mode_write_t =>
+            mem_addr_input1 <= MA_H_t;
+            mem_input1      <= MI_lis_Hplus1_t;
+
+            wr_h_reg  <= '1';
+          end case;
+     when unify_list_t2 =.
+       start_deref     <= '1';
+       deref_input     <= DI_mem_port1_t;
+       mem_addr_input1 <= MA_deref_unit_t;
+
+
+       mem_addr_input2  <= MA_untag_deref_t;
+       rd_mem_port2     <= deref_done;
      when switch_on_term_t =>
         start_deref     <= '1';
         deref_input     <= DI_GPR_t;

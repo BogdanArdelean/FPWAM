@@ -95,6 +95,7 @@ package FpwamPkg is
                            ,i_switch_on_term_t    -- 011110
                            ,i_fail_t              -- 011111
                            ,i_switch_on_int_str_t -- 100000
+                           ,i_unify_list_t        -- 100001
                            );
   constant kInstrDecodeWidth : integer := 6;
 

@@ -206,8 +206,7 @@ void FPWAM::CodeContext::unify_constant(const std::string name)
 
 void FPWAM::CodeContext::unify_list()
 {
-    std::cerr << "Error UNIFY LIST NOT SUPPORTED. Putting NOP" << std::endl;
-    Instruction instruction(i_nop, m_currentInstruction++);
+    Instruction instruction(i_unify_list_t, m_currentInstruction++);
     getCurrentPredicate().add_instruction(instruction);
 }
 
@@ -621,7 +620,9 @@ CodeContext::CodeContext()
 : m_currentInstruction(0)
 , m_predicateNr(1)
 , m_constantNr(1)
-{}
+{
+    m_constantNameToValue["FPWAM_NIL_VALUE"] = -1;
+}
 
 
 
