@@ -76,6 +76,7 @@ void FPWAM::CodeContext::get_structure(const std::string name, const int8_t arit
     int32_t number = FOUND(m_predicateNameToNr, name) ? m_predicateNameToNr[name] : m_predicateNr++;
     std::string fullName = name + "/" + std::to_string(arity);
     int32_t predicateValue = Predicate::composeValue(number, arity);
+    instruction.set_reg1(Ai);
     if((FOUND(m_predicateValueToIndex, predicateValue)))
     {
         int32_t index = m_predicateValueToIndex[predicateValue];
@@ -86,7 +87,6 @@ void FPWAM::CodeContext::get_structure(const std::string name, const int8_t arit
 
     add_predicate(name, arity, number, predicateValue);
     instruction.set_constant(predicateValue);
-    instruction.set_reg1(Ai);
     getCurrentPredicate().add_instruction(instruction);
 }
 

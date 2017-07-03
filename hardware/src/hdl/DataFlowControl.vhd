@@ -891,7 +891,7 @@ begin
       case mode_reg is
         when mode_read_t =>
           start_unify     <= '1';
-          unify_input_a   <= UI_mem_port2_t;
+          unify_input_b   <= UI_mem_port2_t;
           mem_addr_input1 <= MA_unify_unit_t;
           mem_addr_input2 <= MA_unify_unit_t;
           mem_input1      <= MI_unify_unit_t;
@@ -900,9 +900,9 @@ begin
           bind_port2      <= BI_unify_unit_t;
           deref_input     <= DI_unify_unit_t;
           if fpwam_var_on_stack(instruction) then -- value on stack
-            unify_input_b <= UI_mem_port1_t;
+            unify_input_a <= UI_mem_port1_t;
           else
-            unify_input_b <= UI_GPR_t;
+            unify_input_a <= UI_GPR_t;
           end if;
         when mode_write_t =>
           start_deref <= '1';
