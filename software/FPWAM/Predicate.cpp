@@ -10,8 +10,8 @@ int32_t Predicate::composeValue(int32_t number, int8_t arity)
     return ((int32_t)tag_str_t << 16) | (number << kRegWidth | arity);
 }
 
-Predicate::Predicate(const std::string &m_name, int8_t m_arity, int32_t m_value, uint16_t instrNumber) : m_name(m_name), m_arity(m_arity),
-                                                                                   m_value(m_value), m_startInstrNumber(instrNumber)
+Predicate::Predicate(const std::string &m_name, int8_t m_arity, int32_t m_value, uint16_t instrNumber, bool resolved) : m_name(m_name), m_arity(m_arity),
+                                                                                   m_value(m_value), m_startInstrNumber(instrNumber), m_resolved(resolved)
 {}
 
 void Predicate::add_instruction(Instruction &instruction)
