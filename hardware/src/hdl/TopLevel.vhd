@@ -1430,9 +1430,9 @@ end process;
         deref1_word <= gpr_output1;
       when DI_unify_unit_t =>
         deref1_word <= unify_deref1_out;
-      when DI_EYnp1_t =>
+      when DI_EYnp2_t =>
         deref1_word <= fpwam_word(std_logic_vector(unsigned(E_reg)+
-                                  unsigned(dfc_instruction_in(kGPRAddressWidth-1 + kWamWordWidth downto kWamWordWidth))+1), tag_ref_t);
+                                  unsigned(dfc_instruction_in(kGPRAddressWidth-1 + kWamWordWidth downto kWamWordWidth))+2), tag_ref_t);
       when DI_mem_port1_t =>
         deref1_word <= mem_output_1;
       when others =>

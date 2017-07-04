@@ -48,7 +48,7 @@ package FpwamPkg is
   -- Possible input sources for General Purpose Registers address
   type GPR_addr_input_t is (GPRA_instr_t, GPRA_I_t, GPRA_Ip1_t);
   -- Possible input sources for deref unit
-  type deref_input_t    is (DI_GPR_t, DI_unify_unit_t, DI_EYnp1_t, DI_mem_port1_t);
+  type deref_input_t    is (DI_GPR_t, DI_unify_unit_t, DI_EYnp2_t, DI_mem_port1_t);
   -- Possible input sources for bind unit
   type bind_input_t     is (BI_deref_unit_t, BI_mem_port1_t, BI_unify_unit_t);
   -- Possible input sources for trail unit

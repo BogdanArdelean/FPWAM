@@ -1032,7 +1032,7 @@ begin
         gpr_input2 <= GPRI_mem_port1_t;
       when put_unsafe_value_t =>
         start_deref <= '1';
-        deref_input      <= DI_EYnp1_t;
+        deref_input      <= DI_EYnp2_t;
         mem_addr_input1  <= MA_deref_unit_t;
       when put_unsafe_value_t2 =>
         wr_gpr2 <= '1';
