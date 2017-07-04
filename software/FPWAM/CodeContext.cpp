@@ -19,17 +19,18 @@ void FPWAM::CodeContext::predicate(const std::string name, const int8_t arity)
     {
         m_current_predicate_index = m_predicateValueToIndex[predicateValue];
         getCurrentPredicate().set_startInstrNumber(m_currentInstruction);
+        getCurrentPredicate().set_resolved(true);
         return;
     }
 
-    add_predicate(name, arity, number, predicateValue);
+    add_predicate(name, arity, number, predicateValue, true);
     m_current_predicate_index = m_facts.size()-1;
 }
 
-void FPWAM::CodeContext::add_predicate(const std::string &name, const int8_t arity, int32_t number, int32_t predicateValue)
+void FPWAM::CodeContext::add_predicate(const std::string &name, const int8_t arity, int32_t number, int32_t predicateValue, bool resolved)
 {
     m_predicateNameToNr[name] = number;
-    m_facts.push_back(Predicate(name, arity, predicateValue, m_currentInstruction));
+    m_facts.push_back(Predicate(name, arity, predicateValue, m_currentInstruction, resolved));
     m_predicateValueToIndex[predicateValue] = m_facts.size() - 1;
 }
 
@@ -85,7 +86,7 @@ void FPWAM::CodeContext::get_structure(const std::string name, const int8_t arit
         return;
     }
 
-    add_predicate(name, arity, number, predicateValue);
+    add_predicate(name, arity, number, predicateValue, false);
     instruction.set_constant(predicateValue);
     getCurrentPredicate().add_instruction(instruction);
 }
@@ -158,7 +159,7 @@ void FPWAM::CodeContext::put_structure(const std::string name, const int8_t arit
         return;
     }
 
-    add_predicate(name, arity, number, predicateValue);
+    add_predicate(name, arity, number, predicateValue, false);
     instruction.set_constant(predicateValue);
     getCurrentPredicate().add_instruction(instruction);
 }
@@ -224,7 +225,7 @@ void FPWAM::CodeContext::unify_structure(const std::string name, const int8_t ar
         return;
     }
 
-    add_predicate(name, arity, number, predicateValue);
+    add_predicate(name, arity, number, predicateValue, false);
     instruction.set_constant(predicateValue);
     getCurrentPredicate().add_instruction(instruction);
 }
@@ -252,11 +253,19 @@ void FPWAM::CodeContext::call(const std::string name, const int8_t arity)
     {
         int32_t index = m_predicateValueToIndex[predicateValue];
         instruction.set_constant(fpwam_call_execute(m_facts[index].get_startInstrNumber(), m_facts[index].get_arity()));
-        getCurrentPredicate().add_instruction(instruction);
+
+        if(m_facts[index].is_resolved())
+            getCurrentPredicate().add_instruction(instruction);
+        else
+        {
+            instruction.set_functor(fullName);
+            getCurrentPredicate().add_instruction_unresolved(instruction);
+        }
+
         return;
     }
 
-    add_predicate(name, arity, number, predicateValue);
+    add_predicate(name, arity, number, predicateValue, false);
     instruction.set_functor(fullName);
     getCurrentPredicate().add_instruction_unresolved(instruction);
 }
@@ -271,11 +280,20 @@ void FPWAM::CodeContext::execute(const std::string name, const int8_t arity)
     {
         int32_t index = m_predicateValueToIndex[predicateValue];
         instruction.set_constant(fpwam_call_execute(m_facts[index].get_startInstrNumber(), m_facts[index].get_arity()));
-        getCurrentPredicate().add_instruction(instruction);
+
+        if(m_facts[index].is_resolved())
+            getCurrentPredicate().add_instruction(instruction);
+        else
+        {
+            instruction.set_functor(fullName);
+            getCurrentPredicate().add_instruction_unresolved(instruction);
+        }
+
+
         return;
     }
 
-    add_predicate(name, arity, number, predicateValue);
+    add_predicate(name, arity, number, predicateValue, false);
     instruction.set_functor(fullName);
     getCurrentPredicate().add_instruction_unresolved(instruction);
 }
@@ -404,7 +422,7 @@ void CodeContext::switch_on_str(std::vector<std::string> &str, std::vector<int8_
         int32_t predicateValue = Predicate::composeValue(number, ar);
         if(!(FOUND(m_predicateValueToIndex, predicateValue)))
         {
-            add_predicate(strName, ar, number, predicateValue);
+            add_predicate(strName, ar, number, predicateValue, false);
         }
 
         strToInstr[predicateValue] = label;
@@ -511,7 +529,14 @@ void CodeContext::resolve_instructions()
 
                         int32_t index = m_predicateValueToIndex[Predicate::composeValue(m_predicateNameToNr[name], arity)];
                         const Predicate& p = m_facts[index];
-                        instruction.set_constant(fpwam_call_execute(p.get_startInstrNumber(), p.get_arity()));
+                        if(p.is_resolved())
+                            instruction.set_constant(fpwam_call_execute(p.get_startInstrNumber(), p.get_arity()));
+                        else
+                        {
+                            std::cerr << instruction.to_string() <<" ERROR " << predicate.get_name() << ": " << "Predicate " << functor << " not found."
+                                      << std::endl;
+                            exit(-1);
+                        }
                         break;
                     }
 
@@ -624,7 +649,7 @@ CodeContext::CodeContext()
 , m_predicateNr(1)
 , m_constantNr(1)
 {
-    m_constantNameToValue["FPWAM_NIL_VALUE"] = -1;
+    m_constantNameToValue["FPWAM_NIL_CONSTANT"] = -1;
 }
 
 

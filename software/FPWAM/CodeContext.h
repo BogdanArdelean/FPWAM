@@ -76,7 +76,7 @@ namespace FPWAM
 
         int32_t m_query_fact;
         int32_t m_current_predicate_index;
-        void add_predicate(const std::string &name, const int8_t arity, int32_t number, int32_t predicateValue);
+        void add_predicate(const std::string &name, const int8_t arity, int32_t number, int32_t predicateValue, bool resolved);
         Predicate& getCurrentPredicate()
         {
             return m_facts[m_current_predicate_index];

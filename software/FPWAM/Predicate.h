@@ -19,7 +19,7 @@ namespace FPWAM
     public:
         static int32_t composeValue(int32_t number, int8_t arity);
 
-        Predicate(const std::string &m_name, int8_t m_arity, int32_t m_value, uint16_t instrNumber);
+        Predicate(const std::string &m_name, int8_t m_arity, int32_t m_value, uint16_t instrNumber, bool resolved);
 
         const std::map<int32_t, uint16_t> &get_labelToInstruction() const
         {
@@ -81,6 +81,16 @@ namespace FPWAM
             Predicate::m_startInstrNumber = m_startInstrNumber;
         }
 
+        bool is_resolved() const
+        {
+            return m_resolved;
+        }
+
+        void set_resolved(bool m_resolved)
+        {
+            Predicate::m_resolved = m_resolved;
+        }
+
         void add_instruction(Instruction &instruction);
         void add_instruction_unresolved(Instruction &instruction);
         void add_label(int32_t label, uint16_t currInstr);
@@ -89,6 +99,7 @@ namespace FPWAM
         std::vector<std::map<int32_t, uint16_t> > m_switchValues;
         std::string m_name;
         int8_t m_arity;
+        bool m_resolved;
         int32_t m_value;
         uint16_t m_startInstrNumber;
         std::vector<Instruction> m_instructions;
