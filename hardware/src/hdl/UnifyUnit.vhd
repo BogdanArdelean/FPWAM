@@ -244,7 +244,7 @@ begin
 
   NEXT_STATE: process(cr_state, start_unify, pdl_empty, fail_reg, deref1_done_reg,
   deref2_done_reg, deref1_input, deref2_input, bind_done, mem1_input, mem2_input,
-  iterate_done)
+  iterate_done, mem1_input_reg, mem2_input_reg)
   begin
     nx_state <= cr_state;
     case cr_state is
@@ -315,7 +315,7 @@ begin
 
 
   OUTPUT_DECODE: process(cr_state, pdl_out_1, pdl_out_2, start_unify, word1, word2, pdl_addr_reg, pdl_empty, fail_reg, deref1_done_reg,
-  deref2_done_reg, mem1_input, mem2_input, deref1_input, deref2_input, iterate_done, current_reg)
+  deref2_done_reg, mem1_input, mem2_input, deref1_input, deref2_input, iterate_done, current_reg, mem1_input_reg, mem2_input_reg)
   begin
     -- Port outputs
     unify_done     <= '0';

@@ -124,7 +124,7 @@ begin
     end if;
   end process FSM;
 
-  NEXT_STATE_DECODE: process(cr_state, start_search, memory_in)
+  NEXT_STATE_DECODE: process(cr_state, start_search, memory_in, mem_word, search_word_reg, low_addr_reg, high_addr_Reg)
   begin
     nx_state <= cr_state;
     case(cr_state) is
@@ -149,7 +149,7 @@ begin
      end case;
    end process NEXT_STATE_DECODE;
 
-  CONTROL_AND_OUTPUT: process(cr_state, start_search)
+  CONTROL_AND_OUTPUT: process(cr_state, start_search, low_addr_reg, high_addr_reg, low_address, high_address, search_word_reg, mem_word)
   begin
 
     wr_low             <= '0';

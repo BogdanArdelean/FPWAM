@@ -322,7 +322,7 @@ begin
     end if;
   end process FSM;
 
-  NEXT_STATE_DECODE: process(decoded_state, cr_state, deref_done, mem_obj, instruction, instruction_valid, bind_done, mode_reg, unify_done, unwind_done, counter)
+  NEXT_STATE_DECODE: process(decoded_state, cr_state, deref_done, mem_obj, instruction, instruction_valid, bind_done, mode_reg, unify_done, unwind_done, counter, local_fail, b_reg, mem_obj_reg, deref_addr, H_reg, deref_word, E_reg, nr_args, bsearch_done, bsearch_found)
   begin
     nx_state <= cr_state;
     case cr_state is
@@ -660,7 +660,7 @@ begin
     end case;
   end process NEXT_STATE_DECODE;
 
-  OUTPUT_DECODE: process(cr_state, deref_done, mem_obj, instruction, bind_done, mode_reg, counter, nr_args, new_b_reg, b_reg, mem_addr1_reg, mem_addr2_reg)
+  OUTPUT_DECODE: process(cr_state, deref_done, mem_obj, instruction, bind_done, mode_reg, counter, nr_args, new_b_reg, b_reg, mem_addr1_reg, mem_addr2_reg, local_fail, mem_obj_reg, H_reg, mem_addr1_comb, mem_addr2_comb, deref_word, bsearch_done, bsearch_found)
   begin
     --DEFAULT VALUES
     local_fail_rst   <= '0';
@@ -1150,8 +1150,8 @@ begin
         p_input <= PI_CP_t;
         p_wr    <= '1';
       when allocate_t =>
-        rd_mem_port1     <= '1';
-        mem_addr_input1  <= MA_Ep2orB_t;
+        rd_mem_port2     <= '1';
+        mem_addr_input2  <= MA_Ep2orB_t;
       when allocate_t2 =>
         newE_wr <= '1';
       when allocate_t3 =>
