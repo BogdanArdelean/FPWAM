@@ -30,7 +30,7 @@ package FpwamPkg is
   -- Possible input sources for S register
   type s_input_t        is (SI_untag_deref_p1_t, SI_p1_t, SI_untag_deref_t, SI_pconstant_t);
   -- Possible input sources for P register
-  type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t, PI_mem_port1_t, PI_mem_port2_t, PI_PpI_t, PI_bmem_port1_t);
+  type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t, PI_mem_port1_t, PI_mem_port2_t, PI_PpI_t, PI_bmem_port1_t, PI_constant_t);
   -- Possible input sources for E register
   type e_input_t        is (EI_newE_t, EI_mem_port1_t, EI_mem_port2_t);
   -- Possible input sources for CP register
@@ -44,9 +44,9 @@ package FpwamPkg is
   -- Possible input sources for NRARGS register
   type nrargs_input_t   is (NRARGSI_instr_t, NRARGSI_mem_port1_t, NRARGSI_mem_port2_t);
   -- Possible input sources for General Purpose Registers
-  type GPR_input_t      is (GPRI_ref_H_t, GPRI_str_H_t, GPRI_lis_H_t, GPRI_con_t, GPRI_mem_port1_t, GPRI_mem_port2_t, GPRI_ref_addr_t, GPRI_gpr2_t,  GPRI_deref_t, GPRI_constant_t);
+  type GPR_input_t      is (GPRI_ref_H_t, GPRI_str_H_t, GPRI_lis_H_t, GPRI_con_t, GPRI_mem_port1_t, GPRI_mem_port2_t, GPRI_ref_addr_t, GPRI_gpr2_t, GPRI_gpr1_t,  GPRI_deref_t, GPRI_constant_t);
   -- Possible input sources for General Purpose Registers address
-  type GPR_addr_input_t is (GPRA_instr_t, GPRA_I_t, GPRA_Ip1_t);
+  type GPR_addr_input_t is (GPRA_instr_t, GPRA_I_t, GPRA_Ip1_t, GPRA_1_t);
   -- Possible input sources for deref unit
   type deref_input_t    is (DI_GPR_t, DI_unify_unit_t, DI_EYnp2_t, DI_mem_port1_t);
   -- Possible input sources for bind unit

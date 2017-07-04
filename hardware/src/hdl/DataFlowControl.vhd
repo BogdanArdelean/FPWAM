@@ -849,7 +849,7 @@ begin
      when unify_value_t2 =>
         if mode_reg = mode_read_t then
           start_unify     <= '1';
-          unify_input_a   <= UI_mem_port2_t;
+          unify_input_b   <= UI_mem_port2_t;
           mem_addr_input1 <= MA_unify_unit_t;
           mem_addr_input2 <= MA_unify_unit_t;
           mem_input1      <= MI_unify_unit_t;
@@ -858,9 +858,9 @@ begin
           bind_port2      <= BI_unify_unit_t;
           deref_input     <= DI_unify_unit_t;
           if fpwam_var_on_stack(instruction) then -- value on stack
-            unify_input_b <= UI_mem_port1_t;
+            unify_input_a <= UI_mem_port1_t;
           else
-            unify_input_b <= UI_GPR_t;
+            unify_input_a <= UI_GPR_t;
           end if;
         else
           mem_addr_input2 <= MA_H_t;
@@ -989,6 +989,10 @@ begin
         start_deref     <= '1';
         deref_input     <= DI_mem_port1_t;
         mem_addr_input1 <= MA_deref_unit_t;
+        if deref_done = '1' then
+            wr_s_reg <= '1';
+            s_reg_input <= SI_p1_t;
+        end if;
       when unify_constant_t3 =>
         mem_addr_input1 <= MA_deref_unit_t;
         mem_input1      <= MI_constant_t;
@@ -996,9 +1000,6 @@ begin
 
         trail_input <= TI_deref_t;
         trail_do    <= '1';
-
-        wr_s_reg <= '1';
-        s_reg_input <= SI_p1_t;
       when put_variable_X_t =>
         wr_gpr1 <= '1';
         wr_gpr2 <= '1';
@@ -1013,19 +1014,19 @@ begin
         wr_h_reg <= '1';
         h_input  <= HI_p1_t;
       when put_variable_Y_t =>
-        wr_gpr1    <= '1';
-        gpr_input1 <= GPRI_ref_addr_t;
+        wr_gpr2    <= '1';
+        gpr_input2 <= GPRI_ref_addr_t;
 
         wr_mem_port1    <= '1';
         mem_input1      <= MI_ref_addr_t;
         mem_addr_input1 <= MA_stack_addr_t;
       when put_value_t =>
         mem_addr_input1 <= MA_stack_addr_t;
-        gpr_input1 <= GPRI_gpr2_t;
+        gpr_input2 <= GPRI_gpr1_t;
         if fpwam_var_on_stack(instruction) then -- value on stack
           rd_mem_port1    <= '1';
         else
-          wr_gpr1    <= '1';
+          wr_gpr2    <= '1';
         end if;
       when put_value_t2 =>
         wr_gpr2    <= '1';
@@ -1083,7 +1084,7 @@ begin
         rd_mem_port1    <= to_std_logic(fpwam_var_on_stack(instruction));
       when get_value_t2 =>
         start_unify     <= '1';
-        unify_input_a   <= UI_GPR_t;
+        unify_input_b   <= UI_GPR_t;
         mem_addr_input1 <= MA_unify_unit_t;
         mem_addr_input2 <= MA_unify_unit_t;
         mem_input1      <= MI_unify_unit_t;
@@ -1092,9 +1093,9 @@ begin
         bind_port2      <= BI_unify_unit_t;
         deref_input     <= DI_unify_unit_t;
         if fpwam_var_on_stack(instruction) then
-          unify_input_b <= UI_mem_port1_t;
+          unify_input_a <= UI_mem_port1_t;
         else
-          unify_input_b <= UI_GPR_t;
+          unify_input_a <= UI_GPR_t;
         end if;
       when get_list_t =>
         start_deref      <= '1';
@@ -1110,11 +1111,13 @@ begin
         mem_addr_input1 <= MA_H_t;
         mem_input1      <= MI_lis_Hplus1_t;
 
-        rd_mem_port2    <= '1';
-        wr_mem_port2    <= '1';
+        rd_mem_port1    <= '1';
+        wr_mem_port1    <= '1';
 
         wr_mode_reg <= '1';
         mode_value  <= mode_write_t;
+        
+        wr_h_reg <= '1';
       when get_list_t4 =>
         bind       <= '1';
         bind_port1 <= BI_deref_unit_t;
@@ -1207,7 +1210,7 @@ begin
         mem_addr_reg_wr <= '1';
       when try_me_else_t5 =>
         mem_addr_input1 <= MA_DFC_t;
-        p_input    <= PI_instr_t;
+        p_input    <= PI_constant_t;
 
         if fpwam_instr(instruction) = i_try_t then
           mem_input1 <= MI_Pp1_t;
@@ -1269,7 +1272,7 @@ begin
       when retry_me_else_t2 =>
        wr_mem_port1    <= '1';
        mem_addr_input1 <= MA_DFC_t;
-       p_input    <= PI_instr_t;
+       p_input    <= PI_constant_t;
 
        if fpwam_instr(instruction) = i_retry_t then
         mem_input1 <= MI_Pp1_t;
@@ -1292,7 +1295,7 @@ begin
         hb_wr   <= '1';
         hb_input <= HBI_H_t;
 
-        p_input <= PI_instr_t;
+        p_input <= PI_constant_t;
         p_wr    <= to_std_logic(fpwam_instr(instruction) = i_trust_t);
       when update_delete_start_t =>
         mem_addr_input2 <= MA_B_t;
@@ -1449,7 +1452,7 @@ begin
           when mode_write_t =>
             mem_addr_input1 <= MA_H_t;
             mem_input1      <= MI_lis_Hplus1_t;
-
+            wr_mem_port1    <= '1';
             wr_h_reg  <= '1';
           end case;
      when unify_list_t2 =>
@@ -1459,12 +1462,12 @@ begin
 
 
        mem_addr_input2  <= MA_untag_deref_t;
-       rd_mem_port2     <= deref_done;
+       rd_mem_port2     <= deref_done and to_std_logic(fpwam_tag(deref_word)=tag_lis_t);
      when switch_on_term_t =>
         start_deref     <= '1';
         deref_input     <= DI_GPR_t;
         mem_addr_input1 <= MA_deref_unit_t;
-
+        gpr_addr1       <= GPRA_1_t;
         p_input <= PI_PpI_t;
         p_wr    <= deref_done;
 

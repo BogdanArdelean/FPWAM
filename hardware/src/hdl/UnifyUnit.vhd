@@ -114,6 +114,7 @@ signal mem1_input_reg : std_logic_vector(kWamWordWidth -1 downto 0);
 signal mem2_input_reg : std_logic_vector(kWamWordWidth -1 downto 0);
 signal mem_reg_wr    : std_logic;
 
+signal local_reset   : std_logic;
 begin
 
   fail <= fail_reg or fail_comb;
@@ -125,7 +126,7 @@ begin
       if rst = '1' then
         mem1_input_reg <= (others => '0');
         mem2_input_reg <= (others => '0');
-      elsif mem_reg_wr = '1' then
+      elsif mem_reg_wr = '1' or local_reset = '1' then
         mem1_input_reg <= mem1_input;
         mem2_input_reg <= mem2_input;
       end if;
@@ -135,7 +136,7 @@ begin
   PDLREG: process(clk)
   begin
     if rising_edge(clk) then
-       if rst = '1' then
+       if rst = '1' or local_reset = '1' then
         pdl_addr_reg <= (others => '0');
        elsif wr_pdl_reg = '1' then
         pdl_addr_reg <= pdl_addr_comb;
@@ -171,7 +172,7 @@ begin
   CURRERG: process(clk)
   begin
     if rising_edge(clk) then
-      if rst = '1' or rst_curr_reg = '1' then
+      if rst = '1' or rst_curr_reg = '1' or local_reset = '1' then
         current_reg <= to_unsigned(1, kGPRAddressWidth+1);
       elsif wr_curr_reg = '1' then
         current_reg <= current_reg + 1;
@@ -182,7 +183,7 @@ begin
   GOALREG: process(clk)
   begin
     if rising_edge(clk) then
-      if rst = '1' then
+      if rst = '1' or local_reset = '1' then
         goal_reg <= (others => '0');
       elsif wr_goal_reg = '1' then
         goal_reg <= "0" & unsigned(fpwam_arity(mem1_input_reg));
@@ -208,7 +209,7 @@ begin
   DEREFREGS: process(clk)
   begin
     if rising_edge(clk) then
-      if reset_deref_reg = '1' or rst = '1' then
+      if reset_deref_reg = '1' or rst = '1' or local_reset = '1' then
         deref1_done_reg <= '0';
         deref2_done_reg <= '0';
       else
@@ -221,7 +222,7 @@ begin
   FAILREG: process(clk, rst)
   begin
     if rising_edge(clk) then
-      if rst = '1' or reset_fail_reg = '1' then
+      if rst = '1' or reset_fail_reg = '1' or local_reset = '1' then
         fail_reg <= '0';
       else
         fail_reg <= fail_comb or fail_reg;
@@ -253,7 +254,7 @@ begin
           nx_state <= check_stop_pop_t;
         end if;
       when check_stop_pop_t =>
-        if not(pdl_empty and fail_reg = '0') then
+        if not pdl_empty or fail_reg = '0' then
           nx_state <= deref_t;
         else
           nx_state <= done_t;
@@ -308,6 +309,8 @@ begin
         if iterate_done = '1' then
           nx_state <= check_stop_pop_t;
         end if;
+      when done_t =>
+        nx_state <= idle_t;
       when others =>
         null;
     end case;
@@ -348,7 +351,7 @@ begin
     rst_curr_reg   <= '0';
     wr_goal_reg    <= '0';
     mem_reg_wr     <= '0';
-    
+    local_reset    <= '0';
     case cr_state is
       when idle_t =>
         if start_unify = '1' then
@@ -363,7 +366,7 @@ begin
           reset_fail_reg <= '1';
         end if;
       when check_stop_pop_t =>
-        if not(pdl_empty and fail_reg = '0') then
+        if not pdl_empty or fail_reg = '0' then
           pdl_adr_1 <= std_logic_vector(unsigned(pdl_addr_reg) - 2);
           pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) - 1);
           rd_pdl    <= '1';
@@ -456,6 +459,8 @@ begin
         end if;
       when done_t =>
  	  	  unify_done <= '1';
+ 	  	  reset_fail_reg <= '1';
+ 	  	  local_reset    <= '1';
       when others =>
         null;
     end case;
