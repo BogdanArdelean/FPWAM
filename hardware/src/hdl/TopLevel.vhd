@@ -569,9 +569,9 @@ B"000000_00000000_00000000000000_0000"
 ,B"010000_00000000_00000000000000_0000"
 ,B"010100_00000011_00000000000000_0000"
 ,B"011000_00000000_00000000000000_0001"
-,B"000000_00000000_00000000000000_0000"
 ,B"001000_00000011_00000000000000_0000"
 ,B"011100_00000000_00000010011010_0011"
+,B"000000_00000000_00000000000000_0000"
 ,B"001110_00000000_00000000001010_1110"
 ,B"010100_00000011_00000000000000_0000"
 ,B"010110_00000001_00000000000000_0000"
@@ -582,7 +582,6 @@ B"000000_00000000_00000000000000_0000"
 ,B"001111_00000000_00000000001011_0101"
 ,B"010100_00000011_00000000000000_0000"
 ,B"010110_00000010_00000000000000_0000"
-,B"000000_00000000_00000000000000_0000"
 ,B"100001_00000000_00000000000000_0000"
 ,B"010110_00000001_00000000000000_0000"
 ,B"011000_00000000_00000000000000_0001"
@@ -592,6 +591,7 @@ B"000000_00000000_00000000000000_0000"
 ,B"011000_00000000_00000000000000_0001"
 ,B"001000_00000011_00000000000000_0000"
 ,B"011100_00000000_00000010100111_0011"
+,B"000000_00000000_00000000000000_0000"
 ,B"001110_00000000_00000000001100_0000"
 ,B"010100_00000010_00000000000000_0000"
 ,B"010110_00000001_00000000000000_0000"
@@ -834,6 +834,8 @@ end process;
   	    P_comb <= std_logic_vector(unsigned(P_reg)+dfc_i(kWamInstrMemWidth -1 downto 0));
       when PI_bmem_port1_t =>
         P_comb <= bmem_port_1_out(kWamInstrMemWidth -1 downto 0);
+      when PI_constant_t =>
+        P_comb <= instr_mem_out(kWamInstrMemWidth -1 downto 0);
       when others =>
         P_comb <= std_logic_vector(unsigned(P_reg)+1);
     end case;
@@ -1282,6 +1284,7 @@ end process;
 -- GPRs BEGIN
   gpr_address1 <= dfc_instruction_in(kGPRAddressWidth-1 + kWamWordWidth downto kWamWordWidth) when dfc_gpr_addr1 = GPRA_instr_t else
                   std_logic_vector(dfc_i(kGPRAddressWidth-1 downto 0)) when dfc_gpr_addr1 = GPRA_I_t else
+                  std_logic_vector(to_unsigned(1, kGPRAddressWidth)) when dfc_gpr_addr1 = GPRA_1_t else
                   std_logic_vector(dfc_i(kGPRAddressWidth-1 downto 0) + 1);
   gpr_wr1      <= dfc_gpr_wr1;
   GPRINMUX: process(dfc_gpr_input1, H_reg, mem_output_1, mem_output_2, E_reg, deref1_res_out, dfc_instruction_in)
@@ -1306,6 +1309,8 @@ end process;
         gpr_input1 <= deref1_res_out;
       when GPRI_constant_t =>
         gpr_input1 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
+      when GPRI_gpr2_t =>
+        gpr_input1 <= gpr_output2;
       when others =>
         null;
     end case;
@@ -1313,6 +1318,7 @@ end process;
 
   gpr_address2 <= dfc_instruction_in(kGPRAddressWidth-1 downto 0) when dfc_gpr_addr2 = GPRA_instr_t else
                   std_logic_vector(dfc_i(kGPRAddressWidth-1 downto 0)) when dfc_gpr_addr2 = GPRA_I_t else
+                  std_logic_vector(to_unsigned(1, kGPRAddressWidth)) when dfc_gpr_addr2 = GPRA_1_t else
                   std_logic_vector(dfc_i(kGPRAddressWidth-1 downto 0) + 1);
   gpr_wr2      <= dfc_gpr_wr2;
   GPRINMUX2: process(dfc_gpr_input2, H_reg, mem_output_1, mem_output_2, E_reg, deref1_res_out, dfc_instruction_in)
@@ -1333,6 +1339,8 @@ end process;
         gpr_input2 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
       when GPRI_deref_t =>
         gpr_input2 <= deref1_res_out;
+      when GPRI_gpr1_t =>
+        gpr_input2 <= gpr_output1;
       when GPRI_constant_t =>
         gpr_input2 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
       when others =>
@@ -1713,7 +1721,7 @@ TRAILUNIT: entity work.TrailUnit(Behavioral)
 trailm_addr_1  <= TR_reg when dfc_trail_input = TI_bind_output_t else
                   untrail_addr_1 when dfc_trail_input = TI_unwind_trail_t else
                   TR_reg;
-trailm_input_1  <= bind_trail_input;
+trailm_input_1  <= trail_a;
 trailm_wr_1     <= trail_do;
 trailm_rd_1     <= untrail_port_1_rd or trailm_wr_1;
 
