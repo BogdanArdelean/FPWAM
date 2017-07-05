@@ -1198,8 +1198,8 @@ end process;
         mem_input_1 <= deref1_res_out;
       when MI_lis_Hplus1_t =>
         mem_input_1 <= fpwam_word(std_logic_vector(unsigned(H_reg)+1), tag_lis_t);
-      when MI_Pp1_t =>
-        mem_input_1 <= "00000000"&std_logic_vector(unsigned(P_reg)+1);
+      when MI_P_t =>
+        mem_input_1 <= "00000000"&std_logic_vector(unsigned(P_reg));
       when others =>
         null;
     end case;
@@ -1250,8 +1250,8 @@ end process;
         mem_input_2 <= deref1_res_out;
       when MI_lis_Hplus1_t =>
         mem_input_2 <= fpwam_word(std_logic_vector(unsigned(H_reg)+1), tag_lis_t);
-      when MI_Pp1_t =>
-        mem_input_2 <= "00000000"&std_logic_vector(unsigned(P_reg)+1);
+      when MI_P_t =>
+        mem_input_2 <= "00000000"&std_logic_vector(unsigned(P_reg));
       when others =>
         null;
     end case;

@@ -578,7 +578,7 @@ begin
               nx_state <= retry_me_else_t;
             when i_trust_me_t =>
               nx_state <= trust_me_t;
-            when i_try_t =>
+            when i_trust_t =>
               nx_state <= trust_me_t;
             when others =>
               null;
@@ -1213,7 +1213,7 @@ begin
         p_input    <= PI_constant_t;
 
         if fpwam_instr(instruction) = i_try_t then
-          mem_input1 <= MI_Pp1_t;
+          mem_input1 <= MI_P_t;
           p_wr       <= '1';
         else
           mem_input1 <= MI_constant_t;
@@ -1275,7 +1275,7 @@ begin
        p_input    <= PI_constant_t;
 
        if fpwam_instr(instruction) = i_retry_t then
-        mem_input1 <= MI_Pp1_t;
+        mem_input1 <= MI_P_t;
         p_wr       <= '1';
        else
         mem_input1 <= MI_constant_t;
