@@ -10,6 +10,12 @@ using namespace FPWAM;
 
 void FPWAM::CodeContext::predicate(const std::string name, const int8_t arity)
 {
+    if(m_currentInstruction)
+    {
+        Instruction i(i_nop, m_currentInstruction);
+        getCurrentPredicate().add_instruction(i);
+    }
+
     m_currentInstruction++; // LEAVE ONE EMPTY INSTRUCTION
     int32_t number = FOUND(m_predicateNameToNr, name) ? m_predicateNameToNr[name] : m_predicateNr++;
     std::string fullName = name + "/" + std::to_string(arity);
@@ -617,20 +623,20 @@ void CodeContext::end_query()
 
 void CodeContext::get_instructions(std::vector<Instruction> &instrVec)
 {
-    uint16_t instructionCheck = 0;
     instrVec.clear();
     instrVec.reserve(m_currentInstruction);
+
+    Instruction nop(i_nop, 0);
+    instrVec.push_back(nop);
 
     for(auto& predicate : m_facts)
     {
         if(predicate.get_instructions().size())
         {
-            instrVec.push_back(Instruction(i_nop, instructionCheck++));
 
             for (auto &instruction : predicate.get_instructions())
             {
                 instrVec.push_back(instruction);
-                instructionCheck++;
             }
         }
     }
@@ -640,6 +646,15 @@ void CodeContext::get_instructions(std::vector<Instruction> &instrVec)
     {
         return a.get_number() < b.get_number();
     });
+
+    for(int i = 1; i < instrVec.size(); ++i)
+    {
+        if(instrVec[i-1].get_number() == instrVec[i].get_number())
+        {
+            int x =0;
+            x++;
+        }
+    }
 
     return;
 }
