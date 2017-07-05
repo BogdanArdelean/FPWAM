@@ -123,10 +123,10 @@ begin
   INPUTRGS: process(clk)
   begin
     if rising_edge(clk) then
-      if rst = '1' then
+      if rst = '1' or local_reset = '1' then
         mem1_input_reg <= (others => '0');
         mem2_input_reg <= (others => '0');
-      elsif mem_reg_wr = '1' or local_reset = '1' then
+      elsif mem_reg_wr = '1' then
         mem1_input_reg <= mem1_input;
         mem2_input_reg <= mem2_input;
       end if;
@@ -254,7 +254,7 @@ begin
           nx_state <= check_stop_pop_t;
         end if;
       when check_stop_pop_t =>
-        if not pdl_empty or fail_reg = '0' then
+        if not pdl_empty and fail_reg = '0' then
           nx_state <= deref_t;
         else
           nx_state <= done_t;
@@ -366,7 +366,7 @@ begin
           reset_fail_reg <= '1';
         end if;
       when check_stop_pop_t =>
-        if not pdl_empty or fail_reg = '0' then
+        if not pdl_empty and fail_reg = '0' then
           pdl_adr_1 <= std_logic_vector(unsigned(pdl_addr_reg) - 2);
           pdl_adr_2 <= std_logic_vector(unsigned(pdl_addr_reg) - 1);
           rd_pdl    <= '1';
