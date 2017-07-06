@@ -647,13 +647,9 @@ void CodeContext::get_instructions(std::vector<Instruction> &instrVec)
         return a.get_number() < b.get_number();
     });
 
-    for(int i = 1; i < instrVec.size(); ++i)
+    for(auto& kv : m_constantNameToValue)
     {
-        if(instrVec[i-1].get_number() == instrVec[i].get_number())
-        {
-            int x =0;
-            x++;
-        }
+        std::cout << kv.first << ":" << ((kv.second << 16) >> 16) << "  " << kv.second << std::endl;
     }
 
     return;
