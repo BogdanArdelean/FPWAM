@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.5.23)  6 JUL 2017 15:46
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.5.23)  7 JUL 2017 15:36
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -790,20 +790,23 @@ nului universitar [],
  [10]
 Capitolul 1.
 
-Overfull \hbox (1.05229pt too wide) in paragraph at lines 243--245
-[]\TU/TimesNewRoman(0)/m/n/12 Fiecare tabel introdus în lucrare este numerotat 
-astfel: Tabel x.y, unde x reprezintă numărul
+Overfull \hbox (25.51172pt too wide) in paragraph at lines 235--237
+\TU/TimesNewRoman(0)/m/n/12 La jumătatea anilor 1980 a apărut primul circuit in
+tegrat comercial de tipul FPGA(Field-Programmable
  []
 
-File: img/test.jpg Graphic file (type QTm)
-<use  "img/test.jpg" > [11
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [11
 
 ]
 LaTeX Font Info:    Font shape `TU/TimesNewRoman(0)/m/sl' in size <12> not avai
 lable
 (Font)              Font shape `TU/TimesNewRoman(0)/m/it' tried instead on inpu
-t line 276.
- [12]
+t line 275.
+
+[12]
 Capitolul 2.
 [13
 
@@ -853,13 +856,17 @@ Anexa B.
 Anexa C.
 ) [24
 
-] (./thesis.aux (./guideline.aux) (./apendix.aux)) ) 
+] (./thesis.aux (./guideline.aux) (./apendix.aux))
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 15542 strings out of 493005
- 297855 string characters out of 6134596
- 358114 words of memory out of 5000000
- 19347 multiletter control sequences out of 15000+600000
- 11709 words of font info for 78 fonts, out of 8000000 for 9000
+ 15514 strings out of 493005
+ 297272 string characters out of 6134596
+ 359114 words of memory out of 5000000
+ 19330 multiletter control sequences out of 15000+600000
+ 9652 words of font info for 62 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  39i,8n,66p,10384b,233s stack positions out of 5000i,500n,10000p,200000b,80000s
 

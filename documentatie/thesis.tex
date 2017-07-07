@@ -223,62 +223,61 @@ Data \hspace{8cm} Nume, Prenume
 \chapter{Introducere - Contextul proiectului}
 \pagestyle{headings}
 
-Titlul capitolului se bazeaz'a pe Heading 1 style, numerotat cu o cifra (x. Nume capitol), font Times New Roman de 14, Bold.
-
-Ce se scrie aici:
-
-\begin{itemize}
- \item Contextul
-\item Conturarea domeniului exact al temei
-\item Reprezint'a cca. 5\% din lucrare
-\end{itemize}
-
+%\begin{itemize}
+%\item Contextul
+%\item Conturarea domeniului exact al temei
+%\item Reprezint'a cca. 5\% din lucrare
+%\end{itemize}
 
 \section{Contextul proiectului}
+Încă din secolul XVII, cu mult înaintea calculatoarelor electronice, exista termenul \textit{calculator}. Până la jumătatea secolului XX, denotația lui era cu totul alta față de cea pe care o știm noi astăzi. Sensul acestui cuvânt referindu-se în principal la o meserie. Rolul asociat unei persoane care practica meseria de calculator, era de a efectua calcule matematice complexe în funcție de necesitățile clientului. Odată cu trecerea timpului, știința a avut întâmpinat provocări la care persoanele calculator nu mai puteau ține pasul. Această lipsă a puterii de calcul și inventarea tranzistorului au concentrat mediul industrial și academic în dezvoltarea sistemelor pe care astăzi le folosim zilnic.
+\subsection{FPGA}
+În momentul de față, majoritatea dispozitivelor de calcul existente au la bază un procesor cu scop general care execută un program croit după necesitățile utilizatorului. În ciuda imbunătățirilor constante și a flexibilității în dezvoltarea programelor acestor procesoare, arhitectura lor fixă nu se mulează întotdeauna suficient de mult pe problema pe care încearcă să o rezolve, rezultatul fiind nesatisfăcător din punctul de vedere a timpul de execuție și a amprentei energetice.\\
+La jumătatea anilor 1980 a apărut primul circuit integrat comercial de tipul FPGA(Field-Programmable Gate Array)-referință. După cum le sugerează și numele, ele sunt niște circuite integrate care pot fi configurate de câte ori este nevoie de către utilizator. Avantajul acestor circuite este în principal natura lor paralelă și consumul redus de energie electrică. Datorită avansărilor tehnologice și prețului din ce în ce mai redus, ele au crescut în popularitate și au ajuns să fie folosite în multe domenii precum: \textit{Calcul de înaltă performanță, Auto, Audio, Medical, etc}. - referință
+\subsection{Prolog}
+Prolog a fost inventat la începutul anilor 1970 de către Alain Colmerauer și colegii lui de la Universitatea din Marseille-ref. El este printre primele limbaje de uz general care au ca paradigmă de baza programarea logică. Prima implementare a acestui limbaj a fost sub forma unui interpretor scris în FORTRAN chiar de către grupul din care Colmerauer făcea parte. Chiar și sub această formă rudimentară realizările au fost mari deoarece s-a demonstrat viabilitatea unui limbaj de programare logic. După aproximativ un deceniu, David G. H. Warren a rafinat și abstractizat principiile de implementare a limbajului sub forma unei mașini abstracte care este cunoscută astăzi sub numele de WAM. Majoritatea implementărilor de success ale limbajului Prolog folosesc ca referință de bază mașina abstractă mai sus amintită datorită simplității, eficienței și robusteții care au trecut testul timpului. Datorită popularității WAM, au fost scrise multe lucrări științifice care au adus îmbunătățiri arhitecturale a mașinii inițiale cât și multe extinderi. Una dintre cele mai sensibile subiecte este paralelizarea eficientă a acestei arhitecturi în speranța de a obține rezultate practice mai bune. \\
+Prolog este de obicei asociat cu domeniul inteligenței artificiale și a lingvisticii computaționale. Cele mai des întâlnite aplicații ale limbajului fac parte din sfera mediului academic—e.g, sisteme expert, demonstrarea automată a teoremelor, NLP, planificare automată, etc.
+\subsection{Nu m-am decis}
+În contextul actual, atât domeniul circuitelor reconfigurabile, cât și domeniul inteligenței artificiale se dezvoltă cu un ritm accelerat, fiind folosite tot mai des în produse comerciale—e.g., aproape toate produsele Google folosesc elemente de inteligență artificială (Translate, Photos, etc.)-ref, Microsoft exploatează circuitele reconfigurabile pentru a accelera motorul de căutre BING-ref. În principiu orice aplicație care are la bază inteligența artificială are nevoie de un mediu de antrenare sau executare de înaltă performanță pe care procesoarele obișnuite nu îl pot oferi. Încercarea mea urmărește să utilizeze natura paralelă și performanța crescută a circuitelor FPGA, pentru a soluționa problema puterii de calcul în contextul aplicațiilor bazate pe limbajul Prolog.
 
-Fontul folosit implicit 'in acest document este Times New Roman, dimensiune de 12, conform Normal style, cu spa'tiere la 1 r\ia nd (Paragraph, Line spacing de 1.0) 'si Justify. 
-Pentru prima linie din fiecare paragraf se folose'ste indentare (implicit 'in Normal Style), iar 'intre paragrafe succesive nu se las'a distan't'a suplimentar'a\footnote{Sunt rezolvate automat de Latex}.
-
-\subsection{Subsection}
-Fiecare tabel introdus 'in lucrare este numerotat astfel: Tabel x.y, unde x reprezint'a num'arul capitolului iar y num'arul tabelului din capitol. 
-Se las'a un r\ia nd liber 'intre tabel 'si paragraful anterior, respectiv posterior (table~\ref{table:nonlin}).
-
-\begin{table}[ht]
-\caption{Rezultate}
-\centering                          % tabel centrat 
-\begin{tabular}{|c|c|c|c|}          % 4 coloane centrate 
-\hline\hline                        % linie orizontala dubla
-Case & Method\#1 & Method\#2 & Method\#3 \\ [0.5ex]   % inserare tabel
-%heading
-\hline                              % linie orizontal simpla
-1 & 50 & 837 & 970 \\               % corpul tabelului 
-2 & 47 & 877 & 230 \\
-3 & 31 & 25 & 415 \\[1ex]           % [1ex] adds vertical space
-\hline                              
-\end{tabular}
-  % titlul tabelului
-\label{table:nonlin}                % \label{table:nonlin} introduce eticheta folosita pentru referirea tabelului in text; referirea in text se va face cu \ref{table:nonlin}
-\end{table}
-
-Fiecare figur'a introdus'a 'in text este citat'a (de ex: 'in figura x.y este prezentat'a ...) 'si numerotat'a. 
-Numerotarea se face astfel Figura x.y unde x reprezint'a num'arul capitolului iar y num'arul figurii 'in acel capitol. 
-E.g.: figure~\ref{fig:imag}.
-
-\begin{figure}[ht]
-    \centering
-\includegraphics[]{img/test.jpg}
-    \caption{Numele figurii}
-    \label{fig:imag}
-\end{figure}
-
-Fiecare capitol 'incepe pe pagin'a nou'a.
+%Se las'a un r\ia nd liber 'intre tabel 'si paragraful anterior, respectiv posterior (table~\ref{table:nonlin}).
+%
+%\begin{table}[ht]
+%\caption{Rezultate}
+%\centering                          % tabel centrat 
+%\begin{tabular}{|c|c|c|c|}          % 4 coloane centrate 
+%\hline\hline                        % linie orizontala dubla
+%Case & Method\#1 & Method\#2 & Method\#3 \\ [0.5ex]   % inserare tabel
+%%heading
+%\hline                              % linie orizontal simpla
+%1 & 50 & 837 & 970 \\               % corpul tabelului 
+%2 & 47 & 877 & 230 \\
+%3 & 31 & 25 & 415 \\[1ex]           % [1ex] adds vertical space
+%\hline                              
+%\end{tabular}
+%  % titlul tabelului
+%\label{table:nonlin}                % \label{table:nonlin} introduce eticheta folosita pentru referirea tabelului in text; referirea in text se va face cu \ref{table:nonlin}
+%\end{table}
+%
+%Fiecare figur'a introdus'a 'in text este citat'a (de ex: 'in figura x.y este prezentat'a ...) 'si numerotat'a. 
+%Numerotarea se face astfel Figura x.y unde x reprezint'a num'arul capitolului iar y num'arul figurii 'in acel capitol. 
+%E.g.: figure~\ref{fig:imag}.
+%
+%\begin{figure}[ht]
+%    \centering
+%\includegraphics[]{img/test.jpg}
+%    \caption{Numele figurii}
+%    \label{fig:imag}
+%\end{figure}
+%
+%Fiecare capitol 'incepe pe pagin'a nou'a.
 
 \chapter{Obiectivele Proiectului}
-
-'In acest capitol se prezint'a tema propriu-zis'a (sub forma unei teme de proiectare sau cercetare, formulat'a exact, cu obiective clare - 2-3 pagini 'si eventuale figuri explicative).
-
-Reprezint'a cca. 10\% din lucrare.
-\section{Titlu}
+%'In acest capitol se prezint'a tema propriu-zis'a (sub forma unei teme de proiectare sau cercetare, formulat'a exact, cu obiective clare - 2-3 pagini 'si eventuale figuri explicative).
+%
+%Reprezint'a cca. 10\% din lucrare.
+\section{Scop}
+Scopul acestui proiect este de a concepe un procesor dedicat exclusiv executării limbajului Prolog, având la bază arhitectura propusă de către David. G. H. Warren.  
 \section{Alt titlu}
 
 
