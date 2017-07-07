@@ -235,7 +235,7 @@ Data \hspace{8cm} Nume, Prenume
 În momentul de față, majoritatea dispozitivelor de calcul existente au la bază un procesor cu scop general care execută un program croit după necesitățile utilizatorului. În ciuda imbunătățirilor constante și a flexibilității în dezvoltarea programelor acestor procesoare, arhitectura lor fixă nu se mulează întotdeauna suficient de mult pe problema pe care încearcă să o rezolve, rezultatul fiind nesatisfăcător din punctul de vedere a timpul de execuție și a amprentei energetice.\\
 La jumătatea anilor 1980 a apărut primul circuit integrat comercial de tipul FPGA(Field-Programmable Gate Array)-referință. După cum le sugerează și numele, ele sunt niște circuite integrate care pot fi configurate de câte ori este nevoie de către utilizator. Avantajul acestor circuite este în principal natura lor paralelă și consumul redus de energie electrică. Datorită avansărilor tehnologice și prețului din ce în ce mai redus, ele au crescut în popularitate și au ajuns să fie folosite în multe domenii precum: \textit{Calcul de înaltă performanță, Auto, Audio, Medical, etc}. - referință
 \subsection{Prolog}
-Prolog a fost inventat la începutul anilor 1970 de către Alain Colmerauer și colegii lui de la Universitatea din Marseille-ref. El este printre primele limbaje de uz general care au ca paradigmă de baza programarea logică. Prima implementare a acestui limbaj a fost sub forma unui interpretor scris în FORTRAN chiar de către grupul din care Colmerauer făcea parte. Chiar și sub această formă rudimentară realizările au fost mari deoarece s-a demonstrat viabilitatea unui limbaj de programare logic. După aproximativ un deceniu, David G. H. Warren a rafinat și abstractizat principiile de implementare a limbajului sub forma unei mașini abstracte care este cunoscută astăzi sub numele de WAM. Majoritatea implementărilor de success ale limbajului Prolog folosesc ca referință de bază mașina abstractă mai sus amintită datorită simplității, eficienței și robusteții care au trecut testul timpului. Datorită popularității WAM, au fost scrise multe lucrări științifice care au adus îmbunătățiri arhitecturale a mașinii inițiale cât și multe extinderi. Una dintre cele mai sensibile subiecte este paralelizarea eficientă a acestei arhitecturi în speranța de a obține rezultate practice mai bune. \\
+Prolog a fost inventat la începutul anilor 1970 de către Alain Colmerauer și colegii lui de la Universitatea din Marseille-ref. El este printre primele limbaje de uz general care au ca paradigmă de baza programarea logică. Prima implementare a acestui limbaj a fost sub forma unui interpretor scris în FORTRAN chiar de către grupul din care Colmerauer făcea parte. Chiar și sub această formă rudimentară realizările au fost mari deoarece s-a demonstrat viabilitatea unui limbaj de programare logic. După aproximativ un deceniu, David H. D. Warren a rafinat și abstractizat principiile de implementare a limbajului sub forma unei mașini abstracte care este cunoscută astăzi sub numele de WAM. Majoritatea implementărilor de success ale limbajului Prolog folosesc ca referință de bază mașina abstractă mai sus amintită datorită simplității, eficienței și robusteții care au trecut testul timpului. Datorită popularității WAM, au fost scrise multe lucrări științifice care au adus îmbunătățiri arhitecturale a mașinii inițiale cât și multe extinderi. Una dintre cele mai sensibile subiecte este paralelizarea eficientă a acestei arhitecturi în speranța de a obține rezultate practice mai bune. \\
 Prolog este de obicei asociat cu domeniul inteligenței artificiale și a lingvisticii computaționale. Cele mai des întâlnite aplicații ale limbajului fac parte din sfera mediului academic—e.g, sisteme expert, demonstrarea automată a teoremelor, NLP, planificare automată, etc.
 \subsection{Nu m-am decis}
 În contextul actual, atât domeniul circuitelor reconfigurabile, cât și domeniul inteligenței artificiale se dezvoltă cu un ritm accelerat, fiind folosite tot mai des în produse comerciale—e.g., aproape toate produsele Google folosesc elemente de inteligență artificială (Translate, Photos, etc.)-ref, Microsoft exploatează circuitele reconfigurabile pentru a accelera motorul de căutre BING-ref. În principiu orice aplicație care are la bază inteligența artificială are nevoie de un mediu de antrenare sau executare de înaltă performanță pe care procesoarele obișnuite nu îl pot oferi. Încercarea mea urmărește să utilizeze natura paralelă și performanța crescută a circuitelor FPGA, pentru a soluționa problema puterii de calcul în contextul aplicațiilor bazate pe limbajul Prolog.
@@ -271,14 +271,82 @@ Prolog este de obicei asociat cu domeniul inteligenței artificiale și a lingvi
 %\end{figure}
 %
 %Fiecare capitol 'incepe pe pagin'a nou'a.
-
-\chapter{Obiectivele Proiectului}
 %'In acest capitol se prezint'a tema propriu-zis'a (sub forma unei teme de proiectare sau cercetare, formulat'a exact, cu obiective clare - 2-3 pagini 'si eventuale figuri explicative).
 %
 %Reprezint'a cca. 10\% din lucrare.
+
+\chapter{Obiectivele Proiectului}
 \section{Scop}
-Scopul acestui proiect este de a concepe un procesor dedicat exclusiv executării limbajului Prolog, având la bază arhitectura propusă de către David. G. H. Warren.  
-\section{Alt titlu}
+Scopul acestui proiect este de a realiza un sistem dedicat de execuție a programelor scrise în limbajul Prolog, urmând a fi folosit de către cercetători și ingineri care activează în domeniul inteligenței artificiale și a programării logice. Acest sistem va fi compus dintr-un procesor special optimizat pentru executarea unui set de instrucțiuni ales din limbajul Prolog, implementat pe un circuit reprogramabil de tipul FPGA, având la bază arhitectura WAM propusă de către David H. D. Warren. El va fi însoțit de o suită de programe compatibile cu sistemele de opererare din familia UNIX, care vor servi ca interfață dintre calculatorul gazdă și noul procesor, FPWAM (FPGA PROLOG WAM).
+
+\section{Obiective generale}
+Până la sfârșitul dezvoltării acestui proiect, se urmăresc atingerea următoarelor obiective principale:
+
+\begin{itemize}
+\item Studiul în detaliu a mașinii propuse de către David H. D. Warren este imperios necesară deoarece ea va sta la baza procesorului FPWAM.
+	\item Identificarea posibilelor instrucțiuni care pot fi optimizate.
+	\item După studierea tuturor surselor teoretice, următorul pas va fi acela de a concepe o arhitectură fizică care să exploateze natura paralelă a circuitelor FPGA în implementarea algoritmilor prezenți în mașina WAM.
+	\item Arhitectura proiectată să fie scalabilă, astfel încât să permită adăugarea cu ușurință a mai multor procesoare Prolog.
+	\item Implementarea efectivă pe un circuit integrat de tip FPGA.
+	\item Creșterea frecvenței de ceas prin metode de optimizare a circuitului.
+	\item Din cauza faptului că proiectul de față nu iși propune să construiască un compilator de Prolog, este necesară alegerea unuia existent cu care FPWAM să fie compatibil.
+	\item Dezvoltarea unui translator din instrucțiuni WAM în cod mașină FPWAM.
+	\item Dezvoltarea unei aplicații de comunicare între calculatorul și FPWAM.
+	\item Suita de programe dezvoltate să fie compatibile cu sistemele de operare din familia UNIX.
+\end{itemize}
+
+\section{Obiective S.M.A.R.T.}
+\subsubsection{Principiile S.M.A.R.T.}
+De cele mai multe ori scopurile și obiectivele sunt formulate fără o structură anume, având consecințe destul de grave precum imposibilitatea de urmări progresul și lipsa de predictibilitate. Metodologia S.M.A.R.T. de formulare a obiectivelor și a scopurilor este folosită cel mai des în management-ul proiectelor fiind una dintre cele mai eficiente metode în acest sens. Pentru ca un obiectiv să îndeplinească criteriile S.M.A.R.T. el trebuie să îndeplinească următoarele principii:
+
+\begin{itemize}
+	\item Specific: Cu cât obiectivul este mai specific, cu atât șansele sunt mai mari să-l obținem. El trebuie să răspundă la întrebări precum ce vreau să obțin exact, unde, cum sau când.
+	\item Measurable (măsurabil): Ca un obiectiv să fie măsurabil el trebuie să fie împărțit în elementele măsurabile, rezultatul fiind apreciat după dovezile concrete.
+	\item Attainable (realizabil): Este foarte important să punem în balanță efortul, timpul și alte costuri cu profitul și alte priorități pe care le avem.
+	\item Relevant: Obiectivul trebuie să contribuie la atingerea scopului dorit.
+	\item Time-bound (limitat de timp): Cu toții știm că termenele limită pun oamenii în mișcare, așa că obiectivele trebuie să fie constrânse de timp.
+\end{itemize}
+
+\subsubsection{Obiectivele S.M.A.R.T. ale proiectului}
+Luând în considerare principiile enumerate mai sus, s-au formulat următoarele obiective S.M.A.R.T. ale proiectului:
+
+\begin{itemize}
+	\item Realizarea unui studiu teoretic auspra implementărilor limbajului Prolog:
+		\begin{itemize}
+			\item S: Studierea și înțelegerea articolului scris de către David H. D. Warren în care introduce pentru prima oară arhitectura WAM. Studierea a altor alternative.
+			\item M: Documentarea din cel puțin două surse diferite și schițarea unei sinteze a acestora.
+			\item A: Prolog fiind un limbaj de programare popular, se găsesc multe surse din care se pot extrage informații relevante.
+			\item R: Studiind soluțiile existente și elaborând o sinteză, putem să punem în balanță avantajele și dezavantajele lor, ducând în final la alegerea optimă.
+			\item T: Studiul nu trebuie să depășească 3 luni de zile.
+		\end{itemize}
+	\item Implementarea procesorului M0 pe FPGA:
+	\begin{itemize}
+		\item S: În versiunea M0 se urmărește ca procesorul să poată unifica un fapt cu o întrebare Prolog predefinite în memoria de program.
+		\item M: Pentru ca acest obiectiv să fie îndeplinit următoarele elemente trebuie să fie implementate: arhitectura de bază formată din memorie și regiștrii,  algoritmul de unificare a faptului cu întrebarea, un set minim de instrucțiuni WAM care să permită unificarea
+		\item A: Fiind la îneceputul proiectului, există timp pentru experimente până la definitizarea arhitecturii.
+		\item R: Atingerea acestui obiectiv este un pas foarte important deoarece demonstrează viabilitatea unei implementări hardware a limbajului.
+		\item T: Cu tot cu implementare și experimente, acest proces nu trebuie să dureze mai mult de 1 lună.
+	\end{itemize}
+	\item Dezvoltarea suitei de programe pentru mediul de executare a FPWAM:
+	\begin{itemize}
+		\item S: Suita de programe trebuie să permită compilarea și executarea de programe Prolog pe FPWAM. Modulul de compilare va utiliza GPLC (Gnu Prolog Compiler).
+		\item M: Obținerea unor executabilie testate și compatibile cu sistemele de operare din familia UNIX.
+		\item A: Compilarea Prolog->WAM este efectuată de către GPLC reducând considerabil complexitatea acestui obiectiv.
+		\item R: Datorită acestor programe, interacțiunea dintre FPWAM și utilizator va fi posibilă într-un mod natural și eficient.
+		\item T: Funcționalitățile de baza trebuie să fie implementate în maxim 3 zile.
+	\end{itemize}
+	\item Implementarea procesorului M3 pe FPGA:
+	\begin{itemize}
+		\item S: În versiunea M3 procesorul va putea să execute orice program Prolog care respectă subsetul selectat de instrucțiuni.
+		\item A: Pentru ca acest obiectiv să fie îndeplinit următoarele funcționalități trebuie să fie implementate: mecanismul de apel a unui predicat,  mecanismul de backtracking, 90\% din instrucțiunile WAM.
+		\item R: Acest obiectiv duce proiectul aproape de îndeplinirea scopului final. În acest stadiu se pot face comparații și teste amănunțite.
+		\item T: Acest obiectiv trebuie să fie îndeplinit la cel puțin 15 zile înaintea de predarea proiectului.
+	\end{itemize}
+\end{itemize}
+	
+	
+		
+
 
 
 \chapter{Studiu Bibliografic}
