@@ -221,6 +221,7 @@ Data \hspace{8cm} Nume, Prenume
 
 
 \chapter{Introducere - Contextul proiectului}
+\label{chap:intro}
 \pagestyle{headings}
 
 %\begin{itemize}
@@ -345,49 +346,87 @@ Luând în considerare principiile enumerate mai sus, s-au formulat următoarele
 \end{itemize}
 	
 	
-		
+%Documentarea bibliografic'a are ca obiectiv prezentarea stadiului actual al domeniului sau sub-domeniului 'in care se situeaz'a tema. 
+%'In redactarea acestui capitol ('in general a 'intregului document) se va 'tine cont de cuno'stin'tele acumulate la disciplinele dedicate din semestrul 2, anul 4 
+%(Metodologia 'Intocmirii Proiectelor, etc.), precum 'si la celelalte discipline relevante temei abordate.
+%
+%Acest capitol reprezint'a cca. 15\% din lucrare.
+%
+%Referin'tele se scriu 'in sec'tiunea Bibliografie. 
+%Formatul referin'telor trebuie s'a fie de tipul IEEE sau asem'an'ator. 
+%Introducerea 'si formatarea referin'telor 'in bibliografie, respectiv citarea 'in text, se pot face manual sau folosind instrumentele de lucru men'tionate 'in ultimele paragrafe din acest capitol.
+	
 
+
+%http://allaboutfpga.com/fpga-architecture/
+
+%%In chapter~\ref{ch:analysis} of~\cite{strunk}, which discusses the value of the honeypots, Spitzner presents the advantages and disadvantages of such systems. 
+%%
+%%
+%%'In sec'tiunea {\it Bibliografie} sunt exemple de referin'te pentru articol la conferin'te sau seminarii~\cite{BellucciLZ04}, articol 'in jurnal~\cite{AntoniouSBDB07}, 
+%%sau c'ar'ti~\cite{russell1995artificial}. 
+%%
+%%
+%%Referin'tele spre aplica'tii sau resurse online (pagini de internet) trebuie sa includ'a cel pu'tin o denumire sugestiv'a pe l\ia ng'a link-ul propriu-zis~\cite{webpage}, 
+%%plus alte informa'tii dac'a sunt disponibile (autori, an, etc.). 
+%%Referin'tele care prezint'a doar link spre resursa online se vor plasa 'in subsolul paginii unde sunt referite.
+%%Citarea referin'telor 'in text este obligatorie, vezi exemplul de mai jos ('in func'tie de tema proiectului se poate varia modul de prezentare a metodei/aplica'tiei).
+%%
+%%%'In articolul~\cite{AntoniouSBDB07} autorii prezint'a un sistem pentru ...
+%%'In~\cite{AntoniouSBDB07} autorii prezint'a un sistem pentru detec'tia obstacolelor 'in mi'scare folosind stereoviziune 'si estimarea mi'sc'arii proprii. 
+%%Metoda se bazeaz'a pe ...{\it trecere 'in revist'a a algoritmilor, structurilor de date, func'tionalitate, aspecte specifice temei proiectului etc}. Discu'tie {\it avantaje - dezavantaje}.
+%
+%
+%'In capitolul~\ref{ch:analysis} al~\cite{russell1995artificial} se prezint'a ...  
+%
+%
+%\section{Titlu}
+%\section{Alt titlu}
 
 
 \chapter{Studiu Bibliografic}
 
-Documentarea bibliografic'a are ca obiectiv prezentarea stadiului actual al domeniului sau sub-domeniului 'in care se situeaz'a tema. 
-'In redactarea acestui capitol ('in general a 'intregului document) se va 'tine cont de cuno'stin'tele acumulate la disciplinele dedicate din semestrul 2, anul 4 
-(Metodologia 'Intocmirii Proiectelor, etc.), precum 'si la celelalte discipline relevante temei abordate.
+\section{Sisteme de calcul reconfigurabile și FPGA}
+În ultimul deceniu, sistemele de calcul reconfigurabile au devenit foarte populare datorită capacității lor de a îmbina flexibilitatea unui produs software cu performanța ridicată a puterii de procesare a componentelor hardware. Acest concept a fost introdus pentru prima oară de către Gerlad Estrin într-un articol publicat în anii 1960-ref. El propunea un sistem format dintr-un procesor standard și o matrice de primitive hardware care putea fi configurată în funcție de necesitatea aplicației. Din cauza limitărilor tehnologice de la acea vreme, acest domeniu nu prea a fost în atenția cercetătorilor. După mai bine de două decenii producătorul de circuite integrate Xilinx inventează și lansează pentru prima oară circuitele field-programmable gate aray (FPGA). Datorită comercializarea acestor circuite și performanțele ridicate ale acestora, domeniul sistemelor reconfigurabile a trecut printr-o perioadă de renaștere în care s-au publicat numeroase articole demonstrând viabilitatea acestor sisteme-ref. 
+\subsection{Circuitele integrate FPGA}
+Un FPGA este un circuit integrat destinat configurării de către utilizator sau unui arhitect dupa procesul de fabricație. Configurația lor este specificată similar cu cea a circuitelor ASIC (applicațion-specific integrated circuit) utilizând un limbaj de descriere hardware (HDL).\\
+Cea mai comună arhitectură pe care o adoptă aceste circuite conține o matrice de blocuri logice configurabile (CLB), celule de intrare/ieșire și canale de rutare. O imagine explicativă se găsește în figura \ref{fig:arhitectura}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.25]{img/FPGA-Architecture.png}
+    \caption{Arhitectura unui FPGA (http://allaboutfpga.com/fpga-architecture/
+)}
+    \label{fig:arhitectura}
+\end{figure} 
 
-Acest capitol reprezint'a cca. 15\% din lucrare.
+\subsubsection{Elementele CLB}
+Elementele CLB sunt sunt blocurile fundamentale din care sunt formate FPGA-urile. Ele sunt alcătuite din mai multe celule logice (slice-uri). O versiune simplificată a unui slice se găsește în figura \ref{fig:slice}. De regulă el conține:
+\begin{itemize}
+\item LUT(look-up table) cu 4 intrări
+\item Sumator complet
+\item Bistabil de tip D
+\item Multiplexoare pentru slecția modului \textit{normal sau aritmetic} în combinație cu modul de ieșire \textit{sincron sau asincron}
+\end{itemize}
 
-Referin'tele se scriu 'in sec'tiunea Bibliografie. 
-Formatul referin'telor trebuie s'a fie de tipul IEEE sau asem'an'ator. 
-Introducerea 'si formatarea referin'telor 'in bibliografie, respectiv citarea 'in text, se pot face manual sau folosind instrumentele de lucru men'tionate 'in ultimele paragrafe din acest capitol.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.25]{img/FPGA_cell_example.png}
+    \caption{SLICE}
+    \label{fig:slice}
+\end{figure} 
 
+\subsubsection{Elemente de rutare}
+Elementele de rutare din FPGA sunt folosite pentru interconectarea blocurilor logice printr-o matrice de fire și comutatoare programabile. O schemă sumară se găsește în figura \ref{fig:rutare}. În general rutarea între elementele programabile este nesegmentată, ceea ce înseamnă că fiecare segment rutat își găsește un capăt într-un bloc logic iar celălalt într-un comutator programabil. Pentru viteze ridicate, unele arhitecturi FPGA folosesc linii de rutare care trec prin mai multe elemente CLB.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{img/switch-box.jpg}
+    \caption{Matrice de rutare și comutator programabil}
+    \label{fig:rutare}
+\end{figure} 
 
-
-In chapter~\ref{ch:analysis} of~\cite{strunk}, which discusses the value of the honeypots, Spitzner presents the advantages and disadvantages of such systems. 
-
-
-'In sec'tiunea {\it Bibliografie} sunt exemple de referin'te pentru articol la conferin'te sau seminarii~\cite{BellucciLZ04}, articol 'in jurnal~\cite{AntoniouSBDB07}, 
-sau c'ar'ti~\cite{russell1995artificial}. 
-
-
-Referin'tele spre aplica'tii sau resurse online (pagini de internet) trebuie sa includ'a cel pu'tin o denumire sugestiv'a pe l\ia ng'a link-ul propriu-zis~\cite{webpage}, 
-plus alte informa'tii dac'a sunt disponibile (autori, an, etc.). 
-Referin'tele care prezint'a doar link spre resursa online se vor plasa 'in subsolul paginii unde sunt referite.
-Citarea referin'telor 'in text este obligatorie, vezi exemplul de mai jos ('in func'tie de tema proiectului se poate varia modul de prezentare a metodei/aplica'tiei).
-
-%'In articolul~\cite{AntoniouSBDB07} autorii prezint'a un sistem pentru ...
-'In~\cite{AntoniouSBDB07} autorii prezint'a un sistem pentru detec'tia obstacolelor 'in mi'scare folosind stereoviziune 'si estimarea mi'sc'arii proprii. 
-Metoda se bazeaz'a pe ...{\it trecere 'in revist'a a algoritmilor, structurilor de date, func'tionalitate, aspecte specifice temei proiectului etc}. Discu'tie {\it avantaje - dezavantaje}.
-
-
-'In capitolul~\ref{ch:analysis} al~\cite{russell1995artificial} se prezint'a ...  
-
-
-\section{Titlu}
-\section{Alt titlu}
-
-
+\section{Prolog și arhitectura WAM}
+ După cum am amintit și în \ref{chap:intro} limbajul Prolog a fost inventat la începutul anilor 1970 de către Alain Colmerauer și colegii lui de la Universitatea din Marseille-ref. El este printre primele limbaje de uz general care au ca paradigmă de baza programarea logică.
 \chapter{Analiz'a 'si Fundamentare Teoretic'a}
 \label{ch:analysis}
 

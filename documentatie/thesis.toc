@@ -10,22 +10,25 @@
 \contentsline {subsubsection}{Principiile S.M.A.R.T.}{14}
 \contentsline {subsubsection}{Obiectivele S.M.A.R.T. ale proiectului}{14}
 \contentsline {chapter}{Capitolul{} \numberline {3}Studiu Bibliografic}{17}
-\contentsline {section}{\numberline {3.1}Titlu}{18}
-\contentsline {section}{\numberline {3.2}Alt titlu}{18}
-\contentsline {chapter}{Capitolul{} \numberline {4}Analiz\u {a} \c {s}i Fundamentare Teoretic\u {a}}{19}
-\contentsline {section}{\numberline {4.1}Titlu}{19}
-\contentsline {section}{\numberline {4.2}Alt titlu}{19}
-\contentsline {chapter}{Capitolul{} \numberline {5}Proiectare de Detaliu \c {s}i Implementare}{20}
-\contentsline {chapter}{Capitolul{} \numberline {6}Testare \c {s}i Validare}{21}
-\contentsline {section}{\numberline {6.1}Titlu}{21}
-\contentsline {section}{\numberline {6.2}Alt titlu}{21}
-\contentsline {chapter}{Capitolul{} \numberline {7}Manual de Instalare \c {s}i Utilizare}{22}
-\contentsline {section}{\numberline {7.1}Titlu}{22}
-\contentsline {section}{\numberline {7.2}Alt titlu}{22}
-\contentsline {chapter}{Capitolul{} \numberline {8}Concluzii}{23}
-\contentsline {section}{\numberline {8.1}Titlu}{23}
-\contentsline {section}{\numberline {8.2}Alt titlu}{23}
-\contentsline {chapter}{Bibliografie}{24}
-\contentsline {chapter}{Anexa{} \numberline {A}Sec\c {t}iuni relevante din cod}{25}
-\contentsline {chapter}{Anexa{} \numberline {B}Alte informa\c {t}ii relevante (demonstra\c {t}ii etc.)}{26}
-\contentsline {chapter}{Anexa{} \numberline {C}Lucr\u {a}ri publicate (dac\u {a} exist\u {a})}{27}
+\contentsline {section}{\numberline {3.1}Sisteme de calcul reconfigurabile și FPGA}{17}
+\contentsline {subsection}{\numberline {3.1.1}Circuitele integrate FPGA}{17}
+\contentsline {subsubsection}{Elementele CLB}{17}
+\contentsline {subsubsection}{Elemente de rutare}{18}
+\contentsline {section}{\numberline {3.2}Prolog și arhitectura WAM}{18}
+\contentsline {chapter}{Capitolul{} \numberline {4}Analiz\u {a} \c {s}i Fundamentare Teoretic\u {a}}{20}
+\contentsline {section}{\numberline {4.1}Titlu}{20}
+\contentsline {section}{\numberline {4.2}Alt titlu}{20}
+\contentsline {chapter}{Capitolul{} \numberline {5}Proiectare de Detaliu \c {s}i Implementare}{21}
+\contentsline {chapter}{Capitolul{} \numberline {6}Testare \c {s}i Validare}{22}
+\contentsline {section}{\numberline {6.1}Titlu}{22}
+\contentsline {section}{\numberline {6.2}Alt titlu}{22}
+\contentsline {chapter}{Capitolul{} \numberline {7}Manual de Instalare \c {s}i Utilizare}{23}
+\contentsline {section}{\numberline {7.1}Titlu}{23}
+\contentsline {section}{\numberline {7.2}Alt titlu}{23}
+\contentsline {chapter}{Capitolul{} \numberline {8}Concluzii}{24}
+\contentsline {section}{\numberline {8.1}Titlu}{24}
+\contentsline {section}{\numberline {8.2}Alt titlu}{24}
+\contentsline {chapter}{Bibliografie}{25}
+\contentsline {chapter}{Anexa{} \numberline {A}Sec\c {t}iuni relevante din cod}{26}
+\contentsline {chapter}{Anexa{} \numberline {B}Alte informa\c {t}ii relevante (demonstra\c {t}ii etc.)}{27}
+\contentsline {chapter}{Anexa{} \numberline {C}Lucr\u {a}ri publicate (dac\u {a} exist\u {a})}{28}

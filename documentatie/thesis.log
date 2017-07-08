@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.5.23)  8 JUL 2017 02:50
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.5.23)  8 JUL 2017 19:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -790,7 +790,7 @@ nului universitar [],
  [10]
 Capitolul 1.
 
-Overfull \hbox (25.51172pt too wide) in paragraph at lines 235--237
+Overfull \hbox (25.51172pt too wide) in paragraph at lines 236--238
 \TU/TimesNewRoman(0)/m/n/12 La jumătatea anilor 1980 a apărut primul circuit in
 tegrat comercial de tipul FPGA(Field-Programmable
  []
@@ -804,7 +804,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 LaTeX Font Info:    Font shape `TU/TimesNewRoman(0)/m/sl' in size <12> not avai
 lable
 (Font)              Font shape `TU/TimesNewRoman(0)/m/it' tried instead on inpu
-t line 278.
+t line 279.
 
 [12]
 Capitolul 2.
@@ -812,62 +812,75 @@ Capitolul 2.
 
 ] [14] [15] [16]
 Capitolul 3.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [17
+File: img/FPGA-Architecture.png Graphic file (type QTm)
+<use  "img/FPGA-Architecture.png" > [17
 
 ]
-[18]
+File: img/FPGA_cell_example.png Graphic file (type QTm)
+ <use  "img/FPGA_cell_example.png" >
+Overfull \hbox (3.41965pt too wide) in paragraph at lines 419--420
+[]\TU/TimesNewRoman(0)/m/n/12 Elementele de rutare din FPGA sunt folosite pentr
+u interconectarea blocurilor logice printr-
+ []
+
+File: img/switch-box.jpg Graphic file (type QTm)
+<use  "img/switch-box.jpg" >
+
+LaTeX Warning: Reference `chap:intro' on page 18 undefined on input line 429.
+
+[18] [19]
 Capitolul 4.
-[19
-
-]
-Capitolul 5.
 [20
 
 ]
-Capitolul 6.
+Capitolul 5.
 [21
 
 ]
-Capitolul 7.
+Capitolul 6.
 [22
 
 ]
-Capitolul 8.
-(./thesis.bbl [23
+Capitolul 7.
+[23
 
-]) [24
+]
+Capitolul 8.
+(./thesis.bbl [24
+
+]) [25
 
 ]
 \openout2 = `apendix.aux'.
 
  (./apendix.tex
 Anexa A.
-[25
+[26
 
 
 ]
 Anexa B.
-[26
+[27
 
 ]
 Anexa C.
-) [27
+) [28
 
 ] (./thesis.aux (./guideline.aux) (./apendix.aux))
+
+LaTeX Warning: There were undefined references.
+
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 15512 strings out of 493005
- 297248 string characters out of 6134596
- 362092 words of memory out of 5000000
- 19328 multiletter control sequences out of 15000+600000
+ 15524 strings out of 493005
+ 297443 string characters out of 6134596
+ 362125 words of memory out of 5000000
+ 19336 multiletter control sequences out of 15000+600000
  9652 words of font info for 62 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  39i,8n,66p,10384b,284s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on thesis.pdf (24 pages).
+Output written on thesis.pdf (25 pages).
