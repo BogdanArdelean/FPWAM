@@ -425,32 +425,237 @@ Elementele de rutare din FPGA sunt folosite pentru interconectarea blocurilor lo
     \label{fig:rutare}
 \end{figure} 
 
-\section{Prolog și arhitectura WAM}
- După cum am amintit și în \ref{chap:intro} limbajul Prolog a fost inventat la începutul anilor 1970 de către Alain Colmerauer și colegii lui de la Universitatea din Marseille-ref. El este printre primele limbaje de uz general care au ca paradigmă de baza programarea logică.
-\chapter{Analiz'a 'si Fundamentare Teoretic'a}
-\label{ch:analysis}
+\section{Prolog}
+După cum am amintit și în \ref{chap:intro} limbajul Prolog a fost inventat la începutul anilor 1970 de către Alain Colmerauer și colegii lui de la Universitatea din Marseille-ref. El este printre primele limbaje de uz general care au ca paradigmă de baza programarea logică.  Domeniile lui de aplicabilitate sunt de obicei cele din sfera inteligenței artificiale, mai exact a sistemelor bazate pe cunoștințe, sisteme expert, etc-ref.  \\
+\subsection{Limbajul Prolog}
+Într-un program Prolog pot fi indentificate următoarele construcții de bază:
 
-'Impreun'a cu capitolul urm'ator trebuie s'a reprezinte aproximativ 60\% din total.
+\begin{enumerate}
+	\item fapte
+	\item întrebări
+	\item termeni
+	\item reguli
+\end{enumerate}
 
-Scopul acestui capitol este de a explica principiile func'tionale ale aplica'tiei implementate. 
-Aici se va descrie solu'tia propus'a dintr-un punct de vedere teoretic - explica'ti 'si demonstra'ti propriet'a'tile 'si valoarea teoretic'a:
+\subsubsection{Fapte}
+În limbajul Prolog putem face afirmații utilizând faptele. Faptele sunt niște itemi ori o relație între itemi. De exemplu:
+\begin{verbatim}
+	respira(om). %omul respiră
+	program_initializat.
+\end{verbatim}	
+\subsubsection{Întrebări}
+Îndată ce faptele au fost definite, Prolog ne permite să interogăm baza de fapte:
+\begin{verbatim}
+	?-program_initializat.
+	yes.
+	?-respira(om).
+	yes.
+	?-respira(carte).
+	false.
+	?-respira(X), % interogare cu termen de tip variabilă
+	X = om
+\end{verbatim}
+\subsubsection{Termeni}
+Termenii în Prolog se grupează în următoarele categorii:
 \begin{itemize}
- \item algoritm utilizat sau propus
-\item protocoale utilizate
-\item modele abstracte
-\item explica'tii/argument'ari logice ale solu'tiei alese
-\item structura logic'a 'si func'tional'a a aplica'tiei.
+\item simpli
+	 \begin{itemize}
+	  \item variabile
+	  \item constante
+	  	\begin{itemize}
+		\item atomi
+		\item numere
+		\end{itemize}
+	 \end{itemize}
+\item structurați
+\end{itemize}
+\subsubsection{Reguli}
+Prologul permite formularea de reguli de tipul: "Un fapt \textit{a} este adevărat, dacă faptele \textit{b..z} sunt adevărate." Regula Prolog este formată dintr-un \textit{cap} și un \textit{corp} despărțite de simbolul \textit{:-}. Exemplu:
+\begin{verbatim}
+	a(X):-b(X), c(X), ... ,z(X) %a este adevărat daca b, c ... sunt adevărate 
+\end{verbatim}
+\subsubsection{Mecanisme}
+Spre deosebire de alte limbaje, Prolog are integrate două mecanise ce-l face unic printre alte limbaje de programare.	
+\begin{itemize}
+\item \textit{Mecanismul de unificare a termenilor.} Doi termeni se unifică doar dacă ei sunt egali sau dacă conțin variable care se pot instanția uniform cu termeni astfel încat cei doi termeni inițiali să fie egai.
+\item \textit{Mecanismul de backtracking.} În cazul în care programul ajunge într-o stare în care capul sau corpul unei reguli nu poate fi unificat, mecanismul de backtracking intră în acțiune și reface starea procesului la ultimul punct de alegere și îl execută. Acest procedeu continuă până când unificarea are succes sau nu mai există puncte de alegere, moment în care întrebarea eșuează.
+\end{itemize}
+\subsection{Arhitectura WAM}
+După mai bine de un deceniu de la inventarea limbajului Prolog, în articolul -ref publicat de către David H. D. Warren se descrie o mașină abstractă care este definită printr-un set de instrucțiuni și o arhitectură a memoriei, cunosctă astăzi ca WAM. De atunci, WAM a defenit un standard pentru implementarea limbajului Prolog. Din cauza faptului că Warrren descrie WAM-ul foarte sumar, este dificil pentru un cititor nexperimentat cu limbajul Prolog să înțeleagă arhitectura din lucrarea originală-ref. În -ref Hassan A ̈IT-KACI adresează această problemă publicând o carte sub forma unui tutorial care construiește gradual arhitectura, având în minte principiile după care Warren s-a ghidat.
+Arhitectura WAM este una bazată pe stivă, împărtășind similarități cu limbajele imperative: instrucțiuni de tipul call/return, mediu local. Setul de instrucțiuni permite emularea sau translatarea într-un cod mașină nativ.
+ %https://www.doc.ic.ac.uk/~shm/Papers/accelfidj.pdf se
+ %E. Tick, An overlapped Prolog processor. Artificial Intelligence Center, SRI International, Menlo Park, California 94025, 1983
+\section{Abordări similare}
+În -ref se propune un sistem hardware implementat pe un circuit integrat de tip FPGA pentru programare logică inductivă. Acest sistem are la bază arhitectura WAM optimizată prin metode de grupare a instrucțiunilor și asignare speculativă. Spre deosebire de abordarea propusă în această lucrare, acest sistem folosește mai multe procesoare WAM interconectate care să lucreze împreună la executarea întrebării Progol. În tabelul 1 din capitolul 5 se demonstrează viabilitatea chiar și unui sistem secvențial, având performanța comparativa cu a unui procesor Pentium III tactat la 450MHz. Dezavantajele acestei abordări sunt tactarea procesorului de Progol la 35MHz-ref, folosirea memoriei RAM distribuite în locul memoriei BlockRAM, forțând ca multe segmente să nu fie ținute în memoria interna a FPGA-ului din cauza lipsei de spațiu. Accesul la segmentele care sunt ținute înafara circuitului vor scădea performanța considerabil.
+
+O altă abordare de implementare hardware a arhitecturii WAM propusă în -ref de către Evan Tick în 1983 încearcă să determine perfomanța maximă pe care o poate atinge o mașină Prolog secvențială. Această abordare nu prea este relevantă, deorece tehnologia a avansat mult de atunci, dar studiul arată că se pot s-au obținut îmbunătățiri de până la 18\% folosind componente hardware standard.
+
+
+
+
+%\label{ch:analysis}
+%
+%'Impreun'a cu capitolul urm'ator trebuie s'a reprezinte aproximativ 60\% din total.
+%
+%Scopul acestui capitol este de a explica principiile func'tionale ale aplica'tiei implementate. 
+%Aici se va descrie solu'tia propus'a dintr-un punct de vedere teoretic - explica'ti 'si demonstra'ti propriet'a'tile 'si valoarea teoretic'a:
+%\begin{itemize}
+% \item algoritm utilizat sau propus
+%\item protocoale utilizate
+%\item modele abstracte
+%\item explica'tii/argument'ari logice ale solu'tiei alese
+%\item structura logic'a 'si func'tional'a a aplica'tiei.
+%\end{itemize}
+%
+%{\color{red}
+%NU SE FAC referiri la implementarea propriu-zis'a. 
+%
+%NU SE PUN descrieri de tehnologii preluate cu copy-paste din alte surse sau lucruri care nu 'tin strict de proiectul propriu-zis (materiale de umplutur'a).
+%}
+%
+%
+%\section{Titlu}
+%\section{Alt titlu}
+%
+\chapter{Analiz'a 'si Fundamentare Teoretic'a}
+În acest capitol se va prezenta pe cât posibil bazele teoretice a procesorului care urmează să fie implementat. Arhitectura abstractă WAM este una complicată, având un set de instrucțiuni stufos care nu este intuitiv pentru cititorul nexperimentat cu limbajul Prolog. Pentru înțelegerea în detaliu se recomandă lecturarea cărții -ref. 
+
+În paralel se vor discuta și modificările survenite pentru adaptarea ei la arhitectura care urmeză să fie implementată pe FPGA. O altă parte ce va fi tratată aici este protocolul pentru comunicarea cu calculatorul gazdă, principiile din spatele translatorului WAM-FPWAM și ideea aplicației ce oferă utilizatorului un mediu de exectuare.
+
+Partea legată de arhitectura WAM nu este
+\section{Hardware - Arhitectura WAM și soluția propusă}
+\subsection{Arhitectura memoriei}
+După cum am mai amintit în capitolele anterioare WAM este un procesor bazat pe stivă. În specificația originală, memoria este împărțită în următoarele zone (în ordine crescătoare a spațiului de adrese) :
+\begin{enumerate}
+	\item \textit{CODE} - zonă de memorie destinată exclusiv păstrarea codului pentru faptele și regulile Prolog.
+	\item \textit{HEAP} - zonă de memorie destinată exclusiv păstrarea oricărui tip de termen Prolog.
+	\item \textit{STACK} - zonă de memorie despărțită logic în două secțiuni: stivă-AND și stivă-OR. Pe stiva-AND se reține de obicei cadrul local care conține variabilele locale, următorul mediu local și numărul instrucțiunii de întoarecere. Pe stiva-OR se țin informații pentru mecanismul de backtracking. Ele sunt legate de punctul de alegere și informații pentru refacerea stării procesorului la executarea operației backtracking.
+	\item \textit{TRAIL} - zonă de memorie destinată ținerii evidenței variabilelor unificate.
+	\item \textit{PDL} - zonă de memorie locala destinată algoritmului de unificare a termenilor.
+\end{enumerate}
+Din motive pe care se vor discuta în capitolele următoare s-a introdus o nouă zonă de memorie care nu este prezentă în lucrarea originală numită \textit{CINDEX}.
+\subsection{Regiștrii}
+Regiștrii mașinii WAM se împart în două categorii:
+\begin{itemize}
+	\item de uz general
+	\item specializați
 \end{itemize}
 
-{\color{red}
-NU SE FAC referiri la implementarea propriu-zis'a. 
+\subsubsection{Regiștrii de uz general}
+Regiștrii de uz general au lățimea cât a unui cuvânt a memoriei și sunt împărțiți logic în următoarele categorii:
+\begin{itemize}
+	\item regiștrii de variablă - folosiți pentru manipularea termenilor când se construiesc sau se unifică. Ei se notează cu X(i) unde \textit{X} - indică registru de variablă și \textit{i} - indică numărul registrului.
+	\item regiștrii de argument - alocați sistematic pentru pregătirea argumentelor a următorului apel de regulă sau predicat. Ei se notează cu A(i) unde \textit{A} - indică registru de argument și \textit{i} - indică numărul registrului.
+\end{itemize}
+\textit{NOTA BENE} - A și X sunt doar niște notații pentru a indica contextul în care un registru este folosit. A(1) = X(1)
 
-NU SE PUN descrieri de tehnologii preluate cu copy-paste din alte surse sau lucruri care nu 'tin strict de proiectul propriu-zis (materiale de umplutur'a).
-}
+\subsubsection{Regiștrii specializați}
+WAM folosește o serie de regiștrii specializați care indică starea procesorului la un moment dat de timp. În continuare se vor prezenta numele lor și o descriere sumară a rolului pe care îl îndeplinesc.
+\begin{itemize}
+	\item \textit{Registrul P} - folosit să indice adresa instrucțiunii curente.
+	\item \textit{Registrul CP} - folosit să indice adresa instrucțiunii care urmează să fie executată la întoarcerea cu success din apelul unei proceduri.
+	\item \textit{Registrul S} - folosit ca registru de unificare, reține adresa din zona de memorie HEAP a unui termen.
+	\item \textit{Registrul Mode} - folosit pentru a indica modul de execuție, read sau wrtie.
+	\item \textit{H} - folosit pentru a reține adresa vârfului zonei de memorie HEAP.
+	\item \textit{HB} - folosit pentru a reține reține adresa vârfului zonei de memorie HEAP la timpul ultimului punct de alegere.
+	\item \textit{B0} - registru de tăietură.
+	\item \textit{B} - folosit pentru a reține adresa începutului punctului de alegere anterior.
+	\item \textit{E} - folosit pentru a reține adresa mediului local.
+	\item \textit{TR} - folosit pentru a indica vârful zonei de memorie TRAIL.
+\end{itemize}
 
+Din cauza că FPWAM suportă doar un subset al limbajului Prolog, registrul B0 care este folosit pentru tăieturi nu este prezent în implementare.
 
-\section{Titlu}
-\section{Alt titlu}
+\subsection{Reprezentarea termenilor}
+În continuare se va prezenta modalitatea de reprezentare a termenilor Prolog în WAM, repsectiv FPWAM. Pentru stocarea lor vom folosi un bloc global din zona de memorie numită HEAP. FPWAM va suporta patru tipuri de termeni, structuri, variable, constante și liste. Fiecare din acești termeni va avea un marcaj unic pentru a putea fi discriminați pe HEAP. 
+\subsubsection{Reprezentarea structurilor}
+Structurile sunt niște termeni non-variabili. Pentru a reprezenta o structură de tipul \(f(t_{1}, ... , t_{n})\), vor fi folosite \(n+2\) cuvinte de memorie. Primul va fi un poantor către adresa celui de-al doilea care indică termenul \(f/n\). Evident aceste două cuvinte nu necesită să fie la adrese consecutive. Celelalte \(n\) cuvinte vor fi folosite pentru a reține referințe către rădăcinile subtermenilor \(t_{1} ... t_{n}\). Mai specific, primul cuvânt va fi de forma \(<STR, a>\) ,unde \(STR\) reprezintă marcajul și \(a\) reprezintă adresa la care se află reprezentarea lui \(f/n\). Începând de la adresa \(a\) se va afla întodeauna un bloc contiguu de n+1 cuvinte ce reprezintă numele/aritatea structurii și cele n referințe către subtermenii \(t_{1} ... t_{n}\).
+\subsubsection{Reprezentarea variabilelor}
+O variabilă va fi indentificată printr-un poantor și va fi reprezentat folosind doar un cuvânt din memorie, adică o celulă variabilă. O asemenea celulă va fi indentificată prin \(<REF, a>\) unde \(REF\) denotă marcajul unei referințe și \(a\) adresa către locația de memorie spre care se face referire. Prin convenție, o variabilă este nelegată dacă ea pointează către ea însuși.
+\subsubsection{Reprezentarea constantelor}
+O constantă va fi reprezentată folosind doar un cuvând din memorie. O asemenea celulă va fi identificată prin \(<CON, c>\), unde \(CON\) reprezintă marcajul, iar \(c\) reprezintă valoarea constantei.
+\subsubsection{Reprezentarea listelor}
+Cele mai întâlnite structuri de date în programele Prolog sunt listele, fapt pentru care se vor introduce marcaje speciale pentru acestea. O element dintr-o listă este indentificat prin perechea de celule \(<LIS, a>\), unde  \(LIS\) reprezintă marcajul prin care se discriminează lista, iar celula de la adresa \(a\) unde se găsește referința către data elementului din listă. Pentru a respecta contiguitatea termenilor, aceste prerechi trebuie să fie la adrese consecutive în memorie până la terminarea listei care este indicată prin constanta \(<CON, NIL>\).
+\subsubsection{Exemple de reprezentări ai termenilor}
+În \ref{repr:termen1} se arată reprezentarea termenului \(f(Z, h(Z, W),f(W))\) pe HEAP.  În acest exemplu se demonstrează reprezentarea variabilelor nelegate și a structurilor. De observat aici este contiguitatea subtermenilor a structurilor, cât și nerespectarea formatului de \(n+2\) celule. Această mică optimizare se întâmplă doar când faptul urmează să fie apelat dintr-o  regulă, celulele de tip \(<STR, a>\) aflându-se în regiștrii de argument. Această optimizare va fi discutată în capitolele următoare. În toate celelalte cazuri, celulele anterior amintite vor exista pe HEAP. 
+
+În \ref{repr:termen2} se demonstrează reprezentarea unei liste \([\_, \_, f(b), a]\), în care toate primele două elemente sunt niște variabile nelegate iar celelalte un termen structurat și o constantă. De observat în acest exemplu este contiguitatea listei care se termină prin constanta specială \(<CON, NIL>\) și existența celulei \(<STR, \_>\).
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{c|c|c|}
+\cline{2-3}
+0 & \multicolumn{2}{|c|}{\(h/2\)} \\
+\cline{2-3}
+1 & REF & 1 \\
+\cline{2-3}
+2 & REF & 2 \\
+\cline{2-3}
+3 & \multicolumn{2}{|c|}{\(f/1\)} \\
+\cline{2-3}
+4 & REF & 2 \\
+\cline{2-3}
+5 & \multicolumn{2}{|c|}{\(p/3\)} \\
+\cline{2-3}
+6 & REF & 1 \\
+\cline{2-3}
+7 & STR & 0 \\
+\cline{2-3}
+8 & STR & 3 \\
+\cline{2-3}
+\end{tabular}
+\end{center}
+\caption{Reprezentare a termenului \(f(Z, h(Z, W),f(W))\)} \label{repr:termen1}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{c|c|c|}
+\cline{2-3}
+0 &LIS & 1 \\
+\cline{2-3}
+1 & REF & 1 \\
+\cline{2-3}
+2 & LIS & 3 \\
+\cline{2-3}
+3 & REF & 3 \\
+\cline{2-3}
+4 & LIS & 5 \\
+\cline{2-3}
+5 & STR & 10\\
+\cline{2-3}
+6 & LIS & 7 \\
+\cline{2-3}
+7 & CON & a \\
+\cline{2-3}
+8 & CON & NIL \\
+\cline{2-3}
+9 & STR & 10 \\
+\cline{2-3}
+10 & \multicolumn{2}{|c|}{\(f/1\)} \\
+\cline{2-3}
+11 & CON & b \\
+\cline{2-3}
+\end{tabular}
+\end{center}
+\caption{Reprezentarea unei liste \([\_, \_, f(b), a]\)} \label{repr:termen2}
+\end{figure}
+
+\subsection{Setul abstract de instrucțiuni și operațiile auxiliare}
+Cea mai bună modalitate de a înțelege un procesor este de a-i cunoște instrucțiunile și cum ele operează. Din cauza faptului că arhitectura WAM conține un minimum de 30 de instrucțiuni, în acest subcapitol se va încerca atingerea tutoror tipurilor de instrucțiuni cu exemple și explicații relevante din fiecare categorie. Deoarece FPWAM nu surpotă instrucțiuni de tăietură, ele nu vor fi explicate în acest subcapitol. 
+
+Instrucțiunile mașinii WAM se încadrează în 7 categorii:
+\begin{enumerate}
+	\item instrucțiuni de tipul PUT
+	\item instrucțiuni de tipul GET
+	\item instrucțiuni de UNIFICARE
+	\item instrucțiuni de CONTROL
+	\item instrucțiuni de ALEGERE
+	\item instrucțiuni de INDEXARE
+	\item instrucțiuni de CUT
+\end{enumerate}
+  
+
 
 
 \chapter{Proiectare de Detaliu 'si Implementare}
