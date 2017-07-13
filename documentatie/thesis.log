@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.5.23)  10 JUL 2017 19:29
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.5.23)  13 JUL 2017 05:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -548,4 +548,667 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xy.tex Bootstrap'ing:
 catcodes, docmode,
 (/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xyrecat.tex)
-(/usr/l
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xyidioms.tex)
+
+ Xy-pic version 3.8.9 <2013/10/06>
+ Copyright (c) 1991-2013 by Kristoffer H. Rose <krisrose@tug.org> and others
+ Xy-pic is free software: see the User's Guide for details.
+
+Loading kernel: messages; fonts; allocations: state,
+\X@c=\dimen149
+\Y@c=\dimen150
+\U@c=\dimen151
+\D@c=\dimen152
+\L@c=\dimen153
+\R@c=\dimen154
+\Edge@c=\toks24
+\X@p=\dimen155
+\Y@p=\dimen156
+\U@p=\dimen157
+\D@p=\dimen158
+\L@p=\dimen159
+\R@p=\dimen160
+\Edge@p=\toks25
+\X@origin=\dimen161
+\Y@origin=\dimen162
+\X@xbase=\dimen163
+\Y@xbase=\dimen164
+\X@ybase=\dimen165
+\Y@ybase=\dimen166
+\X@min=\dimen167
+\Y@min=\dimen168
+\X@max=\dimen169
+\Y@max=\dimen170
+\lastobjectbox@=\box48
+\zerodotbox@=\box49
+\almostz@=\dimen171
+ direction,
+\d@X=\dimen172
+\d@Y=\dimen173
+\K@=\count153
+\KK@=\count154
+\Direction=\count155
+\K@dXdY=\dimen174
+\K@dYdX=\dimen175
+\xyread@=\read2
+\xywrite@=\write3
+\csp@=\count156
+\quotPTK@=\dimen176
+
+utility macros; pictures: \xy, positions,
+\swaptoks@@=\toks26
+\connectobjectbox@@=\box50
+ objects,
+\styletoks@=\toks27
+ decorations;
+kernel objects: directionals, circles, text; options; algorithms: directions,
+edges, connections;  Xy-pic loaded)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+Package: xy 2013/10/06 Xy-pic version 3.8.9
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xymatrix.tex
+ Xy-pic option: Matrix feature v.3.14
+\Row=\count157
+\Col=\count158
+\queue@=\toks28
+\queue@@=\toks29
+\qcount@=\count159
+\qcount@@=\count160
+\matrixsize@=\count161
+ loaded)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xyarrow.tex
+ Xy-pic option: Arrow and Path feature v.3.9 path, \ar, loaded))
+(./romanian.sty)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/algorithms/algorithm.sty
+Invalid UTF-8 byte or sequence at line 11 replaced by U+FFFD.
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm floating environme
+nt
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count162
+\float@exts=\toks30
+\float@box=\box51
+\@float@everytoks=\toks31
+\@floatcapt=\box52
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks32
+\c@algorithm=\count163
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+Package: algpseudocode 
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic\c {s}tyle
+\c@ALG@line=\count164
+\c@ALG@rem=\count165
+\c@ALG@nested=\count166
+\ALG@tlm=\skip52
+\ALG@thistlm=\skip53
+\c@ALG@Lnr=\count167
+\c@ALG@blocknr=\count168
+\c@ALG@storecount=\count169
+\c@ALG@tmpcounter=\count170
+\ALG@tmplength=\skip54
+)
+Document Style - pseudocode environments for use with the `algorithmicx\c {s}ty
+le
+) (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: xetex.def on input line 147.
+)
+(./thesis.aux (./guideline.aux) (./apendix.aux))
+\openout1 = `thesis.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 71.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 71.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/tipa/t3cmr.fd
+File: t3cmr.fd 2001/12/31 TIPA font definitions
+)
+LaTeX Font Info:    ... okay on input line 71.
+.................................................
+. fontspec info: "setup-math"
+. 
+. Adjusting the maths setup (use [no-math] to avoid this).
+.................................................
+\symlegacymaths=\mathgroup7
+LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 71.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 71.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 71.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 71.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 71.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 71.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 71.
+LaTeX Font Info:    Redeclaring math accent \check on input line 71.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 71.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 71.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 71.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 71.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `normal' on input line 71.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> TU/TimesNewRoman(0)/m/n on input line 7
+1.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `bold' on input line 71.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/m/n on input line 
+71.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/m/n on 
+input line 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> TU/TimesNewRoman(0)/m/it on input line
+ 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/bx/n on input line
+ 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 71.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/bx/n on
+ input line 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> TU/TimesNewRoman(0)/bx/it on input li
+ne 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 71.
+File: img/utcn.jpg Graphic file (type QTm)
+
+<use  "img/utcn.jpg" > [4
+
+]
+File: img/utcn.jpg Graphic file (type QTm)
+ <use  "img/utcn.jpg" >
+LaTeX Font Info:    Try loading font information for U+lasy on input line 123.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msa on input line 123.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 123.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Overfull \hbox (25.93462pt too wide) in paragraph at lines 123--128
+[][] 
+ []
+
+[5] [6]
+File: img/utcn.jpg Graphic file (type QTm)
+ <use  "img/utcn.jpg" >
+Overfull \hbox (23.27548pt too wide) in paragraph at lines 188--195
+[]\TU/TimesNewRoman(0)/m/n/12 , legitimat(ă)
+ []
+
+
+Overfull \hbox (48.09781pt too wide) in paragraph at lines 188--195
+\TU/TimesNewRoman(0)/m/n/12 versităţii Tehnice din Cluj-Napoca, sesiunea [] a a
+nului universitar [],
+ []
+
+[7]
+\openout2 = `guideline.aux'.
+
+ (./guideline.tex) [8
+
+] (./thesis.toc [9
+
+
+])
+\tf@toc=\write4
+\openout4 = `thesis.toc'.
+
+ [10]
+Capitolul 1.
+
+Overfull \hbox (25.51172pt too wide) in paragraph at lines 248--250
+\TU/TimesNewRoman(0)/m/n/12 La jumătatea anilor 1980 a apărut primul circuit in
+tegrat comercial de tipul FPGA(Field-Programmable
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [11
+
+]
+LaTeX Font Info:    Font shape `TU/TimesNewRoman(0)/m/sl' in size <12> not avai
+lable
+(Font)              Font shape `TU/TimesNewRoman(0)/m/it' tried instead on inpu
+t line 291.
+
+[12]
+Capitolul 2.
+[13
+
+] [14] [15] [16]
+Capitolul 3.
+File: img/FPGA-Architecture.png Graphic file (type QTm)
+<use  "img/FPGA-Architecture.png" > [17
+
+]
+File: img/FPGA_cell_example.png Graphic file (type QTm)
+ <use  "img/FPGA_cell_example.png" >
+Overfull \hbox (3.41965pt too wide) in paragraph at lines 431--432
+[]\TU/TimesNewRoman(0)/m/n/12 Elementele de rutare din FPGA sunt folosite pentr
+u interconectarea blocurilor logice printr-
+ []
+
+File: img/switch-box.jpg Graphic file (type QTm)
+<use  "img/switch-box.jpg" >
+Underfull \hbox (badness 10000) in paragraph at lines 441--442
+
+ []
+
+[18] [19] [20] [21]
+Capitolul 4.
+[22
+
+] [23]
+Overfull \hbox (22.11134pt too wide) in paragraph at lines 584--585
+[]\TU/TimesNewRoman(0)/m/n/12 Structurile sunt niște termeni non-variabili. Pen
+tru a reprezenta o structură de tipul $\OML/cmm/m/it/12 f\OT1/cmr/m/n/12 (\OML/
+cmm/m/it/12 t[]; :::; t[]\OT1/cmr/m/n/12 )$\TU/TimesNewRoman(0)/m/n/12 ,
+ []
+
+[24] [25] [26]
+Overfull \hbox (23.56647pt too wide) in paragraph at lines 697--698
+[]\TU/TimesNewRoman(0)/m/n/12 vârful stivei $\OML/cmm/m/it/12 TRAIL$ \TU/TimesN
+ewRoman(0)/m/n/12 (valoarea registrului $\OML/cmm/m/it/12 TR$\TU/TimesNewRoman(
+0)/m/n/12 ) - pentru a efectua operația auxiliara $\OML/cmm/m/it/12 unwind[]rai
+l$
+ []
+
+[27] [28]
+Overfull \hbox (0.97533pt too wide) in paragraph at lines 760--761
+[]\TU/TimesNewRoman(0)/m/n/12 Tipul acesta de instrucțiune este responsabil să 
+încarce argumentele capetelor următoarelor
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 769--778
+[][] 
+ []
+
+
+Underfull \hbox (badness 1142) in paragraph at lines 782--783
+[]\TU/TimesNewRoman(0)/m/n/12 Inițializează variablia $\OML/cmm/m/it/12 n$ \TU/
+TimesNewRoman(0)/m/n/12 de pe stivă din
+ []
+
+
+Underfull \hbox (badness 1448) in paragraph at lines 782--783
+\TU/TimesNewRoman(0)/m/n/12 mediul curent la o valoarea nelegată și
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 786--794
+[][] 
+ []
+
+[29]
+Underfull \hbox (badness 1728) in paragraph at lines 798--799
+[]\TU/TimesNewRoman(0)/m/n/12 Dacă adresa dereferențiată variabilei $\OML/cmm/m
+/it/12 Y[]$
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 802--816
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 824--832
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 845--851
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 859--869
+[][] 
+ []
+
+[30]
+Overfull \hbox (12.0pt too wide) in paragraph at lines 877--902
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 915--931
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [31]
+Underfull \hbox (badness 1365) in paragraph at lines 937--938
+[]\TU/TimesNewRoman(0)/m/n/12 În modul $\OML/cmm/m/it/12 read$\TU/TimesNewRoman
+(0)/m/n/12 , unifică variabila $\OML/cmm/m/it/12 V[]$ \TU/TimesNewRoman(0)/m/n/
+12 cu
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 941--960
+[][] 
+ []
+
+
+Overfull \hbox (3.00853pt too wide) in paragraph at lines 964--965
+[]\TU/TimesNewRoman(0)/m/n/12 Aceste instrucțiuni sunt folosite pentru a dicta 
+mersul programului în execuție cât și alocării
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 973--987
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32]
+Overfull \hbox (12.0pt too wide) in paragraph at lines 995--1002
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1010--1017
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1025--1030
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1043--1066
+[][] 
+ []
+
+
+Underfull \vbox (badness 2512) has occurred while \output is active []
+
+ [33]
+Underfull \hbox (badness 10000) in paragraph at lines 1083--1084
+[]$\OML/cmm/m/it/12 unwind[]stack\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 STACK\OT1/cm
+r/m/n/12 [\OML/cmm/m/it/12 B \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 n \OT1/cmr/m/n/
+12 +
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1074--1090
+[][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1106--1107
+[]$\OML/cmm/m/it/12 unwind[]stack\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 STACK\OT1/cm
+r/m/n/12 [\OML/cmm/m/it/12 B \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 n \OT1/cmr/m/n/
+12 +
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1098--1114
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [34]
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1128--1146
+[][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1159--1160
+[]$\OML/cmm/m/it/12 < found; inst >\OMS/cmsy/m/n/12  
+ []
+
+
+Overfull \hbox (18.94456pt too wide) in paragraph at lines 1159--1160
+\OML/cmm/m/it/12 binary[]search\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 val; low; high
+; CINDEX\OT1/cmr/m/n/12 )$ 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1156--1167
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [35]
+Overfull \hbox (3.1675pt too wide) in paragraph at lines 1176--1177
+[]\TU/TimesNewRoman(0)/m/n/12 operația $\OML/cmm/m/it/12 unwind[]trail\OT1/cmr/
+m/n/12 (\OML/cmm/m/it/12 a\OT1/cmr/m/n/12 1\OML/cmm/m/it/12 ;  a\OT1/cmr/m/n/12
+ 2)$ \TU/TimesNewRoman(0)/m/n/12 - dezleagă toate adresele aflate în zona de me
+morie $\OML/cmm/m/it/12 TRAIL$
+ []
+
+[36]
+Overfull \hbox (5.57813pt too wide) in paragraph at lines 1186--1187
+\TU/TimesNewRoman(0)/m/n/12 nepotrivit mașinii FPWAM. Pentru a soluționa acestă
+ problemă se vor folosi două dicționare,
+ []
+
+
+Overfull \hbox (9.50151pt too wide) in paragraph at lines 1196--1197
+[]\TU/TimesNewRoman(0)/m/n/12 Pentru a putea compila întrebări Prolog și a vizu
+aliza rezultate, mediul de executare folosește
+ []
+
+[37]
+Capitolul 5.
+File: img/architecture.png Graphic file (type QTm)
+<use  "img/architecture.png" >
+Overfull \hbox (55.42062pt too wide) in paragraph at lines 1227--1228
+ [][] 
+ []
+
+
+Underfull \vbox (badness 1248) has occurred while \output is active []
+
+ [38
+
+]
+Overfull \hbox (1.0453pt too wide) in paragraph at lines 1247--1248
+[]$\OML/cmm/m/it/12 kWamStackStart$ \TU/TimesNewRoman(0)/m/n/12 - această const
+antă determină adresa de start în memoria HEAPSTACK
+ []
+
+[39] [40]
+Overfull \hbox (22.91307pt too wide) in paragraph at lines 1308--1309
+[]\TU/lmtt/m/n/12 function fpwam_tag(word : std_logic_vector) return tag_t; \TU
+/TimesNewRoman(0)/m/n/12 - returnează eticheta
+ []
+
+
+Overfull \hbox (5.47606pt too wide) in paragraph at lines 1309--1310
+[]\TU/lmtt/m/n/12 function fpwam_value(word : std_logic_vector) return std_logi
+c_vector \TU/TimesNewRoman(0)/m/n/12 -
+ []
+
+
+Overfull \hbox (75.69994pt too wide) in paragraph at lines 1310--1311
+[]\TU/lmtt/m/n/12 function fpwam_word(word : std_logic_vector; tag : tag_t) ret
+urn std_logic_vector
+ []
+
+
+Overfull \hbox (5.65996pt too wide) in paragraph at lines 1311--1312
+[]\TU/lmtt/m/n/12 function fpwam_functor(word : std_logic_vector(kWamWordWidth 
+-1 downto
+ []
+
+[41]
+Overfull \hbox (18.01996pt too wide) in paragraph at lines 1312--1313
+[]\TU/lmtt/m/n/12 function fpwam_arity(word : std_logic_vector(kWamWordWidth -1
+ downto 0))
+ []
+
+
+Overfull \hbox (61.27995pt too wide) in paragraph at lines 1313--1314
+[]\TU/lmtt/m/n/12 function fpwam_instr(word : std_logic_vector(31 downto 0)) re
+turn instruction_t
+ []
+
+
+Overfull \hbox (30.37996pt too wide) in paragraph at lines 1314--1315
+[]\TU/lmtt/m/n/12 function fpwam_instr_addr(word : std_logic_vector) return std
+_logic_vector
+ []
+
+
+Overfull \hbox (36.55997pt too wide) in paragraph at lines 1315--1316
+[]\TU/lmtt/m/n/12 function fpwam_instr_arity(word : std_logic_vector) return st
+d_logic_vector
+ []
+
+
+Overfull \hbox (8.4344pt too wide) in paragraph at lines 1316--1317
+[]\TU/lmtt/m/n/12 function fpwam_var_on_stack(word : std_logic_vector) return b
+oolean \TU/TimesNewRoman(0)/m/n/12 - re-
+ []
+
+
+Overfull \hbox (48.91992pt too wide) in paragraph at lines 1317--1318
+[]\TU/lmtt/m/n/12 function fpwam_var_stack_addr(instr : std_logic_vector; E : s
+td_logic_vector)
+ []
+
+File: img/top-level.png Graphic file (type QTm)
+<use  "img/top-level.png" > [42]
+Overfull \hbox (18.70517pt too wide) in paragraph at lines 1342--1343
+[]\TU/lmtt/m/n/12 NEXT_STATE_DECODE: process(decoded_state, cr_state, deref_don
+e,...) \TU/TimesNewRoman(0)/m/n/12 - acest
+ []
+
+[43]
+Overfull \hbox (7.30368pt too wide) in paragraph at lines 1343--1344
+[]\TU/lmtt/m/n/12 OUTPUT_DECODE: process(cr_state, deref_done, mem_obj, ...)  \
+TU/TimesNewRoman(0)/m/n/12 - setează sem-
+ []
+
+File: img/GPR.png Graphic file (type QTm)
+<use  "img/GPR.png" > [44]
+File: img/ramtype.png Graphic file (type QTm)
+ <use  "img/ramtype.png" >
+File: img/ram.png Graphic file (type QTm)
+ <use  "img/ram.png" >
+[45] [46]
+File: img/arhitectura-software.png Graphic file (type QTm)
+ <use  "img/arhitectura-software.png" >
+File: img/bridgeh.png Graphic file (type QTm)
+ <use  "img/bridgeh.png" >
+Overfull \hbox (6.3861pt too wide) in paragraph at lines 1430--1437
+[]\TU/TimesNewRoman(0)/m/n/12 În cazul de față avem nevoie ca parser-ul WAM să 
+apeleze metodele din clasa $\OML/cmm/m/it/12 CodeContext$
+ []
+
+[47]
+File: img/bridgec.png Graphic file (type QTm)
+ <use  "img/bridgec.png" >
+Overfull \hbox (12.73425pt too wide) in paragraph at lines 1451--1452
+\TU/TimesNewRoman(0)/m/n/12 fațeze cu API-ul expus de către translator. După cu
+m se poate observa în 5.9[], apelul $\OML/cmm/m/it/12 F[]put[]variable$
+ []
+
+File: img/apicall.png Graphic file (type QTm)
+<use  "img/apicall.png" > [48] [49]
+Capitolul 6.
+[50
+
+]
+Capitolul 7.
+[51
+
+]
+Capitolul 8.
+(./thesis.bbl [52
+
+]) [53
+
+]
+\openout2 = `apendix.aux'.
+
+ (./apendix.tex
+Anexa A.
+[54
+
+
+]
+Anexa B.
+[55
+
+]
+Anexa C.
+) [56
+
+] (./thesis.aux (./guideline.aux) (./apendix.aux)) ) 
+Here is how much of TeX's memory you used:
+ 16072 strings out of 493005
+ 305482 string characters out of 6134596
+ 372322 words of memory out of 5000000
+ 19868 multiletter control sequences out of 15000+600000
+ 9652 words of font info for 62 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 39i,14n,66p,10384b,395s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on thesis.pdf (53 pages).
