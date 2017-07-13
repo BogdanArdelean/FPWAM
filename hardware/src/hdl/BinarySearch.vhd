@@ -39,7 +39,6 @@ entity BinarySearch is
                found               : out std_logic;
                -- Memory interface
                memory_in           : in std_logic_vector(kWordWidth - 1 downto 0);
-               memory_valid        : in std_logic;
                memory_address_out  : out std_logic_vector(kMemAddressWidth - 1 downto 0);
                memory_read         : out std_logic
       );
@@ -108,7 +107,7 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         mem_word <= (others => '0');
-      elsif wr_mem_word = '1' and memory_valid = '1' then
+      elsif wr_mem_word = '1' then
         mem_word <= memory_in;
       end if;
     end if;
@@ -125,7 +124,7 @@ begin
     end if;
   end process FSM;
 
-  NEXT_STATE_DECODE: process(cr_state, start_search, memory_in, memory_valid)
+  NEXT_STATE_DECODE: process(cr_state, start_search, memory_in, mem_word, search_word_reg, low_addr_reg, high_addr_Reg)
   begin
     nx_state <= cr_state;
     case(cr_state) is
@@ -136,11 +135,7 @@ begin
           nx_state <= idle_t;
         end if;
       when wait_mem_t =>
-        if memory_valid = '1' then
           nx_state <= decision_t;
-        else
-          nx_state <= wait_mem_t;
-        end if;
       when decision_t =>
         if mem_word = search_word_reg or low_addr_reg >= high_addr_reg then
           nx_state <= done_t;
@@ -154,7 +149,7 @@ begin
      end case;
    end process NEXT_STATE_DECODE;
 
-  CONTROL_AND_OUTPUT: process(cr_state, start_search, memory_valid)
+  CONTROL_AND_OUTPUT: process(cr_state, start_search, low_addr_reg, high_addr_reg, low_address, high_address, search_word_reg, mem_word)
   begin
 
     wr_low             <= '0';
@@ -179,7 +174,6 @@ begin
         end if;
       when wait_mem_t =>
         memory_read <= '1';
-        wr_mem_word <= memory_valid;
       when decision_t =>
         wr_low         <= '1';
         wr_high        <= '1';

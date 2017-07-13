@@ -5,65 +5,99 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 package FpwamPkg is
-  constant kWamAddressWidth     : natural := 16;
-  constant kWamWordWidth        : natural := 18;
-  constant kWamPdlAddressWidth  : natural := 10;
-  constant kGPRAddressWidth     : natural := 4;
-  constant kFunctorWidth        : natural := 12;
-  constant kArityWidth          : natural := kGPRAddressWidth;
-  constant kWamInstructionWidth : natural := 32;
-  constant kWamInstrMemWidth    : natural := 10;
-  constant kWamHeapStart        : std_logic_vector(kWamAddressWidth -1 downto 0) := (others=>'0');
-  constant kWamStackStart       : std_logic_vector(kWamAddressWidth -1 downto 0) := std_logic_vector(unsigned(2**(kWamAddressWidth-1)+1, kWamAddressWidth));
+  constant kWamAddressWidth      : natural := 16;
+  constant kWamWordWidth         : natural := 18;
+  constant kWamPdlAddressWidth   : natural := 10;
+  constant kWamTrailAddressWidth : natural := 10;
+  constant kGPRAddressWidth      : natural := 4;
+  constant kFunctorWidth         : natural := 12;
+  constant kArityWidth           : natural := kGPRAddressWidth;
+  constant kWamInstructionWidth  : natural := 32;
+  constant kWamInstrMemWidth     : natural := 10;
+  constant kWamHeapStart         : std_logic_vector(kWamAddressWidth -1 downto 0) := (others=>'0');
+  constant kWamStackStart        : std_logic_vector(kWamAddressWidth -1 downto 0) := std_logic_vector(to_unsigned(2**(kWamAddressWidth-1)+1, kWamAddressWidth));
 
   -- Possible address inputs for memory (eg: MA_H_t => Memory Address from register H)
   type mem_addr_input_t is (MA_H_t, MA_Hplus1_t, MA_deref_unit_t, MA_untag_deref_t, MA_bind_unit_1_t, MA_bind_unit_2_t,
-                            MA_unify_unit_t, MA_stack_addr_t, MA_S_t, MA_addr_t, MA_Ep2orB_t, MA_newE_t, MA_newEp1_t, MA_newEp2_t, MA_E_t, MA_Ep1_t);
+                            MA_unify_unit_t, MA_stack_addr_t, MA_S_t, MA_addr_t, MA_Ep2orB_t, MA_newE_t, MA_newEp1_t,
+                            MA_newEp2_t, MA_E_t, MA_Ep1_t, MA_newB_t, MA_newBNRi_t, MA_newBNRip1_t, MA_newBI_t, MA_newBIp1_t,
+                            MA_B_t, MA_BI_t, MA_BIp1_t, MA_BNRI_t, MA_BNRIp1_t, MA_unwind_trail_t, MA_BImem_port1_t, MA_DFC_t);
   -- Possible input sources for memory
   type mem_port_input_t is ( MI_str_Hplus1_t, MI_constant_t, MI_GPR_t, MI_GPR2_t, MI_bind_unit_1_t, MI_bind_unit_2_t, MI_unify_unit_t,
-                             MI_mem_port1_t, MI_mem_port2_t, MI_ref_H_t, MI_ref_addr_t, MI_E_t, MI_CP_t);
+                             MI_mem_port1_t, MI_mem_port2_t, MI_ref_H_t, MI_ref_addr_t, MI_E_t, MI_CP_t, MI_B_t, MI_TR_t, MI_NRAGRGS_t, MI_unwind_trail_t, MI_H_t, MI_dfc_t, MI_deref_t,  MI_lis_Hplus1_t, MI_P_t);
   -- Possible input sources for H register
-  type h_input_t        is (HI_p1_t, HI_p2_t);
+  type h_input_t        is (HI_p1_t, HI_p2_t, HI_HB_t, HI_mem_port1_t, HI_mem_port2_t, HI_Hpconstant_t);
   -- Possible input sources for S register
-  type s_input_t        is (SI_untag_deref_p1_t, SI_p1_t);
+  type s_input_t        is (SI_untag_deref_p1_t, SI_p1_t, SI_untag_deref_t, SI_pconstant_t);
   -- Possible input sources for P register
-  type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t, PI_mem_port1_t, PI_mem_port2_t);
+  type p_input_t        is (PI_pinstr_size_t, PI_p1_t, PI_CP_t, PI_instr_t, PI_mem_port1_t, PI_mem_port2_t, PI_PpI_t, PI_bmem_port1_t, PI_constant_t);
   -- Possible input sources for E register
   type e_input_t        is (EI_newE_t, EI_mem_port1_t, EI_mem_port2_t);
   -- Possible input sources for CP register
   type cp_input_t       is (CPI_P_t, CPI_mem_port1_t, CPI_mem_port2_t);
+  -- Possible input sources for B Register
+  type b_input_t        is (BRI_newB_t, BRI_mem_port1_t, BRI_mem_port2_t);
+  -- Possible input sources for TR Register
+  type tr_input_t       is (TRI_Trp1_t, TRI_mem_port1_t, TRI_mem_port2_t);
+  -- Possible input sources for HB Register
+  type hb_input_t       is (HBI_H_t, HBI_mem_port1_t, HBI_mem_port2_t);
+  -- Possible input sources for NRARGS register
+  type nrargs_input_t   is (NRARGSI_instr_t, NRARGSI_mem_port1_t, NRARGSI_mem_port2_t);
   -- Possible input sources for General Purpose Registers
-  type GPR_input_t      is (GPRI_ref_H_t, GPRI_str_H_t, GPRI_mem_port1_t, GPRI_mem_port2_t, GPRI_ref_addr_t, GPRI_gpr2_t);
+  type GPR_input_t      is (GPRI_ref_H_t, GPRI_str_H_t, GPRI_lis_H_t, GPRI_con_t, GPRI_mem_port1_t, GPRI_mem_port2_t, GPRI_ref_addr_t, GPRI_gpr2_t, GPRI_gpr1_t,  GPRI_deref_t, GPRI_constant_t);
+  -- Possible input sources for General Purpose Registers address
+  type GPR_addr_input_t is (GPRA_instr_t, GPRA_I_t, GPRA_Ip1_t, GPRA_1_t);
   -- Possible input sources for deref unit
-  type deref_input_t    is (DI_GPR_t, DI_unify_unit_t);
+  type deref_input_t    is (DI_GPR_t, DI_unify_unit_t, DI_EYnp2_t, DI_mem_port1_t);
   -- Possible input sources for bind unit
   type bind_input_t     is (BI_deref_unit_t, BI_mem_port1_t, BI_unify_unit_t);
   -- Possible input sources for trail unit
-  type trail_input_t    is (TI_bind_output_t);
+  type trail_input_t    is (TI_bind_output_t, TI_unwind_trail_t, TI_deref_t);
   -- WAM execution modes
   type wam_mode_t       is (mode_write_t, mode_read_t);
   -- Types of objects supported in WAM
-  type tag_t            is (tag_str_t, tag_ref_t, tag_int_t, tag_lis_t);
+  type tag_t            is (tag_str_t, tag_ref_t, tag_lis_t, tag_int_t);
   -- Unify unit input
   type unify_input_t    is  (UI_GPR_t, UI_mem_port1_t, UI_mem_port2_t);
   -- Unify mem input
   type unify_mem_sel_t  is (sel_unify_t, sel_deref_t, sel_bind_t);
 
-  type instruction_t    is (i_put_structure_t   -- 0000 put_structure p/n, Xm -> [INSTRNUM][Xm][p][n]
-                           ,i_put_variable_X_t  -- 0001
-                           ,i_put_variable_Y_t  -- 0010
-                           ,i_put_value_t       -- 0011
-                           ,i_get_structure_t   -- 0100
-                           ,i_get_variable_t    -- 0101
-                           ,i_get_value_t       -- 0110
-                           ,i_unify_variable_t  -- 0111
-                           ,i_unify_value_t     -- 1000
-                           ,i_call_t            -- 1001
-                           ,i_proceed_t         -- 1010
-                           ,i_allocate_t        -- 1011
-                           ,i_deallocate_t      -- 1100
+  type instruction_t    is (i_nop                 -- 000000
+                           ,i_put_structure_t     -- 000001 put_structure p/n, Xm -> [INSTRNUM][Xm][p][n]
+                           ,i_put_variable_X_t    -- 000010
+                           ,i_put_variable_Y_t    -- 000011
+                           ,i_put_value_t         -- 000100
+                           ,i_get_structure_t     -- 000101
+                           ,i_get_variable_t      -- 000110
+                           ,i_get_value_t         -- 000111
+                           ,i_unify_variable_t    -- 001000
+                           ,i_unify_value_t       -- 001001
+                           ,i_call_t              -- 001010
+                           ,i_proceed_t           -- 001011
+                           ,i_allocate_t          -- 001100
+                           ,i_deallocate_t        -- 001101
+                           ,i_try_me_else_t       -- 001110
+                           ,i_retry_me_else_t     -- 001111
+                           ,i_trust_me_t          -- 010000
+                           ,i_put_unsafe_value_t  -- 010001
+                           ,i_put_list_t          -- 010010
+                           ,i_put_constant_t      -- 010011
+                           ,i_get_list_t          -- 010100
+                           ,i_get_constant_t      -- 010101
+                           ,i_unify_local_value_t -- 010110
+                           ,i_unify_constant_t    -- 010111
+                           ,i_unify_void          -- 011000
+                           ,i_try_t               -- 011001
+                           ,i_retry_t             -- 011010
+                           ,i_trust_t             -- 011011
+                           ,i_execute_t           -- 011100
+                           ,i_unify_structure_t   -- 011101
+                           ,i_switch_on_term_t    -- 011110
+                           ,i_fail_t              -- 011111
+                           ,i_switch_on_int_str_t -- 100000
+                           ,i_unify_list_t        -- 100001
                            );
-  constant kInstrDecodeWidth : integer := 4;
+  constant kInstrDecodeWidth : integer := 6;
 
 
   function fpwam_tag           (word : std_logic_vector) return tag_t;
@@ -76,6 +110,7 @@ package FpwamPkg is
   function fpwam_instr_arity   (word : std_logic_vector) return std_logic_vector;
   function fpwam_var_on_stack  (word : std_logic_vector) return boolean;
   function fpwam_var_stack_addr(instr : std_logic_vector; E : std_logic_vector) return std_logic_vector;
+  function to_std_logic        (bool : boolean) return std_logic;
 end FpwamPkg;
 
 package body FpwamPkg is
@@ -135,4 +170,14 @@ package body FpwamPkg is
       result := std_logic_vector(unsigned(instr(kGPRAddressWidth + kWamWordWidth - 1 downto kWamWordWidth)) + unsigned(E) + 2);
       return result;
   end function;
+
+  function to_std_logic(bool : boolean) return std_logic is
+    begin
+      if bool then
+        return('1');
+      else
+        return('0');
+      end if;
+  end function;
+
 end package body;

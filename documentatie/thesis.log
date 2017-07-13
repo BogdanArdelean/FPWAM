@@ -1,0 +1,1214 @@
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017) (preloaded format=xelatex 2017.5.23)  13 JUL 2017 05:46
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**thesis.tex
+(./thesis.tex
+LaTeX2e <2017-04-15>
+Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/fontspec/fontspec.sty
+(/usr/local/texlive/2017/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2017/05/13 L3 programming layer (loader) 
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/l3kernel/expl3-code.tex
+Package: expl3 2017/05/13 L3 programming layer (code)
+\c_max_int=\count88
+\l_tmpa_int=\count89
+\l_tmpb_int=\count90
+\g_tmpa_int=\count91
+\g_tmpb_int=\count92
+\g__prg_map_int=\count93
+\c_log_iow=\count94
+\l_iow_line_count_int=\count95
+\l__iow_line_target_int=\count96
+\l__iow_one_indent_int=\count97
+\l__iow_indent_int=\count98
+\c_zero_dim=\dimen103
+\c_max_dim=\dimen104
+\l_tmpa_dim=\dimen105
+\l_tmpb_dim=\dimen106
+\g_tmpa_dim=\dimen107
+\g_tmpb_dim=\dimen108
+\c_zero_skip=\skip43
+\c_max_skip=\skip44
+\l_tmpa_skip=\skip45
+\l_tmpb_skip=\skip46
+\g_tmpa_skip=\skip47
+\g_tmpb_skip=\skip48
+\c_zero_muskip=\muskip10
+\c_max_muskip=\muskip11
+\l_tmpa_muskip=\muskip12
+\l_tmpb_muskip=\muskip13
+\g_tmpa_muskip=\muskip14
+\g_tmpb_muskip=\muskip15
+\l_keys_choice_int=\count99
+\c__fp_leading_shift_int=\count100
+\c__fp_middle_shift_int=\count101
+\c__fp_trailing_shift_int=\count102
+\c__fp_big_leading_shift_int=\count103
+\c__fp_big_middle_shift_int=\count104
+\c__fp_big_trailing_shift_int=\count105
+\c__fp_Bigg_leading_shift_int=\count106
+\c__fp_Bigg_middle_shift_int=\count107
+\c__fp_Bigg_trailing_shift_int=\count108
+\l__sort_length_int=\count109
+\l__sort_min_int=\count110
+\l__sort_top_int=\count111
+\l__sort_max_int=\count112
+\l__sort_true_max_int=\count113
+\l__sort_block_int=\count114
+\l__sort_begin_int=\count115
+\l__sort_end_int=\count116
+\l__sort_A_int=\count117
+\l__sort_B_int=\count118
+\l__sort_C_int=\count119
+\c_empty_box=\box26
+\l_tmpa_box=\box27
+\l_tmpb_box=\box28
+\g_tmpa_box=\box29
+\g_tmpb_box=\box30
+\l__box_top_dim=\dimen109
+\l__box_bottom_dim=\dimen110
+\l__box_left_dim=\dimen111
+\l__box_right_dim=\dimen112
+\l__box_top_new_dim=\dimen113
+\l__box_bottom_new_dim=\dimen114
+\l__box_left_new_dim=\dimen115
+\l__box_right_new_dim=\dimen116
+\l__box_internal_box=\box31
+\l__coffin_internal_box=\box32
+\l__coffin_internal_dim=\dimen117
+\l__coffin_offset_x_dim=\dimen118
+\l__coffin_offset_y_dim=\dimen119
+\l__coffin_x_dim=\dimen120
+\l__coffin_y_dim=\dimen121
+\l__coffin_x_prime_dim=\dimen122
+\l__coffin_y_prime_dim=\dimen123
+\c_empty_coffin=\box33
+\l__coffin_aligned_coffin=\box34
+\l__coffin_aligned_internal_coffin=\box35
+\l_tmpa_coffin=\box36
+\l_tmpb_coffin=\box37
+\l__coffin_display_coffin=\box38
+\l__coffin_display_coord_coffin=\box39
+\l__coffin_display_pole_coffin=\box40
+\l__coffin_display_offset_dim=\dimen124
+\l__coffin_display_x_dim=\dimen125
+\l__coffin_display_y_dim=\dimen126
+\l__coffin_bounding_shift_dim=\dimen127
+\l__coffin_left_corner_dim=\dimen128
+\l__coffin_right_corner_dim=\dimen129
+\l__coffin_bottom_corner_dim=\dimen130
+\l__coffin_top_corner_dim=\dimen131
+\l__coffin_scaled_total_height_dim=\dimen132
+\l__coffin_scaled_width_dim=\dimen133
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/l3kernel/l3xdvipdfmx.def
+File: l3xdvidpfmx.def 2017/03/18 v L3 Experimental driver: xdvipdfmx
+\l__driver_tmp_box=\box41
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2017/05/13 L3 Experimental document command parser
+\l__xparse_current_arg_int=\count120
+\g__xparse_grabber_int=\count121
+\l__xparse_m_args_int=\count122
+\l__xparse_mandatory_args_int=\count123
+\l__xparse_v_nesting_int=\count124
+)
+Package: fontspec 2017/03/31 v2.6a Font selection for XeLaTeX and LuaLaTeX
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
+Package: fontspec-xetex 2017/03/31 v2.6a Font selection for XeLaTeX and LuaLaTe
+X
+\l__fontspec_script_int=\count125
+\l__fontspec_language_int=\count126
+\l__fontspec_strnum_int=\count127
+\l__fontspec_tmp_int=\count128
+\l__fontspec_em_int=\count129
+\l__fontspec_emdef_int=\count130
+\l__fontspec_strong_int=\count131
+\l__fontspec_strongdef_int=\count132
+\l__fontspec_tmpa_dim=\dimen134
+\l__fontspec_tmpb_dim=\dimen135
+\l__fontspec_tmpc_dim=\dimen136
+\g__file_internal_ior=\read1
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2017/04/05 v2.0i Standard LaTeX package
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/tuenc.def
+File: tuenc.def 2017/04/05 v2.0i Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding TU on input line 82.
+))
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \fontspec with sig. 'O{}mO{}' on line 472.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \setmainfont with sig. 'O{}mO{}' on line 483.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \setsansfont with sig. 'O{}mO{}' on line 503.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \setmonofont with sig. 'O{}mO{}' on line 523.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \setromanfont with sig. 'O{}mO{}' on line 543.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \setmathrm with sig. 'O{}mO{}' on line 547.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \setboldmathrm with sig. 'O{}mO{}' on line 555.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \setmathsf with sig. 'O{}mO{}' on line 563.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \setmathtt with sig. 'O{}mO{}' on line 571.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newfontfamily with sig. 'mO{}mO{}' on line 586.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newfontface with sig. 'mO{}mO{}' on line 603.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \defaultfontfeatures with sig. 't+om' on line 614.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \addfontfeatures with sig. 'm' on line 645.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newfontfeature with sig. 'mm' on line 672.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newAATfeature with sig. 'mmmm' on line 686.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newopentypefeature with sig. 'mmm' on line 700.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newICUfeature with sig. 'mmm' on line 720.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \aliasfontfeature with sig. 'mm' on line 724.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \aliasfontfeatureoption with sig. 'mmm' on line 745.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newfontscript with sig. 'mm' on line 778.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newfontlanguage with sig. 'mm' on line 782.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \DeclareFontsExtensions with sig. 'm' on line 786.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \IfFontFeatureActiveTF with sig. 'mmm' on line 797.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \EncodingCommand with sig. 'mO{}m' on line 3438.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \EncodingAccent with sig. 'mm' on line 3444.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \EncodingSymbol with sig. 'mm' on line 3450.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \EncodingComposite with sig. 'mmm' on line 3456.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \EncodingCompositeCommand with sig. 'mmm' on line 3462.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \DeclareUnicodeEncoding with sig. 'mm' on line 3487.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \UndeclareSymbol with sig. 'm' on line 3493.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \UndeclareComposite with sig. 'mm' on line 3501.
+.................................................
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/fontspec/fontspec.cfg)
+LaTeX Info: Redefining \itshape on input line 3686.
+LaTeX Info: Redefining \slshape on input line 3691.
+LaTeX Info: Redefining \scshape on input line 3696.
+LaTeX Info: Redefining \upshape on input line 3701.
+LaTeX Info: Redefining \em on input line 3731.
+LaTeX Info: Redefining \emph on input line 3756.
+LaTeX Info: Redefining \- on input line 3807.
+.................................................
+. LaTeX info: "xparse/redefine-command"
+. 
+. Redefining command \oldstylenums with sig. 'm' on line 3902.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \liningnums with sig. 'm' on line 3906.
+.................................................
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/xltxtra/xltxtra.sty
+Package: xltxtra 2016/01/21 v0.6 Improvements for the "XeLaTeX" format
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/realscripts/realscripts.sty
+Package: realscripts 2016/02/13 v0.3d Access OpenType subscripts and superscrip
+ts
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \fakesubscript with sig. 'm' on line 19.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \fakesuperscript with sig. 'm' on line 22.
+.................................................
+.................................................
+. LaTeX info: "xparse/redefine-command"
+. 
+. Redefining command \textsubscript with sig. 's' on line 25.
+.................................................
+.................................................
+. LaTeX info: "xparse/redefine-command"
+. 
+. Redefining command \textsuperscript with sig. 's' on line 28.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \realsubscript with sig. 'm' on line 45.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \realsuperscript with sig. 'm' on line 60.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \textsubsuperscript with sig. 'sO{l}mm' on line 138.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \textsupersubscript with sig. 'sO{l}mm' on line 143.
+.................................................
+\subsupersep=\dimen137
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/metalogo/metalogo.sty
+Package: metalogo 2010/05/29 v0.12 Extended TeX logo macros
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: xetex.def on input line 99.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-def/xetex.def
+File: xetex.def 2016/07/11 v4.10 LaTeX color/graphics driver for XeTeX (L3/RRM/
+JK)
+))
+\Gin@req@height=\dimen138
+\Gin@req@width=\dimen139
+)
+\xl@everylogo=\toks15
+\xl@@everylogo=\toks16
+LaTeX Info: Redefining \TeX on input line 193.
+LaTeX Info: Redefining \LaTeX on input line 202.
+LaTeX Info: Redefining \LaTeXe on input line 219.
+)
+\l__xetex_show_hyphens_wrapping_box=\box42
+\l__xetex_show_hyphens_temp_box=\box43
+\l__xetex_show_hyphens_final_box=\box44
+\g__xetex_show_hyphens_word_box=\box45
+)
+(/usr/local/texlive/2017/texmf-dist/tex/xelatex/xunicode/xunicode.sty
+File: xunicode.sty 2011/09/09 v0.981 provides access to latin accents and many 
+other characters in Unicode lower plane
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/tipa/t3enc.def
+File: t3enc.def 2001/12/31 T3 encoding
+)
+\tipaTiiicode=\count133
+\tipasavetokens=\toks17
+\tipachecktokens=\toks18
+)
+\g__fontspec_family_TimesNewRoman_int=\count134
+.................................................
+. fontspec info: "defining-font"
+. 
+. Font family 'TimesNewRoman(0)' created for font 'Times New Roman' with
+. options [Mapping=tex-text,Ligatures=TeX,Mapping=tex-text].
+.  
+.  This font family consists of the following NFSS series/shapes:
+.  
+. - 'normal' (m/n) with NFSS spec.: <->"Times New
+. Roman/OT:script=latn;language=DFLT;mapping=tex-text;"
+. - 'small caps'  (m/sc) with NFSS spec.: 
+. - 'bold' (bx/n) with NFSS spec.: <->"Times New
+. Roman/B/OT:script=latn;language=DFLT;mapping=tex-text;"
+. - 'bold small caps'  (bx/sc) with NFSS spec.: 
+. - 'italic' (m/it) with NFSS spec.: <->"Times New
+. Roman/I/OT:script=latn;language=DFLT;mapping=tex-text;"
+. - 'italic small caps'  (m/itsc) with NFSS spec.: 
+. - 'bold italic' (bx/it) with NFSS spec.: <->"Times New
+. Roman/BI/OT:script=latn;language=DFLT;mapping=tex-text;"
+. - 'bold italic small caps'  (bx/itsc) with NFSS spec.: 
+.................................................
+LaTeX Info: Redefining \rmfamily on input line 17.
+ (./cs.sty
+\hour=\count135
+\minute=\count136
+\dow=\count137
+\leap=\count138
+\x=\count139
+\y=\count140
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 52.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2016/11/05 v2.16a AMS math features
+\@mathmargin=\skip49
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks19
+\ex@=\dimen140
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen141
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count141
+LaTeX Info: Redefining \frac on input line 213.
+\uproot@=\count142
+\leftroot@=\count143
+LaTeX Info: Redefining \overline on input line 375.
+\classnum@=\count144
+\DOTSCASE@=\count145
+LaTeX Info: Redefining \ldots on input line 472.
+LaTeX Info: Redefining \dots on input line 475.
+LaTeX Info: Redefining \cdots on input line 596.
+\Mathstrutbox@=\box46
+\strutbox@=\box47
+\big@size=\dimen142
+LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
+\macc@depth=\count146
+\c@MaxMatrixCols=\count147
+\dotsspace@=\muskip16
+\c@parentequation=\count148
+\dspbrk@lvl=\count149
+\tag@help=\toks20
+\row@=\count150
+\column@=\count151
+\maxfields@=\count152
+\andhelp@=\toks21
+\eqnshift@=\dimen143
+\alignsep@=\dimen144
+\tagshift@=\dimen145
+\tagwidth@=\dimen146
+\totwidth@=\dimen147
+\lineht@=\dimen148
+\@envbody=\toks22
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks23
+LaTeX Info: Redefining \[ on input line 2817.
+LaTeX Info: Redefining \] on input line 2818.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup5
+\symAMSb=\mathgroup6
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xy.sty
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xy.tex Bootstrap'ing:
+catcodes, docmode,
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xyrecat.tex)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xyidioms.tex)
+
+ Xy-pic version 3.8.9 <2013/10/06>
+ Copyright (c) 1991-2013 by Kristoffer H. Rose <krisrose@tug.org> and others
+ Xy-pic is free software: see the User's Guide for details.
+
+Loading kernel: messages; fonts; allocations: state,
+\X@c=\dimen149
+\Y@c=\dimen150
+\U@c=\dimen151
+\D@c=\dimen152
+\L@c=\dimen153
+\R@c=\dimen154
+\Edge@c=\toks24
+\X@p=\dimen155
+\Y@p=\dimen156
+\U@p=\dimen157
+\D@p=\dimen158
+\L@p=\dimen159
+\R@p=\dimen160
+\Edge@p=\toks25
+\X@origin=\dimen161
+\Y@origin=\dimen162
+\X@xbase=\dimen163
+\Y@xbase=\dimen164
+\X@ybase=\dimen165
+\Y@ybase=\dimen166
+\X@min=\dimen167
+\Y@min=\dimen168
+\X@max=\dimen169
+\Y@max=\dimen170
+\lastobjectbox@=\box48
+\zerodotbox@=\box49
+\almostz@=\dimen171
+ direction,
+\d@X=\dimen172
+\d@Y=\dimen173
+\K@=\count153
+\KK@=\count154
+\Direction=\count155
+\K@dXdY=\dimen174
+\K@dYdX=\dimen175
+\xyread@=\read2
+\xywrite@=\write3
+\csp@=\count156
+\quotPTK@=\dimen176
+
+utility macros; pictures: \xy, positions,
+\swaptoks@@=\toks26
+\connectobjectbox@@=\box50
+ objects,
+\styletoks@=\toks27
+ decorations;
+kernel objects: directionals, circles, text; options; algorithms: directions,
+edges, connections;  Xy-pic loaded)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+Package: xy 2013/10/06 Xy-pic version 3.8.9
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xymatrix.tex
+ Xy-pic option: Matrix feature v.3.14
+\Row=\count157
+\Col=\count158
+\queue@=\toks28
+\queue@@=\toks29
+\qcount@=\count159
+\qcount@@=\count160
+\matrixsize@=\count161
+ loaded)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xypic/xyarrow.tex
+ Xy-pic option: Arrow and Path feature v.3.9 path, \ar, loaded))
+(./romanian.sty)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/algorithms/algorithm.sty
+Invalid UTF-8 byte or sequence at line 11 replaced by U+FFFD.
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm floating environme
+nt
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count162
+\float@exts=\toks30
+\float@box=\box51
+\@float@everytoks=\toks31
+\@floatcapt=\box52
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks32
+\c@algorithm=\count163
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+Package: algpseudocode 
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic\c {s}tyle
+\c@ALG@line=\count164
+\c@ALG@rem=\count165
+\c@ALG@nested=\count166
+\ALG@tlm=\skip52
+\ALG@thistlm=\skip53
+\c@ALG@Lnr=\count167
+\c@ALG@blocknr=\count168
+\c@ALG@storecount=\count169
+\c@ALG@tmpcounter=\count170
+\ALG@tmplength=\skip54
+)
+Document Style - pseudocode environments for use with the `algorithmicx\c {s}ty
+le
+) (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: xetex.def on input line 147.
+)
+(./thesis.aux (./guideline.aux) (./apendix.aux))
+\openout1 = `thesis.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 71.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 71.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/tipa/t3cmr.fd
+File: t3cmr.fd 2001/12/31 TIPA font definitions
+)
+LaTeX Font Info:    ... okay on input line 71.
+.................................................
+. fontspec info: "setup-math"
+. 
+. Adjusting the maths setup (use [no-math] to avoid this).
+.................................................
+\symlegacymaths=\mathgroup7
+LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 71.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 71.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 71.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 71.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 71.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 71.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 71.
+LaTeX Font Info:    Redeclaring math accent \check on input line 71.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 71.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 71.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 71.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 71.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `normal' on input line 71.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> TU/TimesNewRoman(0)/m/n on input line 7
+1.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `bold' on input line 71.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/m/n on input line 
+71.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/m/n on 
+input line 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> TU/TimesNewRoman(0)/m/it on input line
+ 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/bx/n on input line
+ 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 71.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/bx/n on
+ input line 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> TU/TimesNewRoman(0)/bx/it on input li
+ne 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 71.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 71.
+File: img/utcn.jpg Graphic file (type QTm)
+
+<use  "img/utcn.jpg" > [4
+
+]
+File: img/utcn.jpg Graphic file (type QTm)
+ <use  "img/utcn.jpg" >
+LaTeX Font Info:    Try loading font information for U+lasy on input line 123.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msa on input line 123.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 123.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Overfull \hbox (25.93462pt too wide) in paragraph at lines 123--128
+[][] 
+ []
+
+[5] [6]
+File: img/utcn.jpg Graphic file (type QTm)
+ <use  "img/utcn.jpg" >
+Overfull \hbox (23.27548pt too wide) in paragraph at lines 188--195
+[]\TU/TimesNewRoman(0)/m/n/12 , legitimat(ă)
+ []
+
+
+Overfull \hbox (48.09781pt too wide) in paragraph at lines 188--195
+\TU/TimesNewRoman(0)/m/n/12 versităţii Tehnice din Cluj-Napoca, sesiunea [] a a
+nului universitar [],
+ []
+
+[7]
+\openout2 = `guideline.aux'.
+
+ (./guideline.tex) [8
+
+] (./thesis.toc [9
+
+
+])
+\tf@toc=\write4
+\openout4 = `thesis.toc'.
+
+ [10]
+Capitolul 1.
+
+Overfull \hbox (25.51172pt too wide) in paragraph at lines 248--250
+\TU/TimesNewRoman(0)/m/n/12 La jumătatea anilor 1980 a apărut primul circuit in
+tegrat comercial de tipul FPGA(Field-Programmable
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [11
+
+]
+LaTeX Font Info:    Font shape `TU/TimesNewRoman(0)/m/sl' in size <12> not avai
+lable
+(Font)              Font shape `TU/TimesNewRoman(0)/m/it' tried instead on inpu
+t line 291.
+
+[12]
+Capitolul 2.
+[13
+
+] [14] [15] [16]
+Capitolul 3.
+File: img/FPGA-Architecture.png Graphic file (type QTm)
+<use  "img/FPGA-Architecture.png" > [17
+
+]
+File: img/FPGA_cell_example.png Graphic file (type QTm)
+ <use  "img/FPGA_cell_example.png" >
+Overfull \hbox (3.41965pt too wide) in paragraph at lines 431--432
+[]\TU/TimesNewRoman(0)/m/n/12 Elementele de rutare din FPGA sunt folosite pentr
+u interconectarea blocurilor logice printr-
+ []
+
+File: img/switch-box.jpg Graphic file (type QTm)
+<use  "img/switch-box.jpg" >
+Underfull \hbox (badness 10000) in paragraph at lines 441--442
+
+ []
+
+[18] [19] [20] [21]
+Capitolul 4.
+[22
+
+] [23]
+Overfull \hbox (22.11134pt too wide) in paragraph at lines 584--585
+[]\TU/TimesNewRoman(0)/m/n/12 Structurile sunt niște termeni non-variabili. Pen
+tru a reprezenta o structură de tipul $\OML/cmm/m/it/12 f\OT1/cmr/m/n/12 (\OML/
+cmm/m/it/12 t[]; :::; t[]\OT1/cmr/m/n/12 )$\TU/TimesNewRoman(0)/m/n/12 ,
+ []
+
+[24] [25] [26]
+Overfull \hbox (23.56647pt too wide) in paragraph at lines 697--698
+[]\TU/TimesNewRoman(0)/m/n/12 vârful stivei $\OML/cmm/m/it/12 TRAIL$ \TU/TimesN
+ewRoman(0)/m/n/12 (valoarea registrului $\OML/cmm/m/it/12 TR$\TU/TimesNewRoman(
+0)/m/n/12 ) - pentru a efectua operația auxiliara $\OML/cmm/m/it/12 unwind[]rai
+l$
+ []
+
+[27] [28]
+Overfull \hbox (0.97533pt too wide) in paragraph at lines 760--761
+[]\TU/TimesNewRoman(0)/m/n/12 Tipul acesta de instrucțiune este responsabil să 
+încarce argumentele capetelor următoarelor
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 769--778
+[][] 
+ []
+
+
+Underfull \hbox (badness 1142) in paragraph at lines 782--783
+[]\TU/TimesNewRoman(0)/m/n/12 Inițializează variablia $\OML/cmm/m/it/12 n$ \TU/
+TimesNewRoman(0)/m/n/12 de pe stivă din
+ []
+
+
+Underfull \hbox (badness 1448) in paragraph at lines 782--783
+\TU/TimesNewRoman(0)/m/n/12 mediul curent la o valoarea nelegată și
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 786--794
+[][] 
+ []
+
+[29]
+Underfull \hbox (badness 1728) in paragraph at lines 798--799
+[]\TU/TimesNewRoman(0)/m/n/12 Dacă adresa dereferențiată variabilei $\OML/cmm/m
+/it/12 Y[]$
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 802--816
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 824--832
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 845--851
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 859--869
+[][] 
+ []
+
+[30]
+Overfull \hbox (12.0pt too wide) in paragraph at lines 877--902
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 915--931
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [31]
+Underfull \hbox (badness 1365) in paragraph at lines 937--938
+[]\TU/TimesNewRoman(0)/m/n/12 În modul $\OML/cmm/m/it/12 read$\TU/TimesNewRoman
+(0)/m/n/12 , unifică variabila $\OML/cmm/m/it/12 V[]$ \TU/TimesNewRoman(0)/m/n/
+12 cu
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 941--960
+[][] 
+ []
+
+
+Overfull \hbox (3.00853pt too wide) in paragraph at lines 964--965
+[]\TU/TimesNewRoman(0)/m/n/12 Aceste instrucțiuni sunt folosite pentru a dicta 
+mersul programului în execuție cât și alocării
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 973--987
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32]
+Overfull \hbox (12.0pt too wide) in paragraph at lines 995--1002
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1010--1017
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1025--1030
+[][] 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1043--1066
+[][] 
+ []
+
+
+Underfull \vbox (badness 2512) has occurred while \output is active []
+
+ [33]
+Underfull \hbox (badness 10000) in paragraph at lines 1083--1084
+[]$\OML/cmm/m/it/12 unwind[]stack\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 STACK\OT1/cm
+r/m/n/12 [\OML/cmm/m/it/12 B \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 n \OT1/cmr/m/n/
+12 +
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1074--1090
+[][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1106--1107
+[]$\OML/cmm/m/it/12 unwind[]stack\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 STACK\OT1/cm
+r/m/n/12 [\OML/cmm/m/it/12 B \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 n \OT1/cmr/m/n/
+12 +
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1098--1114
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [34]
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1128--1146
+[][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1159--1160
+[]$\OML/cmm/m/it/12 < found; inst >\OMS/cmsy/m/n/12  
+ []
+
+
+Overfull \hbox (18.94456pt too wide) in paragraph at lines 1159--1160
+\OML/cmm/m/it/12 binary[]search\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 val; low; high
+; CINDEX\OT1/cmr/m/n/12 )$ 
+ []
+
+
+Overfull \hbox (12.0pt too wide) in paragraph at lines 1156--1167
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [35]
+Overfull \hbox (3.1675pt too wide) in paragraph at lines 1176--1177
+[]\TU/TimesNewRoman(0)/m/n/12 operația $\OML/cmm/m/it/12 unwind[]trail\OT1/cmr/
+m/n/12 (\OML/cmm/m/it/12 a\OT1/cmr/m/n/12 1\OML/cmm/m/it/12 ;  a\OT1/cmr/m/n/12
+ 2)$ \TU/TimesNewRoman(0)/m/n/12 - dezleagă toate adresele aflate în zona de me
+morie $\OML/cmm/m/it/12 TRAIL$
+ []
+
+[36]
+Overfull \hbox (5.57813pt too wide) in paragraph at lines 1186--1187
+\TU/TimesNewRoman(0)/m/n/12 nepotrivit mașinii FPWAM. Pentru a soluționa acestă
+ problemă se vor folosi două dicționare,
+ []
+
+
+Overfull \hbox (9.50151pt too wide) in paragraph at lines 1196--1197
+[]\TU/TimesNewRoman(0)/m/n/12 Pentru a putea compila întrebări Prolog și a vizu
+aliza rezultate, mediul de executare folosește
+ []
+
+[37]
+Capitolul 5.
+File: img/architecture.png Graphic file (type QTm)
+<use  "img/architecture.png" >
+Overfull \hbox (55.42062pt too wide) in paragraph at lines 1227--1228
+ [][] 
+ []
+
+
+Underfull \vbox (badness 1248) has occurred while \output is active []
+
+ [38
+
+]
+Overfull \hbox (1.0453pt too wide) in paragraph at lines 1247--1248
+[]$\OML/cmm/m/it/12 kWamStackStart$ \TU/TimesNewRoman(0)/m/n/12 - această const
+antă determină adresa de start în memoria HEAPSTACK
+ []
+
+[39] [40]
+Overfull \hbox (22.91307pt too wide) in paragraph at lines 1308--1309
+[]\TU/lmtt/m/n/12 function fpwam_tag(word : std_logic_vector) return tag_t; \TU
+/TimesNewRoman(0)/m/n/12 - returnează eticheta
+ []
+
+
+Overfull \hbox (5.47606pt too wide) in paragraph at lines 1309--1310
+[]\TU/lmtt/m/n/12 function fpwam_value(word : std_logic_vector) return std_logi
+c_vector \TU/TimesNewRoman(0)/m/n/12 -
+ []
+
+
+Overfull \hbox (75.69994pt too wide) in paragraph at lines 1310--1311
+[]\TU/lmtt/m/n/12 function fpwam_word(word : std_logic_vector; tag : tag_t) ret
+urn std_logic_vector
+ []
+
+
+Overfull \hbox (5.65996pt too wide) in paragraph at lines 1311--1312
+[]\TU/lmtt/m/n/12 function fpwam_functor(word : std_logic_vector(kWamWordWidth 
+-1 downto
+ []
+
+[41]
+Overfull \hbox (18.01996pt too wide) in paragraph at lines 1312--1313
+[]\TU/lmtt/m/n/12 function fpwam_arity(word : std_logic_vector(kWamWordWidth -1
+ downto 0))
+ []
+
+
+Overfull \hbox (61.27995pt too wide) in paragraph at lines 1313--1314
+[]\TU/lmtt/m/n/12 function fpwam_instr(word : std_logic_vector(31 downto 0)) re
+turn instruction_t
+ []
+
+
+Overfull \hbox (30.37996pt too wide) in paragraph at lines 1314--1315
+[]\TU/lmtt/m/n/12 function fpwam_instr_addr(word : std_logic_vector) return std
+_logic_vector
+ []
+
+
+Overfull \hbox (36.55997pt too wide) in paragraph at lines 1315--1316
+[]\TU/lmtt/m/n/12 function fpwam_instr_arity(word : std_logic_vector) return st
+d_logic_vector
+ []
+
+
+Overfull \hbox (8.4344pt too wide) in paragraph at lines 1316--1317
+[]\TU/lmtt/m/n/12 function fpwam_var_on_stack(word : std_logic_vector) return b
+oolean \TU/TimesNewRoman(0)/m/n/12 - re-
+ []
+
+
+Overfull \hbox (48.91992pt too wide) in paragraph at lines 1317--1318
+[]\TU/lmtt/m/n/12 function fpwam_var_stack_addr(instr : std_logic_vector; E : s
+td_logic_vector)
+ []
+
+File: img/top-level.png Graphic file (type QTm)
+<use  "img/top-level.png" > [42]
+Overfull \hbox (18.70517pt too wide) in paragraph at lines 1342--1343
+[]\TU/lmtt/m/n/12 NEXT_STATE_DECODE: process(decoded_state, cr_state, deref_don
+e,...) \TU/TimesNewRoman(0)/m/n/12 - acest
+ []
+
+[43]
+Overfull \hbox (7.30368pt too wide) in paragraph at lines 1343--1344
+[]\TU/lmtt/m/n/12 OUTPUT_DECODE: process(cr_state, deref_done, mem_obj, ...)  \
+TU/TimesNewRoman(0)/m/n/12 - setează sem-
+ []
+
+File: img/GPR.png Graphic file (type QTm)
+<use  "img/GPR.png" > [44]
+File: img/ramtype.png Graphic file (type QTm)
+ <use  "img/ramtype.png" >
+File: img/ram.png Graphic file (type QTm)
+ <use  "img/ram.png" >
+[45] [46]
+File: img/arhitectura-software.png Graphic file (type QTm)
+ <use  "img/arhitectura-software.png" >
+File: img/bridgeh.png Graphic file (type QTm)
+ <use  "img/bridgeh.png" >
+Overfull \hbox (6.3861pt too wide) in paragraph at lines 1430--1437
+[]\TU/TimesNewRoman(0)/m/n/12 În cazul de față avem nevoie ca parser-ul WAM să 
+apeleze metodele din clasa $\OML/cmm/m/it/12 CodeContext$
+ []
+
+[47]
+File: img/bridgec.png Graphic file (type QTm)
+ <use  "img/bridgec.png" >
+Overfull \hbox (12.73425pt too wide) in paragraph at lines 1451--1452
+\TU/TimesNewRoman(0)/m/n/12 fațeze cu API-ul expus de către translator. După cu
+m se poate observa în 5.9[], apelul $\OML/cmm/m/it/12 F[]put[]variable$
+ []
+
+File: img/apicall.png Graphic file (type QTm)
+<use  "img/apicall.png" > [48] [49]
+Capitolul 6.
+[50
+
+]
+Capitolul 7.
+[51
+
+]
+Capitolul 8.
+(./thesis.bbl [52
+
+]) [53
+
+]
+\openout2 = `apendix.aux'.
+
+ (./apendix.tex
+Anexa A.
+[54
+
+
+]
+Anexa B.
+[55
+
+]
+Anexa C.
+) [56
+
+] (./thesis.aux (./guideline.aux) (./apendix.aux)) ) 
+Here is how much of TeX's memory you used:
+ 16072 strings out of 493005
+ 305482 string characters out of 6134596
+ 372322 words of memory out of 5000000
+ 19868 multiletter control sequences out of 15000+600000
+ 9652 words of font info for 62 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 39i,14n,66p,10384b,395s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on thesis.pdf (53 pages).

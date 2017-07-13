@@ -51,7 +51,7 @@ end BindUnit;
 
 
 architecture Behavioral of BindUnit is
-type state_t is (idle_t, bind_t);
+type state_t is (idle_t, bind_t, trail1_t, trail2_t);
 signal cr_state, nx_state : state_t;
 
 signal word1_reg       : std_logic_vector(kWordWidth -1 downto 0);
@@ -84,7 +84,7 @@ begin
     end if;
   end process;
 
-  NEXT_STATE: process(cr_state, start_bind)
+  NEXT_STATE: process(cr_state, start_bind, word2_reg, word1_reg)
   begin
     nx_state <= cr_state;
     case cr_state is
@@ -93,9 +93,14 @@ begin
           nx_state <= bind_t;
         end if;
       when bind_t =>
-          nx_state <= idle_t;
+           if fpwam_tag(word1_reg) = tag_ref_t
+           and ((fpwam_tag(word2_reg) /= tag_ref_t) or (unsigned(fpwam_value(word2_reg)) < unsigned(fpwam_value(word1_reg)))) then
+               nx_state <= trail1_t;
+           else
+               nx_state <= trail2_t;
+           end if; 
       when others =>
-          null;
+          nx_state <= idle_t;
     end case;
   end process;
 
@@ -117,20 +122,21 @@ begin
           register_input <= '1';
         end if;
       when bind_t =>
+        null;
+      when trail1_t =>
         bind_done <= '1';
         trail     <= '1';
-        if fpwam_tag(word1_reg) = tag_ref_t
-        and ((fpwam_tag(word2_reg) /= tag_ref_t) or (unsigned(fpwam_value(word2_reg)) < unsigned(fpwam_value(word1_reg)))) then
-          trail_input <= fpwam_value(word1_reg);
-          mem_addr1   <= fpwam_value(word1_reg);
-          mem_wr_1    <= '1';
-          mem_out1    <= word2_reg;
-        else
-          trail_input <= fpwam_value(word2_reg);
-          mem_addr2   <= fpwam_value(word2_reg);
-          mem_wr_2    <= '1';
-          mem_out2    <= word1_reg;
-        end if;
+        trail_input <= fpwam_value(word1_reg);
+        mem_addr1   <= fpwam_value(word1_reg);
+        mem_wr_1    <= '1';
+        mem_out1    <= word2_reg;
+      when trail2_t =>
+        bind_done <= '1';
+        trail     <= '1';
+        trail_input <= fpwam_value(word2_reg);
+        mem_addr2   <= fpwam_value(word2_reg);
+        mem_wr_2    <= '1';
+        mem_out2    <= word1_reg;
       when others =>
         null;
     end case;

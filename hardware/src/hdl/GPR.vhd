@@ -45,7 +45,7 @@ end GPR;
 architecture Behavioral of GPR is
 type sram is array (0 to 2**kAddressWidth) of std_logic_vector(kWordWidth - 1 downto 0);
 
-signal RAM : sram;
+signal RAM : sram := (others => (others => '0'));
 begin
 
 WRITE_PROCESS: process(clk)

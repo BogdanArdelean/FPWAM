@@ -1,0 +1,1500 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
+%%% File: thesis.tex, version 1.9, May 2016
+%%%
+%%% =============================================
+%%% This file contains a template that can be used with the package
+%%% cs.sty and LaTeX2e to produce a thesis that meets the requirements
+%%% of the Computer Science Department from the Technical University of Cluj-Napoca
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+\documentclass[12pt,a4paper,twoside]{report}    
+
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setmainfont[Mapping=tex-text]{Times New Roman}
+     
+\usepackage{cs}              
+%\usepackage{times}
+\usepackage{graphicx}
+\usepackage{latexsym}
+\usepackage{amsmath,amsbsy}
+\usepackage{amssymb}
+\usepackage[matrix,arrow]{xy}
+%\usepackage[T1]{fontenc}
+%\usepackage{ae,aecompl}
+\usepackage{romanian} %definitii pentru diacritice; 
+\usepackage{amstext}
+\usepackage{graphics}
+%\usepackage[T1]{fontenc}
+%\usepackage{ae,aecompl}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+% New definitions
+\algnewcommand\algorithmicswitch{\textbf{switch}}
+\algnewcommand\algorithmiccase{\textbf{case}}
+\algnewcommand\algorithmicassert{\texttt{assert}}
+\algnewcommand\Assert[1]{\State \algorithmicassert(#1)}%
+% New "environments"
+\algdef{SE}[SWITCH]{Switch}{EndSwitch}[1]{\algorithmicswitch\ #1\ \algorithmicdo}{\algorithmicend\ \algorithmicswitch}%
+\algdef{SE}[CASE]{Case}{EndCase}[1]{\algorithmiccase\ #1}{\algorithmicend\ \algorithmiccase}%
+\algtext*{EndSwitch}%
+\algtext*{EndCase}%
+
+\usepackage{color}
+%\usepackage{color}
+
+
+% \mastersthesis
+\diplomathesis
+% \leftchapter
+\centerchapter
+% \rightchapter
+\singlespace
+% \oneandhalfspace
+% \doublespace
+
+\renewcommand{\thesisauthor}{Bogdan Daniel ARDELEAN}    %% Your name.
+\renewcommand{\thesismonth}{Iunie}     %% Your month of graduation.
+\renewcommand{\thesisyear}{2017}      %% Your year of graduation.
+\renewcommand{\thesistitle}{FPWAM - O implementare a mașinii abstracte Warren pe FPGA} % Title
+\renewcommand{\thesissupervisor}{Dr. Ing. Zoltan Francisc BARUCH}
+\newcommand{\department}{FACULTATEA DE AUTOMATIC'A 'SI CALCULATOARE\\
+DEPARTAMENTUL CALCULATOARE}
+\newcommand{\thesis}{LUCRARE DE LICEN'T'A}
+\newcommand{\uline}[1]{\rule[0pt]{#1}{0.4pt}}
+%\renewcommand{\thesisdedication}{P'arin'tilor mei}
+\newcommand{\utcnlogo}{\includegraphics[width=15cm]{img/utcn.jpg}}
+
+\begin{document}
+%\frontmatter
+%\pagestyle{headings}
+
+\newenvironment{definition}[1][Defini'tie.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+
+%\thesistitle                    %% Generate the title page.
+%\authordeclarationpage                %% Generate the declaration page.
+
+\pagenumbering{arabic}
+\setcounter{page}{4}
+
+
+
+\begin{center}
+%\includegraphics[width=15cm]{img/tucn.jpg}  
+\utcnlogo
+
+{\bf \department}
+
+\vspace{4cm}
+
+{\bf \thesistitle} %LICENSE THESIS TITLE}
+
+\vspace{1.5cm}
+
+\thesis
+
+\vspace{6cm}
+
+Absolvent: {\bf \thesisauthor} 
+
+Conduc'ator 'stiin'tific: {\bf \thesissupervisor}
+
+\vspace{3cm}
+{\bf \thesisyear}
+\end{center}
+
+\thispagestyle{empty}
+\newpage
+
+\begin{center}
+\utcnlogo
+
+{\bf \department}
+\end{center}
+\vspace{0.5cm}
+
+%\begin{small}
+\begin{tabular}{p{7cm}p{8cm}}
+ %\hspace{-1cm}& VIZAT,\\
+ \hspace{-1cm}DECAN, & DIRECTOR DEPARTAMENT,\\
+\hspace{-1cm}{\bf Prof. dr. ing. Liviu MICLEA} & {\bf Prof. dr. ing. Rodica POTOLEA}\\  
+\end{tabular}
+ 
+\vspace{2cm}
+
+\begin{center}
+Absolvent: {\bf \thesisauthor}
+
+\vspace{1cm}
+
+{\bf \thesistitle}
+\end{center}
+
+\vspace{1cm}
+
+\begin{enumerate}
+ \item {\bf Enun'tul temei:} {\it Scurt'a descriere a temei lucr'arii de licen't'a 'si datele ini'tiale}
+\item {\bf Con'tinutul lucr'arii:} {\it (enumerarea p'ar'tilor componente) Exemplu: Pagina de prezentare, aprecierile coordonatorului de lucrare, titlul capitolului 1, titlul capitolului 2, titlul capitolului n, bibliografie, anexe.}
+\item {\bf Locul document'arii:} {\it Exemplu}: Universitatea Tehnic'a din Cluj-Napoca, Departamentul Calculatoare
+\item {\bf Consultan'ti:}
+\item {\bf Data emiterii temei:} 1 Noiembrie 2015
+\item {\bf Date pred'arii:} 17 Februarie 2017 {\it (se va completa data pred'arii)}
+  \end{enumerate}
+\vspace{1.2cm}
+
+\hspace{6cm} Absolvent: \uline{6cm} 
+
+\vspace{0.5cm}
+\hspace{6cm} Coordonator 'stiin'tific: \uline{5cm} 
+%\end{small}
+
+\thispagestyle{empty}
+
+
+\newpage
+$ $
+%\begin{center}
+%\utcnlogo
+
+%{\bf \department}
+%\end{center}
+
+\thispagestyle{empty}
+\newpage
+
+\begin{center}
+\utcnlogo
+
+{\bf \department}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{center}
+{\bf
+Declara'tie pe proprie r'aspundere privind\\ 
+autenticitatea lucr'arii de licen't'a}
+\end{center}
+\vspace{1cm}
+
+
+
+Subsemnatul(a) \\
+\uline{14.8cm}, 
+legitimat('a) cu \uline{4cm} seria \uline{3cm} nr. \uline{4cm}\\
+CNP \uline{9cm}, autorul lucr'arii \uline{2.8cm}\\
+\uline{16cm}\\
+\uline{16cm}\\
+elaborat'a 'in vederea sus'tinerii examenului de finalizare a studiilor de licen't'a la Facultatea de Automatic'a 'si Calculatoare, Specializarea \uline{7cm} din cadrul Universit'a'tii Tehnice din Cluj-Napoca, sesiunea \uline{4cm} a anului universitar \uline{3cm}, declar pe proprie r'aspundere, c'a aceast'a lucrare este rezultatul propriei activit'a'ti intelectuale, pe baza cercet'arilor mele 'si pe baza informa'tiilor ob'tinute din surse care au fost citate, 'in textul lucr'arii 'si 'in bibliografie.
+
+Declar, c'a aceast'a lucrare nu con'tine por'tiuni plagiate, iar sursele bibliografice au fost folosite cu respectarea legisla'tiei rom\ia ne 'si a conven'tiilor interna'tionale privind drepturile de autor.
+
+Declar, de asemenea, c'a aceast'a lucrare nu a mai fost prezentat'a 'in fa'ta unei alte comisii de examen de licen't'a.
+
+'In cazul constat'arii ulterioare a unor declara'tii false, voi suporta sanc'tiunile administrative, respectiv, \emph{anularea examenului de licen't'a}.
+
+\vspace{1.5cm}
+
+Data \hspace{8cm} Nume, Prenume
+
+\vspace{0.5cm}
+
+\uline{3cm} \hspace{5cm} \uline{5cm}
+
+\vspace{1cm}
+\hspace{9.4cm}Semn'atura
+
+\thispagestyle{empty}
+
+\newpage
+
+
+%\listoftables
+%\listoffigures
+
+%\clearpage 
+%\newpage
+
+%\begin{comment}
+\include{guideline} 
+%\end{comment}
+
+\newpage
+
+\tableofcontents
+\newpage
+
+
+
+\chapter{Introducere - Contextul proiectului}
+\label{chap:intro}
+\pagestyle{headings}
+
+%\begin{itemize}
+%\item Contextul
+%\item Conturarea domeniului exact al temei
+%\item Reprezint'a cca. 5\% din lucrare
+%\end{itemize}
+
+\section{Contextul proiectului}
+Încă din secolul XVII, cu mult înaintea calculatoarelor electronice, exista termenul \textit{calculator}. Până la jumătatea secolului XX, denotația lui era cu totul alta față de cea pe care o știm noi astăzi. Sensul acestui cuvânt referindu-se în principal la o meserie. Rolul asociat unei persoane care practica meseria de calculator, era de a efectua calcule matematice complexe în funcție de necesitățile clientului. Odată cu trecerea timpului, știința a avut întâmpinat provocări la care persoanele calculator nu mai puteau ține pasul. Această lipsă a puterii de calcul și inventarea tranzistorului au concentrat mediul industrial și academic în dezvoltarea sistemelor pe care astăzi le folosim zilnic.
+\subsection{FPGA}
+În momentul de față, majoritatea dispozitivelor de calcul existente au la bază un procesor cu scop general care execută un program croit după necesitățile utilizatorului. În ciuda imbunătățirilor constante și a flexibilității în dezvoltarea programelor acestor procesoare, arhitectura lor fixă nu se mulează întotdeauna suficient de mult pe problema pe care încearcă să o rezolve, rezultatul fiind nesatisfăcător din punctul de vedere a timpul de execuție și a amprentei energetice.\\
+La jumătatea anilor 1980 a apărut primul circuit integrat comercial de tipul FPGA(Field-Programmable Gate Array)-referință. După cum le sugerează și numele, ele sunt niște circuite integrate care pot fi configurate de câte ori este nevoie de către utilizator. Avantajul acestor circuite este în principal natura lor paralelă și consumul redus de energie electrică. Datorită avansărilor tehnologice și prețului din ce în ce mai redus, ele au crescut în popularitate și au ajuns să fie folosite în multe domenii precum: \textit{Calcul de înaltă performanță, Auto, Audio, Medical, etc}. - referință
+\subsection{Prolog}
+Prolog a fost inventat la începutul anilor 1970 de către Alain Colmerauer și colegii lui de la Universitatea din Marseille-ref. El este printre primele limbaje de uz general care au ca paradigmă de baza programarea logică. Prima implementare a acestui limbaj a fost sub forma unui interpretor scris în FORTRAN chiar de către grupul din care Colmerauer făcea parte. Chiar și sub această formă rudimentară realizările au fost mari deoarece s-a demonstrat viabilitatea unui limbaj de programare logic. După aproximativ un deceniu, David H. D. Warren a rafinat și abstractizat principiile de implementare a limbajului sub forma unei mașini abstracte care este cunoscută astăzi sub numele de WAM. Majoritatea implementărilor de success ale limbajului Prolog folosesc ca referință de bază mașina abstractă mai sus amintită datorită simplității, eficienței și robusteții care au trecut testul timpului. Datorită popularității WAM, au fost scrise multe lucrări științifice care au adus îmbunătățiri arhitecturale a mașinii inițiale cât și multe extinderi. Una dintre cele mai sensibile subiecte este paralelizarea eficientă a acestei arhitecturi în speranța de a obține rezultate practice mai bune. \\
+Prolog este de obicei asociat cu domeniul inteligenței artificiale și a lingvisticii computaționale. Cele mai des întâlnite aplicații ale limbajului fac parte din sfera mediului academic—e.g, sisteme expert, demonstrarea automată a teoremelor, NLP, planificare automată, etc.
+\subsection{Nu m-am decis}
+În contextul actual, atât domeniul circuitelor reconfigurabile, cât și domeniul inteligenței artificiale se dezvoltă cu un ritm accelerat, fiind folosite tot mai des în produse comerciale—e.g., aproape toate produsele Google folosesc elemente de inteligență artificială (Translate, Photos, etc.)-ref, Microsoft exploatează circuitele reconfigurabile pentru a accelera motorul de căutre BING-ref. În principiu orice aplicație care are la bază inteligența artificială are nevoie de un mediu de antrenare sau executare de înaltă performanță pe care procesoarele obișnuite nu îl pot oferi. Încercarea mea urmărește să utilizeze natura paralelă și performanța crescută a circuitelor FPGA, pentru a soluționa problema puterii de calcul în contextul aplicațiilor bazate pe limbajul Prolog.
+
+%Se las'a un r\ia nd liber 'intre tabel 'si paragraful anterior, respectiv posterior (table~\ref{table:nonlin}).
+%
+%\begin{table}[ht]
+%\caption{Rezultate}
+%\centering                          % tabel centrat 
+%\begin{tabular}{|c|c|c|c|}          % 4 coloane centrate 
+%\hline\hline                        % linie orizontala dubla
+%Case & Method\#1 & Method\#2 & Method\#3 \\ [0.5ex]   % inserare tabel
+%%heading
+%\hline                              % linie orizontal simpla
+%1 & 50 & 837 & 970 \\               % corpul tabelului 
+%2 & 47 & 877 & 230 \\
+%3 & 31 & 25 & 415 \\[1ex]           % [1ex] adds vertical space
+%\hline                              
+%\end{tabular}
+%  % titlul tabelului
+%\label{table:nonlin}                % \label{table:nonlin} introduce eticheta folosita pentru referirea tabelului in text; referirea in text se va face cu \ref{table:nonlin}
+%\end{table}
+%
+%Fiecare figur'a introdus'a 'in text este citat'a (de ex: 'in figura x.y este prezentat'a ...) 'si numerotat'a. 
+%Numerotarea se face astfel Figura x.y unde x reprezint'a num'arul capitolului iar y num'arul figurii 'in acel capitol. 
+%E.g.: figure~\ref{fig:imag}.
+%
+%\begin{figure}[ht]
+%    \centering
+%\includegraphics[]{img/test.jpg}
+%    \caption{Numele figurii}
+%    \label{fig:imag}
+%\end{figure}
+%
+%Fiecare capitol 'incepe pe pagin'a nou'a.
+%'In acest capitol se prezint'a tema propriu-zis'a (sub forma unei teme de proiectare sau cercetare, formulat'a exact, cu obiective clare - 2-3 pagini 'si eventuale figuri explicative).
+%
+%Reprezint'a cca. 10\% din lucrare.
+
+\chapter{Obiectivele Proiectului}
+\section{Scop}
+Scopul acestui proiect este de a realiza un sistem dedicat de execuție a programelor scrise în limbajul Prolog, urmând a fi folosit de către cercetători și ingineri care activează în domeniul inteligenței artificiale și a programării logice. Acest sistem va fi compus dintr-un procesor special optimizat pentru executarea unui set de instrucțiuni ales din limbajul Prolog, implementat pe un circuit reprogramabil de tipul FPGA, având la bază arhitectura WAM propusă de către David H. D. Warren. El va fi însoțit de o suită de programe compatibile cu sistemele de opererare din familia UNIX, care vor servi ca interfață dintre calculatorul gazdă și noul procesor, FPWAM (FPGA PROLOG WAM).
+
+\section{Obiective generale}
+Până la sfârșitul dezvoltării acestui proiect, se urmăresc atingerea următoarelor obiective principale:
+
+\begin{itemize}
+\item Studiul în detaliu a mașinii propuse de către David H. D. Warren este imperios necesară deoarece ea va sta la baza procesorului FPWAM.
+	\item Identificarea posibilelor instrucțiuni care pot fi optimizate.
+	\item După studierea tuturor surselor teoretice, următorul pas va fi acela de a concepe o arhitectură fizică care să exploateze natura paralelă a circuitelor FPGA în implementarea algoritmilor prezenți în mașina WAM.
+	\item Arhitectura proiectată să fie scalabilă, astfel încât să permită adăugarea cu ușurință a mai multor procesoare Prolog.
+	\item Implementarea efectivă pe un circuit integrat de tip FPGA.
+	\item Creșterea frecvenței de ceas prin metode de optimizare a circuitului.
+	\item Din cauza faptului că proiectul de față nu iși propune să construiască un compilator de Prolog, este necesară alegerea unuia existent cu care FPWAM să fie compatibil.
+	\item Dezvoltarea unui translator din instrucțiuni WAM în cod mașină FPWAM.
+	\item Dezvoltarea unei aplicații de comunicare între calculatorul și FPWAM.
+	\item Suita de programe dezvoltate să fie compatibile cu sistemele de operare din familia UNIX.
+\end{itemize}
+
+\section{Obiective S.M.A.R.T.}
+\subsubsection{Principiile S.M.A.R.T.}
+De cele mai multe ori scopurile și obiectivele sunt formulate fără o structură anume, având consecințe destul de grave precum imposibilitatea de urmări progresul și lipsa de predictibilitate. Metodologia S.M.A.R.T. de formulare a obiectivelor și a scopurilor este folosită cel mai des în management-ul proiectelor fiind una dintre cele mai eficiente metode în acest sens. Pentru ca un obiectiv să îndeplinească criteriile S.M.A.R.T. el trebuie să îndeplinească următoarele principii:
+
+\begin{itemize}
+	\item Specific: Cu cât obiectivul este mai specific, cu atât șansele sunt mai mari să-l obținem. El trebuie să răspundă la întrebări precum ce vreau să obțin exact, unde, cum sau când.
+	\item Measurable (măsurabil): Ca un obiectiv să fie măsurabil el trebuie să fie împărțit în elementele măsurabile, rezultatul fiind apreciat după dovezile concrete.
+	\item Attainable (realizabil): Este foarte important să punem în balanță efortul, timpul și alte costuri cu profitul și alte priorități pe care le avem.
+	\item Relevant: Obiectivul trebuie să contribuie la atingerea scopului dorit.
+	\item Time-bound (limitat de timp): Cu toții știm că termenele limită pun oamenii în mișcare, așa că obiectivele trebuie să fie constrânse de timp.
+\end{itemize}
+
+\subsubsection{Obiectivele S.M.A.R.T. ale proiectului}
+Luând în considerare principiile enumerate mai sus, s-au formulat următoarele obiective S.M.A.R.T. ale proiectului:
+
+\begin{itemize}
+	\item Realizarea unui studiu teoretic auspra implementărilor limbajului Prolog:
+		\begin{itemize}
+			\item S: Studierea și înțelegerea articolului scris de către David H. D. Warren în care introduce pentru prima oară arhitectura WAM. Studierea a altor alternative.
+			\item M: Documentarea din cel puțin două surse diferite și schițarea unei sinteze a acestora.
+			\item A: Prolog fiind un limbaj de programare popular, se găsesc multe surse din care se pot extrage informații relevante.
+			\item R: Studiind soluțiile existente și elaborând o sinteză, putem să punem în balanță avantajele și dezavantajele lor, ducând în final la alegerea optimă.
+			\item T: Studiul nu trebuie să depășească 3 luni de zile.
+		\end{itemize}
+	\item Implementarea procesorului M0 pe FPGA:
+	\begin{itemize}
+		\item S: În versiunea M0 se urmărește ca procesorul să poată unifica un fapt cu o întrebare Prolog predefinite în memoria de program.
+		\item M: Pentru ca acest obiectiv să fie îndeplinit următoarele elemente trebuie să fie implementate: arhitectura de bază formată din memorie și regiștrii,  algoritmul de unificare a faptului cu întrebarea, un set minim de instrucțiuni WAM care să permită unificarea
+		\item A: Fiind la îneceputul proiectului, există timp pentru experimente până la definitizarea arhitecturii.
+		\item R: Atingerea acestui obiectiv este un pas foarte important deoarece demonstrează viabilitatea unei implementări hardware a limbajului.
+		\item T: Cu tot cu implementare și experimente, acest proces nu trebuie să dureze mai mult de 1 lună.
+	\end{itemize}
+	\item Dezvoltarea suitei de programe pentru mediul de executare a FPWAM:
+	\begin{itemize}
+		\item S: Suita de programe trebuie să permită compilarea și executarea de programe Prolog pe FPWAM. Modulul de compilare va utiliza GPLC (Gnu Prolog Compiler).
+		\item M: Obținerea unor executabilie testate și compatibile cu sistemele de operare din familia UNIX.
+		\item A: Compilarea Prolog->WAM este efectuată de către GPLC reducând considerabil complexitatea acestui obiectiv.
+		\item R: Datorită acestor programe, interacțiunea dintre FPWAM și utilizator va fi posibilă într-un mod natural și eficient.
+		\item T: Funcționalitățile de baza trebuie să fie implementate în maxim 3 zile.
+	\end{itemize}
+	\item Implementarea procesorului M3 pe FPGA:
+	\begin{itemize}
+		\item S: În versiunea M3 procesorul va putea să execute orice program Prolog care respectă subsetul selectat de instrucțiuni.
+		\item A: Pentru ca acest obiectiv să fie îndeplinit următoarele funcționalități trebuie să fie implementate: mecanismul de apel a unui predicat,  mecanismul de backtracking, 90\% din instrucțiunile WAM.
+		\item R: Acest obiectiv duce proiectul aproape de îndeplinirea scopului final. În acest stadiu se pot face comparații și teste amănunțite.
+		\item T: Acest obiectiv trebuie să fie îndeplinit la cel puțin 15 zile înaintea de predarea proiectului.
+	\end{itemize}
+\end{itemize}
+	
+	
+%Documentarea bibliografic'a are ca obiectiv prezentarea stadiului actual al domeniului sau sub-domeniului 'in care se situeaz'a tema. 
+%'In redactarea acestui capitol ('in general a 'intregului document) se va 'tine cont de cuno'stin'tele acumulate la disciplinele dedicate din semestrul 2, anul 4 
+%(Metodologia 'Intocmirii Proiectelor, etc.), precum 'si la celelalte discipline relevante temei abordate.
+%
+%Acest capitol reprezint'a cca. 15\% din lucrare.
+%
+%Referin'tele se scriu 'in sec'tiunea Bibliografie. 
+%Formatul referin'telor trebuie s'a fie de tipul IEEE sau asem'an'ator. 
+%Introducerea 'si formatarea referin'telor 'in bibliografie, respectiv citarea 'in text, se pot face manual sau folosind instrumentele de lucru men'tionate 'in ultimele paragrafe din acest capitol.
+	
+
+
+%http://allaboutfpga.com/fpga-architecture/
+
+%%In chapter~\ref{ch:analysis} of~\cite{strunk}, which discusses the value of the honeypots, Spitzner presents the advantages and disadvantages of such systems. 
+%%
+%%
+%%'In sec'tiunea {\it Bibliografie} sunt exemple de referin'te pentru articol la conferin'te sau seminarii~\cite{BellucciLZ04}, articol 'in jurnal~\cite{AntoniouSBDB07}, 
+%%sau c'ar'ti~\cite{russell1995artificial}. 
+%%
+%%
+%%Referin'tele spre aplica'tii sau resurse online (pagini de internet) trebuie sa includ'a cel pu'tin o denumire sugestiv'a pe l\ia ng'a link-ul propriu-zis~\cite{webpage}, 
+%%plus alte informa'tii dac'a sunt disponibile (autori, an, etc.). 
+%%Referin'tele care prezint'a doar link spre resursa online se vor plasa 'in subsolul paginii unde sunt referite.
+%%Citarea referin'telor 'in text este obligatorie, vezi exemplul de mai jos ('in func'tie de tema proiectului se poate varia modul de prezentare a metodei/aplica'tiei).
+%%
+%%%'In articolul~\cite{AntoniouSBDB07} autorii prezint'a un sistem pentru ...
+%%'In~\cite{AntoniouSBDB07} autorii prezint'a un sistem pentru detec'tia obstacolelor 'in mi'scare folosind stereoviziune 'si estimarea mi'sc'arii proprii. 
+%%Metoda se bazeaz'a pe ...{\it trecere 'in revist'a a algoritmilor, structurilor de date, func'tionalitate, aspecte specifice temei proiectului etc}. Discu'tie {\it avantaje - dezavantaje}.
+%
+%
+%'In capitolul~\ref{ch:analysis} al~\cite{russell1995artificial} se prezint'a ...  
+%
+%
+%\section{Titlu}
+%\section{Alt titlu}
+
+
+\chapter{Studiu Bibliografic}
+
+\section{Sisteme de calcul reconfigurabile și FPGA}
+În ultimul deceniu, sistemele de calcul reconfigurabile au devenit foarte populare datorită capacității lor de a îmbina flexibilitatea unui produs software cu performanța ridicată a puterii de procesare a componentelor hardware. Acest concept a fost introdus pentru prima oară de către Gerlad Estrin într-un articol publicat în anii 1960-ref. El propunea un sistem format dintr-un procesor standard și o matrice de primitive hardware care putea fi configurată în funcție de necesitatea aplicației. Din cauza limitărilor tehnologice de la acea vreme, acest domeniu nu prea a fost în atenția cercetătorilor. După mai bine de două decenii producătorul de circuite integrate Xilinx inventează și lansează pentru prima oară circuitele field-programmable gate aray (FPGA). Datorită comercializarea acestor circuite și performanțele ridicate ale acestora, domeniul sistemelor reconfigurabile a trecut printr-o perioadă de renaștere în care s-au publicat numeroase articole demonstrând viabilitatea acestor sisteme-ref. 
+\subsection{Circuitele integrate FPGA}
+Un FPGA este un circuit integrat destinat configurării de către utilizator sau unui arhitect dupa procesul de fabricație. Configurația lor este specificată similar cu cea a circuitelor ASIC (applicațion-specific integrated circuit) utilizând un limbaj de descriere hardware (HDL).\\
+Cea mai comună arhitectură pe care o adoptă aceste circuite conține o matrice de blocuri logice configurabile (CLB), celule de intrare/ieșire și canale de rutare. O imagine explicativă se găsește în figura \ref{fig:arhitectura}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.25]{img/FPGA-Architecture.png}
+    \caption{Arhitectura unui FPGA (http://allaboutfpga.com/fpga-architecture/
+)}
+    \label{fig:arhitectura}
+\end{figure} 
+
+\subsubsection{Elementele CLB}
+Elementele CLB sunt sunt blocurile fundamentale din care sunt formate FPGA-urile. Ele sunt alcătuite din mai multe celule logice (slice-uri). O versiune simplificată a unui slice se găsește în figura \ref{fig:slice}. De regulă el conține:
+\begin{itemize}
+\item LUT(look-up table) cu 4 intrări
+\item Sumator complet
+\item Bistabil de tip D
+\item Multiplexoare pentru slecția modului \textit{normal sau aritmetic} în combinație cu modul de ieșire \textit{sincron sau asincron}
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.25]{img/FPGA_cell_example.png}
+    \caption{SLICE}
+    \label{fig:slice}
+\end{figure} 
+
+\subsubsection{Elemente de rutare}
+Elementele de rutare din FPGA sunt folosite pentru interconectarea blocurilor logice printr-o matrice de fire și comutatoare programabile. O schemă sumară se găsește în figura \ref{fig:rutare}. În general rutarea între elementele programabile este nesegmentată, ceea ce înseamnă că fiecare segment rutat își găsește un capăt într-un bloc logic iar celălalt într-un comutator programabil. Pentru viteze ridicate, unele arhitecturi FPGA folosesc linii de rutare care trec prin mai multe elemente CLB.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{img/switch-box.jpg}
+    \caption{Matrice de rutare și comutator programabil}
+    \label{fig:rutare}
+\end{figure} 
+
+\section{Prolog}
+După cum am amintit și în \ref{chap:intro} limbajul Prolog a fost inventat la începutul anilor 1970 de către Alain Colmerauer și colegii lui de la Universitatea din Marseille-ref. El este printre primele limbaje de uz general care au ca paradigmă de baza programarea logică.  Domeniile lui de aplicabilitate sunt de obicei cele din sfera inteligenței artificiale, mai exact a sistemelor bazate pe cunoștințe, sisteme expert, etc-ref.  \\
+\subsection{Limbajul Prolog}
+Într-un program Prolog pot fi indentificate următoarele construcții de bază:
+
+\begin{enumerate}
+	\item fapte
+	\item întrebări
+	\item termeni
+	\item reguli
+\end{enumerate}
+
+\subsubsection{Fapte}
+În limbajul Prolog putem face afirmații utilizând faptele. Faptele sunt niște itemi ori o relație între itemi. De exemplu:
+\begin{verbatim}
+	respira(om). %omul respiră
+	program_initializat.
+\end{verbatim}	
+\subsubsection{Întrebări}
+Îndată ce faptele au fost definite, Prolog ne permite să interogăm baza de fapte:
+\begin{verbatim}
+	?-program_initializat.
+	yes.
+	?-respira(om).
+	yes.
+	?-respira(carte).
+	false.
+	?-respira(X), % interogare cu termen de tip variabilă
+	X = om
+\end{verbatim}
+\subsubsection{Termeni}
+Termenii în Prolog se grupează în următoarele categorii:
+\begin{itemize}
+\item simpli
+	 \begin{itemize}
+	  \item variabile
+	  \item constante
+	  	\begin{itemize}
+		\item atomi
+		\item numere
+		\end{itemize}
+	 \end{itemize}
+\item structurați
+\end{itemize}
+\subsubsection{Reguli}
+Prologul permite formularea de reguli de tipul: "Un fapt \textit{a} este adevărat, dacă faptele \textit{b..z} sunt adevărate." Regula Prolog este formată dintr-un \textit{cap} și un \textit{corp} despărțite de simbolul \textit{:-}. Exemplu:
+\begin{verbatim}
+	a(X):-b(X), c(X), ... ,z(X) %a este adevărat daca b, c ... sunt adevărate 
+\end{verbatim}
+\subsubsection{Mecanisme}
+Spre deosebire de alte limbaje, Prolog are integrate două mecanise ce-l face unic printre alte limbaje de programare.	
+\begin{itemize}
+\item \textit{Mecanismul de unificare a termenilor.} Doi termeni se unifică doar dacă ei sunt egali sau dacă conțin variable care se pot instanția uniform cu termeni astfel încat cei doi termeni inițiali să fie egai.
+\item \textit{Mecanismul de backtracking.} În cazul în care programul ajunge într-o stare în care capul sau corpul unei reguli nu poate fi unificat, mecanismul de backtracking intră în acțiune și reface starea procesului la ultimul punct de alegere și îl execută. Acest procedeu continuă până când unificarea are succes sau nu mai există puncte de alegere, moment în care întrebarea eșuează.
+\end{itemize}
+\subsection{Arhitectura WAM}
+După mai bine de un deceniu de la inventarea limbajului Prolog, în articolul -ref publicat de către David H. D. Warren se descrie o mașină abstractă care este definită printr-un set de instrucțiuni și o arhitectură a memoriei, cunosctă astăzi ca WAM. De atunci, WAM a defenit un standard pentru implementarea limbajului Prolog. Din cauza faptului că Warrren descrie WAM-ul foarte sumar, este dificil pentru un cititor nexperimentat cu limbajul Prolog să înțeleagă arhitectura din lucrarea originală-ref. În -ref Hassan A ̈IT-KACI adresează această problemă publicând o carte sub forma unui tutorial care construiește gradual arhitectura, având în minte principiile după care Warren s-a ghidat.
+Arhitectura WAM este una bazată pe stivă, împărtășind similarități cu limbajele imperative: instrucțiuni de tipul call/return, mediu local. Setul de instrucțiuni permite emularea sau translatarea într-un cod mașină nativ.
+ %https://www.doc.ic.ac.uk/~shm/Papers/accelfidj.pdf se
+ %E. Tick, An overlapped Prolog processor. Artificial Intelligence Center, SRI International, Menlo Park, California 94025, 1983
+\section{Abordări similare}
+În -ref se propune un sistem hardware implementat pe un circuit integrat de tip FPGA pentru programare logică inductivă. Acest sistem are la bază arhitectura WAM optimizată prin metode de grupare a instrucțiunilor și asignare speculativă. Spre deosebire de abordarea propusă în această lucrare, acest sistem folosește mai multe procesoare WAM interconectate care să lucreze împreună la executarea întrebării Progol. În tabelul 1 din capitolul 5 se demonstrează viabilitatea chiar și unui sistem secvențial, având performanța comparativa cu a unui procesor Pentium III tactat la 450MHz. Dezavantajele acestei abordări sunt tactarea procesorului de Progol la 35MHz-ref, folosirea memoriei RAM distribuite în locul memoriei BlockRAM, forțând ca multe segmente să nu fie ținute în memoria interna a FPGA-ului din cauza lipsei de spațiu. Accesul la segmentele care sunt ținute înafara circuitului vor scădea performanța considerabil.
+
+O altă abordare de implementare hardware a arhitecturii WAM propusă în -ref de către Evan Tick în 1983 încearcă să determine perfomanța maximă pe care o poate atinge o mașină Prolog secvențială. Această abordare nu prea este relevantă, deorece tehnologia a avansat mult de atunci, dar studiul arată că se pot s-au obținut îmbunătățiri de până la 18\% folosind componente hardware standard.
+
+
+
+
+%\label{ch:analysis}
+%
+%'Impreun'a cu capitolul urm'ator trebuie s'a reprezinte aproximativ 60\% din total.
+%
+%Scopul acestui capitol este de a explica principiile func'tionale ale aplica'tiei implementate. 
+%Aici se va descrie solu'tia propus'a dintr-un punct de vedere teoretic - explica'ti 'si demonstra'ti propriet'a'tile 'si valoarea teoretic'a:
+%\begin{itemize}
+% \item algoritm utilizat sau propus
+%\item protocoale utilizate
+%\item modele abstracte
+%\item explica'tii/argument'ari logice ale solu'tiei alese
+%\item structura logic'a 'si func'tional'a a aplica'tiei.
+%\end{itemize}
+%
+%{\color{red}
+%NU SE FAC referiri la implementarea propriu-zis'a. 
+%
+%NU SE PUN descrieri de tehnologii preluate cu copy-paste din alte surse sau lucruri care nu 'tin strict de proiectul propriu-zis (materiale de umplutur'a).
+%}
+%
+%
+%\section{Titlu}
+%\section{Alt titlu}
+%
+\chapter{Analiz'a 'si Fundamentare Teoretic'a}
+În acest capitol se va prezenta pe cât posibil bazele teoretice a procesorului care urmează să fie implementat. Arhitectura abstractă WAM este una complicată, având un set de instrucțiuni stufos care nu este intuitiv pentru cititorul nexperimentat cu limbajul Prolog. Pentru înțelegerea în detaliu se recomandă lecturarea cărții -ref. 
+
+În paralel se vor discuta și modificările survenite pentru adaptarea ei la arhitectura care urmeză să fie implementată pe FPGA. O altă parte ce va fi tratată aici este protocolul pentru comunicarea cu calculatorul gazdă, principiile din spatele translatorului WAM-FPWAM și ideea aplicației ce oferă utilizatorului un mediu de exectuare.
+
+Partea legată de arhitectura WAM nu este
+\section{Hardware - Arhitectura WAM și soluția propusă}
+\subsection{Arhitectura memoriei}
+După cum am mai amintit în capitolele anterioare WAM este un procesor bazat pe stivă. În specificația originală, memoria este împărțită în următoarele zone (în ordine crescătoare a spațiului de adrese) :
+\begin{enumerate}
+	\item \textit{CODE} - zonă de memorie destinată exclusiv păstrarea codului pentru faptele și regulile Prolog.
+	\item \textit{HEAP} - zonă de memorie destinată exclusiv păstrarea oricărui tip de termen Prolog.
+	\item \textit{STACK} - zonă de memorie despărțită logic în două secțiuni: stivă-AND și stivă-OR. Pe stiva-AND se reține de obicei cadrul local care conține variabilele locale, următorul mediu local și numărul instrucțiunii de întoarecere. Pe stiva-OR se țin informații pentru mecanismul de backtracking. Ele sunt legate de punctul de alegere și informații pentru refacerea stării procesorului la executarea operației backtracking.
+	\item \textit{TRAIL} - zonă de memorie destinată ținerii evidenței variabilelor unificate.
+	\item \textit{PDL} - zonă de memorie locala destinată algoritmului de unificare a termenilor.
+\end{enumerate}
+Din motive pe care se vor discuta în capitolele următoare s-a introdus o nouă zonă de memorie care nu este prezentă în lucrarea originală numită \textit{CINDEX}.
+\subsection{Regiștrii}
+Regiștrii mașinii WAM se împart în două categorii:
+\begin{itemize}
+	\item de uz general
+	\item specializați
+\end{itemize}
+
+\subsubsection{Regiștrii de uz general}
+Regiștrii de uz general au lățimea cât a unui cuvânt a memoriei și sunt împărțiți logic în următoarele categorii:
+\begin{itemize}
+	\item regiștrii de variablă - folosiți pentru manipularea termenilor când se construiesc sau se unifică. Ei se notează cu X(i) unde \textit{X} - indică registru de variablă și \textit{i} - indică numărul registrului.
+	\item regiștrii de argument - alocați sistematic pentru pregătirea argumentelor a următorului apel de regulă sau predicat. Ei se notează cu A(i) unde \textit{A} - indică registru de argument și \textit{i} - indică numărul registrului.
+\end{itemize}
+\textit{NOTA BENE} - A și X sunt doar niște notații pentru a indica contextul în care un registru este folosit. A(1) = X(1)
+
+\subsubsection{Regiștrii specializați}
+WAM folosește o serie de regiștrii specializați care indică starea procesorului la un moment dat de timp. În continuare se vor prezenta numele lor și o descriere sumară a rolului pe care îl îndeplinesc.
+\begin{itemize}
+	\item \textit{Registrul P} - folosit să indice adresa instrucțiunii curente.
+	\item \textit{Registrul CP} - folosit să indice adresa instrucțiunii care urmează să fie executată la întoarcerea cu success din apelul unei proceduri.
+	\item \textit{Registrul S} - folosit ca registru de unificare, reține adresa din zona de memorie HEAP a unui termen.
+	\item \textit{Registrul Mode} - folosit pentru a indica modul de execuție, read sau wrtie.
+	\item \textit{H} - folosit pentru a reține adresa vârfului zonei de memorie HEAP.
+	\item \textit{HB} - folosit pentru a reține reține adresa vârfului zonei de memorie HEAP la timpul ultimului punct de alegere.
+	\item \textit{B0} - registru de tăietură.
+	\item \textit{B} - folosit pentru a reține adresa începutului punctului de alegere anterior.
+	\item \textit{E} - folosit pentru a reține adresa mediului local.
+	\item \textit{TR} - folosit pentru a indica vârful zonei de memorie TRAIL.
+\end{itemize}
+
+Din cauza că FPWAM suportă doar un subset al limbajului Prolog, registrul B0 care este folosit pentru tăieturi nu este prezent în implementare.
+
+\subsection{Reprezentarea termenilor}
+În continuare se va prezenta modalitatea de reprezentare a termenilor Prolog în WAM, repsectiv FPWAM. Pentru stocarea lor vom folosi un bloc global din zona de memorie numită HEAP. FPWAM va suporta patru tipuri de termeni, structuri, variable, constante și liste. Fiecare din acești termeni va avea un marcaj unic pentru a putea fi discriminați pe HEAP. 
+\subsubsection{Reprezentarea structurilor}
+Structurile sunt niște termeni non-variabili. Pentru a reprezenta o structură de tipul \(f(t_{1}, ... , t_{n})\), vor fi folosite \(n+2\) cuvinte de memorie. Primul va fi un poantor către adresa celui de-al doilea care indică termenul \(f/n\). Evident aceste două cuvinte nu necesită să fie la adrese consecutive. Celelalte \(n\) cuvinte vor fi folosite pentru a reține referințe către rădăcinile subtermenilor \(t_{1} ... t_{n}\). Mai specific, primul cuvânt va fi de forma \(<STR, a>\) ,unde \(STR\) reprezintă marcajul și \(a\) reprezintă adresa la care se află reprezentarea lui \(f/n\). Începând de la adresa \(a\) se va afla întodeauna un bloc contiguu de n+1 cuvinte ce reprezintă numele/aritatea structurii și cele n referințe către subtermenii \(t_{1} ... t_{n}\).
+\subsubsection{Reprezentarea variabilelor}
+O variabilă va fi indentificată printr-un poantor și va fi reprezentat folosind doar un cuvânt din memorie, adică o celulă variabilă. O asemenea celulă va fi indentificată prin \(<REF, a>\) unde \(REF\) denotă marcajul unei referințe și \(a\) adresa către locația de memorie spre care se face referire. Prin convenție, o variabilă este nelegată dacă ea pointează către ea însuși.
+\subsubsection{Reprezentarea constantelor}
+O constantă va fi reprezentată folosind doar un cuvând din memorie. O asemenea celulă va fi identificată prin \(<CON, c>\), unde \(CON\) reprezintă marcajul, iar \(c\) reprezintă valoarea constantei.
+\subsubsection{Reprezentarea listelor}
+Cele mai întâlnite structuri de date în programele Prolog sunt listele, fapt pentru care se vor introduce marcaje speciale pentru acestea. O element dintr-o listă este indentificat prin perechea de celule \(<LIS, a>\), unde  \(LIS\) reprezintă marcajul prin care se discriminează lista, iar celula de la adresa \(a\) unde se găsește referința către data elementului din listă. Pentru a respecta contiguitatea termenilor, aceste prerechi trebuie să fie la adrese consecutive în memorie până la terminarea listei care este indicată prin constanta \(<CON, NIL>\).
+\subsubsection{Exemple de reprezentări ai termenilor}
+În \ref{repr:termen1} se arată reprezentarea termenului \(f(Z, h(Z, W),f(W))\) pe HEAP.  În acest exemplu se demonstrează reprezentarea variabilelor nelegate și a structurilor. De observat aici este contiguitatea subtermenilor a structurilor, cât și nerespectarea formatului de \(n+2\) celule. Această mică optimizare se întâmplă doar când faptul urmează să fie apelat dintr-o  regulă, celulele de tip \(<STR, a>\) aflându-se în regiștrii de argument. Această optimizare va fi discutată în capitolele următoare. În toate celelalte cazuri, celulele anterior amintite vor exista pe HEAP. 
+
+În \ref{repr:termen2} se demonstrează reprezentarea unei liste \([\_, \_, f(b), a]\), în care toate primele două elemente sunt niște variabile nelegate iar celelalte un termen structurat și o constantă. De observat în acest exemplu este contiguitatea listei care se termină prin constanta specială \(<CON, NIL>\) și existența celulei \(<STR, \_>\).
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{c|c|c|}
+\cline{2-3}
+0 & \multicolumn{2}{|c|}{\(h/2\)} \\
+\cline{2-3}
+1 & REF & 1 \\
+\cline{2-3}
+2 & REF & 2 \\
+\cline{2-3}
+3 & \multicolumn{2}{|c|}{\(f/1\)} \\
+\cline{2-3}
+4 & REF & 2 \\
+\cline{2-3}
+5 & \multicolumn{2}{|c|}{\(p/3\)} \\
+\cline{2-3}
+6 & REF & 1 \\
+\cline{2-3}
+7 & STR & 0 \\
+\cline{2-3}
+8 & STR & 3 \\
+\cline{2-3}
+\end{tabular}
+\end{center}
+\caption{Reprezentare a termenului \(f(Z, h(Z, W),f(W))\)} \label{repr:termen1}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{c|c|c|}
+\cline{2-3}
+0 &LIS & 1 \\
+\cline{2-3}
+1 & REF & 1 \\
+\cline{2-3}
+2 & LIS & 3 \\
+\cline{2-3}
+3 & REF & 3 \\
+\cline{2-3}
+4 & LIS & 5 \\
+\cline{2-3}
+5 & STR & 10\\
+\cline{2-3}
+6 & LIS & 7 \\
+\cline{2-3}
+7 & CON & a \\
+\cline{2-3}
+8 & CON & NIL \\
+\cline{2-3}
+9 & STR & 10 \\
+\cline{2-3}
+10 & \multicolumn{2}{|c|}{\(f/1\)} \\
+\cline{2-3}
+11 & CON & b \\
+\cline{2-3}
+\end{tabular}
+\end{center}
+\caption{Reprezentarea unei liste \([\_, \_, f(b), a]\)} \label{repr:termen2}
+\end{figure}
+
+\subsection{Stiva-AND și Stiva-OR}
+Pentru a suporta mediile locale și mecanismul de backtracking, în arhitectura WAM există două tipuri de stive. Chiar dacă ele sunt diferite ca principiu, cadrele lor se află intercalate în aceeași memorie fizică din motive care vor fi discutate ulterior.
+\subsubsection{Stiva-AND}
+Stiva-AND sau stiva mediilor locale este folosită ca mediu de activare a procedurilor. Așa cum este schițat în \ref{fig:stiva-and}, un cadru în această stivă conține:
+\begin{itemize}
+\item adresa stivei a precedentului mediu local (cel la care va trebui să revenim în caz de success)
+\item adresa următoarei instrucțiuni pe care trebuie să o executăm în caz de success
+\item numărul de variabile permanente folosite de către această procedură
+\item $n$ celule de date pentru variabilele permanente (posibil 0)
+\end{itemize}
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{c|c|}
+\cline{2-2}
+E & CE (mediul de revenire) \\
+\cline{2-2}
+E+1 & CP (adresa de revenire) \\
+\cline{2-2}
+E+2 & $n$ (numărul variabilelor permanente) \\
+\cline{2-2}
+E+3 & $Y_1$ (variabilă permanentă) \\
+\cline{2-2}
+\multicolumn{2}{c}{...} \\
+\cline{2-2}
+E+$n$+2 & $Y_n$ (variabilă permanentă) \\
+\cline{2-2}
+\end{tabular}
+\end{center}
+\caption{Structura unui cadru din stiva-AND} \label{fig:stiva-and}
+\end{figure}
+
+\subsubsection{Stiva-OR}
+Pentru a permite operația de backtracking avem nevoie de un spațiu pentru a putea salva starea mașinii la fiecare apel de procedură care oferă alternative. În caz de eșec, la încercarea unei alternative este necesară refacerea stării mașinii la acel moment de timp. Așa cum este schițat în -ref, un cadru al unui punct de alegere conține:
+\begin{itemize}
+	\item $n$ - aritatea acestei proceduri
+	\item regiștrii de argument $A_1 ... A_n$ - ei trebuie reținuți deoarece vor fi suprascriși de alte proceduri
+	\item mediul local (valoarea registrului $E$) - pentru recuperarea mediului local
+	\item adresa următoarei instrucțiuni pe care trebuie s-o executăm la întoarcerea din procedură (valoarea registrului $CP$)
+	\item ultimul cadru de alegere în cazul în caz de eșec (valoarea registrului $B$)
+	\item adresa unde se află începutul instrucțiunilor pentru următoarea clauză care să fie executată
+	\item vârful stivei $TRAIL$ (valoarea registrului $TR$) - pentru a efectua operația auxiliara $unwind_trail$ la revenirea din backtracking. Aceasta operație va dezlega variabilele care au fost legate după crearea acestui punct de alegere.
+	\item vârful stivei $HEAP$ (valoarea registrului $H$) - pentru a recupera spațiul ocupat de termenii creați în timpul încercării eșuate care va rezulta prin întoarecerea la acest punct de alegere.
+\end{itemize}
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{c|c|}
+\cline{2-2}
+B & $n$ (aritatea) \\
+\cline{2-2}
+B+1 & $A_1$ (registrul de argument 1) \\
+\cline{2-2}
+\multicolumn{2}{c}{...} \\
+\cline{2-2}
+B+$n$ & $A_n$ (registrul de argument n) \\
+\cline{2-2}
+B+$n$+1 & $CE$ (mediul de revenire) \\
+\cline{2-2}
+B+$n$+2 & $CP$ (adresa de revenire) \\
+\cline{2-2}
+B+$n$+3 & $B$ (precedentul cadru de alegere) \\
+\cline{2-2}
+B+$n$+4 & $B$ (următoarea clauză care urmează să fie executată) \\
+\cline{2-2}
+B+$n$+5 & $TR$ (valoarea registrului TR) \\
+\cline{2-2}
+B+$n$+6 & $H$ (valoarea registrului H) \\
+\cline{2-2}
+\end{tabular}
+\end{center}
+\caption{Structura unui cadru din stiva-OR} \label{fig:stiva-or}
+\end{figure}
+
+\subsubsection{Protejarea mediilor locale}
+Motivul pentru care se folosește aceeași memorie fizică pentru ambele stive este că logica pentru protejarea mediilor locale este intuitivă și simplă. Dacă se alocă spațiu pe stivă pentru un mediu local și se întâlnește ulterior un punct de alegere, mediul local este protejat de suprascriere de către cadrul punctului de alegere chiar dacă este dealocat. Astfel, în caz de eșec, la revenirea la acel punct de alegere, mediul se recuperează fără ca datele să fie alterate. Mai specific, orice cadru alocat trebuie să fie amplast peste ultimul cadru de alegere.
+
+\subsection{Apelul de proceduri}
+Spre deosebire de mașina WAM care suportă adăugarea de fapte în momentul rulării, FPWAM nu își propune să trateze acest lucru. Astfel este necesară cunoașterea tuturor faptelor și regulilor la momentul compilării. Instrucțiunile originale de control a mașinii WAM vor fi adaptate relaxării acestei constrângeri, nefiind nevoie să se mai testeze existența predicatului în baza de fapte și reguli Prolog. Ele se vor explica în -ref.
+
+\subsection{Indexarea codului}
+În cazul în care există mai multe puncte de alegere, o metodă naivă ar fi de a trece prin toate până ce una dintre ele s-ar finaliza cu succces. Această metodă este costisitoare din punct de vedere a timpului, deoarece impune o căutare liniară prin toate punctele de alegere. Aceasta din urmă este folosită doar când arugmentul predicatului este o variabilă nelegată, fiind necesar să încercăm toate opțiunile. Pentru a rezolva această problemă s-a găsit o soluție parțială care se comportă bine în practică, bazată pe tendința programatorilor să discrimineze predicatele după $primul$ argument. Astfel s-au introdus trei nivele de indexare a codului:
+\begin{itemize}
+\item Prin primul nivel se grupează faptele sau regulile după tipul termenului primului argument. De exemplu, dacă se apelează un predicat având primul argument o listă, se va face salt la grupul în care se află doar predicatele care se unifică cu o listă, testându-le pe rând. După cum am amintit mai sus, în cazul unei variabile se vor parcurge toate posibilitățile. Pentru a face uz de această indexare, se folosește instrucțiunea $switch\_on\_term$ care va fi explicată mai târziu.
+\item De cele mai multe ori indexarea bazată doar pe tipul termenului primului argument nu este suficientă în practică. Ce se întâmplă dacă în baza de predicate se găsesc $e(1, ...)$ până la $e(1000000, ...)$ și se apelează predicatul $e(1000000, ...)$?  Instcuțiunea $switch\_on\_term$ își face datoria și ghidează execuția programului către blocul unde se află predicatele grupate după constate, dar aici WAM trebuie să le testeze pe rând până când una dintre se unifică cu succes. Această căutare liniară ar fi foarte costisitoare și în consecință s-a introdus un al doilea nivel de indexare. În specificația WAM originală se utilizează tabele de dispersie de dimensiune $N$ pentru fiecare predicat având forma $\{c_i : L_ci\}$, în care fiecare fiecare constantă $c_i$ este cheie pentru numărul instrucțiunii unde se află codul predicatului cu care s-ar unifica. În cazul în care constanta nu se găsește în tabelul de dispersie, se execută backtracking. Această optimizare reduce timpul căutării la $O(c)$. Deoarece FPWAM nu suportă predicate dinamice, s-a introdus o nouă zonă de memorie $CINDEX$ care este populată la fiecare consultare a unei surse Prolog. Structura unei celule din zona de memorie $CINDEX$ este formată din concatenarea constantei și adresa instrucțiunii unde se află codul predicatului. Aceste celule sunt sortate crescător după valoarea constantei pentru fiecare predicat. Aplicând algoritmul de căutare binară, în FPWAM această căutare va avea complexitatea $O(log(n)).$ Instrucțiunea modificată care face acest lucru se găsește la ref.
+\item Ultimul nivel de indexare este folosit să grupeze predicatele care au aceeași valoare a constatelor.\end{itemize}
+
+\subsection{Setul abstract de instrucțiuni}
+Cea mai bună modalitate de a înțelege un procesor este de a-i cunoște instrucțiunile și cum ele operează. Din cauza faptului că arhitectura WAM conține un minimum de 30 de instrucțiuni, în acest subcapitol se va încerca atingerea tutoror tipurilor de instrucțiuni cu exemple și explicații relevante din fiecare categorie. Deoarece FPWAM nu surpotă instrucțiuni de tăietură, ele nu vor fi explicate în acest subcapitol. 
+
+Instrucțiunile mașinii WAM se încadrează în 7 categorii:
+\begin{enumerate}
+	\item instrucțiuni de tipul PUT
+	\item instrucțiuni de tipul GET
+	\item instrucțiuni de UNIFICARE
+	\item instrucțiuni de CONTROL
+	\item instrucțiuni de ALEGERE
+	\item instrucțiuni de INDEXARE
+	\item instrucțiuni de TĂIETURĂ
+\end{enumerate}
+
+Pentru a simplifica instrucțiunile se va folosi notația \(V_n\) care poate reprezenta ori un registrul cu numărul \(n\), ori variabila de pe stivă cu numărul \(n\).
+
+\subsection{Intrucțiuni de tipul PUT}
+Tipul acesta de instrucțiune este responsabil să încarce argumentele capetelor următoarelor reguli sau fapte, în regiștrii de argument \(A_i\).
+
+\begin{itemize}
+	\item \(put\_variable\  X_n, A_i\) \\
+	\begin{minipage}{0.45\textwidth}
+		   Împinge o variablă nelegată pe vârful zonei HEAP și copiaz-o în regiștrii \(X_n\) și \(A_i\).
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $HEAP[H] \leftarrow <REF, H> $
+    		\State $X_n \leftarrow HEAP[H]$
+		\State $A_i \leftarrow HEAP[H]$
+		\State $H \leftarrow H + 1$
+		\State $P \leftarrow P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+
+	\item \(put\_variable\ Y_n, A_i\)\\
+	\begin{minipage}{0.45\textwidth}
+	Inițializează variablia \(n\) de pe stivă din mediul curent la o valoarea nelegată și  setează registrul \(A_i\) să pointeze către adresa ei.
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $addr \leftarrow E + n + 2$
+    		\State $STACK[addr] \leftarrow <REF, addr>$
+		\State $A_i \leftarrow STACK[addr]$
+		\State $P \leftarrow P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+	
+	\item \(put\_unsafe\_value\ Y_n, A_i\)\\
+	\begin{minipage}{0.45\textwidth}
+	Dacă adresa dereferențiată variabilei \(Y_n\) este legată în mediul current, globalizeză variabila prin împingerea uneia noi în zona de memorie HEAP și legarea ei cu \(Y_n\). În caz contrar setează \(A_i\) la valoarea variabilei \(Y_n\).
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $addr \leftarrow deref(E + n + 2)$
+		\If {$addr < E$}
+			\State $A_i \leftarrow STACK[addr]$
+		\Else
+			\State $HEAP[H] \leftarrow <REF, H>$
+			\State $bind(addr, H)$
+			\State $A_i \leftarrow HEAP[H]$
+			\State $H \leftarrow H + 1 $
+		\EndIf
+		\State $P \leftarrow P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+	
+	\item \(put\_structure\ f/n, A_i\)\\
+	\begin{minipage}{0.45\textwidth}
+	Împinge o celulă în zona de memorie HEAP care conține functorul $f/n$ și setează registrul $A_i$ la o celulă $STR$ care poantează către zona de memorie a functorului. 
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $HEAP[H] \leftarrow f/n$
+		\State $A_i \leftarrow <STR, H>$
+		\State $H \leftarrow H + 1$
+		\State $P \leftarrow P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+\end{itemize}
+
+\subsubsection{Instrucțiuni de tipul GET}
+Instrucțiunile de tipul GET corespund argumentelor capetelor clauzelor. Ele sunt responsabile să potrivească argumentele clauzei cu cele date în regiștrii de argument.
+
+\begin{itemize}
+	\item \(get\_variable\  V_n, A_i\) \\
+	\begin{minipage}{0.45\textwidth}
+		   Setează valoarea variabilei $V_n$ cu cea din registrul $A_i$
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $V_n \leftarrow A_i $
+		\State $P \leftarrow P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+	
+	\item \(get\_value\  V_n, A_i\) \\
+	\begin{minipage}{0.45\textwidth}
+		   Unifică variablia $V_n$ cu registrul $A_i$. În caz de eșuare execută operația de backtracking.
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $unify(V_n, A_i)$
+		\If{$fail$}
+			\State $backtrack$
+		\Else
+			\State $P \leftarrow P + 1$
+		\EndIf
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+	
+	\item \(get\_structure\  f_n, A_i\) \\
+	\begin{minipage}{0.45\textwidth}
+		  Dacă valoarea dereferențiată a registruilui $A_i$ este o variabilă nelegată, leagă acea variabilă de o nouă structură $f/n$ alocată pe HEAP și setează registrul $mode$ la valoarea $write$. În caz contrar dacă în memorie se găsește aceeași structură, setează registrul $S$ la locația functorului $f/n$ și setează registrul $mode$ la valoarea $read$. În alte cazuri, execută backtrack.
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $addr \leftarrow deref(A_i)$
+		\Switch{$STORE[addr]$}
+			\Case{$<REF, \_>$}
+				\State $HEAP[H] \leftarrow <LIS, H+1>$
+				\State $bind(addr, H)$
+				\State $H \leftarrow H + 1$
+				\State $mode \leftarrow write$
+			\EndCase	
+			\Case{$<LIS, a>$}
+				\State $S \leftarrow a$
+				\State $mode \leftarrow read$
+			\EndCase
+			\Case{$other$}
+				\State $fail \leftarrow true$
+			\EndCase
+		\EndSwitch
+		\If{$fail$}
+			\State $backtrack$
+		\Else
+			\State $P \gets P + 1$
+		\EndIf		
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+\end{itemize}
+
+\subsubsection{Instrucțiuni de unificare}
+Aceste instrucțiuni corescpund argumentelor unei structuri sau a unei liste fiind responsabile cu unificarea a termenilor existenți în modul $read$ sau crearea de noi termeni și structuri în modul $write$.
+
+\begin{itemize}
+	\item \(unify\_variable\  V_n\) \\
+	\begin{minipage}{0.45\textwidth}
+		  În modul $read$, plasează conținutul memoriei de la adresa $S$ în variabila $V_n$. În modul $write$, împinge o variabilă nelegată pe vârful memoriei HEAP și copieaz-o în $V_n$. În ambele moduri, incrementează registrul $S$ cu unu.
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\Switch{$mode$}
+			\Case{read}
+			\State $V_n \gets HEAP[S]$
+			\EndCase
+			\Case{write}
+			\State $HEAP[H] \gets <REF, H>$
+			\State $V_n \gets HEAP[H]$
+			\State $H \gets H + 1$
+			\EndCase
+		\EndSwitch
+		\State $S \gets S + 1$
+		\State $P \gets P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+\end{itemize}
+
+\begin{itemize}
+	\item \(unify\_value\  V_n\) \\
+	\begin{minipage}{0.45\textwidth}
+		  În modul $read$, unifică variabila $V_n$ cu conținutul memoriei HEAP de la adresa $S$. În modul $write$, împinge o variabilă aflată în $V_n$ pe vârful memoriei HEAP. În ambele moduri, incrementează registrul $S$ cu unu.
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\Switch{$mode$}
+			\Case{read}
+			\State $unify(V_n, S)$
+			\EndCase
+			\Case{write}
+			\State $HEAP[H] \gets V_n$
+			\State $H \gets H + 1$
+			\EndCase
+		\EndSwitch
+		\State $S \gets S + 1$
+		\If{fail}
+			\State $backtrack$
+		\Else
+			\State $P \gets P + 1 $
+		\EndIf
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+\end{itemize}
+
+\subsubsection{Instrucțiuni de control}
+Aceste instrucțiuni sunt folosite pentru a dicta mersul programului în execuție cât și alocării și dealocării cadrelor locale unei proceduri.
+
+\begin{itemize}
+	\item \(allocate\  N\) \\
+	\begin{minipage}{0.45\textwidth}
+		   Alocă un nou mediu local pe stivă, setându-i ultimul adresa ultiului cadru de mediu, adresa instrucțiuni de revenire din apelul curent și numărul variabilelor permanente.
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\If{$E > B$}
+    			\State $nouE \gets E + STACK[E + 2] + 3$
+		\Else
+			\State $nouE \gets B + STACK[B] + 7$
+		\EndIf
+		\State $STACK[nouE] \gets E$
+		\State $STACK[nouE+1] \gets CP$
+		\State $STACK[nouE+2] \gets N$
+		\State $E \gets nouE$
+		\State $P \gets P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+	
+	\item \(deallocate\) \\
+	\begin{minipage}{0.45\textwidth}
+		   Șterge mediul current prin resetarea registrului $E$ și registrului $CP$.
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $CP \gets STACK[E+1]$
+		\State $E \gets STACK[E]$
+		\State $P \gets P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+	
+	\item \(call\ P,N\) \\
+	\begin{minipage}{0.45\textwidth}
+		   Șterge mediul current prin resetarea registrului $E$ și registrului $CP$.
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $CP \gets STACK[E+1]$
+		\State $E \gets STACK[E]$
+		\State $P \gets P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+	
+	\item \(proceed\) \\
+	\begin{minipage}{0.45\textwidth}
+		   Continuă execuția cu instrucțiunea de la adresa indicată de către registrul $CP$.
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $P \gets CP$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%	
+\end{itemize}
+
+\subsubsection{Instrucțiuni de alegere}
+Aceste instrucțiuni sunt destinate exclusiv mecanismului de backtracking. Ele salvează și refac starea procesorului prin alocarea cadrelor pe stiva-OR și controlează execuția programului în cazul în care există mai multe puncte de alegere. 
+
+\begin{itemize}
+	\item \(try\_me\_else\  L\) \\
+	\begin{minipage}{0.45\textwidth}
+		   Alocă un nou cadru de alegere pe stivă, setându-i adresa următoarei clauze la $L$, iar celelate câmpuri în concordanță cu contextul curent, și setează registrul $B$ să pointeze către noul cadru.	
+        \end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\If{$E > B$}
+    			\State $nouB \gets E + STACK[E + 2] + 3$
+		\Else
+			\State $nouB \gets B + STACK[B] + 7$
+		\EndIf
+		\State $STACK[nouB] \gets aritatea$
+		\State $n \gets aritatea$
+		 \For{$i < n$}
+            		\State $STACK[newB + i] \gets A_i$
+		 \EndFor
+		\State $STACK[nouB+n+1] \gets E$
+		\State $STACK[nouB+n+2] \gets CP$
+		\State $STACK[nouB+n+3] \gets B$
+		\State $STACK[nouB+n+4] \gets L$
+		\State $STACK[nouB+n+5] \gets TR$
+		\State $STACK[nouB+n+6] \gets H$
+		\State $B \gets nouB$
+		\State $HB \gets H$
+		\State $P \gets P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+	
+	\item \(retry\_me\_else\  L\) \\
+	\begin{minipage}{0.45\textwidth}
+		   La revenirea din backtracking la această instrucțiune, resetează starea procesorului cu cea salvată în cadru.
+        \end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $n \gets STACK[B]$
+		 \For{$i < n$}
+            		\State $A_i \gets STACK[B + i]$
+		 \EndFor
+		\State $E \gets STACK[B+n+1]$
+		\State $CP \gets STACK[B+n+2]$
+		\State $STACK[B+n+4] \gets L$
+		\State $unwind\_stack(STACK[B+n+5], TR)$
+		\State $TR \gets STACK[B+n+5]$
+		\State $H \gets STACK[B+n+6]$
+		\State $HB \gets H$
+		\State $P \gets P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+	
+	\item \(trust\_me\) \\
+	\begin{minipage}{0.45\textwidth}
+		   La revenirea din backtracking la această instrucțiune, resetează starea procesorului cu cea salvată în cadru, apoi șterge-l resetând registrul $B$ cu predecesorul lui.
+        \end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $n \gets STACK[B]$
+		 \For{$i < n$}
+            		\State $A_i \gets STACK[B + i]$
+		 \EndFor
+		\State $E \gets STACK[B+n+1]$
+		\State $CP \gets STACK[B+n+2]$
+		\State $unwind\_stack(STACK[B+n+5], TR)$
+		\State $TR \gets STACK[B+n+5]$
+		\State $H \gets STACK[B+n+6]$
+		\State $HB \gets STACK[B+n+6]$
+		\State $B \gets STACK[B+n+3]$
+		\State $P \gets P + 1$
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+\end{itemize}
+
+\subsubsection{Instrucțiuni de indexare}
+
+După cum s-a discutat în capitolele anterioare, aceste instrucțiuni sunt folosite pentru a optimiza timpul de căutare a predicatelor.
+
+\begin{itemize}
+	\item \(switch\_on\_term\) \\
+	\begin{minipage}{0.45\textwidth}
+		  Setează registrul $P$ în funcție de valoarea dereferențiată a registrului $A_1$. În celulele $P+1..4$ se găsesc instrucțiuni de tip control care ghidează programul către blocul de execuție corespunzător sau instrucțiune $fail$ în cazul în care nu există predicat care are ca prim argument tipul indicat de valoarea din registrul $A_1$.
+        \end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\Switch{$STORE[deref(A_1)]$}
+			\Case{$<REF, _>$}
+				\State $P \gets P + 1$
+			\EndCase
+			\Case{$<CON, _>$}
+				\State $P \gets P + 2$
+			\EndCase
+			\Case{$<LIS, _>$}
+				\State $P \gets P + 3$
+			\EndCase
+			\Case{$<STR, _>$}
+				\State $P \gets P + 4$
+			\EndCase
+		\EndSwitch		
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+\end{itemize}
+
+\begin{itemize}
+	\item \(switch\_on\_con\_str\ low,high\) \\
+	\begin{minipage}{0.45\textwidth}
+		  Execută căutarea binară a valorii dereferențiate din registrul $A_i$ în zona de memorie $CINDEX$ începând de la adresa $low$ până la adresa $high$. În caz că nu s-a găsit valoarea, backtrack.
+        \end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+	\begin{tabular}{|p{\textwidth}}
+	\begin{algorithmic}
+		\State $<tag, val> \gets STORE[deref(A_1)]$
+		\State $<found, inst> \gets binary\_search(val, low, high, CINDEX)$
+		\If{$found$}
+			\State $P \gets inst$
+		\Else
+			\State $backtrack$
+		\EndIf	
+	\end{algorithmic}
+	\end{tabular}
+	\end{minipage}%
+\end{itemize}
+
+\subsection{Operațiile auxiliare}
+Pe lângă setul de instrucțiuni, arhitectura WAM dispune de niște operații auxiliare incorporate implementate hardware:
+\begin{itemize}
+\item operația $deref(a1)$ - după cum îi sugerează numele, primește o referință și returnează cuvântul din memorile la care se face referire.
+\item operația $bind(a1, a2)$ - aceasta primește două adrese pe care să le lege împreună. Operația de legare se execută în funcție de cuvintele aflate la adresele date, respectând principiile WAM-ref.
+\item operația $trail(a1)$ - stabilește dacă adresa primită ca parametru să fie împinsă în zona de memorie $TRAIL$
+\item operația $unwind\_trail(a1,\ a2)$ - dezleagă toate adresele aflate în zona de memorie $TRAIL$ începând cu adresa $a1$ până la $a2$
+\item operația $unify(a1, a2)$ - încearcă să unifice cei doi termeni aflați la adresele $a1$ și $a2$. Algoritmul este bazat pe metoda UNION/FIND ref -[AHU74]
+\end{itemize}
+
+\section{Soluția programelor software}
+\subsection{Compilarea PROLOG-WAM}
+Un principal obiectiv a acestui proiect a fost construirea procesorului astfel încât să fie compatibil cu cel puțin unul dintre compilatoarele Prolog existente care sunt bazate pe WAM. Datorită faptului că GNU PROLOG este o distribuție cu sursă deschisă și are suport incorporat de compilare PROLOG -> WAM, alegerea a fost evidentă.
+\subsection{Translatarea din WAM în cod mașină FPWAM}
+Pentru a face legătura între compilatorul GNU și procesorul FPWAM este nevoie de un program translator. Rolul acestui program este de a parsa și de a translata instrucțiunile WAM în cod mașină, cu scopul de a fi înțelese de către procesor. Acest procesul nu este unul simplu, pe parcursul executării sale fiind întâmpinate numeroase probleme. În continuare, ele vor fi prezentate împreună cu modul de soluționare abordat.
+\begin{itemize}
+\item Spre deosebire de Prolog, mașina FPWAM folosește cuvinte de o lățime fixă pentru a reprezenta constantele, numele structurilor, faptelor și a predicatelor. În urma parsării instrucțiunilor, toți acești termeni vor fi reprezentați sub formă textuală, formatul fiind nepotrivit mașinii FPWAM. Pentru a soluționa acestă problemă se vor folosi două dicționare, unul pentru constante, iar celălalt pentru structuri și predicate. În aceste dicționare se vor reține codificarea termenilor într-o reprezentare unică care poate fi manipulată de către FPWAM. Intrarea unui asemena dicționar este de forma ${str_i : c_i}$ , unde cheia este $str_i$ reprezentată de un șir de caractere și $c_i$ codificarea asociată ei. Pentru a menține unicitatea valorilor $c_i$, există un contor pentru fiecare dintre cele două dicționare care se incrementează la adăugarea unei noi intrări.
+\item Din cauza discrepanței dintre Prolog și limitarea impusă de către FPWAM ca orice predicat să fie definit la momentul compilării, pot să se genereze instrucțiuni $nerezolvate$. Aceste instrucțiuni apar ori în situațiile în care ele apelează un predicat al cărui definiție nu a fost întâlnită până la momentul parsării, ori în cazul instrucțiunilor care fac salt la o etichetă neprocesată. Neștiind adresa instrucțiunii de apel sau salt, aceste instrucțiuni rămân $nerezolvate$. Problema își găsește soluția prin:
+	\begin{itemize}
+	\item folosirea a două dicționare pentru reținerea relațiilor \textit{\{predicat : adresă\}} și a relațiilor \textit{\{etichetă : adresă\}}
+	\item reținerea tuturor instrucțiunilor $nerezolvate$
+	\end{itemize}
+După terminarea parsării, se reiau instrucțiunile $nerezolvate$ și se rezolvă prin căutarea în dicționarele amintite, adresele de apel sau salt.
+\end{itemize}
+
+\subsection{Mediul de executare}
+Pentru a putea compila întrebări Prolog și a vizualiza rezultate, mediul de executare folosește rezultatele intermediare ale translatorului și compilatorului. Aceste rezultate intermediare sunt: 
+\begin{itemize}
+\item Dicționarele de constante și structuri/predicate ale translatorului. Ele sunt necesare pentru a face decodificarea cuvintelor WAM în forma lor textuală și pentru codificarea noilor întrebări Prolog.
+\item Dicționarul care reține relația \textit{\{predicat : adresă\}} pentru compilarea întrebărilor Prolog.
+\end{itemize}
+
+
+\chapter{Proiectare de Detaliu 'si Implementare}
+
+%'Impreun'a cu capitolul precedent reprezint'a aproximativ 60\% din total.
+%
+%Scopul acestui capitol este de a documenta aplica'tia dezvoltat'a 'in a'sa fel 'inc\ia t dezvoltarea 'si 'intre'tinerea ulterioar'a s'a fie posibile. 
+%Cititorul trebuie s'a identifice func'tiile principale ale aplica'tiei din ceea ce este scris aici.
+%Capitolul ar trebui sa con'tin'a (nu se rezum'a neap'arat la):
+%\begin{itemize}
+% \item schema general'a a aplica'tiei
+%\item descrierea fiec'arei componente implementate, la nivel de modul
+%\item diagrame de clase, clase importante 'si metode ale claselor importante.
+%\end{itemize}
+
+\section{Arhitectura generală a sistemului}
+
+Sistemul construit este format din două module principale:
+\begin{itemize}
+\item modulul software, care are datoria să genereze cod WAM prin folosirea compilatorului GNU PROLOG, apoi să-l translateze în cod mașină și să-l trimită către procesorul FPWAM. Acest modul va rula pe calculatorul gazdă.
+\item modulul hardware, care are datoria să execute programele Prolog compilate de către modulul software.
+\end{itemize}
+După cum se poate observa și în \ref{fig:architecture}, aceste două module comunică prin protocolul UART.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{img/architecture.png}
+    \caption{Arhitectura generală a sistemului}
+    \label{fig:architecture}
+\end{figure} 
+
+\section{Modulul hardware}
+\subsection{Pachetul FpwamPkg.vhd}
+Din cauza faptului că implementarea FPWAM este destul de stufoasă, ar fi fost destul de greu de urmărit semnale care sunt formate doar din 1 și 0. S-a luat decizia de a crea un pachet special care să conțină definiția tuturor constantelor, tipurilor personalizate de semnal, funcțiilor și instrucțiunilor implementate care au legătură cu FPWAM. Totodată prin utilizarea acestui pachet se permite schimbarea configurației procesorului doar prin modificarea valorilor unor constante și permite extinderea funcționalității procesorului prin simpla adăugare a unor noi instrucțiuni. Se recomandă utilizarea funcțiilor definite în acest pachet, deoarece ele iau in considerare modificarea constantelor. În continuare se vor prezenta cele mai importante elemente din acest pachet.
+\subsubsection{Constante}
+\begin{itemize}
+\item $kWamAddressWidth$ - această constantă determină adâncimea memoriei BlockRAM din zona HEAPSTACK
+\item $kWamWordWidth$ - această constantă determină lățimea cuvintelor cu care procesorul FPWAM lucrează. Cu cât este mai mare această constantă, cu atât crește numărul de termeni pe care FPWAM poate să-i manipuleze. Atenție! Prin modificarea acestei constante, crește și lățimea memoriilor care rețin termeni WAM.
+\item $kWamPdlAddressWidth$ - această constantă determină adâncimea memoriei PDL din unitatea de unificare.
+  \item $kWamTrailAddressWidth$ - această constantă determină adâncimea memoriei TRAIL.
+  \item $kGPRAddressWidth$ - această constantă determină adâncimea setului de regiștrii generali.
+  \item $kFunctorWidth$ - această constantă determină numărul de biți de reprezentarea a functorului dintr-un cuvânt FPWAM.
+  \item $kArityWidth$ - această constantă determină aritatea maximă a unui fapt, structuri sau reguli. De obicei ea este egală cu constanta care determină numărul regiștrilor.
+  \item $kWamInstructionWidth$ - această constantă determină lățimea unei instrucțiuni FPWAM.
+  \item $kWamInstrMemWidth$  - această constantă determină adâncimea maximă a memoriei de instrucțiuni.
+  \item $kWamHeapStart$ - această constantă determină adresa de start în memoria HEAPSTACK a secțiunii HEAP.
+  \item $kWamStackStart$ - această constantă determină adresa de start în memoria HEAPSTACK a secțiunii STACK.
+  \item $kInstrDecodeWidth$ - această constantă determină lățimea cuvântului prin care se reprezintă codul unei instrucțiuni.
+\end{itemize}
+
+\subsubsection{Tipuri de semnale}
+Multe tipuri a semnalelor din acest pachet nu au o importanță semnificativă, multe fiind utilizate ca intrări de control ale multiplexoarelor din entitatea TopLevel și nu vor fi prezentate în această lucrare. Cele mai importante din punct de vedere a dezvoltării ulterioare sunt:
+\begin{itemize}
+\item tipul enumerat $tag\_t$ - în acest tip de definesc etichetele obiectelor suportate de către mașina FPWAM. În acest moment FPWAM suportă următoarele obiecte: 
+	\begin{itemize}
+    	\item \texttt{tag\_str\_t} - etichetă pentru termeni structurați
+	\item \texttt{tag\_ref\_t} - etichetă pentru referințe
+	\item \texttt{tag\_lis\_t} - etichetă pentru listă
+	\item \texttt{tag\_int\_t} -  etichetă pentru constante
+	\end{itemize}
+Un cuvânt etichetat în FPWAM este format din \texttt{etichetă|valoarea cuvântului}.
+\item tipul enumerat $instruction\_t$ - în acest tip se definesc instrucțiunile implementate de către FPWAM. Setul de instrucțiuni curent suportat este următorul:
+	\begin{enumerate}
+        	  \item \texttt{i\_nop}
+           \item \texttt{i\_put\_structure\_t     -- 000001}
+           \item \texttt{i\_put\_variable\_X\_t    -- 000010}
+           \item \texttt{i\_put\_variable\_Y\_t    -- 000011}
+           \item \texttt{i\_put\_value\_t         -- 000100}
+           \item \texttt{i\_get\_structure\_t     -- 000101}
+           \item \texttt{i\_get\_variable\_t      -- 000110}
+           \item \texttt{i\_get\_value\_t         -- 000111}
+           \item \texttt{i\_unify\_variable\_t    -- 001000}
+           \item \texttt{i\_unify\_value\_t       -- 001001}
+           \item \texttt{i\_call\_t              -- 001010}
+           \item \texttt{i\_proceed\_t           -- 001011}
+           \item \texttt{i\_allocate\_t          -- 001100}
+           \item \texttt{i\_deallocate\_t        -- 001101}
+           \item \texttt{i\_try\_me\_else\_t       -- 001110}
+           \item \texttt{i\_retry\_me\_else\_t     -- 001111}
+           \item \texttt{i\_trust\_me\_t          -- 010000}
+           \item \texttt{i\_put\_unsafe\_value\_t  -- 010001}
+           \item \texttt{i\_put\_list\_t          -- 010010}
+           \item \texttt{i\_put\_constant\_t      -- 010011}
+           \item \texttt{i\_get\_list\_t          -- 010100}
+           \item \texttt{i\_get\_constant\_t      -- 010101}
+           \item \texttt{i\_unify\_local\_value\_t -- 010110}
+           \item \texttt{i\_unify\_constant\_t    -- 010111}
+           \item \texttt{i\_unify\_void          -- 011000}
+           \item \texttt{i\_try\_t               -- 011001}
+           \item \texttt{i\_retry\_t             -- 011010}
+           \item \texttt{i\_trust\_t             -- 011011}
+           \item \texttt{i\_execute\_t           -- 011100}
+           \item \texttt{i\_unify\_structure\_t   -- 011101}
+           \item \texttt{i\_switch\_on\_term\_t    -- 011110}
+           \item \texttt{i\_fail\_t              -- 011111}
+           \item \texttt{i\_switch\_on\_int\_str\_t -- 100000}
+           \item \texttt{i\_unify\_list\_t        -- 100001}
+         \end{enumerate}
+         Formatul unei instrucțiuni este de trei tipuri:
+            \begin{enumerate}
+            \item \texttt{|COD\_INSTR|REG1|CUVÂNT\_WAM|} - pentru instrucțiuni registru - constantă
+            \item \texttt{|COD\_INSTR|REG1|REG2|} - pentru instrucțiuni registru-registru
+            \item \texttt{|COD\_INSTR|NULL|CUVÂNT\_WAM|} - pentru instrucțiuni de unificare, apel sau constantă
+            \end{enumerate}
+\end{itemize}
+\subsubsection{Funcții}
+\begin{itemize}
+  \item \texttt{function fpwam\_tag(word : std\_logic\_vector) return tag\_t;} - returnează eticheta cuvâtului FPWAM dat ca intrare.
+  \item \texttt{function fpwam\_value(word : std\_logic\_vector) return std\_logic\_vector} - returnează valoarea cuvântului FPWAM dat ca intrare
+  \item \texttt{function fpwam\_word(word : std\_logic\_vector; tag : tag\_t) return std\_logic\_vector} - crează un cuvânt FPWAM cu valoarea și eticheta dată la intrare
+  \item \texttt{function fpwam\_functor(word : std\_logic\_vector(kWamWordWidth -1 downto 0)) return std\_logic\_vector} - returnează functorul cuvântului dat ca intrare
+  \item \texttt{function fpwam\_arity(word : std\_logic\_vector(kWamWordWidth -1 downto 0)) return std\_logic\_vector} - returnează aritatea unei structuri/fapt date ca intrare
+  \item \texttt{function fpwam\_instr(word : std\_logic\_vector(31 downto 0)) return instruction\_t} - returnează tipul de instrucțiune decodifcat din vectorul de biți dat ca parametru
+  \item \texttt{function fpwam\_instr\_addr(word : std\_logic\_vector) return std\_logic\_vector} - returnează adresa de apel din cuvântul de la intrare
+  \item \texttt{function fpwam\_instr\_arity(word : std\_logic\_vector) return std\_logic\_vector} - returnează aritatea cuvântului din instrucțiunea dată ca intrare
+  \item \texttt{function fpwam\_var\_on\_stack(word : std\_logic\_vector) return boolean} - returnează o valoare booleană care indică dacă instrucțiunea se referă la o variabilă locală sau la un registru
+  \item \texttt{function fpwam\_var\_stack\_addr(instr : std\_logic\_vector; E : std\_logic\_vector) return std\_logic\_vector} - returnează adresa pe stivă a variabilei din instrucțiunea dată ca intrare.
+\end{itemize}
+\subsection{Entitatea TopLevel.vhd și arhitectura generală}
+După cum se poate observa în \ref{fig:top-level}, în această componentă se descrie într-un mod structural arhitectura procesorului implementat. Ea are rolul de a îmbina și a defini căile de date între componente.  Din cauza complexității mărite a acestei componente, schema \ref{fig:top-level} este una sumară care nu cuprinde toate legăturile între componente. Rolul ei este de a evidenția dependența între entități și de a oferi unui posibil dezvoltator o imagine de ansamblu a componentelor prezente în procesor.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.25]{img/top-level.png}
+    \caption{Arhitectura generală a procesorului}
+    \label{fig:top-level}
+\end{figure} 
+
+\subsection{Entitatea DataFlowControl.vhd sau DFC}
+\label{cap:dfc}
+Această componentă este creierul procesorului. Ea pune semnalele de control pe căile de date în funcție de instrucțiunea curentă și starea actuală a procesorului. Datorită faptului că procesorul FPWAM are instrucțiuni complexe și multe dintre ele nu se pot executa într-un singur tact, s-au luat în calcul următoarele tehnici de implementare:
+
+\begin{itemize}
+	\item implementarea unității DFC printr-o unitate microprogramată, asemenător procesoarelor CISC
+	\item implementarea unității DFC printr-un automat de stare de tip $Mealy$.
+\end{itemize}
+
+Chiar dacă avantajele din punct de vedere a performanței sunt mai mari la o unitate microprogramată, s-a ales abordarea automatului de stare deoarece crește lizibilitatea și înțelegerea codului, facilitează depanarea și procesul de adăugare sau modificare a funcționalităților. În momentul de față FPWAM suportă 33 de instrucțiuni, iar automatul din DFC a ajuns la aproximativ 80 de stări. Pentru a minimiza cât de mult penalizările de performanță din punct de vedere a timpului, se va face un compromis și se va folosi codificarea $un\ bistabil\ pe\ stare$ ($one-hot\ encoding$). Chiar dacă 80 de bistabile par mult pentru codifcarea stărilor unui automat, resursele din cipul FPGA sunt destul de numeroase.
+
+Din cauza faptului că semnalele de intrare și ieșire a acestei componente sunt de ordinul zecilor, ele nu vor fi prezentate în acest subcapitol. Acest modul este împărțiț logic în trei procese principale:
+\begin{itemize}
+\item \texttt{FSM: process(clk)} - acest proces se setează pe frontul crescător al semnalului de ceas următoarea stare decodificată
+\item \texttt{NEXT\_STATE\_DECODE: process(decoded\_state, cr\_state, deref\_done,...)} - acest proces decodifică următoarea stare a automatului în funcție de starea curentă a automatului și intrările componentei.
+\item \texttt{OUTPUT\_DECODE: process(cr\_state, deref\_done, mem\_obj, ...) } - setează semnalele de control pe căile de date în funcție de starea curentă a automatului și întrările componentei.
+\end{itemize}
+Pentru a adăuga stări automatului, trebuie să se adauge noi valori în tipul enumerat $state\_t$ și să se adauge logica corespunzătoare în procesele \texttt{OUTPUT\_DECODE} și \texttt{NEXT\_STATE\_DECODE}.
+
+\subsection{Entitatea GPR.vhd sau General Purpose Registers}
+Această entitate reprezintă regiștrii de argument și de variabilă prezentați în capitolul Fundamentare Teoretică. Din setul de instrucțiuni abstracte reseie că ei sunt printre cele mai folosite componente a acestui procesor. Datorită numărului mic, ei se vor implementa ca niște memorii RAM distribuite cu două porturi și citire asincronă. O ilustrare grafică a componentei se găsește la \ref{fig:gpr}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.25]{img/GPR.png}
+    \caption{Componenta GPR}
+    \label{fig:gpr}
+\end{figure} 
+
+\subsection{Entitatea Memory.vhd}
+Toate zonele de memorie din modelul abstract sunt implementate ca entități separate de BlockRAM, înafară de zona de memorie HEAP și STACK care împărtășesc aceeași instanță fizică. Aceasta a oferit algoritmului de plasare libertatea de a pune componentele care folosesc unele zone de memorie în apropierea lor. Totodată acest artificiu a crescut gradul de paralelizare a instrucțiunilor cât și ușurința personalizării și testării componentelor. Componentele fizice care se bazează pe $Memory.vhd$ sunt:
+\begin{itemize}
+\item $TopLevel/INSTRMEM$
+\item $TopLevel/HEAPSTACK$
+\item $TopLevel/TRAIL$
+\item $TopLevel/BMEM$ - sau CINDEX
+\item $TopLevel/UNIFYU/PDLIST$
+\end{itemize}
+
+La implementarea $Memory.vhd$ s-au luat în calcul cele două moduri de funcționare a BlockRAM:
+\begin{itemize}
+\item latența citirii să fie de 1 tact
+\item latența citirii să fie de 2 tacți.
+\end{itemize}
+
+Înafară de latența introdusă, cele două abordări au niște efecte subtile care pot scăpa ochiului neexperimentat. Alegerea cea mai convenabilă pare să fie prima opțiune deoarece latența este minimă. Dezavantajul acestei abordări este întârzierea datelor la portul de ieșire, apariția lor fiind de obicei la sfârșitul perioadei de ceas. În cazul în care există cale de la portul de ieșire al memoriei către alte circuite combinațioanle care au multe nivele de logică, semnalul nu are timp să se propage înaintea începerii unui nou ciclu de ceas, rezultând în neatingerea constrângerior de timp și funcționare deficitară. Cealaltă abordare rezolvă această problemă prin includerea automată la ieșirea memoriei niște regiștrii de ieșire. În cazul nostru această soluție nu este convenabilă deoarece memoria este cea mai folosită componentă a procesorului, iar latența de 2 tacți la fiecare citire ar afecta considerabil performanța. Pentru a soluționa parțial ambele probleme s-a făcut un compromis arhitectural. Memoria a fost descrisă ca un BlockRAM cu latență 1, iar în cazurile în care calea combinațională este prea lungă, se pun regiștrii intermediari pentru a salva ieșirile memoriei, rezultatul fiind ca a unei memorii cu latență 2.
+Totodată pentru creșterea performanței s-a optat ca memoria să aibă două porturi de citire și scriere. În final modul de funcționare a memoriei este descris în \ref{fig:ramtype}. Adâncimile și lățimile memoriei sunt configurabile prin porturile generice ale entității. O ilustrare grafică a componentei se găsește la \ref{fig:ram}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.375]{img/ramtype.png}
+    \caption{Modul de funcționare}
+    \label{fig:ramtype}
+\end{figure} 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.375]{img/ram.png}
+    \caption{Componenta instanțiată a entității Memory.vhd}
+    \label{fig:ram}
+\end{figure} 
+
+\subsection{Operațiile auxiliare}
+În continuare vom trece în revistă operațiile auxiliare WAM. Pentru implementarea lor s-au luat în considerare două abordări:
+\begin{itemize}
+\item implementarea lor în componenta DFC
+\item implemetarea lor ca entități separate în procesorul FPWAM
+\end{itemize}
+ 
+Prima abordare pare cea mai naturală datorită faptului că in componenta DFC se află logica semnalelor de control care vor fi puse pe căile de date, operațiile auxiliare fiind doar niște rutine comune care se execută pentru mai multe instrucțiuni. După cum s-a prezentat în \ref{cap:dfc}, componenta DFC este una foarte complexă, având deja peste 80 de stări. Prin adăugarea rutinelor operațiilor auxiliare complexitatea ei ar crește cu aproximativ 25\%, acest lucru fiind de nedorit.
+
+A doua abordare chiar dacă pare nenaturală din punct de vedere ingineresc, prezintă mai multe avantaje decât cea anterioară. Implementând fiecare componentă ca un întreg crește modularitatea procesorului și lizibilitatea codului pentru un preț de maxim 2 tacți pe operație auxiliară și maxim 2 nivele de logică în plus pentru multiplexarea detelor de la memorie.
+
+\begin{itemize}
+\item \texttt{DerefUnit.vhd} - Această entitate are rolul de a executa operația de dereferențiere. Construcția ei este tot bazată pe un automat de tip $Mealy$, descrierea lui fiind cu trei procese. Există două asemenea componente în procesorul FPWAM pentru a accelera algoritmul de unificare.
+\item \texttt{BindUnit.vhd} - Această entitate are roul de a executa operația de legare a două cuvinte FPWAM. Ea este descrisă tot printr-un automat de stări.
+\item \texttt{TrailUnit.vhd} - Această entitate are rolul de a executa operația TRAIL. Ea este singura dintre operațiile auxiliare care este asincronă.
+\item \texttt{UnifyUnit.vhd} - Cea mai complexă dinte operațiile auxiliare. Ea execută algoritmul de unificare dintre două cuvinte FPWAM. În componența ei există o memorie care are rolul structurii $PDL$.
+\item \texttt{UnwindTrailUnit.vhd} - Legată de memoria $TRAIL$, această entitate are rolul de a dezlega toate variabilele începând cu o adresă $a1$ până la adresa $a2$.
+\item \texttt{BinarySearch.vhd} - După cum s-a discutat și în Fundamentare Teoretică, această entitate are rolul de executa noua operație de căutare binară în memoria $CINDEX$.
+\end{itemize}
+
+\section{Modulul software}
+\subsection{Ahitectura conceptuală}
+În \ref{fig:archsoft} este prezentată o diagramă UML cu arhitectura modului software. După cum se poate observa, aplicația este împârțită în două blocuri mari:
+\begin{itemize}
+\item blocul dezvoltat în C++ care conține translatorul.
+\item blocul GPLC, mai specific parser-ul de fișiere .WAM, dezvoltat în C de către Daniel Diaz, care este adapat în lucrarea curentă pentru a comunica cu translatorul prin API-ul expus.
+\end{itemize}
+API-ul amintit se găsește în $GPLCBridge.h,cpp$.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.25]{img/arhitectura-software.png}
+    \caption{Arhitectura modulului sofware}
+    \label{fig:archsoft}
+\end{figure} 
+
+\subsection{C API-ul expus al translatorului}
+Chiar dacă C++ este un superset al limbajului C, un obiect compilat C nu poate fi link-editat cu un obiect compilat C++, chiar dacă el este scris procedural. Această problemă apare din cauza tehnicii de ”name mangling” care este diferită la cele două compilatoare. În cazul în care se încearcă link-editarea celor două, cel mai probabil se va arunca o eroare care spune că nu s-au găsit anumite definiții pentru funcția X. Pentru a rezolva această problemă în limbajul C++ există construcția $extern\ "C"$. Prin plasarea ei în fața funcțiilor și procedurilor îi idicăm compilatorului de C++ să folosească tehnica C de "name mangling". Astfel, link-editarea se va face cu succes.
+
+În cazul de față avem nevoie ca parser-ul WAM să apeleze metodele din clasa $CodeContext$ care sunt dedicate fiecărei instrucțiuni. Acest lucru îl vom rezolva prin expunerea acestui obiect prin API-ul C. Pentru a face acest lucru s-au definit două fișiere $GPLCBridge.h,cpp$, unde s-au expus și implementat câte o procedură externă C pentru fiecare metodă din clasa $CodeContext$ (Vezi \ref{fig:bridgeh} și \ref{fig:bridgec}). După cum se poate observa în implementarea acestor proceduri, se ia obiectul din contextul curent și doar se apelează metodele care poartă același nume.Acum nu mai rămâne decât adăugarea funcționalității în blocul C de a apela procedurile expuse în funcție de instrucțiunea parsată.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{img/bridgeh.png}
+    \caption{Fișierul GPLCBridge.h}
+    \label{fig:bridgeh}
+\end{figure} 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{img/bridgec.png}
+    \caption{Fișierul GPLCBridge.cpp}
+    \label{fig:bridgec}
+\end{figure} 
+
+
+
+\subsection{Blocul C și parser-ul de fișiere WAM}
+\subsubsection{wam\_parser.h,c}
+Dezvoltate în totalitate de către Daniel Diaz, aceste două fișiere alcătuiesc parser-ul de fișiere în care se află cod WAM.
+\subsection{wam2FPWAM.h,c}
+Dezvoltate în mare parte de către Daniel Diaz, aceste două fișiere au fost adaptate să interfațeze cu API-ul expus de către translator. După cum se poate observa în \ref{fig:apicall}, apelul $F\_put\_variable$ este redirecționat către funcțiile expuse în API-ul ($put\_variableX$ sau $put\_variableY$) translatorului.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.5]{img/apicall.png}
+    \caption{Redirecționare apel către API}
+    \label{fig:apicall}
+\end{figure} 
+\chapter{Testare 'si Validare}
+
+Aproximativ 5\% din total
+
+\section{Titlu}
+\section{Alt titlu}
+
+\chapter{Manual de Instalare 'si Utilizare}
+
+'In sec'tiunea de Instalare trebuie s'a detalia'ti resursele software 'si hardware necesare pentru instalarea 'si rularea aplica'tiei, precum 'si o descriere pas cu pas a procesului de instalare. 
+Instalarea aplica'tiei trebuie s'a fie posibil'a pe baza a ceea ce se scrie aici.
+
+'In acest capitol trebuie s'a descrie'ti cum se utilizeaz'a aplica'tia din punct de vedere al utilizatorului, f'ar'a a men'tiona aspecte tehnice interne.
+Folosi'ti capturi ale ecranului 'si explica'tii pas cu pas ale interac'tiunii. 
+Folosind acest manual, o persoan'a ar trebui s'a poat'a utiliza produsul vostru.
+
+\section{Titlu}
+\section{Alt titlu}
+
+\chapter{Concluzii}
+
+Cca. 5\% din total.
+Capitolul ar trebui sa con'tin'a (nu se rezum'a neap'arat la):
+\begin{itemize}
+ \item un rezumat al contribu'tiilor voastre
+\item analiz'a critic'a a rezultatelor ob'tinute
+\item descriere a posibilelor dezvolt'ari 'si 'imbun'at'a'tiri ulterioare
+\end{itemize}
+
+
+\section{Titlu}
+\section{Alt titlu}
+
+
+%\addcontentsline {toc}{chapter}{Bibliography} 
+\nocite{*}
+\bibliographystyle{IEEEtran} 
+\bibliography{thesis}%same file name as for .bib
+
+\include{apendix}
+
+\end{document}

@@ -42,32 +42,34 @@ end Memory;
 
 architecture Behavioral of Memory is
 type mem is array (0 to 2**kMemAddressWidth) of std_logic_vector(kWordWidth - 1 downto 0);
-signal BRAM : mem;
+signal BRAM : mem := (others => (others => '0'));
 begin
 
   PORT_1: process(clk)
   begin
     if rising_edge(clk) then
-      word_port_1_o <= (others => '0');
+      if rd_port_1 = '1' then
       if wr_port_1 = '1' then
         BRAM(to_integer(unsigned(addr_port_1))) <= word_port_1_i;
-      end if;
-      if rd_port_1 = '1' then
+        word_port_1_o <= word_port_1_i;
+      else
         word_port_1_o <= BRAM(to_integer(unsigned(addr_port_1)));
       end if;
+    end if;
     end if;
   end process;
 
   PORT_2: process(clk)
   begin
     if rising_edge(clk) then
-      word_port_2_o <= (others => '0');
+    if rd_port_2 = '1' then
       if wr_port_2 = '1' then
         BRAM(to_integer(unsigned(addr_port_2))) <= word_port_2_i;
-      end if;
-      if rd_port_2 = '1' then
+        word_port_2_o <= word_port_2_i;
+      else
         word_port_2_o <= BRAM(to_integer(unsigned(addr_port_2)));
       end if;
+    end if;
     end if;
   end process;
 
@@ -75,7 +77,7 @@ end Behavioral;
 
 architecture Simulation of Memory is
 type mem is array (0 to 2**kMemAddressWidth) of std_logic_vector(kWordWidth - 1 downto 0);
-signal BRAM : mem;
+signal BRAM : mem := (others => (others => '0'));
 signal reg_addr1 : std_logic_vector(kMemAddressWidth -1 downto 0) := (others =>'0');
 signal reg_addr2 : std_logic_vector(kMemAddressWidth -1 downto 0) := (others =>'0');
 begin
