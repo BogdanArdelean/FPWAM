@@ -519,6 +519,8 @@ begin
               nx_state <= backtrack_t;
           end case;
         end if;
+      when get_constant_t2 =>
+        nx_state <= next_instr_t;
       when call_t =>
         nx_state <= next_instr_t;
       when proceed_t =>
