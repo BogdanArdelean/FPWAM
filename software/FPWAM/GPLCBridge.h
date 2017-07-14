@@ -15,7 +15,6 @@
 typedef void *CodeContextCPtr;
 void setCodeContext(CodeContextCPtr codeCtx);
 
-EXTERNC void test();
 EXTERNC void predicate(const char* name, const int8_t arity);
 EXTERNC void get_value(const int8_t XYn, const char c, const int8_t Ai);
 EXTERNC void get_variable(const int8_t XYn, const char c, const int8_t Ai);

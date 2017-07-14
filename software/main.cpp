@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <unistd.h>
 #include "FPWAM/Instruction.h"
 
 #include "Wam2FPWAM/wam2FPWAM.h"
@@ -6,6 +8,9 @@
 
 #include "FPWAM/CodeContext.h"
 #include "FPWAM/GPLCBridge.h"
+
+#define die(e) do { fprintf(stderr, "%s\n", e); exit(EXIT_FAILURE); } while (0);
+
 
 int main(int argc, char *argv[])
 {
@@ -17,12 +22,22 @@ int main(int argc, char *argv[])
     std::vector<FPWAM::Instruction> instr;
     codeCtx.get_instructions(instr);
 
-    std::cout << instr.size() << std::endl;
+
+    std::fstream f("code.out", std::ios::out);
+    f << instr.size() << std::endl;
     for(auto& i : instr)
     {
-        std::cout << ',' << "B\"" << i.to_string() << '"' << std::endl;
+        f << ',' << "B\"" << i.to_string() << '"' << '\n';
     }
-
+    f.close();
+//
+//    if(fork()==0)
+//    {
+//        chdir("/Users/bogdana/Personal/licenta/FPWAM/software");
+//        execlp("gplc", "/Users/bogdana/Personal/licenta/FPWAM/software/test.pl");
+//        execlp("gplc", "gplc", "/Users/bogdana/Personal/licenta/FPWAM/software/test.pl");
+//        die("execl");
+//    }
     return 0;
 }
 
