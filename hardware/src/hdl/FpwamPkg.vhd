@@ -100,6 +100,9 @@ package FpwamPkg is
   constant kInstrDecodeWidth : integer := 6;
 
 
+  type proc_mode_t is (proc_exec_t, proc_control_t);
+
+
   function fpwam_tag           (word : std_logic_vector) return tag_t;
   function fpwam_value         (word : std_logic_vector) return std_logic_vector;
   function fpwam_word          (word : std_logic_vector; tag : tag_t) return std_logic_vector;
@@ -129,7 +132,7 @@ package body FpwamPkg is
 
   function fpwam_word (word : std_logic_vector; tag : tag_t) return std_logic_vector is
     begin
-      return std_logic_vector(to_unsigned(tag_t'pos(tag),2)) & word;
+      return std_logic_vector(to_unsigned(tag_t'pos(tag),2)) & std_logic_vector(resize(unsigned(word), kWamWordWidth-2));
   end function;
 
   function fpwam_functor (word : std_logic_vector(kWamWordWidth -1 downto 0)) return std_logic_vector is

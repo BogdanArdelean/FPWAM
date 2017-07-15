@@ -22,9 +22,11 @@ use work.FpwamPkg.all;
 entity TopLevel is
   port
   (
-    clk   : in std_logic
-   ;rst_i : in std_logic
-   ;led   : out std_logic_vector(15 downto 0)
+    clk     : in std_logic
+   ;rst_i   : in std_logic
+   ;led     : out std_logic_vector(15 downto 0)
+   ;usb_tx : out std_logic
+   ;usb_rx : in std_logic
   );
 end TopLevel;
 
@@ -737,11 +739,88 @@ signal bmem_port_2_in      : std_logic_vector(kWamWordWidth+kWamInstrMemWidth -1
 signal bmem_port_2_wr      : std_logic;
 signal bmem_port_2_rd      : std_logic;
 
+signal control_unit_mode          : proc_mode_t;
+signal control_unit_query_done    : std_logic;
+signal control_unit_uart_in       : std_logic_vector(7 downto 0);
+signal control_unit_uart_in_valid : std_logic;
+signal control_unit_uart_out      : std_logic_vector(7 downto 0);
+signal control_unit_uart_out_str  : std_logic;
+signal control_unit_uart_out_ack  : std_logic;
+signal control_unit_deref_start   : std_logic;
+signal control_unit_deref_out     : std_logic_vector(kWamWordWidth -1 downto 0);
+
+
+signal uart_data_stream_in      : std_logic_vector(7 downto 0);
+signal uart_data_stream_in_stb  : std_logic;
+signal uart_data_stream_in_ack  : std_logic;
+signal uart_data_stream_out     : std_logic_vector(7 downto 0);
+signal uart_data_stream_out_stb : std_logic;
+
+signal tx : std_logic;
+signal rx : std_logic;
+
+
 constant kTarget : integer := 100000;
 signal clock_counter : integer;
 signal millis : unsigned(11 downto 0);
 signal do_count : boolean;
 begin
+
+
+deglitch : process (clk)
+begin
+    if rising_edge(clk) then
+        rx_sync         <= usb_rx;
+        rx              <= rx_sync;
+        usb_tx          <= tx;
+    end if;
+end process;
+
+control_unit_query_done     <= to_std_logic(not do_count);
+control_unit_uart_in        <= uart_data_stream_out;
+control_unit_uart_in_valid  <= uart_data_stream_out_stb;
+control_unit_uart_out_ack   <= uart_data_stream_in_ack;
+CUNIT: entity work.ControlUnit(Behavioral)
+ port map
+ (
+   clk => clk
+  ,rst => rsti
+
+  ,query_done    => control_unit_query_done
+  ,uart_in       => control_unit_uart_in
+  ,uart_in_valid => control_unit_uart_in_valid
+  ,uart_out      => control_unit_uart_out
+  ,uart_out_str  => control_unit_uart_out_str
+  ,uart_out_ack  => control_unit_uart_out_ack
+  ,deref_start   => control_unit_deref_start
+  ,deref_out     => control_unit_deref_out
+  ,deref_in      => deref2_output
+  ,proc_mode     => control_unit_mode
+  ,sys_rst       => rst
+ );
+
+ uart_data_stream_in     <= control_unit_uart_out;
+ uart_data_stream_in_stb <= control_unit_uart_out_str;
+ CUART: entity work.uart(rtl)
+  generic map
+  (
+    baud => 115200
+   ,clock_frequency => 100000000
+  )
+  port map
+  (
+    clock => clk
+   ,reset => rst
+   ,data_stream_in      => uart_data_stream_in
+   ,data_stream_in_stb  => uart_data_stream_in_stb
+   ,data_stream_in_ack  => uart_data_stream_in_ack
+   ,data_stream_out     => uart_data_stream_out
+   ,data_stream_out_stb => uart_data_stream_out_stb
+   ,tx => tx
+   ,rx => rx
+  );
+
+
 
 clk_cnt: process(clk)
 begin
@@ -773,12 +852,6 @@ begin
     end if;
 end process;
 
-RSTPRC: process(clk)
-begin
-    if rising_edge(clk) then
-       rst <= '0';
-    end if;
-end process;
 
 do_count <= not((fpwam_instr(dfc_instruction_in) = i_nop) and (unsigned(P_reg) = to_unsigned(1, P_reg'length)));
 led(0) <= GLBFAIL_reg;
@@ -1559,9 +1632,10 @@ end process;
    );
 -- DEREF1 END
 -- DEREF2 START
-  deref2_start     <= unify_deref2_start;
+  deref2_start     <= unify_deref2_start or control_unit_deref_start;;
   deref2_mem_word2 <= mem_output_2;
-  deref2_word      <= unify_deref2_out;
+  deref2_word      <= unify_deref2_out when control_unit_mode = proc_exec_t else
+                      control_unit_deref_out;
   DEREF2: entity work.DerefUnit(Behavioral)
    generic map
    (
