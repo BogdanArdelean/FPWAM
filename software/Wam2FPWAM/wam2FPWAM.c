@@ -34,7 +34,7 @@
  * the GNU Lesser General Public License along with this program.  If      *
  * not, see http://www.gnu.org/licenses/.                                  *
  *-------------------------------------------------------------------------*/
-
+// MODIFIED BY BOGDAN ARDELEAN to interact with GPLCBridge.CPP
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -644,7 +644,7 @@ void
 F_put_void(ArgVal arg[])
 {
   Args1(INTEGER(a));
-  put_variableX(0, a);
+  put_variableX(-1, a);
 }
 
 

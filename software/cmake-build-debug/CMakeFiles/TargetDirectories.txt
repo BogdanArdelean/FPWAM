@@ -1,0 +1,3 @@
+/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles/software.dir

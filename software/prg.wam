@@ -1,0 +1,29 @@
+% compiler: GNU Prolog 1.4.4
+% file    : prg.pl
+
+
+file_name('/Users/bogdana/Personal/licenta/prolog_wam/prg.pl').
+
+
+predicate(p/1,1,static,private,monofile,global,[
+    switch_on_term(1,2,fail,fail,4),
+
+label(1),
+    try_me_else(3),
+
+label(2),
+    get_atom(a,0),
+    proceed,
+
+label(3),
+    trust_me_else_fail,
+
+label(4),
+    get_structure(f/1,0),
+    unify_atom(x),
+    fail]).
+
+
+predicate(q/0,3,static,private,monofile,global,[
+    put_atom(a,0),
+    execute(p/1)]).
