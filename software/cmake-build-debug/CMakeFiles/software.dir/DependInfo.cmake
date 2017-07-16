@@ -15,9 +15,11 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   )
 set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/CodeContext.cpp" "/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles/software.dir/FPWAM/CodeContext.cpp.o"
+  "/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.cpp" "/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o"
   "/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/GPLCBridge.cpp" "/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o"
   "/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Instruction.cpp" "/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles/software.dir/FPWAM/Instruction.cpp.o"
   "/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Predicate.cpp" "/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles/software.dir/FPWAM/Predicate.cpp.o"
+  "/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.cpp" "/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o"
   "/Users/bogdana/Personal/licenta/FPWAM/software/main.cpp" "/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles/software.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")

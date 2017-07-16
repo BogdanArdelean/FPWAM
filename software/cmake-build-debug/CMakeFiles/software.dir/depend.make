@@ -31,6 +31,11 @@ CMakeFiles/software.dir/FPWAM/CodeContext.cpp.o: ../FPWAM/FPWAMDefs.h
 CMakeFiles/software.dir/FPWAM/CodeContext.cpp.o: ../FPWAM/Instruction.h
 CMakeFiles/software.dir/FPWAM/CodeContext.cpp.o: ../FPWAM/Predicate.h
 
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o: ../FPWAM/FPWAMDefs.h
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o: ../FPWAM/FPWAMReader.cpp
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o: ../FPWAM/FPWAMReader.h
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o: ../FPWAM/SerialWrapper.h
+
 CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o: ../FPWAM/CodeContext.h
 CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o: ../FPWAM/FPWAMDefs.h
 CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o: ../FPWAM/GPLCBridge.cpp
@@ -47,11 +52,16 @@ CMakeFiles/software.dir/FPWAM/Predicate.cpp.o: ../FPWAM/Instruction.h
 CMakeFiles/software.dir/FPWAM/Predicate.cpp.o: ../FPWAM/Predicate.cpp
 CMakeFiles/software.dir/FPWAM/Predicate.cpp.o: ../FPWAM/Predicate.h
 
+CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o: ../FPWAM/SerialWrapper.cpp
+CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o: ../FPWAM/SerialWrapper.h
+
 CMakeFiles/software.dir/main.cpp.o: ../FPWAM/CodeContext.h
 CMakeFiles/software.dir/main.cpp.o: ../FPWAM/FPWAMDefs.h
+CMakeFiles/software.dir/main.cpp.o: ../FPWAM/FPWAMReader.h
 CMakeFiles/software.dir/main.cpp.o: ../FPWAM/GPLCBridge.h
 CMakeFiles/software.dir/main.cpp.o: ../FPWAM/Instruction.h
 CMakeFiles/software.dir/main.cpp.o: ../FPWAM/Predicate.h
+CMakeFiles/software.dir/main.cpp.o: ../FPWAM/SerialWrapper.h
 CMakeFiles/software.dir/main.cpp.o: ../Wam2FPWAM/wam2FPWAM.h
 CMakeFiles/software.dir/main.cpp.o: ../main.cpp
 

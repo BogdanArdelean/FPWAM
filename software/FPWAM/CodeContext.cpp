@@ -36,6 +36,7 @@ void FPWAM::CodeContext::predicate(const std::string name, const int8_t arity)
 void FPWAM::CodeContext::add_predicate(const std::string &name, const int8_t arity, int32_t number, int32_t predicateValue, bool resolved)
 {
     m_predicateNameToNr[name] = number;
+    m_predicateValueToName[predicateValue] = name;
     m_facts.push_back(Predicate(name, arity, predicateValue, m_currentInstruction, resolved));
     m_predicateValueToIndex[predicateValue] = m_facts.size() - 1;
 }
@@ -595,6 +596,12 @@ void CodeContext::resolve_instructions()
             }
         }
     }
+
+    for(auto& kv : m_constantNameToValue)
+    {
+       m_constantValueToName[kv.second] = kv.first;
+    }
+
 }
 
 void CodeContext::query()

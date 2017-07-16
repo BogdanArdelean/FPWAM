@@ -89,6 +89,12 @@
 		<Unit filename="/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMDefs.h">
 			<Option target="software"/>
 		</Unit>
+		<Unit filename="/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.cpp">
+			<Option target="software"/>
+		</Unit>
+		<Unit filename="/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.h">
+			<Option target="software"/>
+		</Unit>
 		<Unit filename="/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/GPLCBridge.cpp">
 			<Option target="software"/>
 		</Unit>
@@ -105,6 +111,12 @@
 			<Option target="software"/>
 		</Unit>
 		<Unit filename="/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Predicate.h">
+			<Option target="software"/>
+		</Unit>
+		<Unit filename="/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.cpp">
+			<Option target="software"/>
+		</Unit>
+		<Unit filename="/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.h">
 			<Option target="software"/>
 		</Unit>
 		<Unit filename="/Users/bogdana/Personal/licenta/FPWAM/software/Wam2FPWAM/wam2FPWAM.c">

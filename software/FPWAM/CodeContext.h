@@ -26,9 +26,11 @@ namespace FPWAM
 
         std::vector<Predicate> m_facts;
         std::map<std::string, int32_t> m_predicateNameToNr;
+        std::map<int32_t, std::string> m_predicateValueToName;
         std::map<int32_t, int32_t>     m_predicateValueToIndex;
 
         std::map<std::string, int32_t> m_constantNameToValue;
+        std::map<int32_t, std::string> m_constantValueToName;
 
         void predicate(const std::string name, const int8_t arity);
         void get_value(const int8_t XYn, const char c, const int8_t Ai);

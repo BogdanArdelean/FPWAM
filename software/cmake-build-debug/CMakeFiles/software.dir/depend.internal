@@ -31,6 +31,11 @@ CMakeFiles/software.dir/FPWAM/CodeContext.cpp.o
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMDefs.h
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Instruction.h
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Predicate.h
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o
+ /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMDefs.h
+ /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.cpp
+ /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.h
+ /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.h
 CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/CodeContext.h
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMDefs.h
@@ -47,11 +52,16 @@ CMakeFiles/software.dir/FPWAM/Predicate.cpp.o
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Instruction.h
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Predicate.cpp
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Predicate.h
+CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o
+ /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.cpp
+ /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.h
 CMakeFiles/software.dir/main.cpp.o
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/CodeContext.h
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMDefs.h
+ /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.h
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/GPLCBridge.h
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Instruction.h
  /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Predicate.h
+ /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.h
  /Users/bogdana/Personal/licenta/FPWAM/software/Wam2FPWAM/wam2FPWAM.h
  /Users/bogdana/Personal/licenta/FPWAM/software/main.cpp
