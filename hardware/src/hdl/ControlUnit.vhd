@@ -37,6 +37,7 @@ entity ControlUnit is
     deref_start    : out std_logic;
     deref_out      : out std_logic_vector(kWamWordWidth - 1 downto 0);
     deref_in       : in  std_logic_vector(kWamWordWidth -1 downto 0);
+    deref_done     : in std_logic;
 
     proc_mode      : out proc_mode_t;
     sys_rst        : out std_logic
@@ -44,8 +45,9 @@ entity ControlUnit is
 end ControlUnit;
 
 architecture Behavioral of ControlUnit is
-signal pdl_in_1     : std_logic_vector(kWordWidth -1 downto 0);
-signal pdl_out_1    : std_logic_vector(kWordWidth -1 downto 0);
+constant kPdlAddressWidth : integer := 10;
+signal pdl_in_1     : std_logic_vector(kWamWordWidth -1 downto 0);
+signal pdl_out_1    : std_logic_vector(kWamWordWidth -1 downto 0);
 signal pdl_adr_1    : std_logic_vector(kPdlAddressWidth -1 downto 0);
 signal wr_pdl       : std_logic;
 signal rd_pdl       : std_logic;
@@ -69,7 +71,7 @@ signal local_reset   : std_logic;
 signal rst           : std_logic;
 signal sys_rst_start : std_logic := '1';
 
-signal var_to_read       : unsigned(kGPRAddressWidth downto 0) := to_unsigned(5, var_to_read'length);
+signal var_to_read       : unsigned(kGPRAddressWidth downto 0) := to_unsigned(5, kGPRAddressWidth+1);
 signal var_current_reg   : unsigned(kGPRAddressWidth downto 0);
 signal var_curr_done     : boolean;
 signal var_curr_wr       : std_logic;
@@ -121,11 +123,11 @@ begin
             ,wr_port_1     => wr_pdl
             ,rd_port_1     => rd_pdl
 
-            ,addr_port_2   => open
+            ,addr_port_2   => (others => '0')
             ,word_port_2_o => open
-            ,word_port_2_i => open
-            ,wr_port_2     => open
-            ,rd_port_2     => open
+            ,word_port_2_i => (others => '0')
+            ,wr_port_2     => '0'
+            ,rd_port_2     => '0'
           );
 
   CURRERG: process(clk)
@@ -188,7 +190,7 @@ begin
   end process;
 
 
-  NEXT_STATE_DECODE: process(cr_state, deref_in, uart_in, uart_in_valid, uart_out_ack)
+  NEXT_STATE_DECODE: process(cr_state, deref_in, uart_in, uart_in_valid, uart_out_ack, query_done, var_curr_done)
   begin
     nx_state <= cr_state;
     case cr_state is
@@ -199,7 +201,7 @@ begin
           nx_state <= iterate_t;
         end if;
       when iterate_t =>
-        if var_curr_done /= '1' then
+        if not var_curr_done then
           nx_state <= check_stop_pop_t;
         else
           nx_state <= done_t;
@@ -264,7 +266,6 @@ begin
 
     pdl_addr_comb  <= (others => '0');
     wr_pdl_reg     <= '0';
-    wr_curr_reg    <= '0';
     rst_curr_reg   <= '0';
 
     wr_goal_reg    <= '0';
@@ -273,7 +274,6 @@ begin
 
     local_reset    <= '0';
     rst            <= '0';
-    sys_rst_start  <= '0';
     var_curr_wr    <= '0';
 
     case cr_state is
@@ -284,7 +284,7 @@ begin
       when iterate_t =>
         var_curr_wr   <= '1';
         wr_pdl        <= '1';
-        pdl_in_1    <= fpwam_word(var_current_reg, tag_ref_t);
+        pdl_in_1    <= fpwam_word(std_logic_vector(var_current_reg), tag_ref_t);
       when check_stop_pop_t =>
         if not pdl_empty then
           rd_pdl <= '1';
@@ -296,7 +296,7 @@ begin
               null;
             when tag_lis_t =>
               wr_pdl <= '1';
-              pdl_in_1 <= fpwam_word(std_logic_vector(fpwam_value(deref1_input)), tag_ref_t);
+              pdl_in_1 <= fpwam_word(std_logic_vector(fpwam_value(deref_in)), tag_ref_t);
             when tag_str_t =>
               rst_curr_reg <= '1';
               wr_goal_reg  <= '1';
@@ -309,16 +309,16 @@ begin
         end if;
       when push_list_t =>
         wr_pdl <= '1';
-        pdl_in_1  <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref1_input))+1), tag_ref_t);
+        pdl_in_1  <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref_in))+1), tag_ref_t);
       when structure_iterate_t =>
-        iterate <= to_std_logic(not iterate_done);
-        if not iterate_done then
+        iterate <= not iterate_done;
+        if iterate_done /= '1' then
           pdl_in_1 <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref_in)) + (unsigned(fpwam_arity(deref_in))+1 - current_reg)), tag_ref_t);
           wr_pdl <= '1';
         end if;
       when uart_send_t =>
         uart_out_str <= '1';
-        uart_out <= fpwam_word(deref_in(kWamWordWidth-1 downto kWamWordWidth-2), tag_str_t);
+        uart_out <= "000000"&deref_in(kWamWordWidth-1 downto kWamWordWidth-2);
       when uart_send_t2 =>
         uart_out_str <= '1';
         uart_out <= deref_in(kWamWordWidth-3 downto kWamWordWidth -3 - 7);

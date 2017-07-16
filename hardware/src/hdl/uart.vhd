@@ -27,7 +27,7 @@
 library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
-    use ieee.math_real.all;
+    use work.FpwamPkg.all;
 
 entity uart is
     generic (
@@ -54,9 +54,9 @@ architecture rtl of uart is
     constant c_tx_div       : integer := clock_frequency / baud;
     constant c_rx_div       : integer := clock_frequency / (baud * 16);
     constant c_tx_div_width : integer 
-        := integer(log2(real(c_tx_div))) + 1;   
+        := integer(log2(c_tx_div)) + 1;   
     constant c_rx_div_width : integer 
-        := integer(log2(real(c_rx_div))) + 1;
+        := integer(log2(c_rx_div)) + 1;
     ---------------------------------------------------------------------------
     -- Baud generation signals
     ---------------------------------------------------------------------------

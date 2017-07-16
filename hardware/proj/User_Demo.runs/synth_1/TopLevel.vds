@@ -1,0 +1,1283 @@
+#-----------------------------------------------------------
+# Vivado v2017.1 (64-bit)
+# SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+# IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+# Start of session at: Sun Jul 16 03:11:49 2017
+# Process ID: 4161
+# Current directory: /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/synth_1
+# Command line: vivado -log TopLevel.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source TopLevel.tcl
+# Log file: /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/synth_1/TopLevel.vds
+# Journal file: /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source TopLevel.tcl -notrace
+Command: synth_design -top TopLevel -part xc7a100tcsg324-1 -fanout_limit 400 -fsm_extraction one_hot -keep_equivalent_registers -resource_sharing off -no_lc -shreg_min_size 5
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t-csg324'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t-csg324'
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 4168 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1133.797 ; gain = 37.984 ; free physical = 6190 ; free virtual = 7044
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'TopLevel' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:33]
+INFO: [Synth 8-638] synthesizing module 'ControlUnit' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:47]
+INFO: [Synth 8-638] synthesizing module 'Memory_behavioral' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/Memory.vhd:43]
+	Parameter kMemAddressWidth bound to: 10 - type: integer 
+	Parameter kWordWidth bound to: 18 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'Memory_behavioral' (1#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/Memory.vhd:43]
+WARNING: [Synth 8-614] signal 'pdl_empty' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:193]
+WARNING: [Synth 8-614] signal 'deref_done' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:193]
+WARNING: [Synth 8-614] signal 'iterate_done' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:193]
+WARNING: [Synth 8-614] signal 'var_current_reg' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:255]
+WARNING: [Synth 8-614] signal 'pdl_empty' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:255]
+WARNING: [Synth 8-614] signal 'deref_done' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:255]
+WARNING: [Synth 8-614] signal 'deref_in' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:255]
+WARNING: [Synth 8-614] signal 'pdl_out_1' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:255]
+WARNING: [Synth 8-614] signal 'iterate_done' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:255]
+WARNING: [Synth 8-614] signal 'current_reg' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:255]
+WARNING: [Synth 8-6014] Unused sequential element wr_goal_reg_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:149]
+INFO: [Synth 8-256] done synthesizing module 'ControlUnit' (2#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:47]
+INFO: [Synth 8-638] synthesizing module 'uart' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/uart.vhd:50]
+	Parameter baud bound to: 115200 - type: integer 
+	Parameter clock_frequency bound to: 100000000 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'uart' (3#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/uart.vhd:50]
+INFO: [Synth 8-226] default block is never used [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:957]
+INFO: [Synth 8-638] synthesizing module 'Memory_behavioral__parameterized0' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/Memory.vhd:43]
+	Parameter kMemAddressWidth bound to: 16 - type: integer 
+	Parameter kWordWidth bound to: 18 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'Memory_behavioral__parameterized0' (3#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/Memory.vhd:43]
+WARNING: [Synth 8-614] signal 'gpr_output2' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1454]
+WARNING: [Synth 8-614] signal 'gpr_output1' is read in the process but is not in the sensitivity list [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1488]
+INFO: [Synth 8-638] synthesizing module 'GPR' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/GPR.vhd:45]
+	Parameter kAddressWidth bound to: 4 - type: integer 
+	Parameter kWordWidth bound to: 18 - type: integer 
+WARNING: [Synth 8-4767] Trying to implement RAM 'RAM_reg' in registers. Block RAM or DRAM implementation is not possible; see log for reasons.
+Reason is one or more of the following :
+	1: RAM has multiple writes via different ports in same process. If RAM inferencing intended, write to one port per process. 
+	2: Unable to determine number of words or word size in RAM. 
+	3: No valid read/write found for RAM. 
+RAM "RAM_reg" dissolved into registers
+INFO: [Synth 8-256] done synthesizing module 'GPR' (4#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/GPR.vhd:45]
+INFO: [Synth 8-638] synthesizing module 'BindUnit' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BindUnit.vhd:53]
+	Parameter kAddressWidth bound to: 16 - type: integer 
+	Parameter kWordWidth bound to: 18 - type: integer 
+INFO: [Synth 8-226] default block is never used [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BindUnit.vhd:119]
+WARNING: [Synth 8-6014] Unused sequential element bind_done_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BindUnit.vhd:117]
+INFO: [Synth 8-256] done synthesizing module 'BindUnit' (5#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BindUnit.vhd:53]
+INFO: [Synth 8-226] default block is never used [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1600]
+INFO: [Synth 8-638] synthesizing module 'DerefUnit' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DerefUnit.vhd:44]
+	Parameter kAddressWidth bound to: 16 - type: integer 
+	Parameter kWordWidth bound to: 18 - type: integer 
+INFO: [Synth 8-226] default block is never used [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DerefUnit.vhd:87]
+INFO: [Synth 8-226] default block is never used [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DerefUnit.vhd:119]
+INFO: [Synth 8-256] done synthesizing module 'DerefUnit' (6#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DerefUnit.vhd:44]
+INFO: [Synth 8-638] synthesizing module 'UnifyUnit' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnifyUnit.vhd:73]
+	Parameter kAddressWidth bound to: 16 - type: integer 
+	Parameter kWordWidth bound to: 18 - type: integer 
+	Parameter kPdlAddressWidth bound to: 10 - type: integer 
+WARNING: [Synth 8-6014] Unused sequential element rd_mem_port2_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnifyUnit.vhd:329]
+WARNING: [Synth 8-6014] Unused sequential element wr_pdl_reg_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnifyUnit.vhd:141]
+WARNING: [Synth 8-6014] Unused sequential element wr_goal_reg_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnifyUnit.vhd:188]
+WARNING: [Synth 8-6014] Unused sequential element local_reset_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnifyUnit.vhd:126]
+INFO: [Synth 8-256] done synthesizing module 'UnifyUnit' (7#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnifyUnit.vhd:73]
+INFO: [Synth 8-638] synthesizing module 'DataFlowControl' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DataFlowControl.vhd:131]
+WARNING: [Synth 8-6014] Unused sequential element start_unwind_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DataFlowControl.vhd:718]
+INFO: [Synth 8-256] done synthesizing module 'DataFlowControl' (8#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DataFlowControl.vhd:131]
+INFO: [Synth 8-638] synthesizing module 'TrailUnit' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TrailUnit.vhd:40]
+	Parameter kAddressWidth bound to: 16 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'TrailUnit' (9#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TrailUnit.vhd:40]
+INFO: [Synth 8-638] synthesizing module 'Memory_behavioral__parameterized1' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/Memory.vhd:43]
+	Parameter kMemAddressWidth bound to: 10 - type: integer 
+	Parameter kWordWidth bound to: 16 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'Memory_behavioral__parameterized1' (9#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/Memory.vhd:43]
+INFO: [Synth 8-638] synthesizing module 'UnwindTrailUnit' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnwindTrailUnit.vhd:47]
+INFO: [Synth 8-226] default block is never used [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnwindTrailUnit.vhd:94]
+INFO: [Synth 8-226] default block is never used [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnwindTrailUnit.vhd:126]
+INFO: [Synth 8-256] done synthesizing module 'UnwindTrailUnit' (10#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnwindTrailUnit.vhd:47]
+INFO: [Synth 8-638] synthesizing module 'BinarySearch' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BinarySearch.vhd:47]
+	Parameter kWordWidth bound to: 18 - type: integer 
+	Parameter kMemAddressWidth bound to: 10 - type: integer 
+INFO: [Synth 8-226] default block is never used [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BinarySearch.vhd:130]
+INFO: [Synth 8-226] default block is never used [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BinarySearch.vhd:166]
+WARNING: [Synth 8-6014] Unused sequential element wr_high_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BinarySearch.vhd:88]
+INFO: [Synth 8-256] done synthesizing module 'BinarySearch' (11#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BinarySearch.vhd:47]
+INFO: [Synth 8-638] synthesizing module 'Memory_behavioral__parameterized2' [/home/bogdan/licenta/FPWAM/hardware/src/hdl/Memory.vhd:43]
+	Parameter kMemAddressWidth bound to: 10 - type: integer 
+	Parameter kWordWidth bound to: 28 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'Memory_behavioral__parameterized2' (11#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/Memory.vhd:43]
+WARNING: [Synth 8-6014] Unused sequential element NewB_comb_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1102]
+WARNING: [Synth 8-3848] Net bmem_port_1_in in module/entity TopLevel does not have driver. [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:732]
+WARNING: [Synth 8-3848] Net bmem_port_1_wr in module/entity TopLevel does not have driver. [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:733]
+WARNING: [Synth 8-3848] Net bmem_addr_port_2 in module/entity TopLevel does not have driver. [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:736]
+WARNING: [Synth 8-3848] Net bmem_port_2_in in module/entity TopLevel does not have driver. [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:738]
+WARNING: [Synth 8-3848] Net bmem_port_2_wr in module/entity TopLevel does not have driver. [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:739]
+WARNING: [Synth 8-3848] Net bmem_port_2_rd in module/entity TopLevel does not have driver. [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:740]
+WARNING: [Synth 8-3848] Net trailm_input_2 in module/entity TopLevel does not have driver. [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:211]
+INFO: [Synth 8-256] done synthesizing module 'TopLevel' (12#1) [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:33]
+WARNING: [Synth 8-3917] design TopLevel has port led[3] driven by constant 1
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[17]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[16]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[15]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[14]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[13]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[12]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[11]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[10]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[9]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[8]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[7]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[6]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[5]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[4]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[3]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[2]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[1]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[0]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[25]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[24]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[23]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[21]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[20]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[19]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[18]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[7]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[6]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[5]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[4]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[3]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[2]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[1]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[0]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in_valid
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 1267.305 ; gain = 171.492 ; free physical = 6137 ; free virtual = 6994
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[15] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[14] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[13] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[12] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[11] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[10] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[9] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[8] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[7] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[6] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[5] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[4] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[3] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[2] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[1] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin TRAIL:word_port_2_i[0] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1896]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[27] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[26] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[25] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[24] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[23] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[22] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[21] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[20] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[19] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[18] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[17] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[16] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[15] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[14] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[13] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[12] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[11] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[10] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[9] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[8] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[7] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[6] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[5] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[4] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[3] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[2] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[1] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_1_i[0] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:wr_port_1 to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:addr_port_2[9] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:addr_port_2[8] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:addr_port_2[7] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:addr_port_2[6] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:addr_port_2[5] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:addr_port_2[4] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:addr_port_2[3] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:addr_port_2[2] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:addr_port_2[1] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:addr_port_2[0] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[27] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[26] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[25] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[24] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[23] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[22] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[21] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[20] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[19] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[18] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[17] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[16] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[15] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[14] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[13] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[12] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[11] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[10] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[9] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[8] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[7] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[6] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[5] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[4] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[3] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[2] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[1] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:word_port_2_i[0] to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:wr_port_2 to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+WARNING: [Synth 8-3295] tying undriven pin BMEM:rd_port_2 to constant 0 [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1978]
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 1267.305 ; gain = 171.492 ; free physical = 6146 ; free virtual = 7002
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7a100tcsg324-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/bogdan/licenta/FPWAM/hardware/src/constraints/Nexys4_Master.xdc]
+Finished Parsing XDC File [/home/bogdan/licenta/FPWAM/hardware/src/constraints/Nexys4_Master.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/bogdan/licenta/FPWAM/hardware/src/constraints/Nexys4_Master.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/TopLevel_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/TopLevel_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1567.703 ; gain = 0.000 ; free physical = 5784 ; free virtual = 6641
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:27 ; elapsed = 00:00:27 . Memory (MB): peak = 1567.703 ; gain = 471.891 ; free physical = 5971 ; free virtual = 6827
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a100tcsg324-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:27 ; elapsed = 00:00:27 . Memory (MB): peak = 1567.703 ; gain = 471.891 ; free physical = 5971 ; free virtual = 6827
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:27 ; elapsed = 00:00:28 . Memory (MB): peak = 1567.703 ; gain = 471.891 ; free physical = 5972 ; free virtual = 6829
+---------------------------------------------------------------------------------
+INFO: [Synth 8-41] '+' operator could not be merged with '+' operator due to loss of accuracy [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:316]
+INFO: [Synth 8-41] '+' operator could not be merged with '+' operator due to loss of accuracy [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:316]
+INFO: [Synth 8-802] inferred FSM for state register 'cr_state_reg' in module 'ControlUnit'
+WARNING: [Synth 8-6014] Unused sequential element cr_state_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:185]
+INFO: [Synth 8-5544] ROM "var_curr_wr" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "local_reset" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "proc_mode" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "uart_out_str" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+WARNING: [Synth 8-6014] Unused sequential element current_reg_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:137]
+WARNING: [Synth 8-6014] Unused sequential element var_current_reg_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:172]
+INFO: [Synth 8-5546] ROM "rx_baud_tick" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5544] ROM "uart_rx_bit" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "uart_rx_bit" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "uart_rx_bit_tick" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "uart_rx_bit_spacing" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5546] ROM "tx_baud_tick" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-802] inferred FSM for state register 'cr_state_reg' in module 'BindUnit'
+WARNING: [Synth 8-6014] Unused sequential element cr_state_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BindUnit.vhd:80]
+INFO: [Synth 8-5544] ROM "bind_done" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "mem_wr_2" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "mem_wr_1" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-802] inferred FSM for state register 'cr_state_reg' in module 'UnifyUnit'
+WARNING: [Synth 8-6014] Unused sequential element cr_state_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnifyUnit.vhd:238]
+INFO: [Synth 8-5544] ROM "reset_deref_reg" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "mem_reg_wr" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "unify_done" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+WARNING: [Synth 8-6014] Unused sequential element current_reg_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnifyUnit.vhd:176]
+INFO: [Synth 8-802] inferred FSM for state register 'cr_state_reg' in module 'DataFlowControl'
+WARNING: [Synth 8-6014] Unused sequential element cr_state_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DataFlowControl.vhd:318]
+INFO: [Synth 8-5546] ROM "local_fail_rst" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "global_fail_out" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5544] ROM "mem_addr_input2" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5546] ROM "mem_input1" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "mem_input1" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "mem_addr_input2" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "p_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "p_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "nx_state" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "count" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "wr_mem_reg" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "bsearch_start" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "bhaddr_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "bladdr_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "trail_do" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "hb_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "tr_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "newB_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "b_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "b_input" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "e_input" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "E_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "newE_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "nrargs_input" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "nrargs_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "cp_input" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "cp_wr" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "p_input" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "gpr_input2" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "gpr_addr2" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "gpr_input1" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "gpr_addr1" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "trail_input" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "bind" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5546] ROM "nx_state" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "nx_state" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+WARNING: [Synth 8-6014] Unused sequential element counter_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DataFlowControl.vhd:1511]
+WARNING: [Synth 8-6014] Unused sequential element counter_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnwindTrailUnit.vhd:60]
+INFO: [Synth 8-5545] ROM "clock_counter" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
+INFO: [Synth 8-5546] ROM "mem" won't be mapped to RAM because it is too sparse
+WARNING: [Synth 8-6014] Unused sequential element millis_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:848]
+WARNING: [Synth 8-6014] Unused sequential element P_reg_reg_rep was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:1013]
+INFO: [Synth 8-3971] The signal BRAM_reg was recognized as a true dual port RAM template.
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  idle_t |                      00000000001 |                             0000
+            wait_query_t |                      00000000010 |                             0001
+               iterate_t |                      00000000100 |                             0110
+        check_stop_pop_t |                      00000001000 |                             0111
+                 deref_t |                      00000010000 |                             1000
+             push_list_t |                      00000100000 |                             1001
+     structure_iterate_t |                      00001000000 |                             0101
+             uart_send_t |                      00010000000 |                             0010
+            uart_send_t2 |                      00100000000 |                             0011
+            uart_send_t3 |                      01000000000 |                             0100
+                  iSTATE |                      10000000000 |                             1010
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'cr_state_reg' using encoding 'one-hot' in module 'ControlUnit'
+WARNING: [Synth 8-6014] Unused sequential element cr_state_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:185]
+INFO: [Synth 8-3971] The signal BRAM_reg was recognized as a true dual port RAM template.
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  idle_t |                             0001 |                               00
+                  bind_t |                             0010 |                               01
+                  iSTATE |                             0100 |                               10
+                 iSTATE0 |                             1000 |                               11
+*
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'cr_state_reg' using encoding 'one-hot' in module 'BindUnit'
+WARNING: [Synth 8-6014] Unused sequential element cr_state_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/BindUnit.vhd:80]
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  idle_t |                       0000000001 |                             0000
+        check_stop_pop_t |                       0000000010 |                             0001
+                 deref_t |                       0000000100 |                             0100
+      check_equal_read_t |                       0000001000 |                             0011
+                  bind_t |                       0000010000 |                             0101
+             push_list_t |                       0000100000 |                             0110
+       check_structure_t |                       0001000000 |                             0111
+      check_structure_t2 |                       0010000000 |                             1000
+     structure_iterate_t |                       0100000000 |                             1001
+                  done_t |                       1000000000 |                             0010
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'cr_state_reg' using encoding 'one-hot' in module 'UnifyUnit'
+WARNING: [Synth 8-6014] Unused sequential element cr_state_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnifyUnit.vhd:238]
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+            next_instr_t | 000000000000000000000000000000000000000000000000000000000000000000000000000000000001 |                          0000001
+             backtrack_t | 000000000000000000000000000000000000000000000000000000000000000000000000000000000010 |                          1000101
+                  idle_t | 000000000000000000000000000000000000000000000000000000000000000000000000000000000100 |                          0000000
+         put_structure_t | 000000000000000000000000000000000000000000000000000000000000000000000000000000001000 |                          0000010
+         get_structure_t | 000000000000000000000000000000000000000000000000000000000000000000000000000000010000 |                          0000011
+        unify_variable_t | 000000000000000000000000000000000000000000000000000000000000000000000000000000100000 |                          0000111
+       unify_variable_t2 | 000000000000000000000000000000000000000000000000000000000000000000000000000001000000 |                          0001000
+           unify_value_t | 000000000000000000000000000000000000000000000000000000000000000000000000000010000000 |                          0001001
+          unify_value_t2 | 000000000000000000000000000000000000000000000000000000000000000000000000000100000000 |                          0001010
+     unify_local_value_t | 000000000000000000000000000000000000000000000000000000000000000000000000001000000000 |                          0001011
+    unify_local_value_t2 | 000000000000000000000000000000000000000000000000000000000000000000000000010000000000 |                          0001100
+    unify_local_value_t3 | 000000000000000000000000000000000000000000000000000000000000000000000000100000000000 |                          0001101
+    unify_local_value_t4 | 000000000000000000000000000000000000000000000000000000000000000000000001000000000000 |                          0001110
+    unify_local_value_t5 | 000000000000000000000000000000000000000000000000000000000000000000000010000000000000 |                          0001111
+        unify_constant_t | 000000000000000000000000000000000000000000000000000000000000000000000100000000000000 |                          0010000
+       unify_constant_t2 | 000000000000000000000000000000000000000000000000000000000000000000001000000000000000 |                          0010001
+       unify_constant_t3 | 000000000000000000000000000000000000000000000000000000000000000000010000000000000000 |                          0010010
+            unify_void_t | 000000000000000000000000000000000000000000000000000000000000000000100000000000000000 |                          0010011
+           unify_void_t2 | 000000000000000000000000000000000000000000000000000000000000000001000000000000000000 |                          0010100
+        put_variable_x_t | 000000000000000000000000000000000000000000000000000000000000000010000000000000000000 |                          0010101
+        put_variable_y_t | 000000000000000000000000000000000000000000000000000000000000000100000000000000000000 |                          0010110
+             put_value_t | 000000000000000000000000000000000000000000000000000000000000001000000000000000000000 |                          0010111
+            put_value_t2 | 000000000000000000000000000000000000000000000000000000000000010000000000000000000000 |                          0011000
+      put_unsafe_value_t | 000000000000000000000000000000000000000000000000000000000000100000000000000000000000 |                          0011001
+     put_unsafe_value_t2 | 000000000000000000000000000000000000000000000000000000000001000000000000000000000000 |                          0011010
+     put_unsafe_value_t3 | 000000000000000000000000000000000000000000000000000000000010000000000000000000000000 |                          0011011
+     put_unsafe_value_t4 | 000000000000000000000000000000000000000000000000000000000100000000000000000000000000 |                          0011100
+              put_list_t | 000000000000000000000000000000000000000000000000000000001000000000000000000000000000 |                          0011101
+          put_constant_t | 000000000000000000000000000000000000000000000000000000010000000000000000000000000000 |                          0011110
+          get_variable_t | 000000000000000000000000000000000000000000000000000000100000000000000000000000000000 |                          0011111
+             get_value_t | 000000000000000000000000000000000000000000000000000001000000000000000000000000000000 |                          0100000
+            get_value_t2 | 000000000000000000000000000000000000000000000000000010000000000000000000000000000000 |                          0100001
+              get_list_t | 000000000000000000000000000000000000000000000000000100000000000000000000000000000000 |                          0100010
+          get_constant_t | 000000000000000000000000000000000000000000000000001000000000000000000000000000000000 |                          0100110
+         get_constant_t2 | 000000000000000000000000000000000000000000000000010000000000000000000000000000000000 |                          0100111
+                  call_t | 000000000000000000000000000000000000000000000000100000000000000000000000000000000000 |                          0101000
+               proceed_t | 000000000000000000000000000000000000000000000001000000000000000000000000000000000000 |                          0101001
+              allocate_t | 000000000000000000000000000000000000000000000010000000000000000000000000000000000000 |                          0101010
+             allocate_t2 | 000000000000000000000000000000000000000000000100000000000000000000000000000000000000 |                          0101011
+             allocate_t3 | 000000000000000000000000000000000000000000001000000000000000000000000000000000000000 |                          0101100
+             allocate_t4 | 000000000000000000000000000000000000000000010000000000000000000000000000000000000000 |                          0101101
+            deallocate_t | 000000000000000000000000000000000000000000100000000000000000000000000000000000000000 |                          0101110
+           deallocate_t2 | 000000000000000000000000000000000000000001000000000000000000000000000000000000000000 |                          0101111
+           try_me_else_t | 000000000000000000000000000000000000000010000000000000000000000000000000000000000000 |                          0110000
+          try_me_else_t2 | 000000000000000000000000000000000000000100000000000000000000000000000000000000000000 |                          0110001
+          try_me_else_t3 | 000000000000000000000000000000000000001000000000000000000000000000000000000000000000 |                          0110010
+          try_me_else_t4 | 000000000000000000000000000000000000010000000000000000000000000000000000000000000000 |                          0110011
+          try_me_else_t5 | 000000000000000000000000000000000000100000000000000000000000000000000000000000000000 |                          0110100
+          try_me_else_t6 | 000000000000000000000000000000000001000000000000000000000000000000000000000000000000 |                          0110101
+          try_me_else_t7 | 000000000000000000000000000000000010000000000000000000000000000000000000000000000000 |                          0110110
+   update_delete_start_t | 000000000000000000000000000000000100000000000000000000000000000000000000000000000000 |                          0111100
+  update_delete_start_t2 | 000000000000000000000000000000001000000000000000000000000000000000000000000000000000 |                          0111101
+  update_delete_start_t3 | 000000000000000000000000000000010000000000000000000000000000000000000000000000000000 |                          0111110
+  update_delete_common_t | 000000000000000000000000000000100000000000000000000000000000000000000000000000000000 |                          0111111
+ update_delete_common_t2 | 000000000000000000000000000001000000000000000000000000000000000000000000000000000000 |                          1000000
+ update_delete_common_t3 | 000000000000000000000000000010000000000000000000000000000000000000000000000000000000 |                          1000001
+ update_delete_common_t4 | 000000000000000000000000000100000000000000000000000000000000000000000000000000000000 |                          1000010
+ update_delete_common_t5 | 000000000000000000000000001000000000000000000000000000000000000000000000000000000000 |                          1000011
+ update_delete_common_t6 | 000000000000000000000000010000000000000000000000000000000000000000000000000000000000 |                          1000100
+         retry_me_else_t | 000000000000000000000000100000000000000000000000000000000000000000000000000000000000 |                          0110111
+        retry_me_else_t2 | 000000000000000000000001000000000000000000000000000000000000000000000000000000000000 |                          0111000
+              trust_me_t | 000000000000000000000010000000000000000000000000000000000000000000000000000000000000 |                          0111001
+             trust_me_t2 | 000000000000000000000100000000000000000000000000000000000000000000000000000000000000 |                          0111010
+             trust_me_t3 | 000000000000000000001000000000000000000000000000000000000000000000000000000000000000 |                          0111011
+               execute_t | 000000000000000000010000000000000000000000000000000000000000000000000000000000000000 |                          1001010
+       unify_structure_t | 000000000000000000100000000000000000000000000000000000000000000000000000000000000000 |                          1001011
+      unify_structure_t2 | 000000000000000001000000000000000000000000000000000000000000000000000000000000000000 |                          1001100
+        get_structure_t2 | 000000000000000010000000000000000000000000000000000000000000000000000000000000000000 |                          0000100
+        get_structure_t3 | 000000000000000100000000000000000000000000000000000000000000000000000000000000000000 |                          0000101
+        get_structure_t4 | 000000000000001000000000000000000000000000000000000000000000000000000000000000000000 |                          0000110
+        switch_on_term_t | 000000000000010000000000000000000000000000000000000000000000000000000000000000000000 |                          1001101
+     switch_on_int_str_t | 000000000000100000000000000000000000000000000000000000000000000000000000000000000000 |                          1001110
+    switch_on_int_str_t2 | 000000000001000000000000000000000000000000000000000000000000000000000000000000000000 |                          1001111
+    switch_on_int_str_t3 | 000000000010000000000000000000000000000000000000000000000000000000000000000000000000 |                          1010000
+    switch_on_int_str_t4 | 000000000100000000000000000000000000000000000000000000000000000000000000000000000000 |                          1010001
+            unify_list_t | 000000001000000000000000000000000000000000000000000000000000000000000000000000000000 |                          1010010
+           unify_list_t2 | 000000010000000000000000000000000000000000000000000000000000000000000000000000000000 |                          1010011
+             get_list_t3 | 000000100000000000000000000000000000000000000000000000000000000000000000000000000000 |                          0100100
+             get_list_t4 | 000001000000000000000000000000000000000000000000000000000000000000000000000000000000 |                          0100101
+             get_list_t2 | 000010000000000000000000000000000000000000000000000000000000000000000000000000000000 |                          0100011
+            backtrack_t2 | 000100000000000000000000000000000000000000000000000000000000000000000000000000000000 |                          1000110
+            backtrack_t3 | 001000000000000000000000000000000000000000000000000000000000000000000000000000000000 |                          1000111
+            backtrack_t4 | 010000000000000000000000000000000000000000000000000000000000000000000000000000000000 |                          1001000
+            backtrack_t5 | 100000000000000000000000000000000000000000000000000000000000000000000000000000000000 |                          1001001
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'cr_state_reg' using encoding 'one-hot' in module 'DataFlowControl'
+WARNING: [Synth 8-6014] Unused sequential element cr_state_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DataFlowControl.vhd:318]
+INFO: [Synth 8-3971] The signal BRAM_reg was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal BRAM_reg was recognized as a true dual port RAM template.
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:30 ; elapsed = 00:00:31 . Memory (MB): peak = 1567.703 ; gain = 471.891 ; free physical = 5971 ; free virtual = 6828
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 1     
+	   2 Input     16 Bit       Adders := 42    
+	   3 Input     16 Bit       Adders := 3     
+	   2 Input     10 Bit       Adders := 16    
+	   2 Input      6 Bit       Adders := 1     
+	   2 Input      5 Bit       Adders := 3     
+	   3 Input      5 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 3     
+	   2 Input      3 Bit       Adders := 2     
+	   2 Input      2 Bit       Adders := 1     
++---Registers : 
+	               32 Bit    Registers := 2     
+	               28 Bit    Registers := 2     
+	               18 Bit    Registers := 35    
+	               16 Bit    Registers := 11    
+	               10 Bit    Registers := 12    
+	                8 Bit    Registers := 2     
+	                6 Bit    Registers := 1     
+	                5 Bit    Registers := 5     
+	                4 Bit    Registers := 2     
+	                3 Bit    Registers := 2     
+	                2 Bit    Registers := 8     
+	                1 Bit    Registers := 17    
++---RAMs : 
+	            1152K Bit         RAMs := 1     
+	              28K Bit         RAMs := 1     
+	              18K Bit         RAMs := 2     
+	              16K Bit         RAMs := 1     
++---Muxes : 
+	   2 Input    288 Bit        Muxes := 1     
+	 149 Input     84 Bit        Muxes := 1     
+	 287 Input     32 Bit        Muxes := 1     
+	   2 Input     32 Bit        Muxes := 1     
+	   2 Input     18 Bit        Muxes := 53    
+	   4 Input     18 Bit        Muxes := 16    
+	  11 Input     18 Bit        Muxes := 2     
+	  10 Input     18 Bit        Muxes := 6     
+	  84 Input     18 Bit        Muxes := 2     
+	   4 Input     16 Bit        Muxes := 10    
+	   2 Input     16 Bit        Muxes := 14    
+	  10 Input     16 Bit        Muxes := 2     
+	  84 Input     16 Bit        Muxes := 3     
+	   3 Input     16 Bit        Muxes := 1     
+	  16 Input     11 Bit        Muxes := 1     
+	   2 Input     10 Bit        Muxes := 23    
+	   4 Input     10 Bit        Muxes := 7     
+	  10 Input     10 Bit        Muxes := 3     
+	  20 Input     10 Bit        Muxes := 1     
+	   8 Input     10 Bit        Muxes := 1     
+	  11 Input      8 Bit        Muxes := 1     
+	   4 Input      8 Bit        Muxes := 2     
+	   2 Input      6 Bit        Muxes := 1     
+	   3 Input      5 Bit        Muxes := 2     
+	   2 Input      5 Bit        Muxes := 4     
+	  84 Input      5 Bit        Muxes := 4     
+	   2 Input      4 Bit        Muxes := 5     
+	   4 Input      4 Bit        Muxes := 3     
+	  84 Input      4 Bit        Muxes := 3     
+	   4 Input      3 Bit        Muxes := 1     
+	   2 Input      3 Bit        Muxes := 4     
+	  84 Input      3 Bit        Muxes := 1     
+	   9 Input      3 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 3     
+	   2 Input      2 Bit        Muxes := 4     
+	   5 Input      2 Bit        Muxes := 3     
+	  10 Input      2 Bit        Muxes := 1     
+	   3 Input      2 Bit        Muxes := 1     
+	  84 Input      2 Bit        Muxes := 10    
+	   6 Input      2 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 36    
+	  11 Input      1 Bit        Muxes := 8     
+	   2 Input      1 Bit        Muxes := 20    
+	   3 Input      1 Bit        Muxes := 1     
+	   6 Input      1 Bit        Muxes := 1     
+	  10 Input      1 Bit        Muxes := 12    
+	   5 Input      1 Bit        Muxes := 2     
+	  84 Input      1 Bit        Muxes := 31    
+	   7 Input      1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module TopLevel 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     32 Bit       Adders := 1     
+	   3 Input     16 Bit       Adders := 3     
+	   2 Input     16 Bit       Adders := 10    
+	   2 Input     10 Bit       Adders := 3     
+	   2 Input      4 Bit       Adders := 1     
++---Registers : 
+	               32 Bit    Registers := 2     
+	               16 Bit    Registers := 7     
+	               10 Bit    Registers := 5     
+	                4 Bit    Registers := 1     
+	                1 Bit    Registers := 6     
++---Muxes : 
+	 287 Input     32 Bit        Muxes := 1     
+	   2 Input     32 Bit        Muxes := 1     
+	   4 Input     18 Bit        Muxes := 7     
+	   2 Input     18 Bit        Muxes := 1     
+	   2 Input     16 Bit        Muxes := 8     
+	   4 Input     16 Bit        Muxes := 3     
+	   3 Input     16 Bit        Muxes := 1     
+	   2 Input     10 Bit        Muxes := 6     
+	   8 Input     10 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 2     
+	   4 Input      4 Bit        Muxes := 2     
+	   9 Input      3 Bit        Muxes := 1     
+	   7 Input      1 Bit        Muxes := 1     
+Module Memory_behavioral 
+Detailed RTL Component Info : 
++---Registers : 
+	               18 Bit    Registers := 2     
++---RAMs : 
+	              18K Bit         RAMs := 1     
+Module ControlUnit 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     16 Bit       Adders := 2     
+	   2 Input     10 Bit       Adders := 1     
+	   2 Input      5 Bit       Adders := 2     
+	   3 Input      5 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 1     
++---Registers : 
+	               10 Bit    Registers := 1     
+	                5 Bit    Registers := 3     
+	                1 Bit    Registers := 1     
++---Muxes : 
+	   2 Input     18 Bit        Muxes := 3     
+	   4 Input     18 Bit        Muxes := 1     
+	  11 Input     18 Bit        Muxes := 2     
+	  16 Input     11 Bit        Muxes := 1     
+	   2 Input     10 Bit        Muxes := 1     
+	  11 Input      8 Bit        Muxes := 1     
+	   3 Input      5 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 2     
+	  11 Input      1 Bit        Muxes := 8     
+Module uart 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     10 Bit       Adders := 1     
+	   2 Input      6 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 1     
+	   2 Input      3 Bit       Adders := 2     
+	   2 Input      2 Bit       Adders := 1     
++---Registers : 
+	               10 Bit    Registers := 1     
+	                8 Bit    Registers := 2     
+	                6 Bit    Registers := 1     
+	                4 Bit    Registers := 1     
+	                3 Bit    Registers := 2     
+	                2 Bit    Registers := 4     
+	                1 Bit    Registers := 7     
++---Muxes : 
+	   4 Input      8 Bit        Muxes := 2     
+	   2 Input      6 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 1     
+	   4 Input      3 Bit        Muxes := 1     
+	   2 Input      3 Bit        Muxes := 2     
+	   4 Input      2 Bit        Muxes := 2     
+	   2 Input      2 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 8     
+	   4 Input      1 Bit        Muxes := 8     
+Module Memory_behavioral__parameterized0 
+Detailed RTL Component Info : 
++---Registers : 
+	               18 Bit    Registers := 2     
++---RAMs : 
+	            1152K Bit         RAMs := 1     
+Module GPR 
+Detailed RTL Component Info : 
++---Registers : 
+	               18 Bit    Registers := 16    
++---Muxes : 
+	   2 Input    288 Bit        Muxes := 1     
+	   2 Input     18 Bit        Muxes := 33    
+Module BindUnit 
+Detailed RTL Component Info : 
++---Registers : 
+	               18 Bit    Registers := 2     
++---Muxes : 
+	   4 Input     18 Bit        Muxes := 2     
+	   4 Input     16 Bit        Muxes := 3     
+	   4 Input      4 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 2     
+	   3 Input      1 Bit        Muxes := 1     
+Module DerefUnit 
+Detailed RTL Component Info : 
++---Registers : 
+	               18 Bit    Registers := 2     
+	                2 Bit    Registers := 1     
++---Muxes : 
+	   4 Input     18 Bit        Muxes := 1     
+	   2 Input     18 Bit        Muxes := 2     
+	   2 Input      2 Bit        Muxes := 1     
+	   5 Input      2 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 4     
+Module UnifyUnit 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     16 Bit       Adders := 4     
+	   2 Input     10 Bit       Adders := 4     
+	   2 Input      5 Bit       Adders := 1     
++---Registers : 
+	               18 Bit    Registers := 2     
+	               10 Bit    Registers := 1     
+	                5 Bit    Registers := 2     
+	                1 Bit    Registers := 3     
++---Muxes : 
+	   2 Input     18 Bit        Muxes := 10    
+	   4 Input     18 Bit        Muxes := 2     
+	  10 Input     18 Bit        Muxes := 6     
+	   2 Input     16 Bit        Muxes := 4     
+	   4 Input     16 Bit        Muxes := 2     
+	  10 Input     16 Bit        Muxes := 2     
+	   2 Input     10 Bit        Muxes := 13    
+	   4 Input     10 Bit        Muxes := 3     
+	  10 Input     10 Bit        Muxes := 3     
+	  20 Input     10 Bit        Muxes := 1     
+	   3 Input      5 Bit        Muxes := 1     
+	  10 Input      2 Bit        Muxes := 1     
+	   6 Input      1 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 3     
+	  10 Input      1 Bit        Muxes := 12    
+Module DataFlowControl 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     16 Bit       Adders := 26    
++---Registers : 
+	               18 Bit    Registers := 3     
+	               16 Bit    Registers := 2     
++---Muxes : 
+	 149 Input     84 Bit        Muxes := 1     
+	   2 Input     18 Bit        Muxes := 2     
+	  84 Input     18 Bit        Muxes := 2     
+	   2 Input     16 Bit        Muxes := 2     
+	  84 Input     16 Bit        Muxes := 3     
+	   2 Input      5 Bit        Muxes := 4     
+	  84 Input      5 Bit        Muxes := 4     
+	   2 Input      4 Bit        Muxes := 2     
+	  84 Input      4 Bit        Muxes := 3     
+	   2 Input      3 Bit        Muxes := 2     
+	  84 Input      3 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 1     
+	   3 Input      2 Bit        Muxes := 1     
+	   2 Input      2 Bit        Muxes := 1     
+	  84 Input      2 Bit        Muxes := 10    
+	   2 Input      1 Bit        Muxes := 12    
+	   5 Input      1 Bit        Muxes := 1     
+	  84 Input      1 Bit        Muxes := 31    
+Module Memory_behavioral__parameterized1 
+Detailed RTL Component Info : 
++---Registers : 
+	               16 Bit    Registers := 2     
++---RAMs : 
+	              16K Bit         RAMs := 1     
+Module UnwindTrailUnit 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     10 Bit       Adders := 4     
++---Registers : 
+	               10 Bit    Registers := 2     
+	                2 Bit    Registers := 1     
++---Muxes : 
+	   4 Input     18 Bit        Muxes := 2     
+	   4 Input     16 Bit        Muxes := 2     
+	   2 Input     10 Bit        Muxes := 1     
+	   4 Input     10 Bit        Muxes := 2     
+	   5 Input      2 Bit        Muxes := 1     
+	   5 Input      1 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 6     
+Module BinarySearch 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     10 Bit       Adders := 3     
++---Registers : 
+	               18 Bit    Registers := 2     
+	               10 Bit    Registers := 2     
+	                2 Bit    Registers := 1     
++---Muxes : 
+	   4 Input     10 Bit        Muxes := 2     
+	   2 Input     10 Bit        Muxes := 2     
+	   6 Input      2 Bit        Muxes := 1     
+	   4 Input      1 Bit        Muxes := 7     
+Module Memory_behavioral__parameterized2 
+Detailed RTL Component Info : 
++---Registers : 
+	               28 Bit    Registers := 2     
++---RAMs : 
+	              28K Bit         RAMs := 1     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 240 (col length:80)
+BRAMs: 270 (col length: RAMB18 80 RAMB36 40)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+INFO: [Synth 8-41] '+' operator could not be merged with '+' operator due to loss of accuracy [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:316]
+INFO: [Synth 8-41] '+' operator could not be merged with '+' operator due to loss of accuracy [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:316]
+WARNING: [Synth 8-6014] Unused sequential element current_reg_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:137]
+WARNING: [Synth 8-6014] Unused sequential element var_current_reg_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/ControlUnit.vhd:172]
+INFO: [Synth 8-5546] ROM "tx_baud_tick" won't be mapped to RAM because it is too sparse
+WARNING: [Synth 8-6014] Unused sequential element current_reg_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnifyUnit.vhd:176]
+INFO: [Synth 8-5546] ROM "mem_addr_input2" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "local_fail_rst" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "global_fail_out" won't be mapped to RAM because it is too sparse
+WARNING: [Synth 8-6014] Unused sequential element counter_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/DataFlowControl.vhd:1511]
+WARNING: [Synth 8-6014] Unused sequential element counter_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/UnwindTrailUnit.vhd:60]
+INFO: [Synth 8-5545] ROM "clock_counter" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
+WARNING: [Synth 8-6014] Unused sequential element millis_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:848]
+WARNING: [Synth 8-3917] design TopLevel has port led[3] driven by constant 1
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[17]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[16]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[15]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[14]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[13]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[12]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[11]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[10]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[9]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[8]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[7]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[6]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[5]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[4]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[3]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[2]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[1]
+WARNING: [Synth 8-3331] design BinarySearch has unconnected port memory_in[0]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[25]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[24]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[23]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[21]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[20]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[19]
+WARNING: [Synth 8-3331] design DataFlowControl has unconnected port instruction[18]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[7]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[6]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[5]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[4]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[3]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[2]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[1]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in[0]
+WARNING: [Synth 8-3331] design ControlUnit has unconnected port uart_in_valid
+WARNING: [Synth 8-6014] Unused sequential element PDLIST/word_port_2_o_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/Memory.vhd:68]
+WARNING: [Synth 8-6014] Unused sequential element PDLIST/BRAM_reg was removed. 
+INFO: [Synth 8-5784] Optimized 1 bits of RAM "PDLIST/BRAM_reg" due to constant propagation. Old ram width 18 bits, new ram width 17 bits.
+INFO: [Synth 8-3971] The signal HEAPSTACK/BRAM_reg was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal PDLIST/BRAM_reg was recognized as a true dual port RAM template.
+WARNING: [Synth 8-6014] Unused sequential element TRAIL/BRAM_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element BMEM/word_port_2_o_reg was removed.  [/home/bogdan/licenta/FPWAM/hardware/src/hdl/Memory.vhd:68]
+INFO: [Synth 8-3971] The signal BMEM/BRAM_reg was recognized as a true dual port RAM template.
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\goal_reg_reg[4] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\pdl_addr_reg_reg[9] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\pdl_addr_reg_reg[8] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\pdl_addr_reg_reg[7] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\pdl_addr_reg_reg[5] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\pdl_addr_reg_reg[6] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\pdl_addr_reg_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\pdl_addr_reg_reg[1] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\pdl_addr_reg_reg[2] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\pdl_addr_reg_reg[3] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (CUNIT/\pdl_addr_reg_reg[4] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (DFC/\mem_out2_reg_reg[17] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (DFC/\mem_out1_reg_reg[17] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (UNIFYU/\goal_reg_reg[4] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[1] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[2] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\instr_mem_out_reg[21] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (DFC/i_0/\counter_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[3] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[4] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[5] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[6] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[7] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[8] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[9] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[10] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[11] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[12] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[13] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[14] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[15] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[16] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (BSEARCH/\mem_word_reg[17] )
+WARNING: [Synth 8-3332] Sequential element (goal_reg_reg[4]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[9]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[8]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[7]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[6]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[5]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[4]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[3]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[2]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[1]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[0]) is unused and will be removed from module ControlUnit.
+WARNING: [Synth 8-3332] Sequential element (rx_baud_counter_reg[5]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (rx_baud_counter_reg[4]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (rx_baud_counter_reg[3]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (rx_baud_counter_reg[2]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (rx_baud_counter_reg[1]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (rx_baud_counter_reg[0]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (rx_baud_tick_reg) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_sr_reg[1]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_sr_reg[0]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_filter_reg[1]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_filter_reg[0]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_vec_reg[7]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_vec_reg[6]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_vec_reg[5]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_vec_reg[4]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_vec_reg[3]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_vec_reg[2]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_vec_reg[1]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_vec_reg[0]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_bit_reg) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_bit_spacing_reg[3]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_bit_spacing_reg[2]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_bit_spacing_reg[1]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_bit_spacing_reg[0]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_bit_tick_reg) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_count_reg[2]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_count_reg[1]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_count_reg[0]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_state_reg[1]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_state_reg[0]) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (uart_rx_data_out_stb_reg) is unused and will be removed from module uart.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[17]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[16]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (mem1_input_reg_reg[6]) is unused and will be removed from module UnifyUnit.
+WARNING: [Synth 8-3332] Sequential element (mem1_input_reg_reg[5]) is unused and will be removed from module UnifyUnit.
+WARNING: [Synth 8-3332] Sequential element (mem1_input_reg_reg[4]) is unused and will be removed from module UnifyUnit.
+WARNING: [Synth 8-3332] Sequential element (goal_reg_reg[4]) is unused and will be removed from module UnifyUnit.
+WARNING: [Synth 8-3332] Sequential element (mem2_input_reg_reg[6]) is unused and will be removed from module UnifyUnit.
+WARNING: [Synth 8-3332] Sequential element (mem2_input_reg_reg[5]) is unused and will be removed from module UnifyUnit.
+WARNING: [Synth 8-3332] Sequential element (mem2_input_reg_reg[4]) is unused and will be removed from module UnifyUnit.
+WARNING: [Synth 8-3332] Sequential element (pdl_addr_reg_reg[0]) is unused and will be removed from module UnifyUnit.
+WARNING: [Synth 8-3332] Sequential element (counter_reg[0]) is unused and will be removed from module DataFlowControl.
+WARNING: [Synth 8-3332] Sequential element (mem_out1_reg_reg[17]) is unused and will be removed from module DataFlowControl.
+WARNING: [Synth 8-3332] Sequential element (mem_out2_reg_reg[17]) is unused and will be removed from module DataFlowControl.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[17]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[16]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[15]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[14]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[13]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[12]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[11]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[10]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[9]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[8]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[7]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[6]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[5]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[4]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[3]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[2]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[1]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (mem_word_reg[0]) is unused and will be removed from module BinarySearch.
+WARNING: [Synth 8-3332] Sequential element (instr_mem_out_reg[25]) is unused and will be removed from module TopLevel.
+WARNING: [Synth 8-3332] Sequential element (instr_mem_out_reg[24]) is unused and will be removed from module TopLevel.
+WARNING: [Synth 8-3332] Sequential element (instr_mem_out_reg[23]) is unused and will be removed from module TopLevel.
+WARNING: [Synth 8-3332] Sequential element (instr_mem_out_reg[21]) is unused and will be removed from module TopLevel.
+WARNING: [Synth 8-3332] Sequential element (rx_sync_reg) is unused and will be removed from module TopLevel.
+WARNING: [Synth 8-3332] Sequential element (rx_reg) is unused and will be removed from module TopLevel.
+Removed BRAM instance from module TopLevel due to constant propagation
+Removed 1 RAM instances from module TopLevel due to constant propagation
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[15]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[14]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[13]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[12]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[11]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[10]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[9]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[8]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[7]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[6]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[5]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[4]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[3]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[2]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[1]) is unused and will be removed from module DerefUnit.
+WARNING: [Synth 8-3332] Sequential element (word_reg_addr_reg[0]) is unused and will be removed from module DerefUnit.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:56 ; elapsed = 00:00:58 . Memory (MB): peak = 1567.703 ; gain = 471.891 ; free physical = 5857 ; free virtual = 6714
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Block RAM: Preliminary Mapping  Report (see note below)
++-----------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name                        | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++-----------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Memory_behavioral:                 | BRAM_reg   | 1 K x 18(WRITE_FIRST)  | W | R | 1 K x 18(WRITE_FIRST)  | W | R | Port A and B     | 1      | 0      | 
+|Memory_behavioral__parameterized0: | BRAM_reg   | 64 K x 18(WRITE_FIRST) | W | R | 64 K x 18(WRITE_FIRST) | W | R | Port A and B     | 0      | 36     | 
+|Memory_behavioral:                 | BRAM_reg   | 1 K x 18(WRITE_FIRST)  | W | R | 1 K x 18(WRITE_FIRST)  | W | R | Port A and B     | 1      | 0      | 
+|Memory_behavioral__parameterized1: | BRAM_reg   | 1 K x 16(WRITE_FIRST)  | W | R | 1 K x 16(WRITE_FIRST)  | W | R | Port A and B     | 1      | 0      | 
++-----------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+
+Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP and Shift Register Reporting
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:07 ; elapsed = 00:01:09 . Memory (MB): peak = 1619.703 ; gain = 523.891 ; free physical = 5731 ; free virtual = 6588
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+Found timing loop:
+     0: CUNIT/i_11/i_0/i_1/O (GATE_2_8_AND)
+     1: CUNIT/i_11/i_0/i_1/I1 (GATE_2_8_AND)
+      : CUNIT/i_11/i_0/in17
+      : CUNIT/i_11/in17
+      : CUNIT/i_0/O108
+     2: CUNIT/i_0/i_27/O (INV)
+     3: CUNIT/i_0/i_27/I (INV)
+     4: CUNIT/i_0/i_6/O (GATE_2_8_AND)
+     5: CUNIT/i_0/i_6/I0 (GATE_2_8_AND)
+      : CUNIT/i_0/iterate
+      : CUNIT/i_11/out7
+      : CUNIT/i_11/i_0/out7
+     6: CUNIT/i_11/i_0/i_1/O (GATE_2_8_AND)
+CRITICAL WARNING: [Synth 8-295] found timing loop. [/home/bogdan/licenta/FPWAM/hardware/src/hdl/FpwamPkg.vhd:125]
+Inferred a: "set_disable_timing -from I1 -to O CUNIT/i_11/i_0/i_1"
+INFO: [Synth 8-3971] The signal HEAPSTACK/BRAM_reg was recognized as a true dual port RAM template.
+INFO: [Synth 8-3971] The signal PDLIST/BRAM_reg was recognized as a true dual port RAM template.
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:01:19 ; elapsed = 00:01:21 . Memory (MB): peak = 1735.680 ; gain = 639.867 ; free physical = 5667 ; free virtual = 6524
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-326] inferred exception to break timing loop: 'set_false_path -through i_194/O'
+Found timing loop:
+     0: i_79/O (LUT2)
+     1: i_79/I0 (LUT2)
+     2: i_3916/O (LUT2)
+     3: i_3916/I1 (LUT2)
+     4: i_79/O (LUT2)
+CRITICAL WARNING: [Synth 8-295] found timing loop. [/home/bogdan/licenta/FPWAM/hardware/src/hdl/TopLevel.vhd:22]
+Inferred a: "set_disable_timing -from I0 -to O i_79"
+INFO: [Synth 8-4480] The timing for the instance CUNIT/PDLIST/BRAM_reg (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_0 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_0 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_1 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_1 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_2 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_2 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_3 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_3 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_4 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_4 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_5 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_5 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_6 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_6 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_7 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_7 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_8 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_8 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_9 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_9 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_10 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_10 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_11 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_11 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_12 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_12 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_13 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_13 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_14 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_14 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_15 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_15 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_16 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_16 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_17 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance HEAPSTACK/BRAM_reg_1_17 (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance UNIFYU/PDLIST/BRAM_reg (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance UNIFYU/PDLIST/BRAM_reg (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance TRAIL/BRAM_reg (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+INFO: [Synth 8-4480] The timing for the instance TRAIL/BRAM_reg (implemented as a block RAM) might be sub-optimal as no optional output register could be merged into the block ram. Providing additional output register may help in improving timing.
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:01:23 ; elapsed = 00:01:25 . Memory (MB): peak = 1735.680 ; gain = 639.867 ; free physical = 5678 ; free virtual = 6535
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:01:24 ; elapsed = 00:01:27 . Memory (MB): peak = 1735.680 ; gain = 639.867 ; free physical = 5678 ; free virtual = 6535
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:24 ; elapsed = 00:01:27 . Memory (MB): peak = 1735.680 ; gain = 639.867 ; free physical = 5679 ; free virtual = 6536
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:24 ; elapsed = 00:01:27 . Memory (MB): peak = 1735.680 ; gain = 639.867 ; free physical = 5679 ; free virtual = 6536
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:24 ; elapsed = 00:01:27 . Memory (MB): peak = 1735.680 ; gain = 639.867 ; free physical = 5679 ; free virtual = 6536
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:24 ; elapsed = 00:01:27 . Memory (MB): peak = 1735.680 ; gain = 639.867 ; free physical = 5679 ; free virtual = 6536
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:24 ; elapsed = 00:01:27 . Memory (MB): peak = 1735.680 ; gain = 639.867 ; free physical = 5679 ; free virtual = 6536
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-----------+------+
+|      |Cell       |Count |
++------+-----------+------+
+|1     |BUFG       |     1|
+|2     |CARRY4     |   261|
+|3     |LUT1       |   706|
+|4     |LUT2       |   377|
+|5     |LUT3       |   221|
+|6     |LUT4       |   497|
+|7     |LUT5       |   462|
+|8     |LUT6       |  2205|
+|9     |MUXF7      |   155|
+|10    |RAMB18E1   |     3|
+|11    |RAMB36E1   |    18|
+|12    |RAMB36E1_1 |    18|
+|13    |XORCY      |     1|
+|14    |FDRE       |   979|
+|15    |FDSE       |    20|
+|16    |IBUF       |     2|
+|17    |OBUF       |    17|
++------+-----------+------+
+
+Report Instance Areas: 
++------+--------------+----------------------------------+------+
+|      |Instance      |Module                            |Cells |
++------+--------------+----------------------------------+------+
+|1     |top           |                                  |  5943|
+|2     |  BINDUNIT    |BindUnit                          |   259|
+|3     |  BSEARCH     |BinarySearch                      |   108|
+|4     |  CUART       |uart                              |    58|
+|5     |  CUNIT       |ControlUnit                       |   110|
+|6     |    PDLIST    |Memory_behavioral_1               |    49|
+|7     |  DEREF1      |DerefUnit                         |   242|
+|8     |  DEREF2      |DerefUnit_0                       |   182|
+|9     |  DFC         |DataFlowControl                   |  3041|
+|10    |  GPRS        |GPR                               |   504|
+|11    |  HEAPSTACK   |Memory_behavioral__parameterized0 |   357|
+|12    |  TRAIL       |Memory_behavioral__parameterized1 |     1|
+|13    |  UNIFYU      |UnifyUnit                         |   267|
+|14    |    PDLIST    |Memory_behavioral                 |   113|
+|15    |  UNWINDTRAIL |UnwindTrailUnit                   |   159|
++------+--------------+----------------------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:24 ; elapsed = 00:01:27 . Memory (MB): peak = 1735.680 ; gain = 639.867 ; free physical = 5679 ; free virtual = 6536
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 2 critical warnings and 156 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:15 ; elapsed = 00:01:17 . Memory (MB): peak = 1735.680 ; gain = 339.469 ; free physical = 5732 ; free virtual = 6589
+Synthesis Optimization Complete : Time (s): cpu = 00:01:25 ; elapsed = 00:01:27 . Memory (MB): peak = 1735.688 ; gain = 639.867 ; free physical = 5732 ; free virtual = 6589
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 303 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1 instances were transformed.
+  (MUXCY,XORCY) => CARRY4: 1 instances
+
+230 Infos, 305 Warnings, 2 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:01:28 ; elapsed = 00:01:31 . Memory (MB): peak = 1735.688 ; gain = 652.473 ; free physical = 5800 ; free virtual = 6657
+INFO: [Common 17-1381] The checkpoint '/home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/synth_1/TopLevel.dcp' has been generated.
+report_utilization: Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1735.688 ; gain = 0.000 ; free physical = 5803 ; free virtual = 6661
+INFO: [Common 17-206] Exiting Vivado at Sun Jul 16 03:13:31 2017...

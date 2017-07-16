@@ -759,6 +759,7 @@ signal uart_data_stream_out_stb : std_logic;
 signal tx : std_logic;
 signal rx : std_logic;
 
+signal rx_sync : std_logic;
 
 constant kTarget : integer := 100000;
 signal clock_counter : integer;
@@ -784,7 +785,7 @@ CUNIT: entity work.ControlUnit(Behavioral)
  port map
  (
    clk => clk
-  ,rst => rsti
+  ,rsti => rst_i
 
   ,query_done    => control_unit_query_done
   ,uart_in       => control_unit_uart_in
@@ -794,7 +795,8 @@ CUNIT: entity work.ControlUnit(Behavioral)
   ,uart_out_ack  => control_unit_uart_out_ack
   ,deref_start   => control_unit_deref_start
   ,deref_out     => control_unit_deref_out
-  ,deref_in      => deref2_output
+  ,deref_in      => deref2_res_out
+  ,deref_done    => deref2_done
   ,proc_mode     => control_unit_mode
   ,sys_rst       => rst
  );
@@ -1632,7 +1634,7 @@ end process;
    );
 -- DEREF1 END
 -- DEREF2 START
-  deref2_start     <= unify_deref2_start or control_unit_deref_start;;
+  deref2_start     <= unify_deref2_start or control_unit_deref_start;
   deref2_mem_word2 <= mem_output_2;
   deref2_word      <= unify_deref2_out when control_unit_mode = proc_exec_t else
                       control_unit_deref_out;

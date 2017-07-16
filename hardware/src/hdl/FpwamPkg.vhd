@@ -114,6 +114,7 @@ package FpwamPkg is
   function fpwam_var_on_stack  (word : std_logic_vector) return boolean;
   function fpwam_var_stack_addr(instr : std_logic_vector; E : std_logic_vector) return std_logic_vector;
   function to_std_logic        (bool : boolean) return std_logic;
+  function log2( i : natural) return integer;
 end FpwamPkg;
 
 package body FpwamPkg is
@@ -182,5 +183,17 @@ package body FpwamPkg is
         return('0');
       end if;
   end function;
+  
+  function log2( i : natural) return integer is
+      variable temp    : integer := i;
+      variable ret_val : integer := 0; 
+    begin                    
+      while temp > 1 loop
+        ret_val := ret_val + 1;
+        temp    := temp / 2;     
+      end loop;
+        
+      return ret_val;
+    end function;
 
 end package body;

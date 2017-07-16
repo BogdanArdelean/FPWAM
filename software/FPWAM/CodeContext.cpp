@@ -4,6 +4,7 @@
 
 #include "CodeContext.h"
 #include <iostream>
+#include <algorithm>
 using namespace FPWAM;
 
 #define FOUND(X, Y) X.find(Y) != X.end()
