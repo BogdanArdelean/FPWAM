@@ -19,6 +19,10 @@ public:
     int32_t read24();
     int32_t read32();
 
+    void write8(int8_t);
+    void write16(int16_t);
+    void write32(int32_t);
+
 private:
     int m_fd;
     const std::string m_portName;

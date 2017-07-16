@@ -128,3 +128,18 @@ int32_t SerialWrapper::read24()
     value = (value<<8) | buf[2];
     return value;
 }
+
+void SerialWrapper::write8(int8_t w)
+{
+    ::write(m_fd, &w, 1);
+}
+
+void SerialWrapper::write16(int16_t w)
+{
+    ::write(m_fd, &w, 2);
+}
+
+void SerialWrapper::write32(int32_t w)
+{
+    ::write(m_fd, &w, 4);
+}

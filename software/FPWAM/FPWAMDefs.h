@@ -59,6 +59,13 @@ namespace FPWAM
         ,tag_int_t
     };
 
+    enum control_message_t
+    {
+         cm_instruction_t
+        ,cm_cindex_t
+        ,cm_query_t
+    };
+
     static int8_t stackVariable(int8_t i)
     {
         return (1 << kRegWidth) | i;
