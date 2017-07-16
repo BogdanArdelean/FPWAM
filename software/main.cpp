@@ -20,15 +20,16 @@ int main(int argc, char *argv[])
     parse(argc, argv);
     codeCtx.resolve_instructions();
 
-    FPWAM::FPWAMReader reader(argv[2]);
+    FPWAM::FPWAMReader reader("/dev/ttyUSB2");
     if(reader.open())
     {
+        std::cout<<"Opened" << std::endl;
         std::vector<std::vector<int32_t>> vars;
-        reader.read(3, vars);
+        reader.read(2, vars);
 
         for(const auto& var : vars)
         {
-            std::cout << "Res: ";
+	    std::cout<<"Res: ";
             for(const int32_t& val : var)
             {
                 switch(FPWAM::getFpwamTag(val))
@@ -38,20 +39,24 @@ int main(int argc, char *argv[])
                         {
                             std::cout<<"]";
                         }else
-                        std::cout<<codeCtx.m_constantValueToName[FPWAM::getFpwamValue(val)] << ", ";
+                        std::cout<<codeCtx.m_constantValueToName[val] << ", ";
                         break;
                     case FPWAM::tag_lis_t:
                         std::cout<<"[";
                         break;
                     case FPWAM::tag_str_t:
-                        std::cout<<codeCtx.m_predicateValueToName[FPWAM::getFpwamValue(val)] << "(";
+                        std::cout<<codeCtx.m_predicateValueToName[val] << "(";
                         break;
                     default:
                         std::cout << " WHA?";
                         break;
                 }
             }
+            std::cout << std::endl;
         }
+    }else
+    {
+      std::cout << "FUUUCKING SHIT" << std::endl;
     }
 
 
@@ -62,7 +67,7 @@ int main(int argc, char *argv[])
 //    std::fstream f("code.out", std::ios::out);
 //    f << instr.size() << std::endl;
 //    for(auto& i : instr)
-//    {
+//   {
 //        f << ',' << "B\"" << i.to_string() << '"' << '\n';
 //    }
 //    f.close();

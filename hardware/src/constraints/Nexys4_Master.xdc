@@ -75,3 +75,8 @@ set_property IOSTANDARD LVCMOS33 [get_ports usb_rx]
   ##Bank = 35, Pin name = IO_L11N_T1_SRCC_35,					Sch name = UART_RXD_OUT
 set_property PACKAGE_PIN D4 [get_ports usb_tx]
 set_property IOSTANDARD LVCMOS33 [get_ports usb_tx]
+
+
+##Bank = 15, Pin name = IO_L11N_T1_SRCC_15,					Sch name = BTNC
+set_property PACKAGE_PIN V10 [get_ports btn]						
+set_property IOSTANDARD LVCMOS33 [get_ports btn]

@@ -39,3 +39,5 @@ set_property src_info {type:XDC file:1 line:73 export:INPUT save:INPUT read:READ
 set_property PACKAGE_PIN C4 [get_ports usb_rx]
 set_property src_info {type:XDC file:1 line:76 export:INPUT save:INPUT read:READ} [current_design]
 set_property PACKAGE_PIN D4 [get_ports usb_tx]
+set_property src_info {type:XDC file:1 line:81 export:INPUT save:INPUT read:READ} [current_design]
+set_property PACKAGE_PIN V10 [get_ports btn]

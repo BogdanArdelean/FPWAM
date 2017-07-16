@@ -12,6 +12,7 @@ class SerialWrapper
 {
 public:
     SerialWrapper(const std::string&);
+    ~SerialWrapper();
     bool open();
     int8_t read8();
     int16_t read16();

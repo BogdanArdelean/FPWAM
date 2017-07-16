@@ -13,7 +13,6 @@
 -------------------------------------------------------------------------------
 
 library ieee;
-library xil_defaultlib;
 
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -33,6 +32,10 @@ entity ControlUnit is
     uart_out       : out std_logic_vector(7 downto 0);
     uart_out_str   : out std_logic;
     uart_out_ack   : in std_logic;
+	
+	mem_addr       : out std_logic_vector(kWamAddressWidth -1 downto 0);
+	mem_in 		   : in std_logic_vector(kWamWordWidth -1 downto 0);
+	mem_rd         : out std_logic;
 
     deref_start    : out std_logic;
     deref_out      : out std_logic_vector(kWamWordWidth - 1 downto 0);
@@ -40,7 +43,8 @@ entity ControlUnit is
     deref_done     : in std_logic;
 
     proc_mode      : out proc_mode_t;
-    sys_rst        : out std_logic
+    sys_rst        : out std_logic;
+    start_btn      : in std_Logic
   );
 end ControlUnit;
 
@@ -71,21 +75,49 @@ signal local_reset   : std_logic;
 signal rst           : std_logic;
 signal sys_rst_start : std_logic := '1';
 
-signal var_to_read       : unsigned(kGPRAddressWidth downto 0) := to_unsigned(5, kGPRAddressWidth+1);
+signal var_to_read       : unsigned(kGPRAddressWidth downto 0) := to_unsigned(2, kGPRAddressWidth+1);
 signal var_current_reg   : unsigned(kGPRAddressWidth downto 0);
 signal var_curr_done     : boolean;
 signal var_curr_wr       : std_logic;
 
+signal to_write : std_logic_vector(kWamWordWidth -1 downto 0);
+signal to_write_comb : std_logic_vector(kWamWordWidth -1 downto 0);
+signal to_wr    : std_logic;
+
+signal mem_reg : std_logic_vector(kWamWordWidth -1 downto 0);
+signal mem_reg_wr: std_logic;
 
 
-type state_t is (idle_t, wait_query_t, uart_send_t, uart_send_t2, uart_send_t3, structure_iterate_t, iterate_t, check_stop_pop_t, deref_t, push_list_t, done_t);
+type state_t is (idle_t, wait_query_t, check_structure_t, check_structure_t2, uart_send_t, uart_send_t2, uart_send_t3, structure_iterate_t, iterate_t, check_stop_pop_t, deref_t, push_list_t, done_t);
 signal cr_state, nx_state : state_t;
 
 begin
-
+  
+  MMREG: process(clk)
+  begin
+    if rising_edge(clk) then
+       if rst = '1' then
+          mem_reg <= (others => '0');
+       elsif mem_reg_wr = '1' then
+          mem_reg <= mem_in;
+       end if;
+   end if;
+  end process;
+           
+  TOWRREG: process(clk)
+  begin
+	if rising_edge(clk) then
+      if rst = '1' or local_reset = '1' then
+		to_write <= (others => '0');
+	  elsif to_wr = '1' then
+		to_write <= to_write_comb;
+	  end if;
+	 end if;
+  end process;
   sys_rst <= sys_rst_start or rsti;
   pdl_empty <= unsigned(pdl_addr_reg) = 0;
-
+  
+  wr_pdl_reg <= wr_pdl or rd_pdl;
   PDLREG: process(clk)
   begin
     if rising_edge(clk) then
@@ -147,7 +179,7 @@ begin
       if rst = '1' or local_reset = '1' then
         goal_reg <= (others => '0');
       elsif wr_goal_reg = '1' then
-        goal_reg <= "0" & unsigned(fpwam_arity(deref_in));
+        goal_reg <= "0" & unsigned(fpwam_arity(mem_in));
       end if;
     end if;
   end process;
@@ -190,14 +222,14 @@ begin
   end process;
 
 
-  NEXT_STATE_DECODE: process(cr_state, deref_in, uart_in, uart_in_valid, uart_out_ack, query_done, var_curr_done)
+  NEXT_STATE_DECODE: process(cr_state, deref_in, uart_in, uart_in_valid, uart_out_ack, query_done, var_curr_done, pdl_empty, iterate_done)
   begin
     nx_state <= cr_state;
     case cr_state is
       when idle_t =>
         nx_state <= wait_query_t;
       when wait_query_t =>
-        if query_done = '1' then
+        if query_done = '1' and start_btn = '1' then
           nx_state <= iterate_t;
         end if;
       when iterate_t =>
@@ -220,13 +252,17 @@ begin
             when tag_lis_t =>
               nx_state <= push_list_t;
             when tag_str_t =>
-              nx_state <= structure_iterate_t;
+              nx_state <= check_structure_t;
             when others =>
               nx_state <= uart_send_t;
           end case;
         end if;
       when push_list_t =>
-        nx_state <= uart_send_t;
+	  nx_state <= uart_send_t; 
+--	  when check_structure_t =>
+--        nx_state <= check_structure_t2;
+	  when check_structure_t =>
+	  	nx_state <= structure_iterate_t;
       when structure_iterate_t =>
         if iterate_done = '1' then
           nx_state <= uart_send_t;
@@ -252,7 +288,7 @@ begin
                    std_logic_vector(unsigned(pdl_addr_reg)-1) when rd_pdl = '1' else
                    pdl_addr_reg;
 
-  OUTPUT_DECODE: process(cr_state)
+  OUTPUT_DECODE: process(cr_state, pdl_empty, deref_done, deref_in)
   begin
 
     pdl_in_1       <= (others => '0');
@@ -263,9 +299,6 @@ begin
     proc_mode      <= proc_control_t;
     wr_pdl         <= '0';
     rd_pdl         <= '0';
-
-    pdl_addr_comb  <= (others => '0');
-    wr_pdl_reg     <= '0';
     rst_curr_reg   <= '0';
 
     wr_goal_reg    <= '0';
@@ -275,7 +308,12 @@ begin
     local_reset    <= '0';
     rst            <= '0';
     var_curr_wr    <= '0';
-
+    
+    to_write_comb <= (others => '0');
+    to_wr         <= '0';
+    mem_addr      <= (others => '0');
+    mem_rd        <= '0';
+    mem_reg_wr    <= '0';
     case cr_state is
       when idle_t =>
         local_reset <= '1';
@@ -284,6 +322,7 @@ begin
       when iterate_t =>
         var_curr_wr   <= '1';
         wr_pdl        <= '1';
+		rd_pdl        <= '1';
         pdl_in_1    <= fpwam_word(std_logic_vector(var_current_reg), tag_ref_t);
       when check_stop_pop_t =>
         if not pdl_empty then
@@ -293,13 +332,17 @@ begin
         if deref_done = '1' then
           case fpwam_tag(deref_in) is
             when tag_int_t =>
-              null;
+			to_wr <= '1';
+			to_write_comb <= deref_in;
             when tag_lis_t =>
-              wr_pdl <= '1';
-              pdl_in_1 <= fpwam_word(std_logic_vector(fpwam_value(deref_in)), tag_ref_t);
+			wr_pdl <= '1';
+			rd_pdl <= '1';
+			pdl_in_1 <= fpwam_word(std_logic_vector(fpwam_value(deref_in)), tag_ref_t);
+			to_wr <= '1';
+			to_write_comb <= deref_in;
             when tag_str_t =>
-              rst_curr_reg <= '1';
-              wr_goal_reg  <= '1';
+			  mem_rd <= '1';
+			  mem_addr <= std_logic_vector(fpwam_value(deref_in));
             when others =>
               null;
           end case;
@@ -308,26 +351,36 @@ begin
           deref_start <= '1';
         end if;
       when push_list_t =>
-        wr_pdl <= '1';
-        pdl_in_1  <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref_in))+1), tag_ref_t);
+	  wr_pdl <= '1';
+	  rd_pdl <= '1';
+	  pdl_in_1  <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref_in))+1), tag_ref_t);
+	  when check_structure_t =>
+	  	 rst_curr_reg <= '1';
+         wr_goal_reg  <= '1';
+         mem_reg_wr <= '1';
       when structure_iterate_t =>
-        iterate <= not iterate_done;
+        iterate <= '1';
         if iterate_done /= '1' then
-          pdl_in_1 <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref_in)) + (unsigned(fpwam_arity(deref_in))+1 - current_reg)), tag_ref_t);
-          wr_pdl <= '1';
-        end if;
+          pdl_in_1 <= fpwam_word(std_logic_vector(unsigned(fpwam_value(deref_in)) + (unsigned(fpwam_arity(mem_reg))+1 - current_reg)), tag_ref_t);
+          wr_pdl <= '1'; 
+		  rd_pdl <= '1';
+        else
+			to_wr <= '1';
+			to_write_comb <= mem_reg;
+		end if;
       when uart_send_t =>
         uart_out_str <= '1';
-        uart_out <= "000000"&deref_in(kWamWordWidth-1 downto kWamWordWidth-2);
+        uart_out <= "000000"&to_write(kWamWordWidth-1 downto kWamWordWidth-2);
       when uart_send_t2 =>
         uart_out_str <= '1';
-        uart_out <= deref_in(kWamWordWidth-3 downto kWamWordWidth -3 - 7);
+        uart_out <= to_write(kWamWordWidth-3 downto kWamWordWidth -3 - 7);
       when uart_send_t3 =>
         uart_out_str <= '1';
-        uart_out <= deref_in(7 downto 0);
+        uart_out <= to_write(7 downto 0);
       when others =>
         null;
     end case;
   end process;
 
 end Behavioral;
+
