@@ -9,18 +9,19 @@
 #include <string>
 #include <vector>
 #include "SerialWrapper.h"
+#include "Instruction.h"
 
 namespace FPWAM
 {
-    class FPWAMReader
+    class FPWAMBridge
     {
     public:
-        FPWAMReader(const std::string &portName);
+        FPWAMBridge(const std::string &portName);
 
         bool open();
 
         bool read(int32_t variables, std::vector<std::vector<int32_t>> &vars);
-
+        bool sendProgram(const std::vector<Instruction>& instructions);
 
     private:
         SerialWrapper m_serialWrapper;

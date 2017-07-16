@@ -89,7 +89,7 @@ bool SerialWrapper::open()
     {
         return false;
     }
-    return false;
+    return true;
 }
 
 int8_t SerialWrapper::read8()
@@ -118,4 +118,19 @@ int32_t SerialWrapper::read24()
     uint32_t buf = 0;
     ::read(m_fd, &buf, 3);
     return buf >> 8;
+}
+
+void SerialWrapper::write8(int8_t w)
+{
+    ::write(m_fd, &w, 1);
+}
+
+void SerialWrapper::write16(int16_t w)
+{
+    ::write(m_fd, &w, 2);
+}
+
+void SerialWrapper::write32(int32_t w)
+{
+    ::write(m_fd, &w, 4);
 }

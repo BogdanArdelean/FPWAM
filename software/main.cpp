@@ -8,7 +8,7 @@
 
 #include "FPWAM/CodeContext.h"
 #include "FPWAM/GPLCBridge.h"
-#include "FPWAM/FPWAMReader.h"
+#include "FPWAM/FPWAMBridge.h"
 
 #define die(e) do { fprintf(stderr, "%s\n", e); exit(EXIT_FAILURE); } while (0);
 
@@ -19,11 +19,16 @@ int main(int argc, char *argv[])
     setCodeContext(&codeCtx);
     parse(argc, argv);
     codeCtx.resolve_instructions();
+    std::vector<FPWAM::Instruction> instr;
+    codeCtx.get_instructions(instr);
 
-    FPWAM::FPWAMReader reader("/dev/ttyUSB2");
+    FPWAM::FPWAMBridge reader("/dev/ttyUSB2");
     if(reader.open())
     {
         std::cout<<"Opened" << std::endl;
+
+        reader.sendProgram(instr);
+        
         std::vector<std::vector<int32_t>> vars;
         reader.read(2, vars);
 
