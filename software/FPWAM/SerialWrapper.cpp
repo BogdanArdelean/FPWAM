@@ -72,6 +72,11 @@ SerialWrapper::SerialWrapper(const std::string &portName)
 
 }
 
+SerialWrapper::~SerialWrapper()
+{
+    ::close(m_fd);
+}
+
 bool SerialWrapper::open()
 {
     m_fd = ::open(m_portName.c_str(), O_RDWR | O_NOCTTY | O_SYNC);
@@ -89,7 +94,7 @@ bool SerialWrapper::open()
     {
         return false;
     }
-    return false;
+    return true;
 }
 
 int8_t SerialWrapper::read8()
@@ -115,7 +120,11 @@ int32_t SerialWrapper::read32()
 
 int32_t SerialWrapper::read24()
 {
-    uint32_t buf = 0;
-    ::read(m_fd, &buf, 3);
-    return buf >> 8;
+    char buf[3];
+    int32_t value = 0;
+    for(int i=0; i < sizeof(buf); i+=::read(m_fd, buf, sizeof(buf)));
+    value = buf[0];
+    value = (value<<8) | buf[1];
+    value = (value<<8) | buf[2];
+    return value;
 }
