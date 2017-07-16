@@ -11,6 +11,7 @@ namespace FPWAM
     const int32_t kRegWidth             = 4;
     const int32_t kInstructionTypeWidth = 6;
     const int32_t kWamWordWidth         = 18;
+    const uint32_t kNilConstant         = 262143;
 
     enum InstructionType
     {
@@ -68,9 +69,24 @@ namespace FPWAM
         return ((int32_t)tag << 16) | word;
     }
 
+    static fpwam_tag getFpwamTag(int32_t word)
+    {
+        return (fpwam_tag)(word >> 16);
+    }
+
+    static uint8_t getFpwamArity(int32_t word)
+    {
+        return word & ((1 << (kRegWidth+1))-1);
+    }
+
     static int32_t fpwam_call_execute(uint16_t number, int8_t arity)
     {
         return ((int32_t)number << kRegWidth) | arity;
+    }
+
+    static int32_t getFpwamValue(int32_t word)
+    {
+        return word & 0xFFFF;
     }
 }
 #endif //SOFTWARE_FPWAMDEFS_H

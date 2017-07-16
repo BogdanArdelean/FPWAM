@@ -20,6 +20,20 @@ Predicate.h
 cstdint
 -
 
+/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.cpp
+FPWAMReader.h
+/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.h
+FPWAMDefs.h
+/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMDefs.h
+
+/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.h
+string
+-
+vector
+-
+SerialWrapper.h
+/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.h
+
 /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/GPLCBridge.cpp
 iostream
 -
@@ -58,6 +72,22 @@ map
 Instruction.h
 /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/Instruction.h
 
+/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.cpp
+fcntl.h
+-
+zconf.h
+-
+termios.h
+-
+unistd.h
+-
+SerialWrapper.h
+/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.h
+
+/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.h
+string
+-
+
 /Users/bogdana/Personal/licenta/FPWAM/software/Wam2FPWAM/wam2FPWAM.h
 
 /Users/bogdana/Personal/licenta/FPWAM/software/main.cpp
@@ -75,4 +105,6 @@ FPWAM/CodeContext.h
 /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/CodeContext.h
 FPWAM/GPLCBridge.h
 /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/GPLCBridge.h
+FPWAM/FPWAMReader.h
+/Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.h
 

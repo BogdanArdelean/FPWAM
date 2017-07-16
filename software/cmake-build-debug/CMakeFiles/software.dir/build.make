@@ -225,6 +225,54 @@ CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o.provides: CMakeFiles/software.dir
 CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o.provides.build: CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o
 
 
+CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o: CMakeFiles/software.dir/flags.make
+CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o: ../FPWAM/SerialWrapper.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o -c /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.cpp
+
+CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.cpp > CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.i
+
+CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/SerialWrapper.cpp -o CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.s
+
+CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o.requires:
+
+.PHONY : CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o.requires
+
+CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o.provides: CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o.requires
+	$(MAKE) -f CMakeFiles/software.dir/build.make CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o.provides.build
+.PHONY : CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o.provides
+
+CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o.provides.build: CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o
+
+
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o: CMakeFiles/software.dir/flags.make
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o: ../FPWAM/FPWAMReader.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o -c /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.cpp
+
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.cpp > CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.i
+
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/bogdana/Personal/licenta/FPWAM/software/FPWAM/FPWAMReader.cpp -o CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.s
+
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o.requires:
+
+.PHONY : CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o.requires
+
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o.provides: CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o.requires
+	$(MAKE) -f CMakeFiles/software.dir/build.make CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o.provides.build
+.PHONY : CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o.provides
+
+CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o.provides.build: CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o
+
+
 # Object files for target software
 software_OBJECTS = \
 "CMakeFiles/software.dir/Wam2FPWAM/wam2FPWAM.c.o" \
@@ -233,7 +281,9 @@ software_OBJECTS = \
 "CMakeFiles/software.dir/main.cpp.o" \
 "CMakeFiles/software.dir/FPWAM/Predicate.cpp.o" \
 "CMakeFiles/software.dir/FPWAM/CodeContext.cpp.o" \
-"CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o"
+"CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o" \
+"CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o" \
+"CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o"
 
 # External object files for target software
 software_EXTERNAL_OBJECTS =
@@ -245,9 +295,11 @@ software: CMakeFiles/software.dir/main.cpp.o
 software: CMakeFiles/software.dir/FPWAM/Predicate.cpp.o
 software: CMakeFiles/software.dir/FPWAM/CodeContext.cpp.o
 software: CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o
+software: CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o
+software: CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o
 software: CMakeFiles/software.dir/build.make
 software: CMakeFiles/software.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable software"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/bogdana/Personal/licenta/FPWAM/software/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable software"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/software.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -262,6 +314,8 @@ CMakeFiles/software.dir/requires: CMakeFiles/software.dir/main.cpp.o.requires
 CMakeFiles/software.dir/requires: CMakeFiles/software.dir/FPWAM/Predicate.cpp.o.requires
 CMakeFiles/software.dir/requires: CMakeFiles/software.dir/FPWAM/CodeContext.cpp.o.requires
 CMakeFiles/software.dir/requires: CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o.requires
+CMakeFiles/software.dir/requires: CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o.requires
+CMakeFiles/software.dir/requires: CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o.requires
 
 .PHONY : CMakeFiles/software.dir/requires
 

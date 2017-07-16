@@ -8,6 +8,7 @@
 
 #include "FPWAM/CodeContext.h"
 #include "FPWAM/GPLCBridge.h"
+#include "FPWAM/FPWAMReader.h"
 
 #define die(e) do { fprintf(stderr, "%s\n", e); exit(EXIT_FAILURE); } while (0);
 
@@ -19,17 +20,52 @@ int main(int argc, char *argv[])
     parse(argc, argv);
     codeCtx.resolve_instructions();
 
-    std::vector<FPWAM::Instruction> instr;
-    codeCtx.get_instructions(instr);
-
-
-    std::fstream f("code.out", std::ios::out);
-    f << instr.size() << std::endl;
-    for(auto& i : instr)
+    FPWAM::FPWAMReader reader(argv[2]);
+    if(reader.open())
     {
-        f << ',' << "B\"" << i.to_string() << '"' << '\n';
+        std::vector<std::vector<int32_t>> vars;
+        reader.read(3, vars);
+
+        for(const auto& var : vars)
+        {
+            std::cout << "Res: ";
+            for(const int32_t& val : var)
+            {
+                switch(FPWAM::getFpwamTag(val))
+                {
+                    case FPWAM::tag_int_t:
+                        if(val == FPWAM::kNilConstant)
+                        {
+                            std::cout<<"]";
+                        }else
+                        std::cout<<codeCtx.m_constantValueToName[FPWAM::getFpwamValue(val)] << ", ";
+                        break;
+                    case FPWAM::tag_lis_t:
+                        std::cout<<"[";
+                        break;
+                    case FPWAM::tag_str_t:
+                        std::cout<<codeCtx.m_predicateValueToName[FPWAM::getFpwamValue(val)] << "(";
+                        break;
+                    default:
+                        std::cout << " WHA?";
+                        break;
+                }
+            }
+        }
     }
-    f.close();
+
+
+//    std::vector<FPWAM::Instruction> instr;
+//    codeCtx.get_instructions(instr);
+
+
+//    std::fstream f("code.out", std::ios::out);
+//    f << instr.size() << std::endl;
+//    for(auto& i : instr)
+//    {
+//        f << ',' << "B\"" << i.to_string() << '"' << '\n';
+//    }
+//    f.close();
 //
 //    if(fork()==0)
 //    {

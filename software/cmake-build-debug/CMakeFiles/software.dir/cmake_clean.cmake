@@ -6,6 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/software.dir/FPWAM/Predicate.cpp.o"
   "CMakeFiles/software.dir/FPWAM/CodeContext.cpp.o"
   "CMakeFiles/software.dir/FPWAM/GPLCBridge.cpp.o"
+  "CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o"
+  "CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o"
   "software.pdb"
   "software"
 )

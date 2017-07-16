@@ -150,6 +150,33 @@ FPWAM/CodeContext.cpp.s:
 	$(MAKE) -f CMakeFiles/software.dir/build.make CMakeFiles/software.dir/FPWAM/CodeContext.cpp.s
 .PHONY : FPWAM/CodeContext.cpp.s
 
+FPWAM/FPWAMReader.o: FPWAM/FPWAMReader.cpp.o
+
+.PHONY : FPWAM/FPWAMReader.o
+
+# target to build an object file
+FPWAM/FPWAMReader.cpp.o:
+	$(MAKE) -f CMakeFiles/software.dir/build.make CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.o
+.PHONY : FPWAM/FPWAMReader.cpp.o
+
+FPWAM/FPWAMReader.i: FPWAM/FPWAMReader.cpp.i
+
+.PHONY : FPWAM/FPWAMReader.i
+
+# target to preprocess a source file
+FPWAM/FPWAMReader.cpp.i:
+	$(MAKE) -f CMakeFiles/software.dir/build.make CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.i
+.PHONY : FPWAM/FPWAMReader.cpp.i
+
+FPWAM/FPWAMReader.s: FPWAM/FPWAMReader.cpp.s
+
+.PHONY : FPWAM/FPWAMReader.s
+
+# target to generate assembly for a file
+FPWAM/FPWAMReader.cpp.s:
+	$(MAKE) -f CMakeFiles/software.dir/build.make CMakeFiles/software.dir/FPWAM/FPWAMReader.cpp.s
+.PHONY : FPWAM/FPWAMReader.cpp.s
+
 FPWAM/GPLCBridge.o: FPWAM/GPLCBridge.cpp.o
 
 .PHONY : FPWAM/GPLCBridge.o
@@ -230,6 +257,33 @@ FPWAM/Predicate.s: FPWAM/Predicate.cpp.s
 FPWAM/Predicate.cpp.s:
 	$(MAKE) -f CMakeFiles/software.dir/build.make CMakeFiles/software.dir/FPWAM/Predicate.cpp.s
 .PHONY : FPWAM/Predicate.cpp.s
+
+FPWAM/SerialWrapper.o: FPWAM/SerialWrapper.cpp.o
+
+.PHONY : FPWAM/SerialWrapper.o
+
+# target to build an object file
+FPWAM/SerialWrapper.cpp.o:
+	$(MAKE) -f CMakeFiles/software.dir/build.make CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.o
+.PHONY : FPWAM/SerialWrapper.cpp.o
+
+FPWAM/SerialWrapper.i: FPWAM/SerialWrapper.cpp.i
+
+.PHONY : FPWAM/SerialWrapper.i
+
+# target to preprocess a source file
+FPWAM/SerialWrapper.cpp.i:
+	$(MAKE) -f CMakeFiles/software.dir/build.make CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.i
+.PHONY : FPWAM/SerialWrapper.cpp.i
+
+FPWAM/SerialWrapper.s: FPWAM/SerialWrapper.cpp.s
+
+.PHONY : FPWAM/SerialWrapper.s
+
+# target to generate assembly for a file
+FPWAM/SerialWrapper.cpp.s:
+	$(MAKE) -f CMakeFiles/software.dir/build.make CMakeFiles/software.dir/FPWAM/SerialWrapper.cpp.s
+.PHONY : FPWAM/SerialWrapper.cpp.s
 
 Wam2FPWAM/wam2FPWAM.o: Wam2FPWAM/wam2FPWAM.c.o
 
@@ -324,6 +378,9 @@ help:
 	@echo "... FPWAM/CodeContext.o"
 	@echo "... FPWAM/CodeContext.i"
 	@echo "... FPWAM/CodeContext.s"
+	@echo "... FPWAM/FPWAMReader.o"
+	@echo "... FPWAM/FPWAMReader.i"
+	@echo "... FPWAM/FPWAMReader.s"
 	@echo "... FPWAM/GPLCBridge.o"
 	@echo "... FPWAM/GPLCBridge.i"
 	@echo "... FPWAM/GPLCBridge.s"
@@ -333,6 +390,9 @@ help:
 	@echo "... FPWAM/Predicate.o"
 	@echo "... FPWAM/Predicate.i"
 	@echo "... FPWAM/Predicate.s"
+	@echo "... FPWAM/SerialWrapper.o"
+	@echo "... FPWAM/SerialWrapper.i"
+	@echo "... FPWAM/SerialWrapper.s"
 	@echo "... Wam2FPWAM/wam2FPWAM.o"
 	@echo "... Wam2FPWAM/wam2FPWAM.i"
 	@echo "... Wam2FPWAM/wam2FPWAM.s"
