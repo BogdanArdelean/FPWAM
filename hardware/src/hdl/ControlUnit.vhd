@@ -41,7 +41,18 @@ entity ControlUnit is
     deref_out      : out std_logic_vector(kWamWordWidth - 1 downto 0);
     deref_in       : in  std_logic_vector(kWamWordWidth -1 downto 0);
     deref_done     : in std_logic;
-
+    
+    instruction_out   : out std_logic_vector(kWamInstructionWidth -1 downto 0);
+    instruction_write : out std_logic;
+    instruction_addr  : out std_logic_vector(kWamInstrMemWidth -1 downto 0);
+    
+    p_address      : out std_logic_vector(kWamInstrMemWidth -1 downto 0);
+    p_wr           : out std_logic;
+    
+    cindex_out     : out std_logic_vector(kWamWordWidth -1 downto 0);
+    cindex_addr    : out std_logic_vector(kWamInstrMemWidth -1 downto 0);
+    cindex_wr      : out std_logic;
+    
     proc_mode      : out proc_mode_t;
     sys_rst        : out std_logic;
     start_btn      : in std_Logic
@@ -87,16 +98,122 @@ signal to_wr    : std_logic;
 signal mem_reg : std_logic_vector(kWamWordWidth -1 downto 0);
 signal mem_reg_wr: std_logic;
 
+signal message : control_message_t; 
 
-type state_t is (idle_t, wait_query_t, check_structure_t, check_structure_t2, uart_send_t, uart_send_t2, uart_send_t3, structure_iterate_t, iterate_t, check_stop_pop_t, deref_t, push_list_t, done_t);
+type state_t is (idle_t, 
+                 add_cindex_t,
+                 add_instruction_t, it_instruction_t, put_instruction_t, get_igoal_t, 
+                 add_query_t, wait_query_t,
+                 check_structure_t, check_structure_t2, 
+                 uart_send_t, uart_send_t2, uart_send_t3, 
+                 structure_iterate_t, iterate_t, check_stop_pop_t, deref_t, push_list_t, done_t);
 signal cr_state, nx_state : state_t;
+signal decoded_state : state_t;
+
+signal recover_state : state_t;
+signal recover_state_comb : state_t;
+signal wr_rec_state  : std_logic;
+
+signal instruction_count : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+signal instruction_wr    : std_logic;
+
+signal instruction_goal    : std_logic_vector(kWamInstrMemWidth -1 downto 0);
+signal instruction_goal_wr : std_logic;
+
+signal rst_instr     : std_logic;
+
+signal uart_sh_reg  : std_logic_vector(31 downto 0);
+signal uart_sh_wr   : std_logic;
+signal uart_sh_rst  : std_logic;
+
+signal uart_recv_count : unsigned(kWamWordWidth -1 downto 0);
+signal uart_recv_wr    : std_logic;
+signal uart_count      : std_logic;
+signal uart_recv_comb  : unsigned(kWamWordWidth -1 downto 0);
+signal uart_cnt_done   : boolean;
 
 begin
+
+  uart_cnt_done <= uart_recv_count = 0;
+  UARTCNT: process(clk)
+  begin
+    if rising_edge(clk) then
+       if sys_rst_start = '1' then
+          uart_recv_count <= (others => '0');
+       elsif uart_recv_wr = '1' then
+          uart_recv_count <= uart_recv_comb;
+       elsif uart_count = '1' and uart_in_valid = '1' then
+          uart_recv_count <= uart_recv_count - 1;
+       end if;
+    end if;
+  end process;
+
+  UARTSH: process(clk)
+  begin
+    if rising_edge(clk) then
+        if sys_rst_start = '1' or uart_sh_rst = '1' then
+            uart_sh_reg <= (others => '0');
+        elsif uart_sh_wr = '1' and uart_in_valid = '1' then
+            uart_sh_reg <= uart_sh_reg(23 downto 0)&uart_in;
+        end if;
+    end if;
+  end process;
+
+  ICNT: process(clk)
+  begin
+    if rising_edge(clk) then
+       if sys_rst_start = '1' or rst_instr = '1' then
+         instruction_count <= (others => '0');
+       elsif instruction_wr = '1' then
+         instruction_count <= std_logic_vector(unsigned(instruction_count)+1);
+       end if;
+   end if;
+ end process;
+ 
+ 
+ IGOAL: process(clk)
+ begin
+   if rising_edge(clk) then
+      if sys_rst_start = '1' or rst_instr = '1' then
+        instruction_goal <= (others => '0');
+      elsif instruction_goal_wr = '1' then
+        instruction_goal <= uart_sh_reg(kWamInstrMemWidth -1 downto 0);
+      end if;
+  end if;
+end process;
+
+  RECREG: process(clk)
+  begin
+    if rising_edge(clk) then
+      if sys_rst_start = '1' then
+        recover_state <= idle_t;
+      elsif wr_rec_state = '1' then
+        recover_state <= recover_state_comb;
+      end if;
+    end if;
+  end process; 
+  
+  message <= fpwam_cm(uart_in);
+  
+  DECODE_STATE_FIRST: process(message)
+    begin
+      decoded_state <= idle_t;
+        case message is
+          when cm_query_t =>
+            decoded_state <= add_query_t;
+          when cm_instruction_t =>
+            decoded_state <= add_instruction_t;
+          when cm_cindex_t =>
+            decoded_state <= add_cindex_t;
+          when others =>
+            decoded_state <= idle_t;
+        end case;
+    end process DECODE_STATE_FIRST;
   
   MMREG: process(clk)
   begin
     if rising_edge(clk) then
-       if rst = '1' then
+       if rsti = '1' then
           mem_reg <= (others => '0');
        elsif mem_reg_wr = '1' then
           mem_reg <= mem_in;
@@ -114,7 +231,7 @@ begin
 	  end if;
 	 end if;
   end process;
-  sys_rst <= sys_rst_start or rsti;
+  sys_rst <= sys_rst_start or rsti or rst;
   pdl_empty <= unsigned(pdl_addr_reg) = 0;
   
   wr_pdl_reg <= wr_pdl or rd_pdl;
@@ -210,10 +327,10 @@ begin
 
   var_curr_done <= var_current_reg >= var_to_read;
 
-  FSM: process(clk, rst)
+  FSM: process(clk, rsti)
   begin
     if rising_edge(clk) then
-      if rst = '1' or sys_rst_start = '1' then
+      if rsti = '1' or sys_rst_start = '1' then
         cr_state <= idle_t;
       else
         cr_state <= nx_state;
@@ -222,21 +339,39 @@ begin
   end process;
 
 
-  NEXT_STATE_DECODE: process(cr_state, deref_in, uart_in, uart_in_valid, uart_out_ack, query_done, var_curr_done, pdl_empty, iterate_done)
+  NEXT_STATE_DECODE: process(cr_state, start_btn, uart_cnt_done, instruction_count, instruction_goal, deref_done, uart_in_valid, deref_in, uart_in, uart_in_valid, uart_out_ack, query_done, var_curr_done, pdl_empty, iterate_done)
   begin
     nx_state <= cr_state;
     case cr_state is
       when idle_t =>
-        nx_state <= wait_query_t;
+        if uart_in_valid = '1' then
+          nx_state <= decoded_state;
+        end if;
       when wait_query_t =>
         if query_done = '1' and start_btn = '1' then
           nx_state <= iterate_t;
+        end if;
+      when add_instruction_t =>
+         nx_state <= get_igoal_t;
+      when get_igoal_t =>
+         if uart_cnt_done then
+            nx_state <= it_instruction_t;
+         end if;
+      when it_instruction_t =>
+        if uart_cnt_done then
+            nx_state <= put_instruction_t;
+        end if;
+      when put_instruction_t =>
+        if unsigned(instruction_count) + 1 >= unsigned(instruction_goal) then
+            nx_state <= wait_query_t;
+        else
+            nx_state <= it_instruction_t;
         end if;
       when iterate_t =>
         if not var_curr_done then
           nx_state <= check_stop_pop_t;
         else
-          nx_state <= done_t;
+          nx_state <= idle_t;
         end if;
       when check_stop_pop_t =>
         if not pdl_empty then
@@ -288,7 +423,7 @@ begin
                    std_logic_vector(unsigned(pdl_addr_reg)-1) when rd_pdl = '1' else
                    pdl_addr_reg;
 
-  OUTPUT_DECODE: process(cr_state, pdl_empty, deref_done, deref_in)
+  OUTPUT_DECODE: process(cr_state, pdl_empty, deref_done, deref_in, uart_cnt_done, instruction_count, uart_sh_reg, instruction_goal, var_current_reg, pdl_out_1, iterate_done, mem_reg, current_reg, to_write)
   begin
 
     pdl_in_1       <= (others => '0');
@@ -314,9 +449,57 @@ begin
     mem_addr      <= (others => '0');
     mem_rd        <= '0';
     mem_reg_wr    <= '0';
+   
+    recover_state_comb <= idle_t;
+    wr_rec_state <= '0';
+    
+    instruction_wr   <= '0';
+    instruction_goal_wr  <= '0';
+    rst_instr            <= '0';
+  
+    uart_sh_wr <= '0';
+    uart_sh_rst <= '0';
+    
+    uart_recv_wr  <= '0';
+    uart_count    <= '0';
+    
+    instruction_out   <= (others => '0');
+    instruction_write <= '0';
+    instruction_addr  <= (others => '0');
+    
+    uart_recv_comb  <= (others => '0');
     case cr_state is
       when idle_t =>
         local_reset <= '1';
+      when add_instruction_t => 
+        uart_recv_comb <= to_unsigned(2, uart_recv_comb'length);
+        uart_recv_wr   <= '1';
+        rst_instr      <= '1';
+        uart_sh_rst <= '1';
+        rst <= '1';
+      when get_igoal_t =>
+        uart_sh_wr <= '1';
+        uart_count <= '1';
+        if uart_cnt_done then
+            instruction_goal_wr <= '1';
+            uart_recv_comb <= to_unsigned(4, uart_recv_comb'length);
+            uart_recv_wr   <= '1';
+            uart_sh_rst <= '1';
+        end if;
+      when it_instruction_t =>
+         uart_count <= '1';
+         uart_sh_wr <= '1';
+      when put_instruction_t =>
+        instruction_write <= '1';
+        instruction_addr  <= instruction_count;
+        instruction_out   <= uart_sh_reg(kWamInstructionWidth -1 downto 0);
+        uart_sh_rst <= '1';
+        if not (unsigned(instruction_count) + 1 >= unsigned(instruction_goal)) then
+            uart_recv_comb <= to_unsigned(4, uart_recv_comb'length);
+            uart_recv_wr   <= '1';
+            instruction_wr <= '1';
+        end if;
+
       when wait_query_t =>
         proc_mode <= proc_exec_t;
       when iterate_t =>

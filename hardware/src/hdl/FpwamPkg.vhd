@@ -101,8 +101,12 @@ package FpwamPkg is
 
 
   type proc_mode_t is (proc_exec_t, proc_control_t);
+  type control_message_t is ( cm_instruction_t -- 00
+                             ,cm_cindex_t      -- 01
+                             ,cm_query_t       -- 10
+                            );
 
-
+  function fpwam_cm            (word : std_logic_vector) return control_message_t;
   function fpwam_tag           (word : std_logic_vector) return tag_t;
   function fpwam_value         (word : std_logic_vector) return std_logic_vector;
   function fpwam_word          (word : std_logic_vector; tag : tag_t) return std_logic_vector;
@@ -118,6 +122,14 @@ package FpwamPkg is
 end FpwamPkg;
 
 package body FpwamPkg is
+
+
+  function fpwam_cm (word : std_logic_vector) return control_message_t is
+   variable result : integer;
+   begin
+      result := to_integer(unsigned(word(1 downto 0)));
+      return control_message_t'val(result);
+  end function;
 
   function fpwam_tag   (word : std_logic_vector) return tag_t is
    variable result : integer;

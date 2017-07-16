@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     std::vector<FPWAM::Instruction> instr;
     codeCtx.get_instructions(instr);
 
-    FPWAM::FPWAMBridge reader("/dev/ttyUSB2");
+    FPWAM::FPWAMBridge reader("/dev/ttyUSB8");
     if(reader.open())
     {
         std::cout<<"Opened" << std::endl;

@@ -2,8 +2,8 @@
 # Vivado v2017.1 (64-bit)
 # SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
 # IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
-# Start of session at: Sun Jul 16 03:11:49 2017
-# Process ID: 4161
+# Start of session at: Sun Jul 16 23:18:11 2017
+# Process ID: 8335
 # Current directory: /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/synth_1
 # Command line: vivado -log TopLevel.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source TopLevel.tcl
 # Log file: /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/synth_1/TopLevel.vds

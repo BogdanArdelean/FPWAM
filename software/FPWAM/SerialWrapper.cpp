@@ -131,15 +131,25 @@ int32_t SerialWrapper::read24()
 
 void SerialWrapper::write8(int8_t w)
 {
-    ::write(m_fd, &w, 1);
+    while(!::write(m_fd, &w, 1));
 }
 
 void SerialWrapper::write16(int16_t w)
 {
-    ::write(m_fd, &w, 2);
+    for(int i = 0; i < 2; i++)
+    {
+       int8_t tw = (w & 0xFF00)>>8;
+       write8(tw);
+       w = w << 8;
+    }
 }
 
 void SerialWrapper::write32(int32_t w)
 {
-    ::write(m_fd, &w, 4);
+    for(int i = 0; i < 4; ++i)
+    {
+       int8_t tw = (w & 0xFF000000)>>24;
+       write8(tw);
+       w = w << 8;
+     }
 }
