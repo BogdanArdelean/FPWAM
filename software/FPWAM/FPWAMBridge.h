@@ -21,7 +21,7 @@ namespace FPWAM
         bool open();
 
         bool read(int32_t variables, std::vector<std::vector<int32_t>> &vars);
-        bool sendProgram(const std::vector<Instruction>& instructions);
+        bool sendProgram(const std::vector<Instruction> &instructions, int8_t vars);
 
     private:
         SerialWrapper m_serialWrapper;

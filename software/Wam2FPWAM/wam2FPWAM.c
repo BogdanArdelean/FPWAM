@@ -402,9 +402,9 @@ void Display_Help(void);
  *                                                                         *
  *-------------------------------------------------------------------------*/
 int
-parse(int argc, char *argv[])
+parse(char *filename)
 {
-  Parse_Arguments(argc, argv);
+
 
   if (file_name_out == NULL)
     file_out = stdout;
@@ -417,7 +417,7 @@ parse(int argc, char *argv[])
 //  dummy_pred_start.next = NULL;
 //  dummy_direct_start.next = NULL;
 
-  if (!Parse_Wam_File(file_name_in, comment))
+  if (!Parse_Wam_File(filename, comment))
     {
       fprintf(stderr, "Translation aborted\n");
       return 1;

@@ -66,10 +66,11 @@ void FPWAMBridge::read(int32_t variables, std::vector<int32_t> &var)
     }
 }
 
-bool FPWAMBridge::sendProgram(const std::vector<Instruction> &instructions)
+bool FPWAMBridge::sendProgram(const std::vector<Instruction> &instructions, int8_t vars)
 {
     m_serialWrapper.write8(cm_instruction_t);
     m_serialWrapper.write16((int16_t)instructions.size());
+    m_serialWrapper.write8(vars);
     for(const auto& instrunction : instructions)
     {
         m_serialWrapper.write32(instrunction.get_instruction());

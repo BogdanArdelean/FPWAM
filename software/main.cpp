@@ -17,20 +17,21 @@ int main(int argc, char *argv[])
 {
     FPWAM::CodeContext codeCtx;
     setCodeContext(&codeCtx);
-    parse(argc, argv);
+    parse(argv[1]);
+    int8_t results = atoi(argv[2]);
     codeCtx.resolve_instructions();
     std::vector<FPWAM::Instruction> instr;
     codeCtx.get_instructions(instr);
 
-    FPWAM::FPWAMBridge reader("/dev/ttyUSB2");
+    FPWAM::FPWAMBridge reader("/dev/ttyUSB9");
     if(reader.open())
     {
         std::cout<<"Opened" << std::endl;
 
-        reader.sendProgram(instr);
-        
+        reader.sendProgram(instr, results);
+
         std::vector<std::vector<int32_t>> vars;
-        reader.read(2, vars);
+        reader.read(results, vars);
 
         for(const auto& var : vars)
         {
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
         }
     }else
     {
-      std::cout << "FUUUCKING SHIT" << std::endl;
+      std::cout << "NOPE" << std::endl;
     }
 
 

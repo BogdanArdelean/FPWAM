@@ -11,6 +11,6 @@
 #define EXTERNC
 #endif
 
-EXTERNC int parse(int argc, char *argv[]);
+EXTERNC int parse(char *filename);
 
 #endif //SOFTWARE_WAM2FPWAM_H
