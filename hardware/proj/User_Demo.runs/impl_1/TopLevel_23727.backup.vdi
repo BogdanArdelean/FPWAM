@@ -1,0 +1,1761 @@
+#-----------------------------------------------------------
+# Vivado v2017.1 (64-bit)
+# SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+# IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+# Start of session at: Sun Jul 16 10:11:19 2017
+# Process ID: 23727
+# Current directory: /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1
+# Command line: vivado -log TopLevel.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source TopLevel.tcl -notrace
+# Log file: /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1/TopLevel.vdi
+# Journal file: /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source TopLevel.tcl -notrace
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Netlist 29-17] Analyzing 304 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2017.1
+INFO: [Device 21-403] Loading part xc7a100tcsg324-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/bogdan/licenta/FPWAM/hardware/src/constraints/Nexys4_Master.xdc]
+CRITICAL WARNING: [Vivado 12-1411] Cannot set LOC property of ports, Cannot set PACKAGE_PIN property of ports,  port btn can not be placed on PACKAGE_PIN E16 because the PACKAGE_PIN is occupied by port rst_i [/home/bogdan/licenta/FPWAM/hardware/src/constraints/Nexys4_Master.xdc:81]
+Finished Parsing XDC File [/home/bogdan/licenta/FPWAM/hardware/src/constraints/Nexys4_Master.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+link_design: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1325.578 ; gain = 242.355 ; free physical = 4891 ; free virtual = 5693
+Command: opt_design -directive Explore
+INFO: [Vivado_Tcl 4-136] Directive used for opt_design is: Explore
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t-csg324'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t-csg324'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+Command: report_drc (run_mandatory_drcs) for: opt_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.81 . Memory (MB): peak = 1366.594 ; gain = 41.016 ; free physical = 4886 ; free virtual = 5688
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 176987dbe
+
+Time (s): cpu = 00:00:00.54 ; elapsed = 00:00:00.46 . Memory (MB): peak = 1832.023 ; gain = 0.000 ; free physical = 4501 ; free virtual = 5303
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 683 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 1 inverter(s) to 2 load pin(s).
+Phase 2 Constant propagation | Checksum: 1037d6261
+
+Time (s): cpu = 00:00:00.91 ; elapsed = 00:00:00.84 . Memory (MB): peak = 1832.023 ; gain = 0.000 ; free physical = 4499 ; free virtual = 5301
+INFO: [Opt 31-389] Phase Constant propagation created 73 cells and removed 157 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: bc8b4089
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 1832.023 ; gain = 0.000 ; free physical = 4499 ; free virtual = 5301
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 64 cells
+
+Phase 4 BUFG optimization
+Phase 4 BUFG optimization | Checksum: bc8b4089
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 1832.023 ; gain = 0.000 ; free physical = 4499 ; free virtual = 5301
+INFO: [Opt 31-389] Phase BUFG optimization created 0 cells and removed 0 cells
+
+Phase 5 Shift Register Optimization
+Phase 5 Shift Register Optimization | Checksum: bc8b4089
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 1832.023 ; gain = 0.000 ; free physical = 4499 ; free virtual = 5301
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1832.023 ; gain = 0.000 ; free physical = 4499 ; free virtual = 5301
+Ending Logic Optimization Task | Checksum: bc8b4089
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 1832.023 ; gain = 0.000 ; free physical = 4499 ; free virtual = 5301
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+INFO: [Pwropt 34-9] Applying IDT optimizations ...
+INFO: [Pwropt 34-10] Applying ODC optimizations ...
+
+
+Starting PowerOpt Patch Enables Task
+INFO: [Pwropt 34-162] WRITE_MODE attribute of 0 BRAM(s) out of a total of 39 has been updated to save power. Run report_power_opt to get a complete listing of the BRAMs updated.
+INFO: [Pwropt 34-201] Structural ODC has moved 0 WE to EN ports
+Number of BRAM Ports augmented: 0 newly gated: 0 Total Ports: 78
+Ending PowerOpt Patch Enables Task | Checksum: a4233ea4
+
+Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 2051.328 ; gain = 0.000 ; free physical = 4442 ; free virtual = 5244
+Ending Power Optimization Task | Checksum: a4233ea4
+
+Time (s): cpu = 00:00:17 ; elapsed = 00:00:16 . Memory (MB): peak = 2051.328 ; gain = 219.305 ; free physical = 4450 ; free virtual = 5252
+27 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:29 ; elapsed = 00:00:28 . Memory (MB): peak = 2051.328 ; gain = 725.750 ; free physical = 4450 ; free virtual = 5252
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2051.328 ; gain = 0.000 ; free physical = 4449 ; free virtual = 5252
+INFO: [Common 17-1381] The checkpoint '/home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1/TopLevel_opt.dcp' has been generated.
+Command: report_drc -file TopLevel_drc_opted.rpt
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1/TopLevel_drc_opted.rpt.
+report_drc completed successfully
+INFO: [Chipscope 16-241] No debug cores found in the current design.
+Before running the implement_debug_core command, either use the Set Up Debug wizard (GUI mode)
+or use the create_debug_core and connect_debug_core Tcl commands to insert debug cores into the design.
+Command: place_design -directive Explore
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t-csg324'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t-csg324'
+Command: report_drc (run_mandatory_drcs) for: incr_eco_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+Command: report_drc (run_mandatory_drcs) for: placer_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 46-5] The placer was invoked with the 'Explore' directive.
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2051.328 ; gain = 0.000 ; free physical = 4443 ; free virtual = 5246
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: a28e9b05
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2051.328 ; gain = 0.000 ; free physical = 4443 ; free virtual = 5246
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2051.328 ; gain = 0.000 ; free physical = 4444 ; free virtual = 5247
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 979e6d33
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 2051.328 ; gain = 0.000 ; free physical = 4437 ; free virtual = 5240
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: 18556654e
+
+Time (s): cpu = 00:00:05 ; elapsed = 00:00:03 . Memory (MB): peak = 2052.336 ; gain = 1.008 ; free physical = 4434 ; free virtual = 5237
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: 18556654e
+
+Time (s): cpu = 00:00:05 ; elapsed = 00:00:03 . Memory (MB): peak = 2052.336 ; gain = 1.008 ; free physical = 4434 ; free virtual = 5237
+Phase 1 Placer Initialization | Checksum: 18556654e
+
+Time (s): cpu = 00:00:05 ; elapsed = 00:00:03 . Memory (MB): peak = 2052.336 ; gain = 1.008 ; free physical = 4434 ; free virtual = 5237
+
+Phase 2 Global Placement
+Phase 2 Global Placement | Checksum: 22789d2b7
+
+Time (s): cpu = 00:00:16 ; elapsed = 00:00:10 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4421 ; free virtual = 5224
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: 22789d2b7
+
+Time (s): cpu = 00:00:16 ; elapsed = 00:00:10 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4421 ; free virtual = 5224
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: d47d99c8
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:11 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4419 ; free virtual = 5222
+
+Phase 3.3 Area Swap Optimization
+Phase 3.3 Area Swap Optimization | Checksum: 13ab75fb1
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:12 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4419 ; free virtual = 5222
+
+Phase 3.4 Pipeline Register Optimization
+Phase 3.4 Pipeline Register Optimization | Checksum: 13ab75fb1
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:12 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4419 ; free virtual = 5222
+
+Phase 3.5 Timing Path Optimizer
+Phase 3.5 Timing Path Optimizer | Checksum: 18ec2e8a5
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:12 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4419 ; free virtual = 5222
+
+Phase 3.6 Fast Optimization
+Phase 3.6 Fast Optimization | Checksum: 175fd4328
+
+Time (s): cpu = 00:00:25 ; elapsed = 00:00:17 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4418 ; free virtual = 5221
+
+Phase 3.7 Small Shape Detail Placement
+Phase 3.7 Small Shape Detail Placement | Checksum: 21245b0c4
+
+Time (s): cpu = 00:00:28 ; elapsed = 00:00:20 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4414 ; free virtual = 5217
+
+Phase 3.8 Re-assign LUT pins
+Phase 3.8 Re-assign LUT pins | Checksum: 1b7fd823a
+
+Time (s): cpu = 00:00:28 ; elapsed = 00:00:20 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4414 ; free virtual = 5217
+
+Phase 3.9 Pipeline Register Optimization
+Phase 3.9 Pipeline Register Optimization | Checksum: 1b7fd823a
+
+Time (s): cpu = 00:00:28 ; elapsed = 00:00:20 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4414 ; free virtual = 5217
+
+Phase 3.10 Fast Optimization
+Phase 3.10 Fast Optimization | Checksum: 15140010a
+
+Time (s): cpu = 00:00:33 ; elapsed = 00:00:25 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4415 ; free virtual = 5218
+Phase 3 Detail Placement | Checksum: 15140010a
+
+Time (s): cpu = 00:00:33 ; elapsed = 00:00:25 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4415 ; free virtual = 5218
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: 381d2db2
+
+Phase 4.1.1.1 BUFG Insertion
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 4 CPUs
+INFO: [Place 46-41] BUFG insertion identified 0 candidate nets, 0 success, 0 skipped for placement/routing, 0 skipped for timing, 0 skipped for netlist change reason.
+Phase 4.1.1.1 BUFG Insertion | Checksum: 381d2db2
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:26 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4411 ; free virtual = 5214
+INFO: [Place 30-746] Post Placement Timing Summary WNS=-0.709. For the most accurate timing information please run report_timing.
+Phase 4.1.1 Post Placement Optimization | Checksum: 146799607
+
+Time (s): cpu = 00:02:06 ; elapsed = 00:01:56 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4411 ; free virtual = 5214
+Phase 4.1 Post Commit Optimization | Checksum: 146799607
+
+Time (s): cpu = 00:02:06 ; elapsed = 00:01:56 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4411 ; free virtual = 5214
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 146799607
+
+Time (s): cpu = 00:02:06 ; elapsed = 00:01:56 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4412 ; free virtual = 5216
+
+Phase 4.3 Placer Reporting
+Phase 4.3 Placer Reporting | Checksum: 146799607
+
+Time (s): cpu = 00:02:06 ; elapsed = 00:01:56 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4412 ; free virtual = 5216
+
+Phase 4.4 Final Placement Cleanup
+Phase 4.4 Final Placement Cleanup | Checksum: 1a0416728
+
+Time (s): cpu = 00:02:06 ; elapsed = 00:01:56 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4412 ; free virtual = 5216
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 1a0416728
+
+Time (s): cpu = 00:02:06 ; elapsed = 00:01:56 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4412 ; free virtual = 5216
+Ending Placer Task | Checksum: f097d829
+
+Time (s): cpu = 00:02:06 ; elapsed = 00:01:57 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4422 ; free virtual = 5226
+47 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:02:08 ; elapsed = 00:01:57 . Memory (MB): peak = 2076.348 ; gain = 25.020 ; free physical = 4422 ; free virtual = 5226
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.38 . Memory (MB): peak = 2076.348 ; gain = 0.000 ; free physical = 4418 ; free virtual = 5228
+INFO: [Common 17-1381] The checkpoint '/home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1/TopLevel_placed.dcp' has been generated.
+report_io: Time (s): cpu = 00:00:00.07 ; elapsed = 00:00:00.07 . Memory (MB): peak = 2076.348 ; gain = 0.000 ; free physical = 4416 ; free virtual = 5221
+report_utilization: Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2076.348 ; gain = 0.000 ; free physical = 4421 ; free virtual = 5226
+report_control_sets: Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2076.348 ; gain = 0.000 ; free physical = 4421 ; free virtual = 5226
+Command: phys_opt_design -directive Explore
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t-csg324'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t-csg324'
+INFO: [Vivado_Tcl 4-137] Directive used for phys_opt_design is: Explore
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2076.348 ; gain = 0.000 ; free physical = 4423 ; free virtual = 5228
+
+Starting Physical Synthesis Task
+
+Phase 1 Physical Synthesis Initialization
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 4 CPUs
+Phase 1 Physical Synthesis Initialization | Checksum: 1d384ea6a
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:01 . Memory (MB): peak = 2076.348 ; gain = 0.000 ; free physical = 4418 ; free virtual = 5223
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.709 | TNS=-78.940 |
+
+Phase 2 Fanout Optimization
+INFO: [Physopt 32-76] Pass 1. Identified 11 candidate nets for fanout optimization.
+INFO: [Physopt 32-81] Processed net DFC/BRAM_reg_17. Replicated 2 times.
+INFO: [Physopt 32-572] Net DEREF2/unify_mem_sel[0] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/dfc_mem_addr2[2] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/dfc_mem_addr1[2] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_20 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net DFC/RAM_reg[0][0]. Replicated 4 times.
+INFO: [Physopt 32-572] Net DFC/dfc_mem_addr1[3] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_18 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net DFC/dfc_mem_addr1[1]. Replicated 3 times.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_1_0[0] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net DFC/dfc_mem_addr2[1]. Replicated 3 times.
+INFO: [Physopt 32-232] Optimized 4 nets. Created 12 new instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 4 nets or cells. Created 12 new cells, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.709 | TNS=-79.173 |
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2076.348 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5222
+Phase 2 Fanout Optimization | Checksum: 251922864
+
+Time (s): cpu = 00:00:11 ; elapsed = 00:00:06 . Memory (MB): peak = 2076.348 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5222
+
+Phase 3 Placement Based Optimization
+INFO: [Physopt 32-660] Identified 100 candidate nets for placement-based optimization.
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[3].  Did not re-place instance DFC/BRAM_reg_0_0_i_15
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_83_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_83
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_1[3].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_397
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_215_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_215
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[1].  Did not re-place instance DFC/BRAM_reg_0_0_i_17
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_89_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_89
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_1[1].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_406
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_225_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_225
+INFO: [Physopt 32-662] Processed net BINDUNIT/BRAM_reg_0_6_i_19_n_0.  Did not re-place instance BINDUNIT/BRAM_reg_0_6_i_19
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_6_i_3_n_0.  Did not re-place instance DFC/BRAM_reg_0_6_i_3
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[12].  Did not re-place instance DFC/BRAM_reg_0_0_i_22
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_0_i_101_n_0.  Re-placed instance DFC/BRAM_reg_0_0_i_101
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[12].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_435
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_251_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_251
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[9].  Did not re-place instance DFC/BRAM_reg_0_0_i_9
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_65_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_65
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[9].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_368
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_185_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_185
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[14].  Did not re-place instance DFC/BRAM_reg_0_0_i_4
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[6].  Did not re-place instance DFC/BRAM_reg_0_0_i_12
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_50_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_50
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_74_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_74
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[6].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_383
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[14].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_345
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_160_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_160
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_200_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_200
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[15].  Did not re-place instance DFC/BRAM_reg_0_0_i_19
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_94_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_94
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_2[15].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_420
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_239_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_239
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[0].  Did not re-place instance DFC/BRAM_reg_0_0_i_34
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_125_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_125
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[0].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_495
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_287_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_287
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[2].  Did not re-place instance DFC/BRAM_reg_0_0_i_32
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_121_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_121
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[2].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_485
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_281_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_281
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[5].  Did not re-place instance DFC/BRAM_reg_0_0_i_29
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_0_i_115_n_0.  Re-placed instance DFC/BRAM_reg_0_0_i_115
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[5].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_470
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_272_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_272
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[10].  Did not re-place instance DFC/BRAM_reg_0_0_i_8
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_62_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_62
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_1[10].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_364
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_180_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_180
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[1].  Did not re-place instance DFC/BRAM_reg_0_0_i_33
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_123_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_123
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_2[1].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_490
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_284_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_284
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[4].  Did not re-place instance DFC/BRAM_reg_0_0_i_14
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_80_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_80
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[4].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_391
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_210_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_210
+INFO: [Physopt 32-662] Processed net DEREF2/unify_mem_sel[0].  Did not re-place instance DEREF2/BRAM_reg_0_16_i_58
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[7].  Did not re-place instance DFC/BRAM_reg_0_0_i_27
+INFO: [Physopt 32-663] Processed net DEREF2/Q[5].  Re-placed instance DEREF2/word_reg_reg[5]
+INFO: [Physopt 32-662] Processed net DEREF2/word1_reg[17]_i_10_n_0.  Did not re-place instance DEREF2/word1_reg[17]_i_10
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_461_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_461
+INFO: [Physopt 32-663] Processed net UNIFYU/BRAM_reg_0_7_16.  Re-placed instance UNIFYU/BRAM_reg_0_0_i_627
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[7].  Did not re-place instance DFC/BRAM_reg_0_0_i_11
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_71_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_71
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_1[7].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_378
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_195_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_195
+INFO: [Physopt 32-663] Processed net DEREF2/Q[1].  Re-placed instance DEREF2/word_reg_reg[1]
+INFO: [Physopt 32-662] Processed net DEREF2/word1_reg[17]_i_11_n_0.  Did not re-place instance DEREF2/word1_reg[17]_i_11
+INFO: [Physopt 32-663] Processed net DFC/word_port_2_i[12].  Re-placed instance DFC/BRAM_reg_0_12_i_2
+INFO: [Physopt 32-663] Processed net BINDUNIT/BRAM_reg_0_12_i_19_n_0.  Re-placed instance BINDUNIT/BRAM_reg_0_12_i_19
+INFO: [Physopt 32-662] Processed net BINDUNIT/BRAM_reg_1_12.  Did not re-place instance BINDUNIT/BRAM_reg_0_12_i_16
+INFO: [Physopt 32-663] Processed net DEREF2/Q[2].  Re-placed instance DEREF2/word_reg_reg[2]
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[5].  Did not re-place instance DFC/BRAM_reg_0_0_i_13
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_77_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_77
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[5].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_387
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_205_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_205
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_7_0[9].  Re-placed instance DFC/BRAM_reg_0_0_i_25
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_107_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_107
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[9].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_450
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_260_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_260
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_17_repN.  Did not re-place instance DFC/BRAM_reg_i_303_replica
+INFO: [Physopt 32-662] Processed net DFC/dfc_i[0].  Did not re-place instance DFC/RAM[14][17]_i_8
+INFO: [Physopt 32-663] Processed net DFC/FSM_onehot_cr_state_reg_n_0_[57].  Re-placed instance DFC/FSM_onehot_cr_state_reg[57]
+INFO: [Physopt 32-663] Processed net GPRS/gpr_output2[1].  Re-placed instance GPRS/BRAM_reg_i_189
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_1_i_3_n_0.  Did not re-place instance DFC/BRAM_reg_0_1_i_3
+INFO: [Physopt 32-662] Processed net GPRS/BRAM_reg_1_1_0.  Did not re-place instance GPRS/BRAM_reg_0_1_i_11
+INFO: [Physopt 32-662] Processed net GPRS/BRAM_reg_i_293_n_0.  Did not re-place instance GPRS/BRAM_reg_i_293
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[3].  Did not re-place instance DFC/BRAM_reg_0_0_i_31
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_119_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_119
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[3].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_480
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_278_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_278
+INFO: [Physopt 32-663] Processed net DFC/word_port_2_i[9].  Re-placed instance DFC/BRAM_reg_0_9_i_2
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_9_i_13_n_0.  Re-placed instance DFC/BRAM_reg_0_9_i_13
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_9_i_5_n_0.  Did not re-place instance DFC/BRAM_reg_0_9_i_5
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[12].  Did not re-place instance DFC/BRAM_reg_0_0_i_6
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_56_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_56
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[12].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_353
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_170_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_170
+INFO: [Physopt 32-663] Processed net BINDUNIT/BRAM_reg_0_14_i_18_n_0.  Re-placed instance BINDUNIT/BRAM_reg_0_14_i_18
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_14_i_3_n_0.  Did not re-place instance DFC/BRAM_reg_0_14_i_3
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_128_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_128
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_0_i_292_n_0.  Re-placed instance DFC/BRAM_reg_0_0_i_292
+INFO: [Physopt 32-661] Optimized 21 nets.  Re-placed 21 instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 21 nets or cells. Created 0 new cell, deleted 0 existing cell and moved 21 existing cells
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.683 | TNS=-69.888 |
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2076.348 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5222
+Phase 3 Placement Based Optimization | Checksum: 27ee0aea8
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:13 . Memory (MB): peak = 2076.348 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5222
+
+Phase 4 Rewire
+INFO: [Physopt 32-246] Starting Signal Push optimization...
+INFO: [Physopt 32-77] Pass 1. Identified 5 candidate nets for rewire optimization.
+INFO: [Physopt 32-242] Processed net HEAPSTACK/LCLFAIL_reg_reg. Rewired (signal push) HEAPSTACK/B_reg_reg[15]_0[8] to 1 loads. Replicated 0 times.
+INFO: [Physopt 32-242] Processed net DFC/BRAM_reg_0_0_i_561_n_0. Rewired (signal push) DFC/FSM_onehot_cr_state_reg_n_0_[18] to 1 loads. Replicated 0 times.
+INFO: [Physopt 32-134] Processed net DFC/dfc_mem_addr1[2]. Rewiring did not optimize the net.
+INFO: [Physopt 32-134] Processed net HEAPSTACK/LCLFAIL_reg_reg_0. Rewiring did not optimize the net.
+INFO: [Physopt 32-134] Processed net DFC/BRAM_reg_0_0_i_676_n_0. Rewiring did not optimize the net.
+INFO: [Physopt 32-232] Optimized 2 nets. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 2 nets or cells. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5222
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.683 | TNS=-69.708 |
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5222
+Phase 4 Rewire | Checksum: 1260ee25e
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:14 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5222
+
+Phase 5 Critical Cell Optimization
+INFO: [Physopt 32-46] Identified 30 candidate nets for critical-cell optimization.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[3] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_83_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net UNWINDTRAIL/untrail_mem_addr_1[3]. Replicated 1 times.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[9] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_65_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_1[9] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[14] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net DFC/BRAM_reg_0_7[6]. Replicated 1 times.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_50_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_74_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net UNWINDTRAIL/untrail_mem_addr_1[6]. Replicated 1 times.
+INFO: [Physopt 32-81] Processed net UNWINDTRAIL/untrail_mem_addr_1[14]. Replicated 1 times.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[0] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-571] Net UNWINDTRAIL/untrail_mem_addr_2[0] was not replicated.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[2] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_121_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_2[2] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[4] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_80_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_1[4] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[12] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net DFC/BRAM_reg_0_7_0[5]. Replicated 2 times.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_101_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_115_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_2[5] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_2[12] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[5] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_77_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_1[5] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-232] Optimized 5 nets. Created 6 new instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 5 nets or cells. Created 6 new cells, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.652 | TNS=-68.583 |
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5222
+Phase 5 Critical Cell Optimization | Checksum: 1bd1d7703
+
+Time (s): cpu = 00:00:46 ; elapsed = 00:00:23 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5222
+
+Phase 6 Fanout Optimization
+INFO: [Physopt 32-76] Pass 1. Identified 11 candidate nets for fanout optimization.
+INFO: [Physopt 32-572] Net DFC/dfc_mem_addr2[2] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DEREF2/unify_mem_sel[0] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/dfc_mem_addr1[3] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/dfc_mem_addr1[1]_repN was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/dfc_mem_addr1[2] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net DFC/BRAM_reg_1_0[0]. Replicated 2 times.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_18 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_20 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/RAM_reg[0][0]_repN_1 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/dfc_mem_addr2[1]_repN_2 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/dfc_mem_addr2[0] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-232] Optimized 1 net. Created 2 new instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 1 net or cell. Created 2 new cells, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.652 | TNS=-68.583 |
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5222
+Phase 6 Fanout Optimization | Checksum: fb0eacb9
+
+Time (s): cpu = 00:00:51 ; elapsed = 00:00:26 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5222
+
+Phase 7 Placement Based Optimization
+INFO: [Physopt 32-660] Identified 100 candidate nets for placement-based optimization.
+INFO: [Physopt 32-662] Processed net BINDUNIT/BRAM_reg_0_6_i_19_n_0.  Did not re-place instance BINDUNIT/BRAM_reg_0_6_i_19
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_6_i_3_n_0.  Did not re-place instance DFC/BRAM_reg_0_6_i_3
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[9].  Did not re-place instance DFC/BRAM_reg_0_0_i_9
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_65_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_65
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[9].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_368
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_185_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_185
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[0].  Did not re-place instance DFC/BRAM_reg_0_0_i_34
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_125_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_125
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[0].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_495
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_287_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_287
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[2].  Did not re-place instance DFC/BRAM_reg_0_0_i_32
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_121_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_121
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[2].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_485
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_281_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_281
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[14].  Did not re-place instance DFC/BRAM_reg_0_0_i_4
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_50_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_50
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_160_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_160
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[14]_repN.  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_345_replica
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[4].  Did not re-place instance DFC/BRAM_reg_0_0_i_14
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_80_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_80
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[4].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_391
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_210_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_210
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[12].  Did not re-place instance DFC/BRAM_reg_0_0_i_22
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_101_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_101
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[12].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_435
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_251_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_251
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[5].  Did not re-place instance DFC/BRAM_reg_0_0_i_13
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_77_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_77
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[5].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_387
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_205_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_205
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[10].  Did not re-place instance DFC/BRAM_reg_0_0_i_8
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[3].  Did not re-place instance DFC/BRAM_reg_0_0_i_31
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_119_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_119
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_62_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_62
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[10].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_364
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[3].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_480
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_180_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_180
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_278_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_278
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[7].  Did not re-place instance DFC/BRAM_reg_0_0_i_11
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_71_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_71
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[7].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_378
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_195_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_195
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[12].  Did not re-place instance DFC/BRAM_reg_0_0_i_6
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_56_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_56
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[12].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_353
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_170_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_170
+INFO: [Physopt 32-662] Processed net DFC/dfc_mem_addr2[2].  Did not re-place instance DFC/BRAM_reg_0_0_i_236
+INFO: [Physopt 32-662] Processed net B_reg[9].  Did not re-place instance B_reg_reg[9]
+INFO: [Physopt 32-662] Processed net DFC/LCLFAIL_reg_reg.  Did not re-place instance DFC/LCLFAIL_reg_i_2_rewire
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_0_i_417_n_0.  Re-placed instance DFC/BRAM_reg_0_0_i_417
+INFO: [Physopt 32-663] Processed net HEAPSTACK/LCLFAIL_reg_reg.  Re-placed instance HEAPSTACK/LCLFAIL_reg_i_3_rewire
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[4].  Did not re-place instance DFC/BRAM_reg_0_0_i_30
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_117_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_117
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[4].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_475
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_275_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_275
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_13.  Re-placed instance DFC/BRAM_reg_i_119
+INFO: [Physopt 32-663] Processed net UNIFYU/PDLIST/pdl_in_2[3].  Re-placed instance UNIFYU/PDLIST/BRAM_reg_i_40__0
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[9].  Did not re-place instance DFC/BRAM_reg_0_0_i_25
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[15].  Did not re-place instance DFC/BRAM_reg_0_0_i_19
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_107_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_107
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_94_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_94
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[9].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_450
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[15].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_420
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_239_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_239
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_260_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_260
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[7].  Did not re-place instance DFC/BRAM_reg_0_0_i_27
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_111_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_111
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[7].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_460
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_266_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_266
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[0].  Did not re-place instance DFC/BRAM_reg_0_0_i_18
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_0_i_92_n_0.  Re-placed instance DFC/BRAM_reg_0_0_i_92
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[0].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_410
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_230_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_230
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[3].  Did not re-place instance DFC/BRAM_reg_0_0_i_15
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_83_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_83
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_215_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_215
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[3]_repN.  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_397_replica
+INFO: [Physopt 32-662] Processed net NewE_comb[15].  Did not re-place instance NewB_reg[15]_i_1
+INFO: [Physopt 32-662] Processed net HEAPSTACK/NewB_reg[3]_i_9_n_0.  Did not re-place instance HEAPSTACK/NewB_reg[3]_i_9
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_15_0[3].  Re-placed instance DFC/BRAM_reg_0_8_i_31
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[1].  Did not re-place instance DFC/BRAM_reg_0_0_i_33
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_123_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_123
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_2[1].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_490
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_284_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_284
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[13].  Did not re-place instance DFC/BRAM_reg_0_0_i_5
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_0_i_53_n_0.  Re-placed instance DFC/BRAM_reg_0_0_i_53
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_1[13].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_349
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_165_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_165
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[11].  Did not re-place instance DFC/BRAM_reg_0_0_i_7
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_59_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_59
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[11].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_359
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_175_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_175
+INFO: [Physopt 32-662] Processed net DFC/word_port_2_i[7].  Did not re-place instance DFC/BRAM_reg_0_7_i_2
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_7_i_13_n_0.  Re-placed instance DFC/BRAM_reg_0_7_i_13
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_i_5_n_0.  Did not re-place instance DFC/BRAM_reg_0_7_i_5
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[13].  Did not re-place instance DFC/BRAM_reg_0_0_i_21
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_99_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_99
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_2[13].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_430
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_248_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_248
+INFO: [Physopt 32-663] Processed net DFC/word_port_2_i[0].  Re-placed instance DFC/BRAM_reg_0_0_i_36
+INFO: [Physopt 32-661] Optimized 12 nets.  Re-placed 12 instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 12 nets or cells. Created 0 new cell, deleted 0 existing cell and moved 12 existing cells
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.652 | TNS=-65.098 |
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4418 ; free virtual = 5223
+Phase 7 Placement Based Optimization | Checksum: 12680353d
+
+Time (s): cpu = 00:01:06 ; elapsed = 00:00:33 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4418 ; free virtual = 5223
+
+Phase 8 Rewire
+INFO: [Physopt 32-246] Starting Signal Push optimization...
+INFO: [Physopt 32-77] Pass 1. Identified 1 candidate net for rewire optimization.
+INFO: [Physopt 32-134] Processed net HEAPSTACK/LCLFAIL_reg_reg_0. Rewiring did not optimize the net.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4418 ; free virtual = 5223
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4418 ; free virtual = 5223
+Phase 8 Rewire | Checksum: 19ea409f9
+
+Time (s): cpu = 00:01:06 ; elapsed = 00:00:34 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4418 ; free virtual = 5223
+
+Phase 9 Critical Cell Optimization
+INFO: [Physopt 32-46] Identified 30 candidate nets for critical-cell optimization.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_65_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_1[9] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[0] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[2] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_121_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[14] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_50_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_80_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[12] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_101_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_77_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[10] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[3] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_119_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_62_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_1[10] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net UNWINDTRAIL/untrail_mem_addr_2[3]. Replicated 1 times.
+INFO: [Physopt 32-81] Processed net DFC/BRAM_reg_0_7[7]. Replicated 2 times.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_71_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_1[7] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net DFC/BRAM_reg_0_7[12]. Replicated 1 times.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_56_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net UNWINDTRAIL/untrail_mem_addr_1[12]. Replicated 1 times.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[4] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_117_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_2[4] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[9] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[15] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_107_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-232] Optimized 4 nets. Created 5 new instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 4 nets or cells. Created 5 new cells, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.652 | TNS=-64.530 |
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4418 ; free virtual = 5223
+Phase 9 Critical Cell Optimization | Checksum: 2706adce5
+
+Time (s): cpu = 00:01:27 ; elapsed = 00:00:45 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4418 ; free virtual = 5223
+
+Phase 10 Fanout Optimization
+INFO: [Physopt 32-76] Pass 1. Identified 1 candidate net for fanout optimization.
+INFO: [Physopt 32-572] Net DFC/dfc_mem_addr2[2] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4418 ; free virtual = 5223
+Phase 10 Fanout Optimization | Checksum: 26d660e77
+
+Time (s): cpu = 00:01:28 ; elapsed = 00:00:45 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4418 ; free virtual = 5223
+
+Phase 11 Placement Based Optimization
+INFO: [Physopt 32-660] Identified 100 candidate nets for placement-based optimization.
+INFO: [Physopt 32-662] Processed net BINDUNIT/BRAM_reg_0_6_i_19_n_0.  Did not re-place instance BINDUNIT/BRAM_reg_0_6_i_19
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_6_i_3_n_0.  Did not re-place instance DFC/BRAM_reg_0_6_i_3
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[9].  Did not re-place instance DFC/BRAM_reg_0_0_i_9
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_65_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_65
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[9].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_368
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_185_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_185
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[0].  Did not re-place instance DFC/BRAM_reg_0_0_i_34
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_125_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_125
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[0].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_495
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_287_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_287
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[2].  Did not re-place instance DFC/BRAM_reg_0_0_i_32
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_121_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_121
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[2].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_485
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_281_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_281
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[14].  Did not re-place instance DFC/BRAM_reg_0_0_i_4
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_50_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_50
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_160_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_160
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[14]_repN.  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_345_replica
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[4].  Did not re-place instance DFC/BRAM_reg_0_0_i_14
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_80_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_80
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[4].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_391
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_210_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_210
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[12].  Did not re-place instance DFC/BRAM_reg_0_0_i_22
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_101_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_101
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[12].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_435
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_251_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_251
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[5].  Did not re-place instance DFC/BRAM_reg_0_0_i_13
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_77_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_77
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[5].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_387
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_205_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_205
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[10].  Did not re-place instance DFC/BRAM_reg_0_0_i_8
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_62_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_62
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[10].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_364
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_180_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_180
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[4].  Did not re-place instance DFC/BRAM_reg_0_0_i_30
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_117_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_117
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[4].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_475
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_275_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_275
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[9].  Did not re-place instance DFC/BRAM_reg_0_0_i_25
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[15].  Did not re-place instance DFC/BRAM_reg_0_0_i_19
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_107_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_107
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_94_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_94
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[9].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_450
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[15].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_420
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_239_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_239
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_260_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_260
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[3].  Did not re-place instance DFC/BRAM_reg_0_0_i_31
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[7].  Did not re-place instance DFC/BRAM_reg_0_0_i_27
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_111_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_111
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_119_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_119
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[7].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_460
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_266_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_266
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_278_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_278
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[3]_repN.  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_480_replica
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[3].  Did not re-place instance DFC/BRAM_reg_0_0_i_15
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_83_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_83
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_215_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_215
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[3]_repN.  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_397_replica
+INFO: [Physopt 32-662] Processed net NewE_comb[15].  Did not re-place instance NewB_reg[15]_i_1
+INFO: [Physopt 32-662] Processed net HEAPSTACK/NewB_reg[3]_i_9_n_0.  Did not re-place instance HEAPSTACK/NewB_reg[3]_i_9
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[11].  Did not re-place instance DFC/BRAM_reg_0_0_i_7
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_59_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_59
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[11].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_359
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_175_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_175
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[12].  Did not re-place instance DFC/BRAM_reg_0_0_i_6
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_56_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_56
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_170_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_170
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[12]_repN.  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_353_replica
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[15].  Did not re-place instance DFC/BRAM_reg_0_0_i_3
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_45_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_45
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[15].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_337
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_152_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_152
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[13].  Did not re-place instance DFC/BRAM_reg_0_0_i_21
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_99_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_99
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_2[13].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_430
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_248_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_248
+INFO: [Physopt 32-663] Processed net HEAPSTACK/NewB_reg[3]_i_5_n_0.  Re-placed instance HEAPSTACK/NewB_reg[3]_i_5
+INFO: [Physopt 32-662] Processed net DEREF2/unify_mem_sel[0].  Did not re-place instance DEREF2/BRAM_reg_0_16_i_58
+INFO: [Physopt 32-663] Processed net DEREF1/Q[2].  Re-placed instance DEREF1/word_reg_reg[2]
+INFO: [Physopt 32-662] Processed net DEREF2/word1_reg[17]_i_11_n_0.  Did not re-place instance DEREF2/word1_reg[17]_i_11
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_461_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_461
+INFO: [Physopt 32-662] Processed net UNIFYU/BRAM_reg_0_7_16.  Did not re-place instance UNIFYU/BRAM_reg_0_0_i_627
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[14].  Did not re-place instance DFC/BRAM_reg_0_0_i_20
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_97_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_97
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_2[14].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_425
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_245_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_245
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[6].  Did not re-place instance DFC/BRAM_reg_0_0_i_28
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_113_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_113
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_2[6].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_465
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_269_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_269
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_15[10].  Did not re-place instance DFC/BRAM_reg_0_8_i_8
+INFO: [Physopt 32-663] Processed net DEREF2/Q[4].  Re-placed instance DEREF2/word_reg_reg[4]
+INFO: [Physopt 32-662] Processed net DEREF2/word1_reg[17]_i_10_n_0.  Did not re-place instance DEREF2/word1_reg[17]_i_10
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_15_0[6].  Re-placed instance DFC/BRAM_reg_0_8_i_28
+INFO: [Physopt 32-663] Processed net NewE_comb[6].  Re-placed instance NewB_reg[6]_i_1
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[12]_repN.  Did not re-place instance DFC/BRAM_reg_0_0_i_6_replica
+INFO: [Physopt 32-662] Processed net DEREF2/Q[5].  Did not re-place instance DEREF2/word_reg_reg[5]
+INFO: [Physopt 32-662] Processed net NewE_comb[11].  Did not re-place instance NewB_reg[11]_i_1
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[1].  Did not re-place instance DFC/BRAM_reg_0_0_i_17
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_89_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_89
+INFO: [Physopt 32-661] Optimized 8 nets.  Re-placed 8 instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 8 nets or cells. Created 0 new cell, deleted 0 existing cell and moved 8 existing cells
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.652 | TNS=-64.249 |
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4418 ; free virtual = 5223
+Phase 11 Placement Based Optimization | Checksum: 1ff4fd29a
+
+Time (s): cpu = 00:01:46 ; elapsed = 00:00:54 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4418 ; free virtual = 5223
+
+Phase 12 Rewire
+INFO: [Physopt 32-246] Starting Signal Push optimization...
+INFO: [Physopt 32-241] No nets found for rewiring () optimization.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4418 ; free virtual = 5223
+Phase 12 Rewire | Checksum: 1ff4fd29a
+
+Time (s): cpu = 00:01:46 ; elapsed = 00:00:54 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4418 ; free virtual = 5223
+
+Phase 13 Critical Cell Optimization
+INFO: [Physopt 32-46] Identified 30 candidate nets for critical-cell optimization.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[9] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_1[9] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[0] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[2] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_2[2] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[14] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[4] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_1[4] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[12] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_2[12] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[5] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_1[5] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[10] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_1[10] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[4] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[15] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_2[9] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_2[15] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[3] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-81] Processed net DFC/BRAM_reg_0_7_0[7]. Replicated 1 times.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_111_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_119_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_2[7] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[3] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_83_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net NewE_comb[15] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7[11] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-232] Optimized 1 net. Created 1 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 1 net or cell. Created 1 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.652 | TNS=-64.156 |
+Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5223
+Phase 13 Critical Cell Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:16 ; elapsed = 00:01:10 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 14 DSP Register Optimization
+INFO: [Physopt 32-456] No candidate cells for DSP register optimization found in the design.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 14 DSP Register Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:16 ; elapsed = 00:01:10 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 15 BRAM Register Optimization
+INFO: [Physopt 32-526] No candidate cells for BRAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 15 BRAM Register Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:16 ; elapsed = 00:01:10 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 16 URAM Register Optimization
+INFO: [Physopt 32-846] No candidate cells for URAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 16 URAM Register Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:16 ; elapsed = 00:01:10 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 17 Shift Register Optimization
+INFO: [Physopt 32-677] No candidate cells for Shift Register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 17 Shift Register Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:16 ; elapsed = 00:01:10 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 18 DSP Register Optimization
+INFO: [Physopt 32-456] No candidate cells for DSP register optimization found in the design.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 18 DSP Register Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:16 ; elapsed = 00:01:10 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 19 BRAM Register Optimization
+INFO: [Physopt 32-526] No candidate cells for BRAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 19 BRAM Register Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:16 ; elapsed = 00:01:10 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 20 URAM Register Optimization
+INFO: [Physopt 32-846] No candidate cells for URAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 20 URAM Register Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:16 ; elapsed = 00:01:10 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 21 Shift Register Optimization
+INFO: [Physopt 32-677] No candidate cells for Shift Register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 21 Shift Register Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:16 ; elapsed = 00:01:10 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 22 Critical Pin Optimization
+INFO: [Physopt 32-606] Identified 100 candidate nets for critical-pin optimization.
+INFO: [Physopt 32-608] Optimized 40 nets.  Swapped 731 pins.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 40 nets or cells. Created 0 new cell, deleted 0 existing cell and moved 731 existing cells
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.553 | TNS=-42.589 |
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5223
+Phase 22 Critical Pin Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:17 ; elapsed = 00:01:11 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 23 Very High Fanout Optimization
+INFO: [Physopt 32-64] No nets found for fanout-optimization.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 23 Very High Fanout Optimization | Checksum: 158f5e2eb
+
+Time (s): cpu = 00:02:17 ; elapsed = 00:01:11 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 24 Placement Based Optimization
+INFO: [Physopt 32-660] Identified 100 candidate nets for placement-based optimization.
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[4].  Did not re-place instance DFC/BRAM_reg_0_0_i_30
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_117_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_117
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[4].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_475
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_275_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_275
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[2].  Did not re-place instance DFC/BRAM_reg_0_0_i_32
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_0_i_121_n_0.  Re-placed instance DFC/BRAM_reg_0_0_i_121
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[2].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_485
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_281_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_281
+INFO: [Physopt 32-662] Processed net DEREF2/unify_mem_sel[0].  Did not re-place instance DEREF2/BRAM_reg_0_16_i_58
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[15].  Did not re-place instance DFC/BRAM_reg_0_0_i_3
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_47_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_47
+INFO: [Physopt 32-662] Processed net DEREF2/Q[5].  Did not re-place instance DEREF2/word_reg_reg[5]
+INFO: [Physopt 32-662] Processed net DEREF2/word1_reg[17]_i_10_n_0.  Did not re-place instance DEREF2/word1_reg[17]_i_10
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_158_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_158
+INFO: [Physopt 32-662] Processed net UNIFYU/BRAM_reg_0_7.  Did not re-place instance UNIFYU/BRAM_reg_0_0_i_343
+INFO: [Physopt 32-662] Processed net DEREF1/Q[2].  Did not re-place instance DEREF1/word_reg_reg[2]
+INFO: [Physopt 32-662] Processed net DEREF2/word1_reg[17]_i_11_n_0.  Did not re-place instance DEREF2/word1_reg[17]_i_11
+INFO: [Physopt 32-662] Processed net DEREF2/Q[2].  Did not re-place instance DEREF2/word_reg_reg[2]
+INFO: [Physopt 32-662] Processed net DEREF1/Q[5].  Did not re-place instance DEREF1/word_reg_reg[5]
+INFO: [Physopt 32-663] Processed net DEREF2/Q[8].  Re-placed instance DEREF2/word_reg_reg[8]
+INFO: [Physopt 32-662] Processed net DEREF2/word1_reg[17]_i_9_n_0.  Did not re-place instance DEREF2/word1_reg[17]_i_9
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[8].  Did not re-place instance DFC/BRAM_reg_0_0_i_26
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_109_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_109
+INFO: [Physopt 32-662] Processed net DFC/word_port_2_i[1].  Did not re-place instance DFC/BRAM_reg_0_1_i_2
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[1].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_490
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[8].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_455
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_263_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_263
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_1_i_13_n_0.  Re-placed instance DFC/BRAM_reg_0_1_i_13
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_1_i_5_n_0.  Did not re-place instance DFC/BRAM_reg_0_1_i_5
+INFO: [Physopt 32-663] Processed net DEREF1/Q[8].  Re-placed instance DEREF1/word_reg_reg[8]
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_115_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_115
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[5].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_470
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_272_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_272
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[5]_repN.  Did not re-place instance DFC/BRAM_reg_0_0_i_29_replica
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[6].  Did not re-place instance DFC/BRAM_reg_0_0_i_12
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_74_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_74
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_200_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_200
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[6]_repN.  Did not re-place instance DFC/BRAM_reg_0_0_i_12_replica
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[6]_repN.  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_383_replica
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[1].  Did not re-place instance DFC/BRAM_reg_0_0_i_33
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_123_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_123
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_284_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_284
+INFO: [Physopt 32-663] Processed net BINDUNIT/BRAM_reg_0_15_i_18_n_0.  Re-placed instance BINDUNIT/BRAM_reg_0_15_i_18
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_15_i_3_n_0.  Did not re-place instance DFC/BRAM_reg_0_15_i_3
+INFO: [Physopt 32-663] Processed net DFC/word_port_2_i[14].  Re-placed instance DFC/BRAM_reg_0_14_i_2
+INFO: [Physopt 32-663] Processed net BINDUNIT/BRAM_reg_0_14_i_19_n_0.  Re-placed instance BINDUNIT/BRAM_reg_0_14_i_19
+INFO: [Physopt 32-662] Processed net BINDUNIT/BRAM_reg_1_14.  Did not re-place instance BINDUNIT/BRAM_reg_0_14_i_16
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_71_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_71
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[7].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_378
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_195_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_195
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[7]_repN_1.  Did not re-place instance DFC/BRAM_reg_0_0_i_11_replica_1
+INFO: [Physopt 32-662] Processed net DFC/word_port_2_i[15].  Did not re-place instance DFC/BRAM_reg_0_15_i_2
+INFO: [Physopt 32-662] Processed net BINDUNIT/BRAM_reg_0_15_i_19_n_0.  Did not re-place instance BINDUNIT/BRAM_reg_0_15_i_19
+INFO: [Physopt 32-662] Processed net BINDUNIT/BRAM_reg_1_15.  Did not re-place instance BINDUNIT/BRAM_reg_0_15_i_16
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_111_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_111
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[7].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_460
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_266_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_266
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[7]_repN.  Did not re-place instance DFC/BRAM_reg_0_0_i_27_replica
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_1[1].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_406
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_1_i_12_n_0.  Re-placed instance DFC/BRAM_reg_0_1_i_12
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_1_i_4_n_0.  Did not re-place instance DFC/BRAM_reg_0_1_i_4
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[5]_repN_1.  Did not re-place instance DFC/BRAM_reg_0_0_i_29_replica_1
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_1.  Re-placed instance DFC/BRAM_reg_i_95
+INFO: [Physopt 32-663] Processed net UNIFYU/PDLIST/pdl_in_2[15].  Re-placed instance UNIFYU/PDLIST/BRAM_reg_i_28__0
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[13].  Did not re-place instance DFC/BRAM_reg_0_0_i_5
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_53_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_53
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[13].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_349
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_165_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_165
+INFO: [Physopt 32-663] Processed net DEREF2/Q[14].  Re-placed instance DEREF2/word_reg_reg[14]
+INFO: [Physopt 32-662] Processed net DEREF2/word1_reg[17]_i_7_n_0.  Did not re-place instance DEREF2/word1_reg[17]_i_7
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_11.  Did not re-place instance DFC/BRAM_reg_i_115
+INFO: [Physopt 32-662] Processed net UNIFYU/PDLIST/pdl_in_2[5].  Did not re-place instance UNIFYU/PDLIST/BRAM_reg_i_38__0
+INFO: [Physopt 32-662] Processed net NewE_comb[9].  Did not re-place instance NewB_reg[9]_i_1
+INFO: [Physopt 32-663] Processed net DEREF1/Q[4].  Re-placed instance DEREF1/word_reg_reg[4]
+INFO: [Physopt 32-662] Processed net HEAPSTACK/NewB_reg[3]_i_17_n_0.  Did not re-place instance HEAPSTACK/NewB_reg[3]_i_17
+INFO: [Physopt 32-663] Processed net DEREF2/Q[11].  Re-placed instance DEREF2/word_reg_reg[11]
+INFO: [Physopt 32-662] Processed net DEREF2/word1_reg[17]_i_8_n_0.  Did not re-place instance DEREF2/word1_reg[17]_i_8
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[8].  Did not re-place instance DFC/BRAM_reg_0_0_i_10
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_68_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_68
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_1[8].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_372
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_190_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_190
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[2].  Did not re-place instance DFC/BRAM_reg_0_0_i_16
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_87_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_87
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_224_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_224
+INFO: [Physopt 32-662] Processed net UNIFYU/BRAM_reg_0_7_25.  Did not re-place instance UNIFYU/BRAM_reg_0_0_i_404
+INFO: [Physopt 32-662] Processed net DFC/dfc_mem_addr1[3].  Did not re-place instance DFC/BRAM_reg_0_0_i_148
+INFO: [Physopt 32-662] Processed net DFC/FSM_onehot_cr_state_reg_n_0_[57].  Did not re-place instance DFC/FSM_onehot_cr_state_reg[57]
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[0].  Did not re-place instance DFC/BRAM_reg_0_0_i_18
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_93_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_93
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_330_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_330
+INFO: [Physopt 32-663] Processed net DFC/BRAM_reg_0_0_i_556_n_0.  Re-placed instance DFC/BRAM_reg_0_0_i_556
+INFO: [Physopt 32-663] Processed net DEREF1/Q[1].  Re-placed instance DEREF1/word_reg_reg[1]
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[7]_repN.  Did not re-place instance DFC/BRAM_reg_0_0_i_11_replica
+INFO: [Physopt 32-663] Processed net DEREF1/Q[7].  Re-placed instance DEREF1/word_reg_reg[7]
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[14].  Did not re-place instance DFC/BRAM_reg_0_0_i_4
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_50_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_50
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_160_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_160
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_1[14]_repN.  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_345_replica
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7[12].  Did not re-place instance DFC/BRAM_reg_0_0_i_6
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_57_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_57
+INFO: [Physopt 32-661] Optimized 18 nets.  Re-placed 18 instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 18 nets or cells. Created 0 new cell, deleted 0 existing cell and moved 18 existing cells
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.553 | TNS=-40.238 |
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4417 ; free virtual = 5223
+Phase 24 Placement Based Optimization | Checksum: 1890ff211
+
+Time (s): cpu = 00:02:39 ; elapsed = 00:01:23 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4417 ; free virtual = 5223
+
+Phase 25 Critical Path Optimization
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.553 | TNS=-40.238 |
+INFO: [Physopt 32-702] Processed net HEAPSTACK/word_port_2_o[1]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[4].  Did not re-place instance DFC/BRAM_reg_0_0_i_30
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_7_0[4] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_7_0[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_117_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_117
+INFO: [Physopt 32-572] Net DFC/BRAM_reg_0_0_i_117_n_0 was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_0_i_117_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_275_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_275
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_0_i_275_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[4].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_475
+INFO: [Physopt 32-572] Net UNWINDTRAIL/untrail_mem_addr_2[4] was not replicated.
+Resolution: phys_opt_design can be forced to replicate a net driver using the option -force_replication_on_nets <list of net objects>.
+INFO: [Physopt 32-702] Processed net UNWINDTRAIL/untrail_mem_addr_2[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net TRAIL/DOBDO[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk_IBUF. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net HEAPSTACK/word_port_2_o[1]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_7_0[4].  Did not re-place instance DFC/BRAM_reg_0_0_i_30
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_7_0[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_117_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_117
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_0_i_117_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-662] Processed net DFC/BRAM_reg_0_0_i_275_n_0.  Did not re-place instance DFC/BRAM_reg_0_0_i_275
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_0_i_275_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-662] Processed net UNWINDTRAIL/untrail_mem_addr_2[4].  Did not re-place instance UNWINDTRAIL/BRAM_reg_0_0_i_475
+INFO: [Physopt 32-702] Processed net UNWINDTRAIL/untrail_mem_addr_2[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net TRAIL/DOBDO[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk_IBUF. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.553 | TNS=-40.238 |
+Phase 25 Critical Path Optimization | Checksum: 21ebbcb43
+
+Time (s): cpu = 00:02:43 ; elapsed = 00:01:25 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4416 ; free virtual = 5221
+
+Phase 26 BRAM Enable Optimization
+Phase 26 BRAM Enable Optimization | Checksum: 21ebbcb43
+
+Time (s): cpu = 00:02:43 ; elapsed = 00:01:25 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4416 ; free virtual = 5221
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4416 ; free virtual = 5221
+INFO: [Physopt 32-603] Post Physical Optimization Timing Summary | WNS=-0.553 | TNS=-40.238 |
+
+Summary of Physical Synthesis Optimizations
+============================================
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+|  Optimization       |  WNS Gain (ns)  |  TNS Gain (ns)  |  Added Cells  |  Removed Cells  |  Optimized Cells/Nets  |  Dont Touch  |  Iterations  |  Elapsed   |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+|  Fanout             |          0.000  |         -0.233  |           14  |              0  |                     5  |           0  |           3  |  00:00:07  |
+|  Placement Based    |          0.026  |         15.403  |            0  |              0  |                    59  |           0  |           4  |  00:00:35  |
+|  Rewire             |          0.000  |          0.180  |            0  |              0  |                     2  |           0  |           3  |  00:00:01  |
+|  Critical Cell      |          0.031  |          1.786  |           12  |              0  |                    10  |           0  |           3  |  00:00:37  |
+|  DSP Register       |          0.000  |          0.000  |            0  |              0  |                     0  |           0  |           2  |  00:00:00  |
+|  BRAM Register      |          0.000  |          0.000  |            0  |              0  |                     0  |           0  |           2  |  00:00:00  |
+|  URAM Register      |          0.000  |          0.000  |            0  |              0  |                     0  |           0  |           2  |  00:00:00  |
+|  Shift Register     |          0.000  |          0.000  |            0  |              0  |                     0  |           0  |           2  |  00:00:00  |
+|  Critical Pin       |          0.099  |         21.567  |            0  |              0  |                    40  |           0  |           1  |  00:00:01  |
+|  Very High Fanout   |          0.000  |          0.000  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  BRAM Enable        |          0.000  |          0.000  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Critical Path      |          0.000  |          0.000  |            0  |              0  |                     0  |           0  |           1  |  00:00:02  |
+|  Total              |          0.156  |         38.702  |           26  |              0  |                   116  |           0  |          25  |  00:01:23  |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Ending Physical Synthesis Task | Checksum: 1cec60921
+
+Time (s): cpu = 00:02:43 ; elapsed = 00:01:25 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4416 ; free virtual = 5221
+671 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+phys_opt_design completed successfully
+phys_opt_design: Time (s): cpu = 00:02:47 ; elapsed = 00:01:26 . Memory (MB): peak = 2077.352 ; gain = 1.004 ; free physical = 4421 ; free virtual = 5226
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.47 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4415 ; free virtual = 5226
+INFO: [Common 17-1381] The checkpoint '/home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1/TopLevel_physopt.dcp' has been generated.
+Command: route_design -directive Explore -tns_cleanup
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t-csg324'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t-csg324'
+Command: report_drc (run_mandatory_drcs) for: incr_eco_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command route_design
+Command: report_drc (run_mandatory_drcs) for: router_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-270] Using Router directive 'Explore'.
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 4 CPUs
+Checksum: PlaceDB: fe246451 ConstDB: 0 ShapeSum: 9927fedf RouteDB: 0
+
+Phase 1 Build RT Design
+Phase 1 Build RT Design | Checksum: faf0874d
+
+Time (s): cpu = 00:00:41 ; elapsed = 00:00:32 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4266 ; free virtual = 5072
+
+Phase 2 Router Initialization
+
+Phase 2.1 Create Timer
+Phase 2.1 Create Timer | Checksum: faf0874d
+
+Time (s): cpu = 00:00:41 ; elapsed = 00:00:32 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4267 ; free virtual = 5073
+
+Phase 2.2 Fix Topology Constraints
+Phase 2.2 Fix Topology Constraints | Checksum: faf0874d
+
+Time (s): cpu = 00:00:41 ; elapsed = 00:00:32 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4251 ; free virtual = 5058
+
+Phase 2.3 Pre Route Cleanup
+Phase 2.3 Pre Route Cleanup | Checksum: faf0874d
+
+Time (s): cpu = 00:00:41 ; elapsed = 00:00:32 . Memory (MB): peak = 2077.352 ; gain = 0.000 ; free physical = 4251 ; free virtual = 5058
+ Number of Nodes with overlaps = 0
+
+Phase 2.4 Update Timing
+Phase 2.4 Update Timing | Checksum: c1cb727f
+
+Time (s): cpu = 00:00:45 ; elapsed = 00:00:34 . Memory (MB): peak = 2086.605 ; gain = 9.254 ; free physical = 4239 ; free virtual = 5045
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.487 | TNS=-30.108| WHS=-0.146 | THS=-21.042|
+
+Phase 2 Router Initialization | Checksum: a755c8b1
+
+Time (s): cpu = 00:00:46 ; elapsed = 00:00:35 . Memory (MB): peak = 2086.605 ; gain = 9.254 ; free physical = 4237 ; free virtual = 5043
+
+Phase 3 Initial Routing
+Phase 3 Initial Routing | Checksum: 20bc9a942
+
+Time (s): cpu = 00:02:15 ; elapsed = 00:01:03 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4233 ; free virtual = 5040
+
+Phase 4 Rip-up And Reroute
+
+Phase 4.1 Global Iteration 0
+ Number of Nodes with overlaps = 1949
+ Number of Nodes with overlaps = 625
+ Number of Nodes with overlaps = 195
+ Number of Nodes with overlaps = 49
+ Number of Nodes with overlaps = 11
+ Number of Nodes with overlaps = 14
+ Number of Nodes with overlaps = 3
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 6
+ Number of Nodes with overlaps = 3
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.589 | TNS=-24.769| WHS=N/A    | THS=N/A    |
+
+Phase 4.1 Global Iteration 0 | Checksum: 1f492cd42
+
+Time (s): cpu = 00:04:12 ; elapsed = 00:02:15 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4234 ; free virtual = 5041
+
+Phase 4.2 Global Iteration 1
+ Number of Nodes with overlaps = 163
+ Number of Nodes with overlaps = 46
+ Number of Nodes with overlaps = 30
+ Number of Nodes with overlaps = 10
+ Number of Nodes with overlaps = 3
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 3
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.395 | TNS=-10.794| WHS=N/A    | THS=N/A    |
+
+Phase 4.2 Global Iteration 1 | Checksum: 1c14e8952
+
+Time (s): cpu = 00:04:59 ; elapsed = 00:02:56 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4240 ; free virtual = 5046
+
+Phase 4.3 Global Iteration 2
+ Number of Nodes with overlaps = 318
+ Number of Nodes with overlaps = 86
+ Number of Nodes with overlaps = 18
+ Number of Nodes with overlaps = 12
+ Number of Nodes with overlaps = 20
+ Number of Nodes with overlaps = 4
+ Number of Nodes with overlaps = 12
+ Number of Nodes with overlaps = 3
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.310 | TNS=-2.740 | WHS=N/A    | THS=N/A    |
+
+Phase 4.3 Global Iteration 2 | Checksum: 1dad11ce3
+
+Time (s): cpu = 00:06:50 ; elapsed = 00:04:26 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4238 ; free virtual = 5045
+
+Phase 4.4 Global Iteration 3
+ Number of Nodes with overlaps = 496
+ Number of Nodes with overlaps = 178
+ Number of Nodes with overlaps = 87
+ Number of Nodes with overlaps = 29
+ Number of Nodes with overlaps = 7
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.151 | TNS=-1.204 | WHS=N/A    | THS=N/A    |
+
+Phase 4.4 Global Iteration 3 | Checksum: 16de3a8e6
+
+Time (s): cpu = 00:09:59 ; elapsed = 00:06:35 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4240 ; free virtual = 5047
+
+Phase 4.5 Global Iteration 4
+ Number of Nodes with overlaps = 628
+ Number of Nodes with overlaps = 91
+ Number of Nodes with overlaps = 22
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.188 | TNS=-2.999 | WHS=N/A    | THS=N/A    |
+
+Phase 4.5 Global Iteration 4 | Checksum: 163c15ae0
+
+Time (s): cpu = 00:11:19 ; elapsed = 00:07:34 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4234 ; free virtual = 5041
+Phase 4 Rip-up And Reroute | Checksum: 163c15ae0
+
+Time (s): cpu = 00:11:19 ; elapsed = 00:07:34 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4234 ; free virtual = 5041
+
+Phase 5 Delay and Skew Optimization
+
+Phase 5.1 Delay CleanUp
+
+Phase 5.1.1 Update Timing
+Phase 5.1.1 Update Timing | Checksum: 1a407ff5a
+
+Time (s): cpu = 00:11:20 ; elapsed = 00:07:34 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4234 ; free virtual = 5041
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.151 | TNS=-1.146 | WHS=N/A    | THS=N/A    |
+
+ Number of Nodes with overlaps = 0
+
+Phase 5.1.2 Update Timing
+Phase 5.1.2 Update Timing | Checksum: 1cbef8b36
+
+Time (s): cpu = 00:11:22 ; elapsed = 00:07:35 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4226 ; free virtual = 5033
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.136 | TNS=-0.918 | WHS=N/A    | THS=N/A    |
+
+ Number of Nodes with overlaps = 0
+
+Phase 5.1.3 Update Timing
+Phase 5.1.3 Update Timing | Checksum: 180849368
+
+Time (s): cpu = 00:11:22 ; elapsed = 00:07:35 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4226 ; free virtual = 5033
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.136 | TNS=-0.918 | WHS=N/A    | THS=N/A    |
+
+Phase 5.1 Delay CleanUp | Checksum: 180849368
+
+Time (s): cpu = 00:11:22 ; elapsed = 00:07:35 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4226 ; free virtual = 5033
+
+Phase 5.2 Clock Skew Optimization
+Phase 5.2 Clock Skew Optimization | Checksum: 180849368
+
+Time (s): cpu = 00:11:22 ; elapsed = 00:07:35 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4226 ; free virtual = 5033
+Phase 5 Delay and Skew Optimization | Checksum: 180849368
+
+Time (s): cpu = 00:11:23 ; elapsed = 00:07:35 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4226 ; free virtual = 5033
+
+Phase 6 Post Hold Fix
+
+Phase 6.1 Hold Fix Iter
+
+Phase 6.1.1 Update Timing
+Phase 6.1.1 Update Timing | Checksum: 20e582805
+
+Time (s): cpu = 00:11:23 ; elapsed = 00:07:36 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4226 ; free virtual = 5033
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.136 | TNS=-0.918 | WHS=0.147  | THS=0.000  |
+
+Phase 6.1 Hold Fix Iter | Checksum: 20e582805
+
+Time (s): cpu = 00:11:23 ; elapsed = 00:07:36 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4226 ; free virtual = 5033
+Phase 6 Post Hold Fix | Checksum: 20e582805
+
+Time (s): cpu = 00:11:23 ; elapsed = 00:07:36 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4226 ; free virtual = 5033
+
+Phase 7 Timing Verification
+
+Phase 7.1 Update Timing
+Phase 7.1 Update Timing | Checksum: 2210c3942
+
+Time (s): cpu = 00:11:24 ; elapsed = 00:07:36 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4227 ; free virtual = 5033
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.136 | TNS=-0.918 | WHS=N/A    | THS=N/A    |
+
+Phase 7 Timing Verification | Checksum: 2210c3942
+
+Time (s): cpu = 00:11:24 ; elapsed = 00:07:36 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4227 ; free virtual = 5033
+
+Phase 8 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 4.6997 %
+  Global Horizontal Routing Utilization  = 3.56643 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Congestion Report
+North Dir 1x1 Area, Max Cong = 71.1712%, No Congested Regions.
+South Dir 1x1 Area, Max Cong = 82.8829%, No Congested Regions.
+East Dir 1x1 Area, Max Cong = 85.2941%, Congestion bounded by tiles (Lower Left Tile -> Upper Right Tile):
+   INT_L_X20Y16 -> INT_L_X20Y16
+West Dir 1x1 Area, Max Cong = 98.5294%, Congestion bounded by tiles (Lower Left Tile -> Upper Right Tile):
+   INT_R_X15Y25 -> INT_R_X15Y25
+   INT_L_X14Y22 -> INT_L_X14Y22
+   INT_R_X13Y21 -> INT_R_X13Y21
+   INT_R_X15Y21 -> INT_R_X15Y21
+   INT_L_X18Y21 -> INT_L_X18Y21
+Phase 8 Route finalize | Checksum: 2210c3942
+
+Time (s): cpu = 00:11:24 ; elapsed = 00:07:36 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4227 ; free virtual = 5033
+
+Phase 9 Verifying routed nets
+
+ Verification completed successfully
+Phase 9 Verifying routed nets | Checksum: 2210c3942
+
+Time (s): cpu = 00:11:24 ; elapsed = 00:07:36 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4226 ; free virtual = 5033
+
+Phase 10 Depositing Routes
+Phase 10 Depositing Routes | Checksum: 1d02679eb
+
+Time (s): cpu = 00:11:25 ; elapsed = 00:07:37 . Memory (MB): peak = 2161.598 ; gain = 84.246 ; free physical = 4225 ; free virtual = 5032
+
+Phase 11 Incr Placement Change
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2161.598 ; gain = 0.000 ; free physical = 4251 ; free virtual = 5058
+INFO: [Place 30-746] Post Placement Timing Summary WNS=-0.069. For the most accurate timing information please run report_timing.
+Ending IncrPlace Task | Checksum: eedf1429
+
+Time (s): cpu = 00:00:32 ; elapsed = 00:00:29 . Memory (MB): peak = 2161.598 ; gain = 0.000 ; free physical = 4248 ; free virtual = 5055
+Phase 11 Incr Placement Change | Checksum: 1d02679eb
+
+Time (s): cpu = 00:11:57 ; elapsed = 00:08:06 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4248 ; free virtual = 5055
+
+Phase 12 Build RT Design
+Phase 12 Build RT Design | Checksum: 153b0ec76
+
+Time (s): cpu = 00:11:58 ; elapsed = 00:08:07 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4248 ; free virtual = 5055
+
+Phase 13 Router Initialization
+
+Phase 13.1 Create Timer
+Phase 13.1 Create Timer | Checksum: 1b21497fd
+
+Time (s): cpu = 00:11:58 ; elapsed = 00:08:08 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4251 ; free virtual = 5058
+
+Phase 13.2 Fix Topology Constraints
+Phase 13.2 Fix Topology Constraints | Checksum: 1b21497fd
+
+Time (s): cpu = 00:11:58 ; elapsed = 00:08:08 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4236 ; free virtual = 5043
+
+Phase 13.3 Pre Route Cleanup
+Phase 13.3 Pre Route Cleanup | Checksum: 153598b33
+
+Time (s): cpu = 00:11:58 ; elapsed = 00:08:08 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4236 ; free virtual = 5043
+ Number of Nodes with overlaps = 0
+
+Phase 13.4 Update Timing
+Phase 13.4 Update Timing | Checksum: fe162843
+
+Time (s): cpu = 00:12:04 ; elapsed = 00:08:10 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4229 ; free virtual = 5036
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.075 | TNS=-0.167 | WHS=-0.146 | THS=-20.921|
+
+Phase 13 Router Initialization | Checksum: 152bc5b3d
+
+Time (s): cpu = 00:12:05 ; elapsed = 00:08:11 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4227 ; free virtual = 5034
+
+Phase 14 Initial Routing
+Phase 14 Initial Routing | Checksum: 15ef19265
+
+Time (s): cpu = 00:12:05 ; elapsed = 00:08:11 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4226 ; free virtual = 5033
+
+Phase 15 Rip-up And Reroute
+
+Phase 15.1 Global Iteration 0
+ Number of Nodes with overlaps = 678
+ Number of Nodes with overlaps = 260
+ Number of Nodes with overlaps = 60
+ Number of Nodes with overlaps = 17
+ Number of Nodes with overlaps = 8
+ Number of Nodes with overlaps = 6
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.124 | TNS=-0.376 | WHS=N/A    | THS=N/A    |
+
+Phase 15.1 Global Iteration 0 | Checksum: 1242eb5d4
+
+Time (s): cpu = 00:13:14 ; elapsed = 00:09:00 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4219 ; free virtual = 5026
+
+Phase 15.2 Global Iteration 1
+ Number of Nodes with overlaps = 588
+ Number of Nodes with overlaps = 83
+ Number of Nodes with overlaps = 38
+ Number of Nodes with overlaps = 26
+ Number of Nodes with overlaps = 16
+ Number of Nodes with overlaps = 6
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.112 | TNS=-0.615 | WHS=N/A    | THS=N/A    |
+
+Phase 15.2 Global Iteration 1 | Checksum: 208dc68e7
+
+Time (s): cpu = 00:14:39 ; elapsed = 00:10:11 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4220 ; free virtual = 5027
+
+Phase 15.3 Global Iteration 2
+ Number of Nodes with overlaps = 545
+ Number of Nodes with overlaps = 113
+ Number of Nodes with overlaps = 80
+ Number of Nodes with overlaps = 35
+ Number of Nodes with overlaps = 9
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.348 | TNS=-3.485 | WHS=N/A    | THS=N/A    |
+
+Phase 15.3 Global Iteration 2 | Checksum: 26c90f61c
+
+Time (s): cpu = 00:16:10 ; elapsed = 00:11:23 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4218 ; free virtual = 5025
+Phase 15 Rip-up And Reroute | Checksum: 26c90f61c
+
+Time (s): cpu = 00:16:10 ; elapsed = 00:11:23 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4218 ; free virtual = 5025
+
+Phase 16 Delay and Skew Optimization
+
+Phase 16.1 Delay CleanUp
+
+Phase 16.1.1 Update Timing
+Phase 16.1.1 Update Timing | Checksum: 21bc05e36
+
+Time (s): cpu = 00:16:11 ; elapsed = 00:11:24 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4218 ; free virtual = 5025
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.112 | TNS=-0.567 | WHS=N/A    | THS=N/A    |
+
+ Number of Nodes with overlaps = 0
+
+Phase 16.1.2 Update Timing
+Phase 16.1.2 Update Timing | Checksum: 127603f96
+
+Time (s): cpu = 00:16:19 ; elapsed = 00:11:26 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4199 ; free virtual = 5006
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.107 | TNS=-0.394 | WHS=N/A    | THS=N/A    |
+
+ Number of Nodes with overlaps = 0
+
+Phase 16.1.3 Update Timing
+Phase 16.1.3 Update Timing | Checksum: 140dc3bac
+
+Time (s): cpu = 00:16:19 ; elapsed = 00:11:27 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4199 ; free virtual = 5006
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.107 | TNS=-0.394 | WHS=N/A    | THS=N/A    |
+
+Phase 16.1 Delay CleanUp | Checksum: 140dc3bac
+
+Time (s): cpu = 00:16:19 ; elapsed = 00:11:27 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4199 ; free virtual = 5006
+
+Phase 16.2 Clock Skew Optimization
+Phase 16.2 Clock Skew Optimization | Checksum: 140dc3bac
+
+Time (s): cpu = 00:16:19 ; elapsed = 00:11:27 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4199 ; free virtual = 5006
+Phase 16 Delay and Skew Optimization | Checksum: 140dc3bac
+
+Time (s): cpu = 00:16:20 ; elapsed = 00:11:27 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4199 ; free virtual = 5006
+
+Phase 17 Post Hold Fix
+
+Phase 17.1 Hold Fix Iter
+
+Phase 17.1.1 Update Timing
+Phase 17.1.1 Update Timing | Checksum: 1a47d1a88
+
+Time (s): cpu = 00:16:20 ; elapsed = 00:11:27 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4199 ; free virtual = 5006
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.107 | TNS=-0.394 | WHS=0.147  | THS=0.000  |
+
+Phase 17.1 Hold Fix Iter | Checksum: 1a47d1a88
+
+Time (s): cpu = 00:16:20 ; elapsed = 00:11:27 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4199 ; free virtual = 5006
+Phase 17 Post Hold Fix | Checksum: 1a47d1a88
+
+Time (s): cpu = 00:16:20 ; elapsed = 00:11:27 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4199 ; free virtual = 5006
+
+Phase 18 Timing Verification
+
+Phase 18.1 Update Timing
+Phase 18.1 Update Timing | Checksum: 1ae8f0e86
+
+Time (s): cpu = 00:16:21 ; elapsed = 00:11:28 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4200 ; free virtual = 5007
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-0.107 | TNS=-0.394 | WHS=N/A    | THS=N/A    |
+
+Phase 18 Timing Verification | Checksum: 1ae8f0e86
+
+Time (s): cpu = 00:16:21 ; elapsed = 00:11:28 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4200 ; free virtual = 5007
+
+Phase 19 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 4.64647 %
+  Global Horizontal Routing Utilization  = 3.53829 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Congestion Report
+North Dir 1x1 Area, Max Cong = 73.8739%, No Congested Regions.
+South Dir 1x1 Area, Max Cong = 81.982%, No Congested Regions.
+East Dir 1x1 Area, Max Cong = 77.9412%, No Congested Regions.
+West Dir 1x1 Area, Max Cong = 94.1176%, Congestion bounded by tiles (Lower Left Tile -> Upper Right Tile):
+   INT_R_X15Y25 -> INT_R_X15Y25
+   INT_L_X14Y23 -> INT_L_X14Y23
+   INT_L_X14Y22 -> INT_L_X14Y22
+   INT_L_X22Y22 -> INT_L_X22Y22
+   INT_L_X18Y21 -> INT_L_X18Y21
+Phase 19 Route finalize | Checksum: 1ae8f0e86
+
+Time (s): cpu = 00:16:21 ; elapsed = 00:11:28 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4200 ; free virtual = 5007
+
+Phase 20 Verifying routed nets
+
+ Verification completed successfully
+Phase 20 Verifying routed nets | Checksum: 1ae8f0e86
+
+Time (s): cpu = 00:16:21 ; elapsed = 00:11:28 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4199 ; free virtual = 5006
+
+Phase 21 Depositing Routes
+Phase 21 Depositing Routes | Checksum: 1dfd17776
+
+Time (s): cpu = 00:16:22 ; elapsed = 00:11:28 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4200 ; free virtual = 5007
+
+Phase 22 Post Router Timing
+INFO: [Route 35-20] Post Routing Timing Summary | WNS=-0.104 | TNS=-0.367 | WHS=0.152  | THS=0.000  |
+
+WARNING: [Route 35-39] The design did not meet timing requirements. Please run report_timing_summary for detailed reports.
+Resolution: Verify that the timing was met or had small violations at all previous steps (synthesis, placement, power_opt, and phys_opt). Run report_timing_summary and analyze individual timing paths.
+INFO: [Route 35-253] TNS is the sum of the worst slack violation on every endpoint in the design. Review the paths with the biggest WNS violations in the timing reports and modify your constraints or your design to improve both WNS and TNS.
+Phase 22 Post Router Timing | Checksum: 1bafd557e
+
+Time (s): cpu = 00:16:25 ; elapsed = 00:11:30 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4200 ; free virtual = 5007
+INFO: [Route 35-16] Router Completed Successfully
+
+Time (s): cpu = 00:16:25 ; elapsed = 00:11:30 . Memory (MB): peak = 2163.672 ; gain = 86.320 ; free physical = 4312 ; free virtual = 5120
+
+Routing Is Done.
+705 Infos, 1 Warnings, 1 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:16:28 ; elapsed = 00:11:31 . Memory (MB): peak = 2163.762 ; gain = 86.410 ; free physical = 4312 ; free virtual = 5120
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.47 . Memory (MB): peak = 2171.676 ; gain = 0.000 ; free physical = 4303 ; free virtual = 5119
+INFO: [Common 17-1381] The checkpoint '/home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1/TopLevel_routed.dcp' has been generated.
+Command: report_drc -file TopLevel_drc_routed.rpt -pb TopLevel_drc_routed.pb -rpx TopLevel_drc_routed.rpx
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1/TopLevel_drc_routed.rpt.
+report_drc completed successfully
+Command: report_methodology -file TopLevel_methodology_drc_routed.rpt -rpx TopLevel_methodology_drc_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-133] Running Methodology with 4 threads
+INFO: [Coretcl 2-1520] The results of Report Methodology are in file /home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1/TopLevel_methodology_drc_routed.rpt.
+report_methodology completed successfully
+Command: report_power -file TopLevel_power_routed.rpt -pb TopLevel_power_summary_routed.pb -rpx TopLevel_power_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+WARNING: [Power 33-332] Found switching activity that implies high-fanout reset nets being asserted for excessive periods of time which may result in inaccurate power analysis.
+Resolution: To review and fix problems, please run Power Constraints Advisor in the GUI from Tools > Power Constraints Advisor or run report_power with the -advisory option to generate a text report.
+712 Infos, 2 Warnings, 1 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+Command: phys_opt_design -directive Explore
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t-csg324'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t-csg324'
+INFO: [Vivado_Tcl 4-241] Physical synthesis in post route mode ( 100.0% nets are fully routed)
+INFO: [Vivado_Tcl 4-137] Directive used for phys_opt_design is: Explore
+Command: report_drc (run_mandatory_drcs) for: incr_eco_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2235.707 ; gain = 0.000 ; free physical = 4303 ; free virtual = 5114
+
+Starting Physical Synthesis Task
+
+Phase 1 Physical Synthesis Initialization
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 4 CPUs
+Phase 1 Physical Synthesis Initialization | Checksum: 21b77b709
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:02 . Memory (MB): peak = 2235.707 ; gain = 0.000 ; free physical = 4299 ; free virtual = 5109
+
+Phase 2 Critical Path Optimization
+INFO: [Physopt 32-668] Current Timing Summary | WNS=-0.104 | TNS=-0.367 | WHS=0.152 | THS=0.000 |
+INFO: [Physopt 32-702] Processed net HEAPSTACK/word_port_2_o[1]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-703] Processed net DFC/FSM_onehot_cr_state_reg_n_0_[9]. Clock skew was adjusted for instance DFC/FSM_onehot_cr_state_reg[9].
+INFO: [Physopt 32-735] Processed net DFC/FSM_onehot_cr_state_reg_n_0_[9]. Optimization improves timing on the net.
+INFO: [Physopt 32-668] Current Timing Summary | WNS=-0.080 | TNS=-0.236 | WHS=0.152 | THS=0.000 |
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_7_0[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net DFC/BRAM_reg_0_7_0[4]. Critial path length was reduced through logic transformation on cell DFC/BRAM_reg_0_0_i_30_comp.
+INFO: [Physopt 32-735] Processed net DFC/BRAM_reg_0_0_i_117_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-668] Current Timing Summary | WNS=-0.070 | TNS=-0.150 | WHS=0.152 | THS=0.000 |
+INFO: [Physopt 32-735] Processed net DFC/BRAM_reg_0_7[11]. Optimization improves timing on the net.
+INFO: [Physopt 32-668] Current Timing Summary | WNS=-0.027 | TNS=-0.080 | WHS=0.152 | THS=0.000 |
+INFO: [Physopt 32-703] Processed net B_reg[0]. Clock skew was adjusted for instance B_reg_reg[0].
+INFO: [Physopt 32-735] Processed net B_reg[0]. Optimization improves timing on the net.
+INFO: [Physopt 32-668] Current Timing Summary | WNS=-0.025 | TNS=-0.051 | WHS=0.152 | THS=0.000 |
+INFO: [Physopt 32-703] Processed net DFC/FSM_onehot_cr_state_reg_n_0_[58]. Clock skew was adjusted for instance DFC/FSM_onehot_cr_state_reg[58].
+INFO: [Physopt 32-735] Processed net DFC/FSM_onehot_cr_state_reg_n_0_[58]. Optimization improves timing on the net.
+INFO: [Physopt 32-668] Current Timing Summary | WNS=-0.017 | TNS=-0.027 | WHS=0.152 | THS=0.000 |
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_7[10]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_0_i_62_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net DFC/BRAM_reg_0_0_i_62_n_0. Critial path length was reduced through logic transformation on cell DFC/BRAM_reg_0_0_i_62_comp.
+INFO: [Physopt 32-735] Processed net DFC/BRAM_reg_0_0_i_180_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-668] Current Timing Summary | WNS=-0.009 | TNS=-0.009 | WHS=0.152 | THS=0.000 |
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_7_0[2]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_0_i_121_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net DFC/BRAM_reg_0_0_i_281_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net UNWINDTRAIL/untrail_mem_addr_2[2].  Re-placed instance UNWINDTRAIL/BRAM_reg_0_0_i_485
+INFO: [Physopt 32-735] Processed net UNWINDTRAIL/untrail_mem_addr_2[2]. Optimization improves timing on the net.
+INFO: [Physopt 32-668] Current Timing Summary | WNS=0.003 | TNS=0.000 | WHS=0.152 | THS=0.000 |
+INFO: [Physopt 32-668] Current Timing Summary | WNS=0.003 | TNS=0.000 | WHS=0.152 | THS=0.000 |
+Phase 2 Critical Path Optimization | Checksum: 2ed426b49
+
+Time (s): cpu = 00:01:15 ; elapsed = 00:01:03 . Memory (MB): peak = 2235.707 ; gain = 0.000 ; free physical = 4188 ; free virtual = 4999
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2235.707 ; gain = 0.000 ; free physical = 4188 ; free virtual = 4999
+INFO: [Physopt 32-669] Post Physical Optimization Timing Summary | WNS=0.003 | TNS=0.000 | WHS=0.152 | THS=0.000 |
+Ending Physical Synthesis Task | Checksum: 2b3e1c4e4
+
+Time (s): cpu = 00:01:15 ; elapsed = 00:01:03 . Memory (MB): peak = 2235.707 ; gain = 0.000 ; free physical = 4188 ; free virtual = 4999
+751 Infos, 2 Warnings, 1 Critical Warnings and 0 Errors encountered.
+phys_opt_design completed successfully
+phys_opt_design: Time (s): cpu = 00:01:15 ; elapsed = 00:01:03 . Memory (MB): peak = 2235.707 ; gain = 0.000 ; free physical = 4276 ; free virtual = 5087
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.47 . Memory (MB): peak = 2235.707 ; gain = 0.000 ; free physical = 4268 ; free virtual = 5087
+INFO: [Common 17-1381] The checkpoint '/home/bogdan/licenta/FPWAM/hardware/proj/User_Demo.runs/impl_1/TopLevel_postroute_physopt.dcp' has been generated.
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Common 17-206] Exiting Vivado at Sun Jul 16 10:28:14 2017...

@@ -193,6 +193,7 @@ signal dfc_trail_do           : std_logic;
 signal dfc_bladdr_wr          : std_logic;
 signal dfc_bhaddr_wr          : std_logic;
 signal dfc_bsearch_start      : std_logic;
+signal dfc_rst                : std_logic;
 ----- TRAIL -----
 signal trail_start            : std_logic;
 signal trail_address          : std_logic_vector(kWamAddressWidth -1 downto 0);
@@ -406,29 +407,29 @@ type instr_mem is array (0 to 19) of std_logic_vector(kWamInstructionWidth - 1 d
 --,"00000000000000000000000000000000"  -- block
 --,"00000000000000000000000000000000"  -- block
 -- );
-signal mem : instr_mem :=            --
-(
-B"000000_00000000_00000000000000_0000"
-,B"000010_00000000_00000000000000_0001"
-,B"000010_00000000_00000000000000_0010"
-,B"011100_00000000_00000000000101_0010"
-,B"000000_00000000_00000000000000_0000"
-,B"000110_00000100_00000000000000_0010"
-,B"000001_00000010_00000000000011_0010"
-,B"010110_00000001_00000000000000_0000"
-,B"010110_00000100_00000000000000_0000"
-,B"000001_00000011_00000000000100_0001"
-,B"010110_00000100_00000000000000_0000"
-,B"011100_00000000_00000000001101_0011"
-,B"000000_00000000_00000000000000_0000"
-,B"000101_00000001_00000000000100_0001"
-,B"011000_00000000_00000000000000_0001"
-,B"000101_00000010_00000000000011_0010"
-,B"010110_00000011_00000000000000_0000"
-,B"011101_00000000_00000000000100_0001"
-,B"010111_00000000_11000000000000_0001"
-,B"001011_00000000_00000000000000_0000"
-);
+--signal mem : instr_mem :=            --
+--(
+--B"000000_00000000_00000000000000_0000"
+--,B"000010_00000000_00000000000000_0001"
+--,B"000010_00000000_00000000000000_0010"
+--,B"011100_00000000_00000000000101_0010"
+--,B"000000_00000000_00000000000000_0000"
+--,B"000110_00000100_00000000000000_0010"
+--,B"000001_00000010_00000000000011_0010"
+--,B"010110_00000001_00000000000000_0000"
+--,B"010110_00000100_00000000000000_0000"
+--,B"000001_00000011_00000000000100_0001"
+--,B"010110_00000100_00000000000000_0000"
+--,B"011100_00000000_00000000001101_0011"
+--,B"000000_00000000_00000000000000_0000"
+--,B"000101_00000001_00000000000100_0001"
+--,B"011000_00000000_00000000000000_0001"
+--,B"000101_00000010_00000000000011_0010"
+--,B"010110_00000011_00000000000000_0000"
+--,B"011101_00000000_00000000000100_0001"
+--,B"010111_00000000_11000000000000_0001"
+--,B"001011_00000000_00000000000000_0000"
+--);
 
 signal instruction_counter : unsigned(7 downto 0);
 signal instruction         : std_logic_vector(kWamInstructionWidth -1 downto 0);
@@ -485,6 +486,9 @@ signal control_unit_deref_start   : std_logic;
 signal control_unit_deref_out     : std_logic_vector(kWamWordWidth -1 downto 0);
 signal control_unit_mem_addr      : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal control_unit_mem_rd        : std_logic;
+signal control_instruction_out    : std_logic_vector(kWamInstructionWidth -1 downto 0);
+signal control_instruction_write  : std_logic;
+signal control_instruction_addr   : std_logic_vector(kWamInstrMemWidth -1 downto 0);
 
 signal mem_port2_addr_cntr      : std_logic_vector(kWamAddressWidth -1 downto 0);
 signal mem_port1_addr_cntr      : std_logic_vector(kWamAddressWidth -1 downto 0);
@@ -504,8 +508,23 @@ constant kTarget : integer := 100000;
 signal clock_counter : integer;
 signal millis : unsigned(11 downto 0);
 signal do_count : boolean;
+
+signal instruction_reg : std_logic_vector(kWamInstructionWidth -1 downto 0);
+signal instr_wr        : std_logic;
+ 
 begin
 
+
+--  INSTRREG: process(clk)
+--  begin
+--    if rising_edge(clk) then
+--        if rst = '1' then
+--            instruction_reg <= (others => '0');
+--        elsif instr_wr = '1' then
+--            instruction_reg <= instruction;
+--        end if;
+--    end if;
+--  end process;
 
 deglitch : process (clk)
 begin
@@ -526,22 +545,32 @@ CUNIT: entity work.ControlUnit(Behavioral)
    clk => clk
   ,rsti => rst_i
 
-  ,query_done    => control_unit_query_done
-  ,uart_in       => control_unit_uart_in
-  ,uart_in_valid => control_unit_uart_in_valid
-  ,uart_out      => control_unit_uart_out
-  ,uart_out_str  => control_unit_uart_out_str
-  ,uart_out_ack  => control_unit_uart_out_ack
-  ,mem_in        => mem_output_1
-  ,mem_addr      => control_unit_mem_addr
-  ,mem_rd        => control_unit_mem_rd
-  ,deref_start   => control_unit_deref_start
-  ,deref_out     => control_unit_deref_out
-  ,deref_in      => deref2_res_out
-  ,deref_done    => deref2_done
-  ,proc_mode     => control_unit_mode
-  ,sys_rst       => rst
-  ,start_btn     => btn
+  ,query_done        => control_unit_query_done
+  ,uart_in           => control_unit_uart_in
+  ,uart_in_valid     => control_unit_uart_in_valid
+  ,uart_out          => control_unit_uart_out
+  ,uart_out_str      => control_unit_uart_out_str
+  ,uart_out_ack      => control_unit_uart_out_ack
+  ,mem_in            => mem_output_1
+  ,mem_addr          => control_unit_mem_addr
+  ,mem_rd            => control_unit_mem_rd
+  ,deref_start       => control_unit_deref_start
+  ,deref_out         => control_unit_deref_out
+  ,deref_in          => deref2_res_out
+  ,deref_done        => deref2_done
+  ,instruction_out   => control_instruction_out
+  ,instruction_write => control_instruction_write
+  ,instruction_addr  => control_instruction_addr
+      
+  ,p_address         => open
+  ,p_wr              => open
+      
+  ,cindex_out        => open
+  ,cindex_addr       => open
+  ,cindex_wr         => open
+  ,proc_mode         => control_unit_mode
+  ,sys_rst           => rst
+  ,start_btn         => btn
  );
 
  uart_data_stream_in     <= control_unit_uart_out;
@@ -611,38 +640,38 @@ instr_mem_rd <= dfc_get_instruction;
 instruction_valid <= '1';
 dfc_instruction_in <= instr_mem_out;
 
--- TEMPORARYMEMORY
-INSTCNT: process(clk)
-begin
-  if rising_edge(clk) then
-    if instr_mem_rd = '1' then
-      instr_mem_out <= mem(to_integer(unsigned(instr_mem_addr)));
-    end if;
-  end if;
-end process;
+---- TEMPORARYMEMORY
+--INSTCNT: process(clk)
+--begin
+--  if rising_edge(clk) then
+--    if instr_mem_rd = '1' then
+--      instr_mem_out <= mem(to_integer(unsigned(instr_mem_addr)));
+--    end if;
+--  end if;
+--end process;
 
--- INSTRMEM: entity work.Memory(Behavioral)
---  generic map
---  (
---    kMemAddressWidth => kWamInstrMemWidth
---   ,kWordWidth       => kWamInstructionWidth
---  )
---  port map
---  (
---   clk => clk
---
---   ,addr_port_1   => instr_mem_addr
---   ,word_port_1_o => instr_mem_out
---   ,word_port_1_i => open
---   ,wr_port_1     => open
---   ,rd_port_1     => instr_mem_rd
---
---   ,addr_port_2   => open
---   ,word_port_2_o => open
---   ,word_port_2_i => open
---   ,wr_port_2     => open
---   ,rd_port_2     => open
---  );
+ INSTRMEM: entity work.Memory(Behavioral)
+  generic map
+  (
+    kMemAddressWidth => kWamInstrMemWidth
+   ,kWordWidth       => kWamInstructionWidth
+  )
+  port map
+  (
+   clk => clk
+
+   ,addr_port_1   => instr_mem_addr
+   ,word_port_1_o => instr_mem_out
+   ,word_port_1_i => (others => '0')
+   ,wr_port_1     => '0'
+   ,rd_port_1     => instr_mem_rd
+
+   ,addr_port_2   => control_instruction_addr
+   ,word_port_2_o => open
+   ,word_port_2_i => control_instruction_out
+   ,wr_port_2     => control_instruction_write
+   ,rd_port_2     => control_instruction_write
+  );
 
 -- MODE REGISTER BEGIN
   M_wr   <= dfc_mode_wr;
@@ -660,7 +689,7 @@ end process;
 
 -- H REGISTER BEGIN
   H_wr <= dfc_H_wr;
-  HMUX: process(dfc_H_input, H_reg, HB_reg, mem_output_1, mem_output_2, dfc_instruction_in)
+  HMUX: process(dfc_H_input, H_reg, HB_reg, mem_output_1, mem_output_2, instruction_reg)
   begin
     H_comb <= H_reg;
     case dfc_H_input is
@@ -675,7 +704,7 @@ end process;
       when HI_mem_port2_t =>
         H_comb <= mem_output_2(kWamAddressWidth -1 downto 0);
       when HI_Hpconstant_t =>
-        H_comb <= std_logic_vector(unsigned(H_reg)+unsigned(dfc_instruction_in(kGPRAddressWidth -1 downto 0)));
+        H_comb <= std_logic_vector(unsigned(H_reg)+unsigned(instruction_reg(kGPRAddressWidth -1 downto 0)));
       when others =>
         null;
     end case;
@@ -694,7 +723,7 @@ end process;
 -- H REGISTER END
 -- S REGISTER START
   S_wr <= dfc_S_wr;
-  SMUX: process(dfc_S_input, S_reg, deref1_res_out, dfc_instruction_in)
+  SMUX: process(dfc_S_input, S_reg, deref1_res_out, instruction_reg)
   begin
     S_comb <= S_reg;
     case dfc_S_input is
@@ -705,7 +734,7 @@ end process;
       when SI_untag_deref_t =>
         S_comb <= std_logic_vector(fpwam_value(deref1_res_out));
       when SI_pconstant_t =>
-        S_comb <= std_logic_vector(unsigned(S_reg)+unsigned(dfc_instruction_in(kGPRAddressWidth -1 downto 0)));
+        S_comb <= std_logic_vector(unsigned(S_reg)+unsigned(instruction_reg(kGPRAddressWidth -1 downto 0)));
       when others =>
         null;
     end case;
@@ -779,7 +808,7 @@ end process;
 
 -- NRARGS REGISTER BEGIN
   NRARGS_wr   <= dfc_nr_wr;
-  NRARGS_comb <= fpwam_instr_arity(dfc_instruction_in)      when dfc_nr_input = NRARGSI_instr_t else
+  NRARGS_comb <= fpwam_instr_arity(instruction_reg)      when dfc_nr_input = NRARGSI_instr_t else
                  mem_output_1(kGPRAddressWidth -1 downto 0) when dfc_nr_input = NRARGSI_mem_port1_t else
                  mem_output_2(kGPRAddressWidth -1 downto 0);
   NRARGSREG: process(clk)
@@ -911,7 +940,7 @@ end process;
     end if;
   end process;
 
-  bsearch_laddr_comb <= dfc_instruction_in(kWamInstrMemWidth -1 downto 0);
+  bsearch_laddr_comb <= instruction_reg(kWamInstrMemWidth -1 downto 0);
   bsearch_laddr_wr   <= dfc_bladdr_wr;
   BLADDR: process(clk)
   begin
@@ -924,7 +953,7 @@ end process;
     end if;
   end process;
 
-  bsearch_haddr_comb <= dfc_instruction_in(kWamInstrMemWidth -1 downto 0);
+  bsearch_haddr_comb <= instruction_reg(kWamInstrMemWidth -1 downto 0);
   bsearch_haddr_wr   <= dfc_bhaddr_wr;
   BHADDR: process(clk)
   begin
@@ -958,7 +987,7 @@ end process;
                or untrail_mem_port_2_wr;
 
   ADDR1MUX: process(deref1_res_out,dfc_mem_addr1, H_reg, deref1_mem_addr1, bind_mem_addr1, bind_mem_addr2, unifyComb_mem_addr1, S_reg,
-                   E_reg, dfc_instruction_in, B_reg, NewE_reg, NewB_reg, NRARGS_reg, dfc_i, untrail_mem_addr_1, mem_output_1, dfc_mem_addr1_out)
+                   E_reg, instruction_reg, B_reg, NewE_reg, NewB_reg, NRARGS_reg, dfc_i, untrail_mem_addr_1, mem_output_1, dfc_mem_addr1_out)
   begin
     mem_addr1 <= (others => '0');
     case dfc_mem_addr1 is
@@ -975,7 +1004,7 @@ end process;
       when MA_unify_unit_t =>
         mem_addr1 <= unifyComb_mem_addr1;
       when MA_stack_addr_t => -- TODO
-        mem_addr1 <= fpwam_var_stack_addr(dfc_instruction_in, E_reg);
+        mem_addr1 <= fpwam_var_stack_addr(instruction_reg, E_reg);
       when MA_S_t =>
         mem_addr1 <= S_reg;
       when MA_untag_deref_t =>
@@ -1010,7 +1039,7 @@ end process;
   end process;
 
   ADDR2MUX: process(deref1_res_out, dfc_mem_addr2, H_reg, deref1_mem_addr1, bind_mem_addr1, bind_mem_addr2, unifyComb_mem_addr2, S_reg,
-                    E_reg, dfc_instruction_in, B_reg, NewE_reg, NewB_reg, NRARGS_reg, dfc_i, untrail_mem_addr_2, dfc_mem_addr2_out)
+                    E_reg, instruction_reg, B_reg, NewE_reg, NewB_reg, NRARGS_reg, dfc_i, untrail_mem_addr_2, dfc_mem_addr2_out)
   begin
     mem_addr2 <= (others => '0');
     case dfc_mem_addr2 is
@@ -1027,7 +1056,7 @@ end process;
       when MA_unify_unit_t =>
         mem_addr2 <= unifyComb_mem_addr2;
       when MA_stack_addr_t => -- TODO
-        mem_addr2 <= fpwam_var_stack_addr(dfc_instruction_in, E_reg);
+        mem_addr2 <= fpwam_var_stack_addr(instruction_reg, E_reg);
       when MA_S_t =>
         mem_addr2 <= S_reg;
       when MA_untag_deref_t =>
@@ -1061,7 +1090,7 @@ end process;
     end case;
   end process;
 
-  PORT1MUX: process(dfc_mem_input1, mem_output_2,H_reg, dfc_instruction_in, gpr_output1, bind_mem_word1, bind_mem_word2, unifyComb_mem_word1, mem_input_2,
+  PORT1MUX: process(dfc_mem_input1, mem_output_2,H_reg, instruction_reg, gpr_output1, bind_mem_word1, bind_mem_word2, unifyComb_mem_word1, mem_input_2,
                   gpr_output1, gpr_output2, E_reg, CP_reg, B_reg, TR_reg, NRARGS_reg, untrail_mem_port_1, dfc_mem_out1, deref1_res_out, P_reg)
   begin
     mem_input_1 <= (others => '0');
@@ -1069,7 +1098,7 @@ end process;
       when MI_str_Hplus1_t =>
         mem_input_1 <= fpwam_word(std_logic_vector(unsigned(H_reg)+1), tag_str_t);
       when MI_constant_t =>
-        mem_input_1 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
+        mem_input_1 <= instruction_reg(kWamWordWidth -1 downto 0);
       when MI_GPR_t =>
         mem_input_1 <= gpr_output1;
       when MI_GPR2_t =>
@@ -1089,7 +1118,7 @@ end process;
       when MI_CP_t =>
         mem_input_1 <= "00000000"&CP_reg; -- TEMPORARY FIX
       when MI_ref_addr_t =>
-  	  	mem_input_1 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
+  	  	mem_input_1 <= fpwam_word(fpwam_var_stack_addr(instruction_reg, E_reg), tag_ref_t);
       when MI_B_t =>
         mem_input_1 <= "00"&B_reg; -- TEMPORARY FIX
       when MI_TR_t =>
@@ -1113,7 +1142,7 @@ end process;
     end case;
   end process;
 
-  PORT2MUX: process(dfc_mem_input2, H_reg, mem_output_1, dfc_instruction_in, gpr_output1, bind_mem_word1, bind_mem_word2, unifyComb_mem_word2, mem_input_1,
+  PORT2MUX: process(dfc_mem_input2, H_reg, mem_output_1, instruction_reg, gpr_output1, bind_mem_word1, bind_mem_word2, unifyComb_mem_word2, mem_input_1,
                    gpr_output1, gpr_output2, E_reg, CP_reg, B_reg, TR_reg, NRARGS_reg, untrail_mem_port_2, dfc_mem_out2, deref1_res_out, P_reg )
   begin
     mem_input_2 <= (others => '0');
@@ -1121,7 +1150,7 @@ end process;
       when MI_str_Hplus1_t =>
         mem_input_2 <= fpwam_word(std_logic_vector(unsigned(H_reg)+1), tag_str_t);
       when MI_constant_t =>
-        mem_input_2 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
+        mem_input_2 <= instruction_reg(kWamWordWidth -1 downto 0);
       when MI_GPR_t =>
         mem_input_2 <= gpr_output1;
       when MI_GPR2_t =>
@@ -1141,7 +1170,7 @@ end process;
       when MI_CP_t =>
         mem_input_2 <= "00000000"&CP_reg; -- TEMPORARY FIX
       when MI_ref_addr_t =>
-  	  	mem_input_2 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
+  	  	mem_input_2 <= fpwam_word(fpwam_var_stack_addr(instruction_reg, E_reg), tag_ref_t);
       when MI_B_t =>
         mem_input_2 <= "00"&B_reg; -- TEMPORARY FIX
       when MI_TR_t =>
@@ -1194,12 +1223,12 @@ end process;
 -- STACK AND HEAP MEMORY END
 
 -- GPRs BEGIN
-  gpr_address1 <= dfc_instruction_in(kGPRAddressWidth-1 + kWamWordWidth downto kWamWordWidth) when dfc_gpr_addr1 = GPRA_instr_t else
+  gpr_address1 <= instruction_reg(kGPRAddressWidth-1 + kWamWordWidth downto kWamWordWidth) when dfc_gpr_addr1 = GPRA_instr_t else
                   std_logic_vector(dfc_i(kGPRAddressWidth-1 downto 0)) when dfc_gpr_addr1 = GPRA_I_t else
                   std_logic_vector(to_unsigned(1, kGPRAddressWidth)) when dfc_gpr_addr1 = GPRA_1_t else
                   std_logic_vector(dfc_i(kGPRAddressWidth-1 downto 0) + 1);
   gpr_wr1      <= dfc_gpr_wr1;
-  GPRINMUX: process(dfc_gpr_input1, H_reg, mem_output_1, mem_output_2, E_reg, deref1_res_out, dfc_instruction_in)
+  GPRINMUX: process(dfc_gpr_input1, H_reg, mem_output_1, mem_output_2, E_reg, deref1_res_out, instruction_reg)
   begin
     gpr_input1 <= (others => '0');
     case dfc_gpr_input1 is
@@ -1212,15 +1241,15 @@ end process;
       when GPRI_str_H_t =>
         gpr_input1 <= fpwam_word(H_reg, tag_str_t);
       when GPRI_ref_addr_t =>
-  	  	gpr_input1 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
+  	  	gpr_input1 <= fpwam_word(fpwam_var_stack_addr(instruction_reg, E_reg), tag_ref_t);
       when GPRI_lis_H_t =>
         gpr_input1 <= fpwam_word(H_reg, tag_lis_t);
       when GPRI_con_t =>
-        gpr_input1 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
+        gpr_input1 <= instruction_reg(kWamWordWidth -1 downto 0);
       when GPRI_deref_t =>
         gpr_input1 <= deref1_res_out;
       when GPRI_constant_t =>
-        gpr_input1 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
+        gpr_input1 <= instruction_reg(kWamWordWidth -1 downto 0);
       when GPRI_gpr2_t =>
         gpr_input1 <= gpr_output2;
       when others =>
@@ -1228,12 +1257,12 @@ end process;
     end case;
   end process;
 
-  gpr_address2 <= dfc_instruction_in(kGPRAddressWidth-1 downto 0) when dfc_gpr_addr2 = GPRA_instr_t else
+  gpr_address2 <= instruction_reg(kGPRAddressWidth-1 downto 0) when dfc_gpr_addr2 = GPRA_instr_t else
                   std_logic_vector(dfc_i(kGPRAddressWidth-1 downto 0)) when dfc_gpr_addr2 = GPRA_I_t else
                   std_logic_vector(to_unsigned(1, kGPRAddressWidth)) when dfc_gpr_addr2 = GPRA_1_t else
                   std_logic_vector(dfc_i(kGPRAddressWidth-1 downto 0) + 1);
   gpr_wr2      <= dfc_gpr_wr2;
-  GPRINMUX2: process(dfc_gpr_input2, H_reg, mem_output_1, mem_output_2, E_reg, deref1_res_out, dfc_instruction_in)
+  GPRINMUX2: process(dfc_gpr_input2, H_reg, mem_output_1, mem_output_2, E_reg, deref1_res_out, instruction_reg)
   begin
     gpr_input2 <= (others => '0');
     case dfc_gpr_input2 is
@@ -1244,17 +1273,17 @@ end process;
       when GPRI_mem_port2_t =>
 	  	  gpr_input2 <= mem_output_2;
       when GPRI_ref_addr_t =>
-  	  	gpr_input2 <= fpwam_word(fpwam_var_stack_addr(dfc_instruction_in, E_reg), tag_ref_t);
+  	  	gpr_input2 <= fpwam_word(fpwam_var_stack_addr(instruction_reg, E_reg), tag_ref_t);
       when GPRI_lis_H_t =>
         gpr_input2 <= fpwam_word(H_reg, tag_lis_t);
       when GPRI_con_t =>
-        gpr_input2 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
+        gpr_input2 <= instruction_reg(kWamWordWidth -1 downto 0);
       when GPRI_deref_t =>
         gpr_input2 <= deref1_res_out;
       when GPRI_gpr1_t =>
         gpr_input2 <= gpr_output1;
       when GPRI_constant_t =>
-        gpr_input2 <= dfc_instruction_in(kWamWordWidth -1 downto 0);
+        gpr_input2 <= instruction_reg(kWamWordWidth -1 downto 0);
       when others =>
         null;
     end case;
@@ -1342,7 +1371,7 @@ end process;
   deref1_start <= dfc_deref1_start
                or unify_deref1_start;
   deref1_mem_word1 <= mem_output_1;
-  DEREFINPUTMUX: process(dfc_deref1_input, gpr_output1, mem_output_1, mem_output_2, unify_deref1_out, dfc_instruction_in, E_reg)
+  DEREFINPUTMUX: process(dfc_deref1_input, gpr_output1, mem_output_1, mem_output_2, unify_deref1_out, instruction_reg, E_reg)
   begin
     deref1_word <= (others => '0');
     case dfc_deref1_input is
@@ -1352,7 +1381,7 @@ end process;
         deref1_word <= unify_deref1_out;
       when DI_EYnp2_t =>
         deref1_word <= fpwam_word(std_logic_vector(unsigned(E_reg)+
-                                  unsigned(dfc_instruction_in(kGPRAddressWidth-1 + kWamWordWidth downto kWamWordWidth))+2), tag_ref_t);
+                                  unsigned(instruction_reg(kGPRAddressWidth-1 + kWamWordWidth downto kWamWordWidth))+2), tag_ref_t);
       when DI_mem_port1_t =>
         deref1_word <= mem_output_1;
       when others =>
@@ -1521,11 +1550,12 @@ end process;
   dfc_e_reg              <= E_reg;
   dfc_bsearch_done       <= bsearch_done;
   dfc_bsearch_found      <= bsearch_found;
+  dfc_rst                <= rst or (to_std_logic(control_unit_mode = proc_control_t));
   DFC: entity work.DataFlowControl(Behavioral)
    port map
    (
      clk                => clk
-    ,rst                => rst
+    ,rst                => dfc_rst
     ,instruction        => dfc_instruction_in
     ,instruction_valid  => dfc_instruction_valid
     ,mem_obj            => dfc_mem_word1
@@ -1604,6 +1634,7 @@ end process;
     ,bladdr_wr          => dfc_bladdr_wr
     ,bhaddr_wr          => dfc_bhaddr_wr
     ,bsearch_start      => dfc_bsearch_start
+    ,instr_regged       => instruction_reg
    );
 -- DFC END
 -- TRAIL BEGIN
